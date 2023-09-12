@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 
 @Configuration
@@ -15,13 +17,15 @@ import org.springframework.security.web.SecurityFilterChain;
 public class WebSecurityConfig {
 
     private final SecurityConfig securityConfig;
-    //jwtFilter
+    private final JwtAuthenticationFilter jwtAuthenticationFilter;
     //authFilter
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
-        //http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/panel").hasRole(DEVELOPER.name()));//.hasAnyAuthority()/*Role(ROLE_DEVELOPER.name())*/);//.(/*Role.ROLE_DEVELOPER.toString()*/);
+        http.authenticationManager(securityConfig.authenticationManager());
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 }
