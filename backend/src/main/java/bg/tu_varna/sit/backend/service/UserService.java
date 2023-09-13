@@ -1,0 +1,33 @@
+package bg.tu_varna.sit.backend.service;
+
+import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
+import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
+import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+@Service
+@RequiredArgsConstructor
+public class UserService {
+
+    private final UserRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
+
+    public User getUserById(String id) {return userRepository.findUserById(id);}
+
+    public User getUserByUsername(String username) {return userRepository.findUserByUsername(username);}
+
+    public boolean isUsernameExists(String username) {return getUserByUsername(username) != null;}
+
+    public User getUserByEmail(String email) {return userRepository.findUserByEmail(email);}
+
+    public boolean isEmailExists(String email) {return getUserByEmail(email) != null;}
+
+    public void checkUserCredentials(LoginDTO loginDTO){
+        User user = getUserByUsername(loginDTO.username());
+        if (!(user!=null && passwordEncoder.matches(loginDTO.password(), user.getPassword())))
+            throw new BadCredentialsException("Invalid username or password.");
+    }
+}
