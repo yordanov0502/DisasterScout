@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.backend.config.security;
 
+import bg.tu_varna.sit.backend.models.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,7 +25,9 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
-
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**").permitAll());
+        //?http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasAnyAuthority(Role.ADMIN.name()));
+        //?http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyAuthority(Role.USER.name(),Role.ADMIN.name()));
         http.authenticationManager(securityConfig.authenticationManager());
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthenticationFilter, loginAuthenticationFilter.getClass());
