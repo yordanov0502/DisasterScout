@@ -79,6 +79,7 @@ class EmailRegexValidationTest {
         assertFalse(emailRegexValidation.isValid("bobabvcom", constraintValidatorContext));
         assertFalse(emailRegexValidation.isValid("melany abv com", constraintValidatorContext));
         assertFalse(emailRegexValidation.isValid("s206216000@onlineedu.tu-varna.bg", constraintValidatorContext));
+        assertFalse(emailRegexValidation.isValid(null, constraintValidatorContext));
     }
 
 }

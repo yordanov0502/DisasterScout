@@ -26,8 +26,8 @@ public class UserService {
     public boolean isEmailExists(String email) {return getUserByEmail(email) != null;}
 
     public void checkUserCredentials(LoginDTO loginDTO){
-        User user = getUserByUsername(loginDTO.username());
-        if (!(user!=null && passwordEncoder.matches(loginDTO.password(), user.getPassword())))
+        User user = getUserByUsername(loginDTO.getUsername());
+        if (!(user!=null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())))
             throw new BadCredentialsException("Invalid username or password.");
     }
 }

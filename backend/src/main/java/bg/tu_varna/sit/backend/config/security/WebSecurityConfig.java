@@ -25,12 +25,12 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         http.csrf(AbstractHttpConfigurer::disable);
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**").permitAll());
-        //?http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasAnyAuthority(Role.ADMIN.name()));
-        //?http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyAuthority(Role.USER.name(),Role.ADMIN.name()));
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasAuthority(Role.ADMIN.toString()));
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyAuthority(Role.USER.toString(),Role.ADMIN.toString()));
         http.authenticationManager(securityConfig.authenticationManager());
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(jwtAuthenticationFilter, loginAuthenticationFilter.getClass());
+        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class /*loginAuthenticationFilter.getClass()*/);
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }

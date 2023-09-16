@@ -47,5 +47,6 @@ class UsernameRegexValidationTest {
         assertFalse(usernameRegexValidation.isValid("Тошко", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("ЛЛЛЛЛЛЛ", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("-№3е,!?+%=:/–№", constraintValidatorContext));
+        assertFalse(usernameRegexValidation.isValid(null, constraintValidatorContext));
     }
 }

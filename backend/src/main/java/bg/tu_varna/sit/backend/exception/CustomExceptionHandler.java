@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 @ControllerAdvice
 public class CustomExceptionHandler {
 
-    @ExceptionHandler
+    //!--------------------
+    /*@ExceptionHandler
     public ProblemDetail handleException(BadCredentialsException badCredentialsException){
         return ProblemDetail.forStatusAndDetail(HttpStatus.UNAUTHORIZED, badCredentialsException.getMessage());
-    }
+    }*/
+
 }
