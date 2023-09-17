@@ -3,6 +3,7 @@ package bg.tu_varna.sit.backend.service;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.repository.UserRepository;
+import bg.tu_varna.sit.backend.validation.user.CustomLoginRegexValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,6 +15,7 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
+    private final CustomLoginRegexValidation customLoginRegexValidation;
 
     public User getUserById(String id) {return userRepository.findUserById(id);}
 
@@ -24,6 +26,11 @@ public class UserService {
     public User getUserByEmail(String email) {return userRepository.findUserByEmail(email);}
 
     public boolean isEmailExists(String email) {return getUserByEmail(email) != null;}
+
+    public void validateLoginDTO(LoginDTO loginDTO)
+    {
+        customLoginRegexValidation.validateLoginFields(loginDTO);
+    }
 
     public void checkUserCredentials(LoginDTO loginDTO){
         User user = getUserByUsername(loginDTO.getUsername());

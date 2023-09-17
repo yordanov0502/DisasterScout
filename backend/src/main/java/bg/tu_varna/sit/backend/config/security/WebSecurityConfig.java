@@ -24,14 +24,14 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
-        http.csrf(AbstractHttpConfigurer::disable);
+        http.authenticationManager(securityConfig.authenticationManager());
+        http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtAuthenticationFilter, loginAuthenticationFilter.getClass());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasAuthority(Role.ADMIN.toString()));
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyAuthority(Role.USER.toString(),Role.ADMIN.toString()));
-        http.authenticationManager(securityConfig.authenticationManager());
-        http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
-        http.addFilterBefore(jwtAuthenticationFilter, UsernamePasswordAuthenticationFilter.class /*loginAuthenticationFilter.getClass()*/);
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
+        http.csrf(AbstractHttpConfigurer::disable);
         return http.build();
     }
 }

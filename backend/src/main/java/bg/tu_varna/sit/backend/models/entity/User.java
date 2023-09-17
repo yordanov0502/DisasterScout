@@ -1,7 +1,9 @@
 package bg.tu_varna.sit.backend.models.entity;
 
 import bg.tu_varna.sit.backend.models.enums.Role;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -13,6 +15,8 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@AllArgsConstructor
+@NoArgsConstructor
 @Document(collection = "users")
 public class User implements UserDetails {
     @Id
