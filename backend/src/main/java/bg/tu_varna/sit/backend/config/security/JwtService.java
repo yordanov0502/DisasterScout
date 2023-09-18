@@ -14,28 +14,37 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.function.Function;
 
 @Service
 public class JwtService {
+
     @Value("${spring.security.jwt.secret}")
     private String SECRET_KEY;
 
     public String extractId(String token) {
-        return extractClaim(token,Claims::getSubject);//the subject should be the username of a certain user (or email), but we use ID
+        return extractClaim(token,Claims::getSubject);//the subject should be the username of a certain user (or email), but we use ID, in order not to generate a new JWT, when a user update their username or email.
     }
 
-    public <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
+    private  <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
         final Claims claims = extractAllClaims(token);
         return claimsResolver.apply(claims);
+    }
+
+    private Claims extractAllClaims(String token){
+        return Jwts
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     public String generateToken(User user){
         return generateToken(new HashMap<>(), user);
     }
 
-    public String generateToken(Map<String,Object> extraClaims, User user){
+    private String generateToken(Map<String,Object> extraClaims, User user){
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
@@ -48,7 +57,7 @@ public class JwtService {
 
     public boolean isTokenValid(String token,User user){
         final String id = extractId(token);
-        return (Objects.equals(id, user.getId())) && !isTokenExpired(token);
+        return (id.equals(user.getId()) && !isTokenExpired(token));
     }
 
     public boolean isTokenExpired(String token) {
@@ -66,15 +75,6 @@ public class JwtService {
             return null;
         }
 
-    }
-
-    private Claims extractAllClaims(String token){
-        return Jwts
-                .parserBuilder()
-                .setSigningKey(getSignInKey())
-                .build()
-                .parseClaimsJws(token)
-                .getBody();
     }
 
     private Key getSignInKey() {

@@ -18,7 +18,7 @@ public class SecurityConfig {
 
     @Bean
     public AuthenticationProvider authenticationProvider(){
-        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(); //data access object which is responsible for fetching the user details
+        DaoAuthenticationProvider daoAuthenticationProvider = new DaoAuthenticationProvider(); //data access object which is responsible for fetching the user details from DB
         daoAuthenticationProvider.setUserDetailsService(userDetailsServiceImpl);
         daoAuthenticationProvider.setPasswordEncoder(passwordEncoder());
         return daoAuthenticationProvider;
