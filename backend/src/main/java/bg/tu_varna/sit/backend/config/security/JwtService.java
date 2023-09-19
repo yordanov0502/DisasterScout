@@ -2,7 +2,6 @@ package bg.tu_varna.sit.backend.config.security;
 
 import bg.tu_varna.sit.backend.models.entity.User;
 import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
@@ -55,30 +54,25 @@ public class JwtService {
                 .compact();
     }
 
-    public boolean isTokenValid(String token,User user){
-        final String id = extractId(token);
-        return (id.equals(user.getId()) && !isTokenExpired(token));
-    }
-
-    public boolean isTokenExpired(String token) {
-        if(extractExpiration(token)==null) {return true;}
-        else return false;
-    }
-
-    private Date extractExpiration(String token) {
-        try
-        {
-            return extractClaim(token,Claims::getExpiration);
-        }
-        catch (ExpiredJwtException e)
-        {
-            return null;
-        }
-
-    }
-
     private Key getSignInKey() {
         byte [] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    @Deprecated(forRemoval = true)
+    public boolean isTokenValid(String token,User user){
+        final String extractedId = extractId(token);
+        return (extractedId.equals(user.getId()) /*&& !isTokenExpired(token)*/);
+    }
+
+    @Deprecated(forRemoval = false)
+    public boolean isTokenExpired(String token) {
+        //Date d = new Date();
+        return extractExpiration(token).before(new Date());
+    }
+
+    @Deprecated(forRemoval = false)
+    private Date extractExpiration(String token) {
+        return extractClaim(token,Claims::getExpiration);
     }
 }

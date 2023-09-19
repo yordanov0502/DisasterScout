@@ -1,11 +1,17 @@
 package bg.tu_varna.sit.backend.config.security;
 
 import bg.tu_varna.sit.backend.models.entity.User;
+import io.jsonwebtoken.ExpiredJwtException;
+import io.jsonwebtoken.JwtException;
+import io.jsonwebtoken.MalformedJwtException;
+import io.jsonwebtoken.UnsupportedJwtException;
+import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -29,9 +35,9 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader("Authorization");//header which contains JWT token
+        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);//header which contains JWT token
         final String jwt;
-        final String id;
+        String extractedId=null;
 
         if (authHeader == null || !authHeader.startsWith("Bearer "))
         {
@@ -40,12 +46,28 @@ public class JwtAuthenticationFilter extends OncePerRequestFilter {
         }
 
         jwt = authHeader.substring(7);
-        id = jwtService.extractId(jwt);
+        try
+        {
+            extractedId = jwtService.extractId(jwt);
+        }
+        catch (ExpiredJwtException exception){
+            System.out.println("JWT expired");
+        }
+        catch (SignatureException | MalformedJwtException | UnsupportedJwtException exception){
+            System.out.println("Signature exception");
+        }
+        catch (JwtException exception){
+            System.out.println("JwtException");
+        }
+        catch (IllegalArgumentException exception){
+            System.out.println("Unable to get JWT token");
+        }
 
-        if(id != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
+
+        if(extractedId != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
              {
-                User user = userDetailsServiceImpl.loadUserByUsername(id);
-                if(jwtService.isTokenValid(jwt,user))
+                User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
+                if(extractedId.equals(user.getId()))
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
