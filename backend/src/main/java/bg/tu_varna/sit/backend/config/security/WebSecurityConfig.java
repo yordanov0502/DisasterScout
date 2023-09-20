@@ -1,6 +1,5 @@
 package bg.tu_varna.sit.backend.config.security;
 
-import bg.tu_varna.sit.backend.models.enums.Role;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -11,6 +10,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+
+import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.Role.USER;
 
 
 @Configuration
@@ -29,8 +31,8 @@ public class WebSecurityConfig {
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthorizationFilter, loginAuthenticationFilter.getClass());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasAuthority(Role.ADMIN.toString()));
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyAuthority(Role.USER.toString(),Role.ADMIN.toString()));
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasRole(ADMIN.name())); //"ROLE_" is automatically prepended as requirement
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyRole(USER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);

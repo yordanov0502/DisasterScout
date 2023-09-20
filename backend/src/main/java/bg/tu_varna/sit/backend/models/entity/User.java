@@ -30,9 +30,10 @@ public class User implements UserDetails {
     private String password;
     private Role role;
 
+    //The following method is invoked by Spring Security everytime a user try to reach a protected resource
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority(role.name()));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
     }
 
     @Override
