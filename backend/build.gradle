@@ -24,6 +24,7 @@ repositories {
 dependencies {
     // https://mvnrepository.com/artifact/com.github.ben-manes.caffeine/caffeine
     implementation 'com.github.ben-manes.caffeine:caffeine:3.1.7'
+    implementation 'org.springframework.boot:spring-boot-starter-cache'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
     implementation 'org.apache.commons:commons-lang3:3.12.0'
     // https://mvnrepository.com/artifact/io.springfox/springfox-swagger2
