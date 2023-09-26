@@ -8,8 +8,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.IOException;
 
-//Name of the class could be JwtAuthorizationEntryPoint, because the following bean can be triggered
-//when a user fails to access a protected resource (failed authorization, but not authentication)
 @Component
 public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
