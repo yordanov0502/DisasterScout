@@ -1,9 +1,20 @@
 package bg.tu_varna.sit.backend.service.cache;
 
+import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.repository.UserRepository;
 import lombok.AllArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 
 @Service
 @AllArgsConstructor
+@Slf4j
 public class UserCacheService {
+
+    private final UserRepository userRepository;
+
+    @Cacheable(value = "user", key = "#id", unless = "#result == null")
+    public User getUserById(String id) {log.info("MongoDB QUERY executed.");return userRepository.findUserById(id);}
+
 }

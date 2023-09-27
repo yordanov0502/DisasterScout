@@ -27,7 +27,7 @@ public class CaffeineCacheConfig {
         return cacheManager;
     }
 
-    //* Entries of this type of cache will never automatically expire due to time-based policies.
+    //* Entries in this type of cache will never automatically expire due to time-based policies.
     private static Cache<Object,Object> smallCache() {
         return Caffeine.newBuilder()
                 .maximumSize(5)

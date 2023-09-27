@@ -8,6 +8,8 @@ import org.springframework.stereotype.Service;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+//* This validation logic is separate from the rest as it is performed
+//* not in a controller/s, but in a security filter.
 @Service
 public class CustomLoginRegexValidation {
 
