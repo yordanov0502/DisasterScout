@@ -22,9 +22,9 @@ public class UserService {
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
-    public User getUserByUsername(String username) {return userRepository.findUserByUsername(username);}
+    public User getUserByUsername(String username) {return userCacheService.getUserByUsername(username);}
 
-    public boolean isUsernameExists(String username) {return getUserByUsername(username) != null;}
+    public boolean isUsernameExists(String username) {return userCacheService.getUserByUsername(username) != null;}
 
     public User getUserByEmail(String email) {return userRepository.findUserByEmail(email);}
 

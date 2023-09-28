@@ -15,6 +15,8 @@ public class UserCacheService {
     private final UserRepository userRepository;
 
     @Cacheable(value = "user", key = "#id", unless = "#result == null")
-    public User getUserById(String id) {log.info("MongoDB QUERY executed.");return userRepository.findUserById(id);}
+    public User getUserById(String id) {return userRepository.findUserById(id);}
 
+    @Cacheable(value = "username", key = "#username", unless = "#result == null")
+    public User getUserByUsername(String username){return userRepository.findUserByUsername(username);}
 }
