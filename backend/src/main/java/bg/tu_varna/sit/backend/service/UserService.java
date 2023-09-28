@@ -22,12 +22,15 @@ public class UserService {
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
+    @Deprecated(forRemoval = false)
     public User getUserByUsername(String username) {return userCacheService.getUserByUsername(username);}
 
     public boolean isUsernameExists(String username) {return userCacheService.getUserByUsername(username) != null;}
 
+    //! To be deleted
     public User getUserByEmail(String email) {return userRepository.findUserByEmail(email);}
 
+    //* To be refactored
     public boolean isEmailExists(String email) {return getUserByEmail(email) != null;}
 
     public void validateLoginDTO(LoginDTO loginDTO)
@@ -35,9 +38,13 @@ public class UserService {
         customLoginRegexValidation.validateLoginFields(loginDTO);
     }
 
-    public void checkUserCredentials(LoginDTO loginDTO){
-        User user = getUserByUsername(loginDTO.getUsername());
+    public User checkUserCredentials(LoginDTO loginDTO){
+        User user = userCacheService.getUserByUsername(loginDTO.getUsername());
+
         if (!(user!=null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())))
-            throw new BadCredentialsException("Invalid username or password.");
+        {throw new BadCredentialsException("Invalid username or password.");}
+
+        else {return user;}
     }
+
 }

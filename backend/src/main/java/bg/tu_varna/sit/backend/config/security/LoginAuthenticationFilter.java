@@ -65,8 +65,8 @@ public class LoginAuthenticationFilter {
             Gson gson = new Gson();
             LoginDTO loginDTO = gson.fromJson(requestWrapper.getReader(), LoginDTO.class); //! .getReader() can possibly throw IO exception(it is the reason for the try-catch)
             userService.validateLoginDTO(loginDTO); //* validates that username & password match their corresponding regex
-            userService.checkUserCredentials(loginDTO); //* checks whether user credentials match with a document(user) from DB
-            return new UsernamePasswordAuthenticationToken(userService.getUserByUsername(loginDTO.getUsername()).getId(), loginDTO.getPassword());
+            User user = userService.checkUserCredentials(loginDTO); //* checks whether user credentials match with a document(user)/entry from DB/cache and if so return the user
+            return new UsernamePasswordAuthenticationToken(user.getId(), loginDTO.getPassword());
         } catch (IOException exception)
         {
             throw new BadCredentialsException("Invalid credentials type.");
