@@ -67,8 +67,8 @@ public class UserCacheService {
     @Cacheable(value = "username", key = "#username", unless = "#result == null")
     public User getUserByUsername(String username){return userRepository.findUserByUsername(username);}
 
-    @Cacheable(value = "email", key = "#email", unless = "#result == false ")
-    public boolean existsEmail(String email){return userRepository.existsUserByEmail(email);}
+    @Cacheable(value = "email", key = "#email", unless = "#result == null")
+    public User getUserByEmail(String email){return userRepository.findUserByEmail(email);}
 
     //* Evicts all entries from user-related caches.
     @Caching(evict = {
@@ -84,7 +84,7 @@ public class UserCacheService {
 
 
 
-   /* @PostConstruct
+    /*@PostConstruct
     public void printCacheContentUSER_ID() {
         // Replace "myCache" with the name of your cache
         Cache<Object, Object> caffeineCache = (Cache<Object, Object>) cacheManager.getCache("user").getNativeCache();

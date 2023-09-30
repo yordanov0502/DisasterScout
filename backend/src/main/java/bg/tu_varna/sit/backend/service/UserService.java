@@ -4,7 +4,6 @@ import bg.tu_varna.sit.backend.models.dto.user.AccountDTO;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
-import bg.tu_varna.sit.backend.validation.user.CustomLoginRegexValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -16,19 +15,21 @@ public class UserService {
 
     private final UserCacheService userCacheService;
     private final PasswordEncoder passwordEncoder;
-    private final CustomLoginRegexValidation customLoginRegexValidation;
 
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
+    //* Used for validation when creating a new user
     public boolean isUsernameExists(String username) {return userCacheService.getUserByUsername(username) != null;}
 
-    public boolean isEmailExists(String email) {return userCacheService.existsEmail(email);}
+    //* Used for validation when creating a new user
+    public boolean isEmailExists(String email) {return userCacheService.getUserByEmail(email) != null;}
 
-    public void validateLoginDTO(LoginDTO loginDTO)
-    {
-        customLoginRegexValidation.validateLoginFields(loginDTO);
-    }
+    //* Used for validation when updating already existing user
+    public boolean isUsernameExists(String usernameOfAuthenticatedUser,String username) {return !usernameOfAuthenticatedUser.equals(username) && isUsernameExists(username);}
+
+    //* Used for validation when updating already existing user
+    public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
     public User checkUserCredentials(LoginDTO loginDTO){
         User user = userCacheService.getUserByUsername(loginDTO.getUsername());
@@ -42,11 +43,20 @@ public class UserService {
     public User editUser(User user, AccountDTO accountDTO){
         String oldUsername = user.getUsername();
         String oldEmail = user.getEmail();
+       /* System.out.println("BEFORE");
+        userCacheService.printCacheContentUSER_ID();
+        userCacheService.printCacheContentsUSERNAME_USERNAME();
+        userCacheService.printCacheContentEMAIL_EMAIL();*/
 
         user.setFirstName(accountDTO.firstName());
         user.setLastName(accountDTO.lastName());
         user.setEmail(accountDTO.email());
         user.setUsername(accountDTO.username());
+
+        /*System.out.println("After");
+        userCacheService.printCacheContentUSER_ID();
+        userCacheService.printCacheContentsUSERNAME_USERNAME();
+        userCacheService.printCacheContentEMAIL_EMAIL();*/
 
         return userCacheService.updateUser(user,oldUsername,oldEmail);
     }

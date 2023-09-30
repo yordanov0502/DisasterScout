@@ -3,6 +3,7 @@ package bg.tu_varna.sit.backend.config.security;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.validation.user.CustomLoginRegexValidation;
 import com.google.gson.Gson;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -30,6 +31,7 @@ public class LoginAuthenticationFilter {
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
+    private final CustomLoginRegexValidation customLoginRegexValidation;
 
     @Bean(name = "LoginAuthenticationFilter")
     public AuthenticationFilter customAuthenticationFilter() {
@@ -64,7 +66,7 @@ public class LoginAuthenticationFilter {
             ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
             Gson gson = new Gson();
             LoginDTO loginDTO = gson.fromJson(requestWrapper.getReader(), LoginDTO.class); //! .getReader() can possibly throw IO exception(it is the reason for the try-catch)
-            userService.validateLoginDTO(loginDTO); //* validates that username & password match their corresponding regex
+            customLoginRegexValidation.validateLoginDTO(loginDTO); //* validates that username & password match their corresponding regex
             User user = userService.checkUserCredentials(loginDTO); //* checks whether user credentials match with a document(user)/entry from DB/cache and if so return the user
             return new UsernamePasswordAuthenticationToken(user.getId(), loginDTO.getPassword());
         } catch (IOException exception)

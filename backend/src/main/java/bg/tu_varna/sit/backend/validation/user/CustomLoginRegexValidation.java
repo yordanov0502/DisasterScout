@@ -14,7 +14,7 @@ import java.util.regex.Pattern;
 public class CustomLoginRegexValidation {
 
 
-    public void validateLoginFields(LoginDTO loginDTO){
+    public void validateLoginDTO(LoginDTO loginDTO){
         if(!validateUsername(loginDTO.getUsername()) || !validatePassword(loginDTO.getPassword()))
             throw new BadCredentialsException("Invalid username or password.");
     }

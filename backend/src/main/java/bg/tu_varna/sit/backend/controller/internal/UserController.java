@@ -6,6 +6,7 @@ import bg.tu_varna.sit.backend.models.mapper.UserMapper;
 import bg.tu_varna.sit.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,10 +22,10 @@ public class UserController {
 
     //GetMapping() -account information
 
-    //@PutMapping("/update/account")
-    //public AccountDTO editInformation(@AuthenticationPrincipal User user, @RequestBody AccountDTO accountDTO) {
-     //  return userMapper.mapToAccountDTO(userService.editUser(user, accountDTO));
-    //}
+    @PutMapping("/update/account")
+    public AccountDTO editInformation(@AuthenticationPrincipal User user, @Validated(value = AccountDTO.AccountDTOGroup.class) @RequestBody AccountDTO accountDTO) {
+       return userMapper.mapToAccountDTO(userService.editUser(user, accountDTO));
+    }
 
     // /update/password
 

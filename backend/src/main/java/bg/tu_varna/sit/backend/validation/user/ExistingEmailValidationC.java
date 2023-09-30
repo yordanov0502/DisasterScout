@@ -1,20 +1,21 @@
 package bg.tu_varna.sit.backend.validation.user;
 
 import bg.tu_varna.sit.backend.service.UserService;
-import bg.tu_varna.sit.backend.validation.user.annotation.ExistingEmail;
+import bg.tu_varna.sit.backend.validation.user.annotation.ExistingEmailC;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
+//* This validation implementation should be processed while creating a new user
 @Component
 @RequiredArgsConstructor
-public class ExistingEmailValidation implements ConstraintValidator<ExistingEmail,String> {
+public class ExistingEmailValidationC implements ConstraintValidator<ExistingEmailC,String> {
 
     private final UserService userService;
 
     @Override
-    public void initialize(ExistingEmail constraintAnnotation) {
+    public void initialize(ExistingEmailC constraintAnnotation) {
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
