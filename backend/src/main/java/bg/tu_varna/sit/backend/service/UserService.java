@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.backend.service;
 
+import bg.tu_varna.sit.backend.models.dto.user.AccountDTO;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
@@ -14,7 +15,6 @@ import org.springframework.stereotype.Service;
 public class UserService {
 
     private final UserCacheService userCacheService;
-    //private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final CustomLoginRegexValidation customLoginRegexValidation;
 
@@ -23,8 +23,7 @@ public class UserService {
 
     public boolean isUsernameExists(String username) {return userCacheService.getUserByUsername(username) != null;}
 
-    //* To be refactored
-    //public boolean isEmailExists(String email) {return getUserByEmail(email) != null;}
+    public boolean isEmailExists(String email) {return userCacheService.existsEmail(email);}
 
     public void validateLoginDTO(LoginDTO loginDTO)
     {
@@ -40,4 +39,15 @@ public class UserService {
         else {return user;}
     }
 
+    public User editUser(User user, AccountDTO accountDTO){
+        String oldUsername = user.getUsername();
+        String oldEmail = user.getEmail();
+
+        user.setFirstName(accountDTO.firstName());
+        user.setLastName(accountDTO.lastName());
+        user.setEmail(accountDTO.email());
+        user.setUsername(accountDTO.username());
+
+        return userCacheService.updateUser(user,oldUsername,oldEmail);
+    }
 }
