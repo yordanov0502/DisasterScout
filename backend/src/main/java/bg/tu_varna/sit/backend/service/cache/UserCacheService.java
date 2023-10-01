@@ -84,7 +84,7 @@ public class UserCacheService {
 
 
 
-    /*@PostConstruct
+   /* @PostConstruct
     public void printCacheContentUSER_ID() {
         // Replace "myCache" with the name of your cache
         Cache<Object, Object> caffeineCache = (Cache<Object, Object>) cacheManager.getCache("user").getNativeCache();
@@ -121,6 +121,6 @@ public class UserCacheService {
         caffeineCache.asMap().forEach((key, value) -> {
             System.out.println("Key2: " + key + ", Value2: " + value);
         });System.out.println("((((((((((((((((((((((((((((((((((((((((((((((((");
-    }*/
-
+    }
+*/
 }

@@ -19,16 +19,16 @@ public class UserService {
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
-    //* Used for validation when creating a new user
+    //* Used for validation when creating a new user.
     public boolean isUsernameExists(String username) {return userCacheService.getUserByUsername(username) != null;}
 
-    //* Used for validation when creating a new user
+    //* Used for validation when creating a new user.
     public boolean isEmailExists(String email) {return userCacheService.getUserByEmail(email) != null;}
 
-    //* Used for validation when updating already existing user
+    //* Used for validation when updating already existing user.
     public boolean isUsernameExists(String usernameOfAuthenticatedUser,String username) {return !usernameOfAuthenticatedUser.equals(username) && isUsernameExists(username);}
 
-    //* Used for validation when updating already existing user
+    //* Used for validation when updating already existing user.
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
     public User checkUserCredentials(LoginDTO loginDTO){
@@ -43,7 +43,8 @@ public class UserService {
     public User editUser(User user, AccountDTO accountDTO){
         String oldUsername = user.getUsername();
         String oldEmail = user.getEmail();
-       /* System.out.println("BEFORE");
+
+        /*System.out.println("BEFORE");
         userCacheService.printCacheContentUSER_ID();
         userCacheService.printCacheContentsUSERNAME_USERNAME();
         userCacheService.printCacheContentEMAIL_EMAIL();*/
@@ -53,11 +54,14 @@ public class UserService {
         user.setEmail(accountDTO.email());
         user.setUsername(accountDTO.username());
 
+        //? This variable is used for better monitoring. When done it should be inlined to the return statement.
+        User updatedUser = userCacheService.updateUser(user,oldUsername,oldEmail);
+
         /*System.out.println("After");
         userCacheService.printCacheContentUSER_ID();
         userCacheService.printCacheContentsUSERNAME_USERNAME();
         userCacheService.printCacheContentEMAIL_EMAIL();*/
 
-        return userCacheService.updateUser(user,oldUsername,oldEmail);
+        return updatedUser;
     }
 }
