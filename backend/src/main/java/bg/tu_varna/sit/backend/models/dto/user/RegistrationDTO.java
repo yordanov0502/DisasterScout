@@ -1,14 +1,13 @@
 package bg.tu_varna.sit.backend.models.dto.user;
 
 import bg.tu_varna.sit.backend.validation.user.*;
-import bg.tu_varna.sit.backend.validation.user.annotation.EmailRegex;
-import bg.tu_varna.sit.backend.validation.user.annotation.ExistingEmailU;
-import bg.tu_varna.sit.backend.validation.user.annotation.ExistingUsernameU;
-import bg.tu_varna.sit.backend.validation.user.annotation.UsernameRegex;
+import bg.tu_varna.sit.backend.validation.user.annotation.*;
 import jakarta.validation.GroupSequence;
 
 public record RegistrationDTO(
+        @NameRegex(groups = {NameRegexValidation.class})
         String firstName,
+        @NameRegex(groups = {NameRegexValidation.class})
         String lastName,
         @EmailRegex(groups = {EmailRegexValidation.class})
         @ExistingEmailU(groups = {ExistingEmailValidationC.class})
@@ -16,9 +15,10 @@ public record RegistrationDTO(
         @UsernameRegex(groups = {UsernameRegexValidation.class})
         @ExistingUsernameU(groups = {ExistingUsernameValidationC.class})
         String username,
+        @PasswordRegex(groups = {PasswordRegexValidation.class})
         String password)
         /*roles*/{
     //* @GroupSequence annotation is used to define the execution order of different validations.
-    @GroupSequence({EmailRegexValidation.class, ExistingEmailValidationC.class, UsernameRegexValidation.class, ExistingUsernameValidationC.class})
+    @GroupSequence({NameRegexValidation.class,EmailRegexValidation.class, ExistingEmailValidationC.class, UsernameRegexValidation.class, ExistingUsernameValidationC.class, PasswordRegexValidation.class})
     public interface Group{}
 }
