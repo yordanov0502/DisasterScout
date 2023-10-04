@@ -15,11 +15,10 @@ public class NameRegexValidation implements ConstraintValidator<NameRegex,String
         ConstraintValidator.super.initialize(constraintAnnotation);
     }
 
-    //! To be tested
     @Override
     public boolean isValid(String name, ConstraintValidatorContext context) {
         //* Name should start with capital letter[А-ЯA-Z] and contain only lowercase latin or cyrillic letters[а-яa-z].
-        String regex = "^[А-ЯA-Z][а-яa-z]{3,20}$";
+        String regex = "^[А-ЯA-Z][а-яa-z]{2,19}$";
 
         Pattern p = Pattern.compile(regex);
         if(name == null) {return false;}

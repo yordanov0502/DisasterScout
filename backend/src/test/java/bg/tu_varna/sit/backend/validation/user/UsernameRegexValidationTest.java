@@ -36,6 +36,7 @@ class UsernameRegexValidationTest {
         assertTrue(usernameRegexValidation.isValid("454323", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("TTT0921Ssdad", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("000000000000000", constraintValidatorContext));
+        assertTrue(usernameRegexValidation.isValid("yordanov500000000000", constraintValidatorContext));
 
         assertFalse(usernameRegexValidation.isValid("yordanov5.0", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("0_developer_0", constraintValidatorContext));
@@ -47,6 +48,7 @@ class UsernameRegexValidationTest {
         assertFalse(usernameRegexValidation.isValid("Тошко", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("ЛЛЛЛЛЛЛ", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("-№3е,!?+%=:/–№", constraintValidatorContext));
+        assertFalse(usernameRegexValidation.isValid("yordanov5000000000000", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid(null, constraintValidatorContext));
     }
 }

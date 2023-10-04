@@ -40,6 +40,7 @@ class PasswordRegexValidationTest {
         assertTrue(passwordRegexValidation.isValid("`````````.SITo...1",constraintValidatorContext));
         assertTrue(passwordRegexValidation.isValid("87934242432432??sA",constraintValidatorContext));
 
+        assertFalse(passwordRegexValidation.isValid("9#$%^&+=_*~!)(./:;<>?{}|`',-aAA",constraintValidatorContext));
         assertFalse(passwordRegexValidation.isValid("Qf**d**_')(_)(_.)232Z????????31233213",constraintValidatorContext));
         assertFalse(passwordRegexValidation.isValid("pT$8",constraintValidatorContext));
         assertFalse(passwordRegexValidation.isValid("1923121223123231",constraintValidatorContext));
