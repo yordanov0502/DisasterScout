@@ -8,6 +8,7 @@ import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
+//? This DTO is used for updating a user data(this DTO arrives from frontend)
 @Builder
 public record AccountDTO(
         //@NotNull

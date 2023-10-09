@@ -21,6 +21,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
+
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -67,7 +69,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if(extractedId != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
              {
                 User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
-                if(extractedId.equals(user.getId()))
+                 //? A user status should be changed from ACTIVE(default) to LOCKED if too many login attempts are applied
+                 //! ONLY ADMIN should be able to activate again user account
+                if(extractedId.equals(user.getId()) && user.getStatus().equals(ACTIVE))
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
