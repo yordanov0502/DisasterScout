@@ -23,7 +23,8 @@ public class UserCacheService {
 
 
     //* Saves a new user to DB and all related caches.
-    //! If the method is invoked with already existing user ID, the cached result will be returned instead of executing the method.
+    //! This method should be invoked only once(when we want to create a new user) and never again for the same user.
+    //! If the method is invoked with already existing user, the cached result will be returned instead of executing the method.
     @Caching(cacheable = {
             @Cacheable(value = "user", key = "#user.id", unless = "#result == null"),
             @Cacheable(value = "username", key = "#user.username", unless = "#result == null"),
@@ -78,6 +79,17 @@ public class UserCacheService {
             @CacheEvict(value = "users", allEntries = true, beforeInvocation = true)
     })
     public void evictAllUserCaches(){}
+
+    //* Evicts a user from all related caches
+    //? This will be useful when admin decides to modify the production database directly(due to different reasons)
+    //? and data inconsistency(between the cache and DB) occur in the real web application
+    @Caching(evict = {
+            @CacheEvict(value = "user", key = "#user.id", beforeInvocation = true),
+            @CacheEvict(value = "username", key = "#user.username", beforeInvocation = true),
+            @CacheEvict(value = "email", key = "#user.email", beforeInvocation = true),
+            @CacheEvict(value = "users", key = "#user.id", beforeInvocation = true)
+    })
+    public void evictUserFromCache(User user){}
 
 
 
