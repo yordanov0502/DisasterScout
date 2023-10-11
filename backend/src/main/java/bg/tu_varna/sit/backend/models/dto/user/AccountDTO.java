@@ -15,7 +15,7 @@ public record AccountDTO(
                // @NotBlank
                // @NotEmpty
         //! Do I really need id here?
-        String id,
+        //String id,
         @NameRegex(groups = {NameRegexValidation.class})
         String firstName,
         @NameRegex(groups = {NameRegexValidation.class})

@@ -10,7 +10,7 @@ public class UserMapper {
     public AccountDTO mapToAccountDTO(User user)
     {
         return AccountDTO.builder()
-                .id(user.getId())
+                //.id(user.getId())
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())

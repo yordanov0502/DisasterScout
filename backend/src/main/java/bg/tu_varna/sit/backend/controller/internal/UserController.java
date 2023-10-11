@@ -23,7 +23,7 @@ public class UserController {
     //GetMapping() -account information
 
     @PutMapping("/update/account")
-    public AccountDTO editInformation(@AuthenticationPrincipal User user, @Validated(value = AccountDTO.Group.class) @RequestBody AccountDTO accountDTO) {
+    public AccountDTO updateAccount(@AuthenticationPrincipal User user, @Validated(value = AccountDTO.Group.class) @RequestBody AccountDTO accountDTO) {
        return userMapper.mapToAccountDTO(userService.editUser(user, accountDTO));
     }
 

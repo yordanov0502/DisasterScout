@@ -23,9 +23,9 @@ public class PasswordRegexValidation implements ConstraintValidator<PasswordRege
         //* At least one uppercase letter (A-Z).
         //* At least one special character from the provided set.
         //* No whitespace characters.
-        //* The overall length of the password must be between 7 and 30 characters.
+        //* The overall length of the password must be between 8 and 30 characters.
         //! The password should contain only ASCII printable characters
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;<>?{}|`',-])(?=\\S+$).{7,30}$";
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;<>?{}|`',-])(?=\\S+$).{8,30}$";
 
         Pattern p = Pattern.compile(regex);
         if(password == null) {return false;}

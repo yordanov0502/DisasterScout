@@ -26,6 +26,7 @@ class UsernameRegexValidationTest {
 
     @Test
     void isValid() {
+        assertTrue(usernameRegexValidation.isValid("pepa", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("yordanov50", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("0developer0", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("nikola", constraintValidatorContext));

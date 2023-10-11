@@ -27,7 +27,7 @@ class PasswordRegexValidationTest {
     @Test
     void isValid() {
         assertTrue(passwordRegexValidation.isValid("9#$%^&+=_*~!)(./:;<>?{}|`',-aA",constraintValidatorContext));
-        assertTrue(passwordRegexValidation.isValid("ppRR0b@",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("ppRR0b@1",constraintValidatorContext));
         assertTrue(passwordRegexValidation.isValid("awbfg_!?fA9",constraintValidatorContext));
         assertTrue(passwordRegexValidation.isValid("req_._2314A",constraintValidatorContext));
         assertTrue(passwordRegexValidation.isValid("Birth_date_30.06.2001",constraintValidatorContext));
