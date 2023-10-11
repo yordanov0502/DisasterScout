@@ -23,16 +23,15 @@ public class UserCacheService {
 
 
     //* Saves a new user to DB and all related caches.
+    //? CachePut is used instead of Cacheable, because I want the result(new user data) to be cached after it has been added to the DB.
     //! This method should be invoked only once(when we want to create a new user) and never again for the same user.
-    //! If the method is invoked with already existing user, the cached result will be returned instead of executing the method.
-    @Caching(cacheable = {
-            @Cacheable(value = "user", key = "#user.id", unless = "#result == null"),
-            @Cacheable(value = "username", key = "#user.username", unless = "#result == null"),
-            @Cacheable(value = "email", key = "#user.email", unless = "#result == null"),
-            @Cacheable(value = "users", key = "#user.id", unless = "#result == null")
+    @Caching(put = {
+            @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            @CachePut(value = "username", key = "#result.username", unless = "#result == null"),
+            @CachePut(value = "email", key = "#result.email", unless = "#result == null"),
+            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User saveUser(User user) {return userRepository.save(user);}
-
 
     //* Updates existing user and all related caches.
     //! We first evict the old entries from username(x1) and email(x1) caches related to a specific user.
@@ -42,22 +41,21 @@ public class UserCacheService {
     @Caching(evict = {
             @CacheEvict(value = "username", key = "#oldUsername", beforeInvocation = true),
             @CacheEvict(value = "email", key = "#oldEmail", beforeInvocation = true)
-    }, cacheable = {
-            @Cacheable(value = "username", key = "#user.username", unless = "#result == null"),
-            @Cacheable(value = "email", key = "#user.email", unless = "#result == null")
     },
     put = {
-            @CachePut(value = "user", key = "#user.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#user.id", unless = "#result == null")
+            @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            @CachePut(value = "username", key = "#result.username", unless = "#result == null"),
+            @CachePut(value = "email", key = "#result.email", unless = "#result == null"),
+            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User updateUser(User user,String oldUsername,String oldEmail){return userRepository.save(user);}
 
     //* Deletes a user from DB and all related caches.
     @Caching(evict = {
-            @CacheEvict(value = "user", key = "#user.id", beforeInvocation = true),
-            @CacheEvict(value = "username", key = "#user.username", beforeInvocation = true),
-            @CacheEvict(value = "email", key = "#user.email", beforeInvocation = true),
-            @CacheEvict(value = "users", key = "#user.id", beforeInvocation = true)
+            @CacheEvict(value = "user", key = "#user.id"),
+            @CacheEvict(value = "username", key = "#user.username"),
+            @CacheEvict(value = "email", key = "#user.email"),
+            @CacheEvict(value = "users", key = "#user.id")
     })
     public void deleteUser(User user) {userRepository.delete(user);}
 
@@ -96,7 +94,7 @@ public class UserCacheService {
 
 
 
-   /* @PostConstruct
+    /*@PostConstruct
     public void printCacheContentUSER_ID() {
         // Replace "myCache" with the name of your cache
         Cache<Object, Object> caffeineCache = (Cache<Object, Object>) cacheManager.getCache("user").getNativeCache();

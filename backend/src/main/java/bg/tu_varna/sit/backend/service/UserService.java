@@ -2,12 +2,16 @@ package bg.tu_varna.sit.backend.service;
 
 import bg.tu_varna.sit.backend.models.dto.user.AccountDTO;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
+import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
+
+import static bg.tu_varna.sit.backend.models.enums.Role.USER;
+import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
 
 @Service
 @RequiredArgsConstructor
@@ -40,7 +44,21 @@ public class UserService {
         else {return user;}
     }
 
-    public User editUser(User user, AccountDTO accountDTO){
+    public void registerNewUser(RegistrationDTO registrationDTO){
+        User user = User.builder()
+                .firstName(registrationDTO.firstName())
+                .lastName(registrationDTO.lastName())
+                .email(registrationDTO.email())
+                .username(registrationDTO.username())
+                .password(passwordEncoder.encode(registrationDTO.password()))
+                .role(USER)
+                .status(ACTIVE)
+                .build();
+
+        userCacheService.saveUser(user);
+    }
+
+    public User updateUser(User user, AccountDTO accountDTO){
         String oldUsername = user.getUsername();
         String oldEmail = user.getEmail();
 

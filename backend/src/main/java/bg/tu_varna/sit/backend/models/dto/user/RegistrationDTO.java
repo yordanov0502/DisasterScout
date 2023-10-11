@@ -10,14 +10,14 @@ public record RegistrationDTO(
         @NameRegex(groups = {NameRegexValidation.class})
         String lastName,
         @EmailRegex(groups = {EmailRegexValidation.class})
-        @ExistingEmailU(groups = {ExistingEmailValidationC.class})
+        @ExistingEmailC(groups = {ExistingEmailValidationC.class})
         String email,
         @UsernameRegex(groups = {UsernameRegexValidation.class})
-        @ExistingUsernameU(groups = {ExistingUsernameValidationC.class})
+        @ExistingUsernameC(groups = {ExistingUsernameValidationC.class})
         String username,
         @PasswordRegex(groups = {PasswordRegexValidation.class})
         String password)
-        /*roles*/{
+        {
     //* @GroupSequence annotation is used to define the execution order of different validations.
     @GroupSequence({NameRegexValidation.class,EmailRegexValidation.class, ExistingEmailValidationC.class, UsernameRegexValidation.class, ExistingUsernameValidationC.class, PasswordRegexValidation.class})
     public interface Group{}

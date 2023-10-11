@@ -69,7 +69,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         if(extractedId != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
              {
                 User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
-                 //? A user status should be changed from ACTIVE(default) to LOCKED if too many login attempts are applied
+                 //? A user status should be changed from ACTIVE(default) to LOCKED if too many(20 consecutive) login attempts are applied
                  //! ONLY ADMIN should be able to activate again user account
                 if(extractedId.equals(user.getId()) && user.getStatus().equals(ACTIVE))
                 {

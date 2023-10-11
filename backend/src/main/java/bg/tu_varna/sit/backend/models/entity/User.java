@@ -3,6 +3,7 @@ package bg.tu_varna.sit.backend.models.entity;
 import bg.tu_varna.sit.backend.models.enums.Role;
 import bg.tu_varna.sit.backend.models.enums.Status;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.Id;
@@ -16,6 +17,7 @@ import java.util.Collection;
 import java.util.List;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Document(collection = "users")
