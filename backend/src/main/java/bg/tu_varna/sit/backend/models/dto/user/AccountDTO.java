@@ -3,19 +3,11 @@ package bg.tu_varna.sit.backend.models.dto.user;
 import bg.tu_varna.sit.backend.validation.user.*;
 import bg.tu_varna.sit.backend.validation.user.annotation.*;
 import jakarta.validation.GroupSequence;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 import lombok.Builder;
 
 //? This DTO is used for updating a user data(this DTO arrives from frontend)
 @Builder
 public record AccountDTO(
-        //@NotNull
-               // @NotBlank
-               // @NotEmpty
-        //! Do I really need id here?
-        //String id,
         @NameRegex(groups = {NameRegexValidation.class})
         String firstName,
         @NameRegex(groups = {NameRegexValidation.class})
