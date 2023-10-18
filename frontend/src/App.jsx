@@ -5,7 +5,7 @@ import { Router } from "./routes"
 function App() {
   return (
     <>
-     <Router></Router>
+     <Router/>
     </>
   )
 }

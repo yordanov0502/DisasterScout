@@ -1,5 +1,7 @@
 import { Route, Routes } from "react-router-dom";
-import { Login 
+import { 
+    Login,
+    Welcome 
 } from "../pages";
 
 
@@ -7,9 +9,10 @@ import { Login
 export const Router = () =>{
     return(
        <Routes>
+        <Route index element={<Welcome/>} />
+        <Route path="/login" element={<Login/>} />
 
         
-        <Route path="/login" element={<Login/>} />
        </Routes>
     );
 };
