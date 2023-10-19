@@ -1,9 +1,11 @@
+import "./login.scss"
 
 export const Login = () => {
 
 
-
     return(
-      <div></div>
+      <div className="page_login">
+        { }
+      </div>
     );
 };
