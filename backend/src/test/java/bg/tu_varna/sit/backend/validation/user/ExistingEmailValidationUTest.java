@@ -51,7 +51,7 @@ class ExistingEmailValidationUTest {
     }
 
     @Test
-    void isValid_withSameEmail_shouldReturnFalse() {
+    void isValid_withSameEmail_shouldReturnTrue() {
         // Mocking authentication
         User authenticatedUser = new User();
         authenticatedUser.setId("6505d8f5bbda1e36bbc2bdea");
@@ -61,8 +61,24 @@ class ExistingEmailValidationUTest {
         SecurityContextHolder.setContext(securityContext);
 
         when(userService.getUserById("6505d8f5bbda1e36bbc2bdea")).thenReturn(authenticatedUser);
-        when(userService.isEmailExists("auth@example.com", "auth@example.com")).thenReturn(true);
+        when(userService.isEmailExists("auth@example.com", "auth@example.com")).thenReturn(false);
 
-        assertFalse(existingEmailValidationU.isValid("auth@example.com", constraintValidatorContext));
+        assertTrue(existingEmailValidationU.isValid("auth@example.com", constraintValidatorContext));
+    }
+
+    @Test
+    void isValid_withExistingEmail_shouldReturnFalse() {
+        // Mocking authentication
+        User authenticatedUser = new User();
+        authenticatedUser.setId("6505d8f5bbda1e36bbc2bdea");
+        authenticatedUser.setEmail("auth@example.com");
+        SecurityContext securityContext = mock(SecurityContext.class);
+        when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
+        SecurityContextHolder.setContext(securityContext);
+
+        when(userService.getUserById("6505d8f5bbda1e36bbc2bdea")).thenReturn(authenticatedUser);
+        when(userService.isEmailExists("auth@example.com", "different@example.com")).thenReturn(true);
+
+        assertFalse(existingEmailValidationU.isValid("different@example.com", constraintValidatorContext));
     }
 }
