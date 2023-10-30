@@ -2,21 +2,21 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh;
+  height: 100;
 }
 
 .login {
-    width: 340px;
-    height: 400px;
-    background-color: rgba(0, 23, 126, 0.8);  /* This is white with 50% transparency */
+    width: 250px;
+    height: 250px;
+    background-color: rgba(12, 21, 60, 0.8);  /* This is white with 50% transparency */
 
-    padding: 47px;
-    padding-bottom: 57px;
+    padding: 50px;
     color: #fff;
-    border-radius: 17px;
+    border-radius: 20px;
     padding-bottom: 50px;
     font-size: 1.3em;
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
+  
   }
   
   .login input[type="text"],
@@ -32,6 +32,12 @@
     border-radius: 100px;
     background: #3c3c3c;
     color: #fff;
+
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    max-width: 300px; /* Set a maximum width */
+    padding: 10px;
+    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   }
   
   .login input:focus {
@@ -101,6 +107,17 @@
       padding: 3em;
     }
   }
+  
+  @media only screen and (max-height: 600px) {
+    .login {
+      height: 20%;
+      padding: 1em;
+    }
+  }
+
+
+
+
   
   @keyframes bounce {
     0% {

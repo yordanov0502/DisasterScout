@@ -4,4 +4,7 @@
     background-position: center;
     height: 100vh; 
     
+    display: flex;
+    justify-content: center; /* Center horizontally */
+    align-items: center;     /* Center vertically */
   }

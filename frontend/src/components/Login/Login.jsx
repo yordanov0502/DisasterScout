@@ -1,7 +1,7 @@
 import React from 'react';
-import "./proba.scss";
+import "./login.scss";
 
-export const Proba =()=>{
+export const Login =()=>{
   return (
     <div className="container">
     <div className="login wrap">
