@@ -1,7 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { 
-    Login,
-    Welcome 
+    LoginPage,
+    WelcomePage 
 } from "../pages";
 
 
@@ -9,8 +9,8 @@ import {
 export const Router = () =>{
     return(
        <Routes>
-        <Route index element={<Welcome/>} />
-        <Route path="/login" element={<Login/>} />
+        <Route index element={<WelcomePage/>} />
+        <Route path="/login" element={<LoginPage/>} />
 
         
        </Routes>
