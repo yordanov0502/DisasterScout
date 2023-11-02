@@ -1,4 +1,4 @@
-import "./login.scss";
+import "./login_page.scss";
 import {LoginComponent} from "../../../components";
 
 export const LoginPage = () => {
