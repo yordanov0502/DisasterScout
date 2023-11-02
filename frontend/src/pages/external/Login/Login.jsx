@@ -5,7 +5,7 @@ export const Login = () => {
 
 
     return(
-      <div className="page_login">
+      <div className="page">
         { <LoginComponent/>}
       </div>
     );

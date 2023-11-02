@@ -1,10 +1,10 @@
 import React from 'react';
 import "./login.scss";
 
-export const Login =()=>{
+export const Login = () => {
   return (
-    <div className="container">
-    <div className="login wrap">
+    <div className="component">
+    <div className="login">
       <div className="h1">Вход</div>
       <form /*onSubmit={handleLogin}*/>
       <input 
