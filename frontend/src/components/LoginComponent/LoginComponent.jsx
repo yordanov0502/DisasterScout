@@ -24,7 +24,8 @@ export const LoginComponent = () => {
       />
       <input 
         value="Вход" 
-        className="btn" 
+        className="button" 
+        //onClick={"dada" }
         type="submit"
       />
       </form>
