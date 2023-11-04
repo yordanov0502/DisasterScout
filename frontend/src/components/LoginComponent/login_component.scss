@@ -4,22 +4,33 @@
   align-items: center;
   height: 100%;
 
-   .login {
-    width: 250px;
-    height: 250px;
-    background-color: rgba(255, 255, 255, 1);  /* This is white with 50% transparency */
+  .login {
+  width: 250px;
+  height: 250px;
+  background-color: #ffffff;
+  padding: 40px;
+  border-radius: 20px;
+  padding-bottom: 55px;
+  font-size: 1.3em;
 
-    padding: 40px;
-    color: #fff;
-    border-radius: 20px;
-    padding-bottom: 55px;
+  .img {
+    background-image: url(src/assets/images/logo.ico);
+    background-size: cover;
+    background-position: center;
+    height: 110px;
+    width: 110px;
+    text-align: center;
+    padding: 0;
+    position: relative;
+    top: -35px;
+    left: +70px;
+    display: block;
+    margin-bottom: -20px; // Adjust this value as needed to control the space between the image and the text fields
     font-size: 1.3em;
-    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-  
   }
 
-  .login input[type="text"],
-  .login input[type="password"] {
+  input[type="text"],
+  input[type="password"] {
     opacity: 1;
     display: block;
     border: none;
@@ -34,35 +45,24 @@
     box-sizing: border-box; /* Include padding and border in element's total width and height */
   }
 
-  .login input[type="text"]::placeholder, 
-  .login input[type="password"]::placeholder {
+  input[type="text"]::placeholder, 
+  input[type="password"]::placeholder {
     color: rgb(110, 121, 187); 
   }
-  
-  .login input:focus {
+
+  input[type=text] {
     -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
   }
-  
-  
-  .h1 {
-    background-image: url(src/assets/images/logo.ico);
-    background-size: cover;
-    background-position: center;
 
-    height: 110px;
-    width: 110px;
+  input:focus {
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+   }
 
-    text-align: center;
-    padding: 0;
-    position: relative;
-    top: -35px;
-    left: +70px;
-    display: block;
-    margin-bottom: -20px; // Adjust this value as needed to control the space between the image and the text fields
-    font-size: 1.3em;
-  }
-  
-  .button {
+  input[type="submit"] {
     width: 100%;
     padding: 16px !important;
     margin: 56px 0 0 0;
@@ -73,28 +73,17 @@
     border: 3px solid #000000;
   }
   
-  .button:hover {
+  input[type="submit"]:hover {
     background: linear-gradient(144deg, #000000, rgb(114, 93, 255) 50%, #000000);
-    color: rgb(255, 255, 255);
-    padding: 16px !important;
     cursor: pointer;
     transition: all 0.4s ease;
   }
-  
-  
-  .login input[type=text] {
-    -webkit-appearance: none;
+
+  input[type="submit"]:active{
+    background: linear-gradient(164deg, #000000, rgb(114, 93, 255) 50%, #000000);
+    transition: all 0.4s ease;
   }
   
-  .ui {
-    font-weight: bolder;
-    background: -webkit-linear-gradient(#B563FF, #535EFC, #0EC8EE);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    border-bottom: 4px solid transparent;
-    border-image: linear-gradient(0.25turn, #535EFC, #0EC8EE, #0EC8EE);
-    border-image-slice: 1;
-    display: inline;
   }
-  
+
 }
