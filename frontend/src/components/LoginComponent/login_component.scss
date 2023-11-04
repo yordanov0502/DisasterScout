@@ -28,32 +28,32 @@
     top: -35px;
     left: +70px;
     display: block;
-    margin-bottom: -20px; // Adjust this value as needed to control the space between the image and the text fields
+    margin-bottom: -20px; // Space between the image and the text fields
     font-size: 1.3em;
   }
 
   .username-field{
-    position: relative; // Set the position context for absolute positioning of the icon
+    position: relative; 
 
   .username-icon {
     position: absolute;
-    left: 5px; // Adjust as needed
+    left: 5px;
     top: 50%;
     transform: translateY(-50%);
-    color: rgb(110, 121, 187); // Change the color if needed
+    color: rgb(110, 121, 187);
     pointer-events: none; // Prevent the icon from interfering with clicking on the input
   }
   }
 
   .password-field{
-    position: relative; // Set the position context for absolute positioning of the icon
+    position: relative;
 
   .password-icon {
     position: absolute;
-    left: 5px; // Adjust as needed
+    left: 5px;
     top: 50%;
     transform: translateY(-60%);
-    color: rgb(110, 121, 187); // Change the color if needed
+    color: rgb(110, 121, 187);
     pointer-events: none; // Prevent the icon from interfering with clicking on the input
   }
   }
@@ -77,7 +77,7 @@
     border-radius: 150px;
     background: #3c3c3c;
     color: #ffffff;
-    box-sizing: border-box; /* Include padding and border in element's total width and height */
+    box-sizing: border-box; 
   }
 
   input[type="text"]::placeholder, 
@@ -98,17 +98,21 @@
    }
 
    .forgot-password {
-    display: block; // Ensures that the link appears on a new line
-    color: #0000EE; // Standard link color, change as needed
-    font-size: 0.7em; // Matches the font size of your inputs
-    text-align: right; // Center align if you like
-    margin-top: 12px; // Spacing above the link
-    text-decoration: none; // Removes underline from link
-    cursor: pointer; // Changes the cursor to indicate it's clickable
+    display: block; 
+    color: #0000EE; 
+    font-size: 0.7em; 
+    text-align: right; 
+    margin-top: 12px;
+    text-decoration: none;
+    cursor: pointer;
   }
   
   .forgot-password:hover {
-    text-decoration: underline; // Adds underline on hover to indicate it's a link
+    text-decoration: underline;
+  }
+
+  .forgot-password:active{
+    color:#3c3c3c;
   }
 
   input[type="submit"] {
