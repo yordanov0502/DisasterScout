@@ -3,6 +3,9 @@
   justify-content: center;
   align-items: center;
   height: 100%;
+  border: 7px solid rgb(56, 69, 146); 
+  border-radius: 8%;
+  border-style: double;
 
   .login {
   width: 250px;
@@ -29,6 +32,38 @@
     font-size: 1.3em;
   }
 
+  .username-field{
+    position: relative; // Set the position context for absolute positioning of the icon
+
+  .username-icon {
+    position: absolute;
+    left: 5px; // Adjust as needed
+    top: 50%;
+    transform: translateY(-50%);
+    color: rgb(110, 121, 187); // Change the color if needed
+    pointer-events: none; // Prevent the icon from interfering with clicking on the input
+  }
+  }
+
+  .password-field{
+    position: relative; // Set the position context for absolute positioning of the icon
+
+  .password-icon {
+    position: absolute;
+    left: 5px; // Adjust as needed
+    top: 50%;
+    transform: translateY(-60%);
+    color: rgb(110, 121, 187); // Change the color if needed
+    pointer-events: none; // Prevent the icon from interfering with clicking on the input
+  }
+  }
+
+  .username-icon.active,
+  .password-icon.active {
+  color: #ffffff; // This is the color for when there is input in the fields
+  }
+  
+
   input[type="text"],
   input[type="password"] {
     opacity: 1;
@@ -36,7 +71,7 @@
     border: none;
     outline: none;
     width: 100%;
-    padding: 10px 17px;
+    padding: 10px 31px;
     margin: 10px 0 0 0;
     font-size: 0.8em;
     border-radius: 150px;
@@ -62,10 +97,24 @@
     appearance: none;
    }
 
+   .forgot-password {
+    display: block; // Ensures that the link appears on a new line
+    color: #0000EE; // Standard link color, change as needed
+    font-size: 0.7em; // Matches the font size of your inputs
+    text-align: right; // Center align if you like
+    margin-top: 12px; // Spacing above the link
+    text-decoration: none; // Removes underline from link
+    cursor: pointer; // Changes the cursor to indicate it's clickable
+  }
+  
+  .forgot-password:hover {
+    text-decoration: underline; // Adds underline on hover to indicate it's a link
+  }
+
   input[type="submit"] {
     width: 100%;
     padding: 16px !important;
-    margin: 56px 0 0 0;
+    margin: 18px 0 0 0;
     border-radius: 30px;
     font-weight: 600;
     background: linear-gradient(144deg, #000000, rgb(88, 71, 197) 50%, #000000);
