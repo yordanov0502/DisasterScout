@@ -17,8 +17,11 @@ public class UsernameRegexValidation implements ConstraintValidator<UsernameRege
 
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
-        //* Username should only contain letters[a-zA-Z] and digits[0-9].
-        String regex = "[a-zA-Z0-9]{4,20}$";
+        //* Username should only contain letters[a-zA-Z_.] and digits[0-9].
+        //! It cannot start or end with a dot(.)
+        //* Length is [3;20].
+        //! Username cannot include consecutive dots or underscores(.. __ ._ _.)
+        String regex = "^(?!\\.)(?!.*[._]{2})[a-zA-Z0-9_.]{2,19}[a-zA-Z0-9_]$";
 
         Pattern p = Pattern.compile(regex);
         if(username == null) {return false;}
