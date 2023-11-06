@@ -1,7 +1,8 @@
 import { Route, Routes } from "react-router-dom";
 import { 
     LoginPage,
-    WelcomePage 
+    ResetPasswordPage,
+    WelcomePage
 } from "../pages";
 
 
@@ -9,9 +10,10 @@ import {
 export const Router = () =>{
     return(
        <Routes>
-        <Route index element={<WelcomePage/>} />
         <Route path="/login" element={<LoginPage/>} />
+        <Route path="/reset-password" element={<ResetPasswordPage/>} />
 
+        <Route index element={<WelcomePage/>} />
         
        </Routes>
     );

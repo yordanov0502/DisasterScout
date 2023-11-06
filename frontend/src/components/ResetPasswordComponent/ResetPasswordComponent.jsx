@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
-import "./login_component.scss";
+import "./reset_password_component.scss";
 import PersonIcon from '@mui/icons-material/Person';
 import LockIcon from '@mui/icons-material/Lock';
 
-export const LoginComponent = () => {
+export const ResetPasswordComponent = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
