@@ -1,56 +1,44 @@
 import React, { useState } from 'react';
 import "./reset_password_component.scss";
-import PersonIcon from '@mui/icons-material/Person';
-import LockIcon from '@mui/icons-material/Lock';
+import EmailIcon from '@mui/icons-material/Email';
 
 export const ResetPasswordComponent = () => {
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState('');
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+  const handleEmailChange = (e) => {
+    setEmail(e.target.value);
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-  };
-
-  const handleLogin = (event) => {
+  const handleResetPassword = (event) => {
     event.preventDefault();
     console.log('Button clicked!');
   };
        //!regex proverkite za username v JS ne poddurjat predvaritelni proverki dali string moje da zapochva ili svurshva s daden symbol
   return (
     <div className="component">
-      <div className="login">
-        <div className="img"></div>
-        <form onSubmit={handleLogin}>
-          <div className="username-field">
-            <PersonIcon className={`username-icon ${username && 'active'}`}/>
+      <div className="reset-password">
+      <div className="img"></div>
+        
+        <form onSubmit={handleResetPassword}>
+          <div className="email-field">
+             {/* Add a text block here */}
+        <div className="text-between">
+           Моля въведете вашия имейл адрес. 
+           Ще получите имейл с нова парола и инструкции. 
+           {/* След като възстановите достъпа до вашия профил, е желателно да промените паролата си.  */}
+        </div>
+            <EmailIcon className={`email-icon ${email && 'active'}`}/>
             <input 
-              id="username" 
-              name="username" 
-              type="text"
-              placeholder="Потребителско име"
-              autoComplete="username" //???
-              value={username}
-              onChange={handleUsernameChange}
+              id="email" 
+              name="email" 
+              type="email"
+              placeholder="Имейл адрес"
+              //autoComplete="username" //???
+              value={email}
+              onChange={handleEmailChange}
             />
           </div>
-          <div className="password-field">
-            <LockIcon className={`password-icon ${password && 'active'}`}/>
-            <input 
-              id="password" 
-              name="password" 
-              type="password"
-              placeholder="Парола"
-              autoComplete="current-password" //???
-              value={password}
-              onChange={handlePasswordChange}
-            />
-          </div>
-          <a href="#reset-password" className="forgot-password">Забравена парола?</a>
-          <input value="Вход" type="submit"/>
+          <input value="Нова парола" type="submit"/>
         </form>
       </div>
     </div>

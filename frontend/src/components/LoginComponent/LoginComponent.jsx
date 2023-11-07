@@ -49,7 +49,7 @@ export const LoginComponent = () => {
               onChange={handlePasswordChange}
             />
           </div>
-          <a href="#reset-password" className="forgot-password">Забравена парола?</a>
+          <a href="/reset-password" className="forgot-password">Забравена парола?</a>
           <input value="Вход" type="submit"/>
         </form>
       </div>
