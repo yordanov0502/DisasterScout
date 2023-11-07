@@ -28,8 +28,7 @@
     top: -35px;
     left: +70px;
     display: block;
-    margin-bottom: -20px; // Space between the image and the text fields
-    font-size: 1.3em;
+    margin-bottom: -35px; // Space between the image and the text fields
   }
 
   .username-field{
@@ -118,7 +117,7 @@
   input[type="submit"] {
     width: 100%;
     padding: 16px !important;
-    margin: 18px 0 0 0;
+    margin: 38px 0 0 0;
     border-radius: 30px;
     font-weight: 600;
     background: linear-gradient(144deg, #000000, rgb(88, 71, 197) 50%, #000000);
