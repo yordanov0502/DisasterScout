@@ -19,6 +19,8 @@ export const LoginComponent = () => {
     event.preventDefault();
     console.log('Button clicked!');
   };
+  //* Невалидно потребителско име или парола.
+  //* Моля въведете данни в полетата.
        //!regex proverkite za username v JS ne poddurjat predvaritelni proverki dali string moje da zapochva ili svurshva s daden symbol
   return (
     <div className="component">

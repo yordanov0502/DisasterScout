@@ -18,15 +18,14 @@ export const ResetPasswordComponent = () => {
     <div className="component">
       <div className="reset-password">
       <div className="img"></div>
-        
         <form onSubmit={handleResetPassword}>
-          <div className="email-field">
              {/* Add a text block here */}
         <div className="text-between">
            Моля въведете вашия имейл адрес. 
            Ще получите имейл с нова парола и инструкции. 
            {/* След като възстановите достъпа до вашия профил, е желателно да промените паролата си.  */}
         </div>
+        <div className="email-field">
             <EmailIcon className={`email-icon ${email && 'active'}`}/>
             <input 
               id="email" 
