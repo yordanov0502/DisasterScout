@@ -1,4 +1,5 @@
 body {
+  overflow-x: hidden; /*!!! Prevents horizontal scrolling */
   margin: 0 auto;
   font-family: Arial, sans-serif;
   /* line-height: 1.5; */
