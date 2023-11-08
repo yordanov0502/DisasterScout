@@ -8,6 +8,7 @@
   border-style: double;
 
   .login {
+  position: relative;
   width: 250px;
   height: 250px;
   background-color: #ffffff;
@@ -115,7 +116,10 @@
   }
 
   input[type="submit"] {
-    width: 100%;
+    position: absolute;
+    bottom: 12px;
+    left: 42px;
+    width: 75%;
     padding: 16px !important;
     margin: 38px 0 0 0;
     border-radius: 30px;
