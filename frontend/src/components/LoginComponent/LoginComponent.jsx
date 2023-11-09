@@ -5,19 +5,19 @@ import LockIcon from "@mui/icons-material/Lock";
 
 export const LoginComponent = () => {
   //? pri natisnat button enter
-  const [username, setUsername] = useState("");
-  const [password, setPassword] = useState("");
+  const [loginForm, setLoginForm] = useState({
+    username: "",
+    password: ""
+  });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleUsernameChange = (e) => {
-    setUsername(e.target.value);
+
+  const handleInput = (e) => {
+    setLoginForm({...loginForm,[e.target.name]: e.target.value});
     setErrorMessage(""); // Clear error message when user starts typing
   };
 
-  const handlePasswordChange = (e) => {
-    setPassword(e.target.value);
-    setErrorMessage(""); // Clear error message when user starts typing
-  };
+ 
 
   // Assuming you have some function to validate credentials
   // You should replace this with your actual validation logic
@@ -31,17 +31,15 @@ export const LoginComponent = () => {
     //....................
     // Assuming you have a validation function or method to check credentials
     // If credentials are invalid set the error message
-    if (!username || !password) {
+    if (!loginForm.username || !loginForm.password) {
       setErrorMessage("Моля въведете данни в полетата.");
-    } else if (!validateCredentials(username, password)) {
+    } else if (!validateCredentials(loginForm.username, loginForm.password)) {
       setErrorMessage("Невалидно потребителско име или парола.");
     } else {
       // Proceed with your login logic
     }
   };
 
-  //* Невалидно потребителско име или парола.
-  //* Моля въведете данни в полетата.
   //!regex proverkite za username v JS ne poddurjat predvaritelni proverki dali string moje da zapochva ili svurshva s daden symbol
 
   return (
@@ -50,28 +48,28 @@ export const LoginComponent = () => {
         <div className="img"></div>
         <form onSubmit={onPressLogin}>
           <div className="username-field">
-            <PersonIcon className={`username-icon ${username && "active"}`} />
+            <PersonIcon className={`username-icon ${loginForm.username && "active"}`} />
             <input
               id="username"
               name="username"
               type="text"
               placeholder="Потребителско име"
               autoComplete="username"
-              value={username}
-              onChange={handleUsernameChange}
+              value={loginForm.username}
+              onChange={handleInput}
               className={errorMessage ? "input-error" : ""}
             />
           </div>
           <div className="password-field">
-            <LockIcon className={`password-icon ${password && "active"}`} />
+            <LockIcon className={`password-icon ${loginForm.password && "active"}`} />
             <input
               id="password"
               name="password"
               type="password"
               placeholder="Парола"
               autoComplete="current-password"
-              value={password}
-              onChange={handlePasswordChange}
+              value={loginForm.password}
+              onChange={handleInput}
               className={errorMessage ? "input-error" : ""}
             />
           </div>
