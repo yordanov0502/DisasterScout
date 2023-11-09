@@ -1,145 +1,176 @@
 .component {
+  height: 100%;
+
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100%;
-  border: 7px solid rgb(56, 69, 146); 
+  border: 7px solid rgb(56, 69, 146);
   border-radius: 8%;
   border-style: double;
 
   .login {
-  position: relative;
-  width: 250px;
-  height: 250px;
-  background-color: #ffffff;
-  padding: 40px;
-  border-radius: 20px;
-  padding-bottom: 55px;
-  font-size: 1.3em;
-
-  .img {
-    background-image: url(/src/assets/images/logo.ico);
-    background-size: cover;
-    background-position: center;
-    height: 110px;
-    width: 110px;
-    text-align: center;
-    padding: 0;
     position: relative;
-    top: -35px;
-    left: +70px;
-    display: block;
-    margin-bottom: -35px; // Space between the image and the text fields
-  }
+    width: 250px;
+    height: 250px;
+    background-color: #ffffff;
+    padding: 40px;
+    border-radius: 20px;
+    padding-bottom: 55px;
+    font-size: 1.3em;
 
-  .username-field{
-    position: relative; 
+    .img {
+      background-image: url(/src/assets/images/logo.ico);
+      background-size: cover;
+      background-position: center;
+      height: 110px;
+      width: 110px;
+      text-align: center;
+      padding: 0;
+      position: relative;
+      top: -35px;
+      left: +70px;
+      display: block;
+      margin-bottom: -35px; // Space between the image and the text fields
+    }
 
-  .username-icon {
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-55%);
-    color: rgb(110, 121, 187);
-    pointer-events: none; // Prevent the icon from interfering with clicking on the input
-  }
-  }
+    .username-field {
+      position: relative;
 
-  .password-field{
-    position: relative;
+      .username-icon {
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-55%);
+        color: rgb(110, 121, 187);
+        pointer-events: none; // Prevent the icon from interfering with clicking on the input
+      }
+    }
 
-  .password-icon {
-    position: absolute;
-    left: 5px;
-    top: 50%;
-    transform: translateY(-60%);
-    color: rgb(110, 121, 187);
-    pointer-events: none; // Prevent the icon from interfering with clicking on the input
-  }
-  }
+    .password-field {
+      position: relative;
 
-  .username-icon.active,
-  .password-icon.active {
-  color: #ffffff; // This is the color for when there is input in the fields
-  }
-  
+      .password-icon {
+        position: absolute;
+        left: 5px;
+        top: 50%;
+        transform: translateY(-60%);
+        color: rgb(110, 121, 187);
+        pointer-events: none; // Prevent the icon from interfering with clicking on the input
+      }
+    }
 
-  input[type="text"],
-  input[type="password"] {
-    opacity: 1;
-    display: block;
-    border: none;
-    outline: none;
-    width: 100%;
-    padding: 10px 31px;
-    margin: 10px 0 0 0;
-    font-size: 0.8em;
-    border-radius: 150px;
-    background: #3c3c3c;
-    color: #ffffff;
-    box-sizing: border-box; 
-  }
+    .username-icon.active,
+    .password-icon.active {
+      color: #ffffff; // This is the color for when there is input in the fields
+    }
 
-  input[type="text"]::placeholder, 
-  input[type="password"]::placeholder {
-    color: rgb(110, 121, 187); 
-  }
+    input[type="text"],
+    input[type="password"] {
+      opacity: 1;
+      display: block;
+      border: none;
+      outline: none;
+      width: 100%;
+      padding: 10px 31px;
+      margin: 10px 0 0 0;
+      font-size: 0.8em;
+      border-radius: 150px;
+      background: #3c3c3c;
+      color: #ffffff;
+      box-sizing: border-box;
+    }
 
-  input[type="text"] {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-  }
+    input[type="text"]::placeholder,
+    input[type="password"]::placeholder {
+      color: rgb(110, 121, 187);
+    }
 
-  input:focus {
-    -webkit-appearance: none;
-    -moz-appearance: none;
-    appearance: none;
-   }
+    .input-error {
+      background: rgb(
+        130,
+        0,
+        0
+      ) !important; //! This makes color of fields red when there is an error
+    }
 
-   .forgot-password {
-    display: block; 
-    color: #0000EE; 
-    font-size: 0.7em; 
-    text-align: right; 
-    margin-top: 12px;
-    text-decoration: none;
-    cursor: pointer;
-  }
-  
-  .forgot-password:hover {
-    text-decoration: underline;
-  }
+    input[type="text"] {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
 
-  .forgot-password:active{
-    color:#3c3c3c;
-  }
+    input:focus {
+      -webkit-appearance: none;
+      -moz-appearance: none;
+      appearance: none;
+    }
 
-  input[type="submit"] {
-    position: absolute;
-    bottom: 12px;
-    left: 42px;
-    width: 75%;
-    padding: 16px !important;
-    margin: 38px 0 0 0;
-    border-radius: 30px;
-    font-weight: 600;
-    background: linear-gradient(144deg, #000000, rgb(88, 71, 197) 50%, #000000);
-    color: #fff;
-    border: 3px solid #000000;
-  }
-  
-  input[type="submit"]:hover {
-    background: linear-gradient(144deg, #000000, rgb(114, 93, 255) 50%, #000000);
-    cursor: pointer;
-    transition: all 0.4s ease;
-  }
+    .forgot-password {
+      display: block;
+      color: #0000ee;
+      font-size: 0.7em;
+      text-align: right;
+      margin-top: 12px;
+      text-decoration: none;
+      cursor: pointer;
+    }
 
-  input[type="submit"]:active{
-    background: linear-gradient(164deg, #000000, rgb(114, 93, 255) 50%, #000000);
-    transition: all 0.4s ease;
-  }
-  
-  }
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
 
+    .forgot-password:active {
+      color: #3c3c3c;
+    }
+
+    .error-message {
+      position: relative;
+      color: red; // or any color you want for the error message
+      font-size: 0.7em; // adjust size as needed
+      margin-top: 10px; // space between the error message and the input fields
+      text-align: center; // center the error message
+      left: -10%;
+      width: 120%;
+    }
+
+    input[type="submit"] {
+      position: absolute;
+      bottom: 12px;
+      left: 42px;
+      width: 75%;
+      padding: 16px !important;
+      margin: 38px 0 0 0;
+      border-radius: 30px;
+      font-weight: 600;
+      background: linear-gradient(
+        144deg,
+        #000000,
+        rgb(88, 71, 197) 50%,
+        #000000
+      );
+      color: #fff;
+      border: 3px solid #000000;
+    }
+
+    input[type="submit"]:hover {
+      background: linear-gradient(
+        144deg,
+        #000000,
+        rgb(114, 93, 255) 50%,
+        #000000
+      );
+      cursor: pointer;
+      transition: all 0.4s ease;
+    }
+
+    input[type="submit"]:active {
+      background: linear-gradient(
+        164deg,
+        #000000,
+        rgb(114, 93, 255) 50%,
+        #000000
+      );
+      transition: all 0.4s ease;
+    }
+  }
 }
