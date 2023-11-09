@@ -21,7 +21,7 @@ public class EmailRegexValidation implements ConstraintValidator<EmailRegex,Stri
         //* Email should begin with a lowercase letter[a-z].
         //* It can contain lowercase letters[a-z], digits[0-9], dot[.], hyphen[-] and underscore[_].
         //* The email should end with a proper pattern.(@abv.bg, @gmail.com, @yahoo.com, etc.)
-        String regex = "^[a-z][a-z0-9_.-]{2,29}@[a-z]{3,10}[.][a-z]{2,5}$";
+        String regex = "^[a-z][a-z0-9_.-]{2,29}@[a-z]{3,20}[.][a-z0-9.-]{2,20}$";
 
         Pattern p = Pattern.compile(regex);
         if(email == null) {return false;}

@@ -1,38 +1,28 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import "./reset_password_component.scss";
 import EmailIcon from "@mui/icons-material/Email";
+import { validateResetPasswordForm } from "../../validations";
 
 export const ResetPasswordComponent = () => {
   //? pri natisnat button enter
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleEmailChange = (e) => {
-    setEmail(e.target.value);
+  const handleInput = (e) => {
+    setEmail(e.target.value.trim());
     setErrorMessage(""); // Clear error message when user starts typing
-  };
-
-  // Assuming you have some function to validate credentials
-  // You should replace this with your actual validation logic
-  const validateCredentials = (email) => {
-    // Replace with actual validation
-    return email === "validEmail";
   };
 
   const onPressResetPassword = (event) => {
     event.preventDefault(); //???
-    //....................
-    // Assuming you have a validation function or method to check credentials
-    // If credentials are invalid set the error message
-    if (!email) {
-      setErrorMessage("Моля въведете имейл адрес.");
-    } else if (!validateCredentials(email)) {
-      setErrorMessage("Невалиден имейл адрес.");
-    } else {
-      // Proceed with your login logic
+
+    setErrorMessage(validateResetPasswordForm(email));
+    !errorMessage && {
+       // Proceed with your login logic
+      //? send email with newly generated password and instructions to the user with the provided email existing in DB
     }
   };
-  //!regex proverkite za username v JS ne poddurjat predvaritelni proverki dali string moje da zapochva ili svurshva s daden symbol
+  
   return (
     <div className="component">
       <div className="reset-password">
@@ -52,7 +42,7 @@ export const ResetPasswordComponent = () => {
               placeholder="Имейл адрес"
               //autoComplete="email" //???
               value={email}
-              onChange={handleEmailChange}
+              onChange={handleInput}
               className={errorMessage ? "input-error" : ""}
             />
           </div>

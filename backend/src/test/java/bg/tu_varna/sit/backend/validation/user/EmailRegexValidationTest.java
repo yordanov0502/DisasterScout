@@ -37,6 +37,7 @@ class EmailRegexValidationTest {
         assertTrue(emailRegexValidation.isValid("a11@abv.bg", constraintValidatorContext));
         assertTrue(emailRegexValidation.isValid("a-.-_@abv.bg", constraintValidatorContext));
         assertTrue(emailRegexValidation.isValid("cheryl.parsons@yahoo.com", constraintValidatorContext));
+        assertTrue(emailRegexValidation.isValid("s206216000@onlineedu.tu-varna.bg", constraintValidatorContext));
 
         assertFalse(emailRegexValidation.isValid("тошко@gmail.com", constraintValidatorContext));
         assertFalse(emailRegexValidation.isValid("Ivan@abv.bg", constraintValidatorContext));
@@ -78,7 +79,6 @@ class EmailRegexValidationTest {
         assertFalse(emailRegexValidation.isValid("john.abv.com", constraintValidatorContext));
         assertFalse(emailRegexValidation.isValid("bobabvcom", constraintValidatorContext));
         assertFalse(emailRegexValidation.isValid("melany abv com", constraintValidatorContext));
-        assertFalse(emailRegexValidation.isValid("s206216000@onlineedu.tu-varna.bg", constraintValidatorContext));
         assertFalse(emailRegexValidation.isValid(null, constraintValidatorContext));
     }
 

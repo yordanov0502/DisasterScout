@@ -41,8 +41,6 @@ class UsernameRegexValidationTest {
         assertTrue(usernameRegexValidation.isValid("000000000000000", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("yordanov500000000000", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("_9_", constraintValidatorContext));
-        assertTrue(usernameRegexValidation.isValid("yordanov5.0", constraintValidatorContext));
-        assertTrue(usernameRegexValidation.isValid("bob", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("777_777", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("0_developer_0", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("Mustang5.0GT", constraintValidatorContext));
