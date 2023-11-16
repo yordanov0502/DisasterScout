@@ -5,7 +5,7 @@ import LockIcon from "@mui/icons-material/Lock";
 export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin}) => {
 
   return (
-    <div className="component">
+    <div className="login_component">
       <div className="login">
         <div className="img"></div>
         <form onSubmit={onPressLogin}>

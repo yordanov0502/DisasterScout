@@ -24,7 +24,7 @@ export const ResetPasswordComponent = () => {
   };
   
   return (
-    <div className="component">
+    <div className="reset_password_component">
       <div className="reset-password">
         <div className="img"></div>
         <form onSubmit={onPressResetPassword}>

@@ -28,7 +28,7 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className="page">
+    <div className="login_page">
       <LoginComponent
         loginForm={loginForm}
         errorMessage={errorMessage}

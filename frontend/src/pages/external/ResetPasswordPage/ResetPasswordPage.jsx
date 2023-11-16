@@ -5,7 +5,7 @@ export const ResetPasswordPage = () => {
 
 
     return(
-      <div className="page">
+      <div className="reset_password_page">
         { <ResetPasswordComponent/>}
       </div>
     );
