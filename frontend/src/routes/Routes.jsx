@@ -14,7 +14,7 @@ export const Router = () =>{
         <Route path="/reset-password" element={<ResetPasswordPage/>} />
 
         <Route index element={<WelcomePage/>} />
-        
+        {/* <Route path="*" element={<NoPage />} /> */}
        </Routes>
     );
 };

@@ -5,7 +5,6 @@ import LockIcon from "@mui/icons-material/Lock";
 import { validateLoginForm } from "../../validations";
 
 export const LoginComponent = () => {
-  //? pri natisnat button enter
 
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -19,7 +18,7 @@ export const LoginComponent = () => {
   };
 
   const onPressLogin = (event) => {
-    event.preventDefault(); //???
+    event.preventDefault();
 
     setErrorMessage(validateLoginForm(loginForm.username, loginForm.password));
     !errorMessage && {

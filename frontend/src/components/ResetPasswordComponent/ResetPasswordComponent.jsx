@@ -4,7 +4,7 @@ import EmailIcon from "@mui/icons-material/Email";
 import { validateResetPasswordForm } from "../../validations";
 
 export const ResetPasswordComponent = () => {
-  //? pri natisnat button enter
+  
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -14,7 +14,7 @@ export const ResetPasswordComponent = () => {
   };
 
   const onPressResetPassword = (event) => {
-    event.preventDefault(); //???
+    event.preventDefault();
 
     setErrorMessage(validateResetPasswordForm(email));
     !errorMessage && {
