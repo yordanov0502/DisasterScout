@@ -1,32 +1,8 @@
-import { useState } from "react";
 import "./login_component.scss";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import { validateLoginForm } from "../../validations";
 
-export const LoginComponent = () => {
-
-  const [loginForm, setLoginForm] = useState({
-    username: "",
-    password: ""
-  });
-  const [errorMessage, setErrorMessage] = useState("");
-
-  const handleInput = (e) => {
-    setLoginForm({...loginForm,[e.target.name]: e.target.value.trim()});
-    setErrorMessage(""); // Clear error message when user starts typing
-  };
-
-  const onPressLogin = (event) => {
-    event.preventDefault();
-
-    setErrorMessage(validateLoginForm(loginForm.username, loginForm.password));
-    !errorMessage && {
-       // Proceed with your login logic
-      //! Authentication -> API (JWT...httpOnlyCookie...)
-    }
-
-  };
+export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin}) => {
 
   return (
     <div className="component">
