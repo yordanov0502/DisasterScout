@@ -1,4 +1,4 @@
-.login_component {
+.login {
   height: 100%;
 
   display: flex;
@@ -8,7 +8,7 @@
   border-radius: 8%;
   border-style: double;
 
-  .login {
+  &__component {
     position: relative;
     width: 250px;
     height: 250px;
@@ -18,7 +18,7 @@
     padding-bottom: 55px;
     font-size: 1.3em;
 
-    .img {
+    &__img {
       background-image: url(/src/assets/images/logo.ico);
       background-size: cover;
       background-position: center;
@@ -33,10 +33,10 @@
       margin-bottom: -35px; // Space between the image and the text fields
     }
 
-    .username-field {
+    &__username-field {
       position: relative;
 
-      .username-icon {
+      &__icon {
         position: absolute;
         left: 7px;
         top: 50%;
@@ -44,12 +44,34 @@
         color: rgb(110, 121, 187);
         pointer-events: none; // Prevent the icon from interfering with clicking on the input
       }
+      &__icon-active {
+        color: #ffffff; // This is the color for when there is input in the fields
+      }
+
+      &__input {
+        opacity: 1;
+        display: block;
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 10px 13px 10px 34px;
+        margin: 10px 0 0 0;
+        font-size: 0.8em;
+        border-radius: 150px;
+        background: #3c3c3c;
+        color: #ffffff;
+        box-sizing: border-box;
+      }
+  
+      &__input::placeholder {
+        color: rgb(110, 121, 187);
+      }
     }
 
-    .password-field {
+    &__password-field {
       position: relative;
 
-      .password-icon {
+      &__icon {
         position: absolute;
         left: 7px;
         top: 50%;
@@ -57,15 +79,32 @@
         color: rgb(110, 121, 187);
         pointer-events: none; // Prevent the icon from interfering with clicking on the input
       }
-    }
 
-    .username-icon.active,
-    .password-icon.active {
-      color: #ffffff; // This is the color for when there is input in the fields
-    }
+      &__icon-active {
+        color: #ffffff; // This is the color for when there is input in the fields
+      }
 
-    input[type="text"],
-    input[type="password"] {
+      &__input {
+        opacity: 1;
+        display: block;
+        border: none;
+        outline: none;
+        width: 100%;
+        padding: 10px 13px 10px 34px;
+        margin: 10px 0 0 0;
+        font-size: 0.8em;
+        border-radius: 150px;
+        background: #3c3c3c;
+        color: #ffffff;
+        box-sizing: border-box;
+      }
+  
+      &__input::placeholder {
+        color: rgb(110, 121, 187);
+      }
+    }
+   
+    &__error {
       opacity: 1;
       display: block;
       border: none;
@@ -75,17 +114,8 @@
       margin: 10px 0 0 0;
       font-size: 0.8em;
       border-radius: 150px;
-      background: #3c3c3c;
       color: #ffffff;
       box-sizing: border-box;
-    }
-
-    input[type="text"]::placeholder,
-    input[type="password"]::placeholder {
-      color: rgb(110, 121, 187);
-    }
-
-    .input-error {
       background: rgb(
         130,
         0,
@@ -93,19 +123,11 @@
       ) !important; //! This makes color of fields red when there is an error
     }
 
-    input[type="text"] {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
+    &__error::placeholder {
+      color: rgb(110, 121, 187);
     }
 
-    input:focus {
-      -webkit-appearance: none;
-      -moz-appearance: none;
-      appearance: none;
-    }
-
-    .forgot-password {
+    &__forgot-password {
       display: block;
       color: #0000ee;
       font-size: 0.7em;
@@ -115,15 +137,15 @@
       cursor: pointer;
     }
 
-    .forgot-password:hover {
+    &__forgot-password:hover {
       text-decoration: underline;
     }
 
-    .forgot-password:active {
+    &__forgot-password:active {
       color: #3c3c3c;
     }
 
-    .error-message {
+    &__error-message {
       position: relative;
       color: red; // or any color you want for the error message
       font-size: 0.7em; // adjust size as needed
@@ -133,7 +155,7 @@
       width: 120%;
     }
 
-    input[type="submit"] {
+    &__submit {
       position: absolute;
       bottom: 12px;
       left: 42px;
@@ -152,7 +174,7 @@
       border: 3px solid #000000;
     }
 
-    input[type="submit"]:hover {
+    &__submit:hover {
       background: linear-gradient(
         144deg,
         #000000,
@@ -163,7 +185,7 @@
       transition: all 0.4s ease;
     }
 
-    input[type="submit"]:active {
+    &__submit:active {
       background: linear-gradient(
         164deg,
         #000000,

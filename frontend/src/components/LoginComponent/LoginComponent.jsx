@@ -5,12 +5,12 @@ import LockIcon from "@mui/icons-material/Lock";
 export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin}) => {
 
   return (
-    <div className="login_component">
-      <div className="login">
-        <div className="img"></div>
+    <div className="login">
+      <div className="login__component">
+        <div className="login__component__img"></div>
         <form onSubmit={onPressLogin}>
-          <div className="username-field">
-            <PersonIcon className={`username-icon ${loginForm.username && "active"}`} />
+          <div className="login__component__username-field">
+            <PersonIcon className={`login__component__username-field__icon ${loginForm.username && "login__component__username-field__icon-active"}`} />
             <input
               id="username"
               name="username"
@@ -19,11 +19,11 @@ export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLog
               autoComplete="username"
               value={loginForm.username}
               onChange={handleInput}
-              className={errorMessage ? "input-error" : ""}
+              className={errorMessage ? "login__component__error" : "login__component__username-field__input"}
             />
           </div>
-          <div className="password-field">
-            <LockIcon className={`password-icon ${loginForm.password && "active"}`} />
+          <div className="login__component__password-field">
+            <LockIcon className={`login__component__password-field__icon ${loginForm.password && "login__component__password-field__icon-active"}`} />
             <input
               id="password"
               name="password"
@@ -32,14 +32,14 @@ export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLog
               autoComplete="current-password"
               value={loginForm.password}
               onChange={handleInput}
-              className={errorMessage ? "input-error" : ""}
+              className={errorMessage ? "login__component__error" : "login__component__password-field__input"}
             />
           </div>
-          <a href="/reset-password" className="forgot-password">
+          <a href="/reset-password" className="login__component__forgot-password">
             Забравена парола?
           </a>
-          {errorMessage && <div className="error-message">{errorMessage}</div>}
-          <input value="Вход" type="submit" />
+          {errorMessage && <div className="login__component__error-message">{errorMessage}</div>}
+          <input value="Вход" type="submit" className="login__component__submit" />
         </form>
       </div>
     </div>
