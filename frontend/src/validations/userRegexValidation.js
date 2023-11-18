@@ -4,7 +4,7 @@ const asciiPrintableRegex = /^[\x20-\x7E]*$/; //? Used to check whether password
 const emailRegex = /^[a-z][a-z0-9_.-]{2,29}@[a-z]{3,20}\.[a-z0-9.-]{2,20}$/;
                    
 
-const validateLoginForm = (username, password) => { //? function returns error message
+export const validateLoginForm = (username, password) => { //? function returns error message
     const isUsernameValid = usernameRegex.test(username);
     const isPasswordValid = passwordRegex.test(password) && asciiPrintableRegex.test(password);
 
@@ -17,7 +17,7 @@ const validateLoginForm = (username, password) => { //? function returns error m
     else return ""; //* OK
  };
 
- const validateResetPasswordForm = (email) => { //? function returns error message
+export const validateResetPasswordForm = (email) => { //? function returns error message
   const isEmailValid = emailRegex.test(email);
 
   if (!email) {
@@ -28,5 +28,3 @@ const validateLoginForm = (username, password) => { //? function returns error m
     } 
   else return ""; //* OK
 };
-
-export { validateLoginForm, validateResetPasswordForm };

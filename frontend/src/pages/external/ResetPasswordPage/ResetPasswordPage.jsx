@@ -1,6 +1,6 @@
 import { useState } from "react";
 import "./reset_password_page.scss";
-import { validateResetPasswordForm } from "../../../validations";
+import { validateResetPasswordForm } from "../../../validations/userRegexValidation";
 import { ResetPasswordComponent } from "../../../components/ResetPasswordComponent";
 
 export const ResetPasswordPage = () => {

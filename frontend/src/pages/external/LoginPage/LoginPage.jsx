@@ -1,8 +1,7 @@
-
 import { useState } from "react";
 import "./login_page.scss";
+import { validateLoginForm } from "../../../validations/userRegexValidation";
 import { LoginComponent } from "../../../components/LoginComponent";
-import { validateLoginForm } from "../../../validations";
 
 export const LoginPage = () => {
   const [loginForm, setLoginForm] = useState({
