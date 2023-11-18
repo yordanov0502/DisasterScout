@@ -1,7 +1,7 @@
 import { useState } from "react";
 import "./reset_password_page.scss";
 import { validateResetPasswordForm } from "../../../validations";
-import {ResetPasswordComponent} from "../../../components";
+import { ResetPasswordComponent } from "../../../components/ResetPasswordComponent";
 
 export const ResetPasswordPage = () => {
   const [email, setEmail] = useState("");
@@ -23,14 +23,16 @@ export const ResetPasswordPage = () => {
       };
   };
 
-    return(
-      <div className="reset_password_page">
-        { <ResetPasswordComponent
-          email={email} 
-          errorMessage={errorMessage} 
-          handleInput={handleInput} 
-          onPressResetPassword={onPressResetPassword} 
-          />}
-      </div>
-    );
+  return (
+    <div className="reset_password_page">
+      {
+        <ResetPasswordComponent
+          email={email}
+          errorMessage={errorMessage}
+          handleInput={handleInput}
+          onPressResetPassword={onPressResetPassword}
+        />
+      }
+    </div>
+  );
 };

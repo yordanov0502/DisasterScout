@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import "./login_page.scss";
-import { LoginComponent } from "../../../components";
+import { LoginComponent } from "../../../components/LoginComponent";
 import { validateLoginForm } from "../../../validations";
 
 export const LoginPage = () => {
