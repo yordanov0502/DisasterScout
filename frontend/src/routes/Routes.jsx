@@ -1,7 +1,7 @@
-import { Suspense } from "react";
 import { Route, Routes } from "react-router-dom";
 import { lazy } from "react";
 
+//* Pages are loaded lazily for successfull implementation of code splitting
 //! React.lazy can work ONLY with default exports
 //? Each lazy import correctly targets a named export from a module and wraps it as a default export, so that React.lazy can work properly
 const LoginPage = lazy(()=> import("../pages/external/LoginPage/LoginPage").then((module)=>({default: module.LoginPage})))
