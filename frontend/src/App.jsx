@@ -1,14 +1,14 @@
-import './App.css'
-import { Router } from "./routes"
-import { Suspense } from "react"
-
+import "./App.css";
+import { Suspense } from "react";
+import { Loader } from "./utils/Loader";
+import { Router } from "./routes";
 
 function App() {
   return (
-    <Suspense fallback={<h1></h1>}>
-     <Router/>
-     </Suspense>
-  )
+    <Suspense fallback={<Loader />}>
+      <Router />
+    </Suspense>
+  );
 }
 
-export default App
+export default App;

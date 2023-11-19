@@ -1,6 +1,7 @@
 import "./login_component.scss";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
+import { Link } from "react-router-dom";
 
 export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin}) => {
 
@@ -35,9 +36,9 @@ export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLog
               className={errorMessage ? "login__component__error" : "login__component__password-field__input"}
             />
           </div>
-          <a href="/reset-password" className="login__component__forgot-password">
-            Забравена парола?
-          </a>
+          <Link to="/reset-password" className="login__component__forgot-password">
+          Забравена парола?
+          </Link> 
           {errorMessage && <div className="login__component__error-message">{errorMessage}</div>}
           <input value="Вход" type="submit" className="login__component__submit" />
         </form>
