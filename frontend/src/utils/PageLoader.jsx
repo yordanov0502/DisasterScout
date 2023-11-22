@@ -2,7 +2,7 @@ import Box from "@mui/material/Box";
 import Fade from "@mui/material/Fade";
 import CircularProgress from "@mui/material/CircularProgress";
 
-export const Loader = () => {
+export const PageLoader = () => {
   //? disableShrink property of CircularProgress is used for optimal animation performance on eventual heavy load
   return (
     <Box
