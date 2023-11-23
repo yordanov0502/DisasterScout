@@ -20,6 +20,7 @@ import static bg.tu_varna.sit.backend.models.enums.Role.USER;
 @RequiredArgsConstructor
 public class WebSecurityConfig {
 
+    private final CorsConfig corsConfig;
     private final SecurityConfig securityConfig;
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
@@ -27,6 +28,8 @@ public class WebSecurityConfig {
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
+        //! cors: https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html
+        http.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
         http.authenticationManager(securityConfig.authenticationManager());
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthorizationFilter, loginAuthenticationFilter.getClass());

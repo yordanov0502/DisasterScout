@@ -34,7 +34,7 @@ public class LoginAuthenticationFilter {
     private final CustomLoginRegexValidation customLoginRegexValidation;
 
     @Bean(name = "LoginAuthenticationFilter")
-    public AuthenticationFilter customAuthenticationFilter() {
+    public AuthenticationFilter loginAuthenticationFilter() {
         //A strategy used for converting from a HttpServletRequest to an Authentication of particular type. Used to authenticate with appropriate AuthenticationManager.   If the result is null, then it signals that no authentication attempt should be made. It is also possible to throw AuthenticationException within the convert(HttpServletRequest) if there was invalid Authentication scheme value.
         AuthenticationConverter authenticationConverter = this::authentication;
         AuthenticationFilter authenticationFilter = new AuthenticationFilter(authenticationManager, authenticationConverter);
@@ -50,7 +50,7 @@ public class LoginAuthenticationFilter {
     private void successHandler(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             User principal = (User) authentication.getPrincipal();
-            httpServletResponse.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtService.generateToken(userService.getUserById(principal.getId())));
+            //!httpServletResponse.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtService.generateToken(userService.getUserById(principal.getId())));
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }
