@@ -22,10 +22,10 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //TODO: "http://localhost:5173" should be replaced with original domain name when webapp is deployed
         corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
-        corsConfiguration.setAllowCredentials(true); //? allows cookies and CSRF tokens
+        corsConfiguration.setAllowCredentials(true); //? allows cookies
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("*"));
-        corsConfiguration.setExposedHeaders(new ArrayList<>());//!!!!!!
+        corsConfiguration.setExposedHeaders(new ArrayList<>());//! No exposed headers for now
 
         //* Different browsers might have their own maximum limits for caching, and these limits could be much lower
         //* than the value you set. Exceeding these limits could result in the browser defaulting to a lower, more standard value.
