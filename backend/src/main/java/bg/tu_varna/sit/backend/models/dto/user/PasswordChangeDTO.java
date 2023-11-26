@@ -21,6 +21,7 @@ public record PasswordChangeDTO(
         @PasswordRegex(groups = {PasswordRegexValidation.class})
         String newPassword
         //TODO:  @PasswordRegex(groups = {PasswordRegexValidation.class})
+        //? this confirmNewPassword string should be validated except that it matches the regex but also whether it is the same as the previous "newPassword" string field
     //TODO: String confirmNewPassword
 ) {
     @GroupSequence({PasswordRegexValidation.class})

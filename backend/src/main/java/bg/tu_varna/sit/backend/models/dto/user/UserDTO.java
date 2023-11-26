@@ -7,7 +7,7 @@ import lombok.Builder;
 
 //? This DTO is used for updating a user data(this DTO arrives from frontend)
 @Builder
-public record AccountDTO(
+public record UserDTO(
         @NameRegex(groups = {NameRegexValidation.class})
         String firstName,
         @NameRegex(groups = {NameRegexValidation.class})

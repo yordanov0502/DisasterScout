@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.service;
 
-import bg.tu_varna.sit.backend.models.dto.user.AccountDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
@@ -58,7 +58,7 @@ public class UserService {
         userCacheService.saveUser(user);
     }
 
-    public User updateUser(User user, AccountDTO accountDTO){
+    public User updateUser(User user, UserDTO userDTO){
         String oldUsername = user.getUsername();
         String oldEmail = user.getEmail();
 
@@ -67,10 +67,10 @@ public class UserService {
         userCacheService.printCacheContentsUSERNAME_USERNAME();
         userCacheService.printCacheContentEMAIL_EMAIL();*/
 
-        user.setFirstName(accountDTO.firstName());
-        user.setLastName(accountDTO.lastName());
-        user.setEmail(accountDTO.email());
-        user.setUsername(accountDTO.username());
+        user.setFirstName(userDTO.firstName());
+        user.setLastName(userDTO.lastName());
+        user.setEmail(userDTO.email());
+        user.setUsername(userDTO.username());
 
         //? This variable is used for better monitoring. When done it should be inlined to the return statement.
         User updatedUser = userCacheService.updateUser(user,oldUsername,oldEmail);

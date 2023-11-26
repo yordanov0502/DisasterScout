@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.controller.internal;
 
-import bg.tu_varna.sit.backend.models.dto.user.AccountDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.mapper.UserMapper;
 import bg.tu_varna.sit.backend.service.UserService;
@@ -25,13 +25,13 @@ public class UserController {
 
     //? What return type best suits me ?
     //! For admin updating other users different endpoint should be created,
-    //! The main reason for this is the fact that AuthenticationPrincipal User is updated with the provided fields from AccountDTO
+    //! The main reason for this is the fact that AuthenticationPrincipal User is updated with the provided fields from UserDTO
     //* This endpoint should be called only for PERSONAL update(including: user,admin)
     @Operation(summary = "Update user",
                description = "Update of a user account is performed when this endpoint is called.")
-    @PutMapping("/update/account")
-    public AccountDTO updateAccount(@AuthenticationPrincipal User user, @Validated(value = AccountDTO.Group.class) @RequestBody AccountDTO accountDTO) {
-       return userMapper.mapToAccountDTO(userService.updateUser(user, accountDTO));
+    @PutMapping()
+    public UserDTO updateUser(@AuthenticationPrincipal User user, @Validated(value = UserDTO.Group.class) @RequestBody UserDTO userDTO) {
+       return userMapper.mapToUserDTO(userService.updateUser(user, userDTO));
     }
 
     // /update/password
