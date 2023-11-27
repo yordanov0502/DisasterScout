@@ -35,4 +35,11 @@ public class CorsConfig {
         source.registerCorsConfiguration("/**", corsConfiguration); //* CORS policy is applied to all endpoints (/**)
         return source;
     }
+
+    //? Just another alternative (explicit way) which may be used in SecurityFilterChain
+//    @Bean
+//    public CorsFilter corsFilter() {
+//        CorsFilter filter = new CorsFilter(corsConfigurationSource());
+//        return filter;
+//    }
 }

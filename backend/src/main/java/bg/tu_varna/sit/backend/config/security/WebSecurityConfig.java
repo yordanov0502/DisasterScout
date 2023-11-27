@@ -29,7 +29,8 @@ public class WebSecurityConfig {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
         //! cors: https://docs.spring.io/spring-security/reference/servlet/integrations/cors.html
-        http.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource()));
+        //http.addFilterBefore(corsConfig.corsFilter(), ChannelProcessingFilter.class); //? Just another alternative(explicit way for creating CORS filter)
+        http.cors(cors -> cors.configurationSource(corsConfig.corsConfigurationSource())); //* (implicit way for creating CORS filter)This tells Spring Security to use the CorsConfigurationSource provided by the corsConfig bean for CORS configuration. It effectively registers a CorsFilter with the provided CORS configuration within the Spring Security filter chain. This method allows for integrating CORS with Spring Security, ensuring that CORS is handled first, before Spring Security's authentication and authorization checks. It has the same effect as adding a CorsFilter before the ChannelProcessingFilter.
         http.authenticationManager(securityConfig.authenticationManager());
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthorizationFilter, loginAuthenticationFilter.getClass());
@@ -39,7 +40,7 @@ public class WebSecurityConfig {
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);
-        //TODO: Strict CSP (to prevent potential XSS attacks)
+        //TODO: Strict CSP (to prevent potential XSS attacks, despite the fact that user input is validated by regex)
         return http.build();
     }
 }
