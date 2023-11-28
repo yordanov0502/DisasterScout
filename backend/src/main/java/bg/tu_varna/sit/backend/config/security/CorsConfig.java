@@ -6,7 +6,6 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Configuration
@@ -25,7 +24,7 @@ public class CorsConfig {
         corsConfiguration.setAllowCredentials(true); //? allows cookies
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("*"));
-        corsConfiguration.setExposedHeaders(new ArrayList<>());//! No exposed headers for now
+        corsConfiguration.setExposedHeaders(List.of("*")); //!!! Should I expose all headers on response ? or not to expose any (new ArrayList<>())? https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#setExposedHeaders(java.util.List)  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
 
         //* Different browsers might have their own maximum limits for caching, and these limits could be much lower
         //* than the value you set. Exceeding these limits could result in the browser defaulting to a lower, more standard value.
