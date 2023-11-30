@@ -1,0 +1,3 @@
+#HTTPS certificate and private key
+/src/resources/localhost.crt
+/src/resources/localhost.key

@@ -17,7 +17,7 @@ export const LoginPage = () => {
     setErrorMessage(""); // Clear error message when user starts typing
   };
 
-  const API_URL = "https://localhost/api/external/login";
+  const API_URL = "https://localhost:8443/api/external/login";
   const [user, setUser] = useState({
     username: "ivanov50",
     password: "B0502HTto$hko",

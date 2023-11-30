@@ -19,8 +19,8 @@ public class CorsConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
-        //TODO: "http://localhost:5173" should be replaced with original domain name when webapp is deployed
-        corsConfiguration.setAllowedOrigins(List.of("http://localhost:5173"));
+        //TODO: "https://localhost" should be replaced with original domain name when webapp is deployed
+        corsConfiguration.setAllowedOrigins(List.of("https://localhost"));
         corsConfiguration.setAllowCredentials(true); //? allows cookies
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("*"));
