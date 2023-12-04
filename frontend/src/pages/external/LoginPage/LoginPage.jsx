@@ -4,6 +4,7 @@ import { validateLoginForm } from "../../../validations/userRegexValidation";
 import { LoginComponent } from "../../../components/LoginComponent";
 import axios from "axios";
 import { useEffect } from "react";
+import { API_URL } from "../../../utils/constants.js";
 
 export const LoginPage = () => {
   const [loginForm, setLoginForm] = useState({
@@ -17,7 +18,6 @@ export const LoginPage = () => {
     setErrorMessage(""); // Clear error message when user starts typing
   };
 
-  const API_URL = "https://localhost:8443/api/external/login";
   const [user, setUser] = useState({
     username: "ivanov50",
     password: "B0502HTto$hko",
@@ -26,7 +26,7 @@ export const LoginPage = () => {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await axios.post(API_URL, user);
+        const response = await axios.post(API_URL+"/external/login", user);
         setUser(response.data);
       } catch (error) {
         console.log(error);
