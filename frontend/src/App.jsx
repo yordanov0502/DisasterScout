@@ -1,6 +1,6 @@
 import "./App.css";
 import { Suspense } from "react";
-import { PageLoader } from "./utils/PageLoader";
+import { PageLoader } from "./components/Loaders/PageLoader.jsx";
 import { Router } from "./routes";
 
 function App() {
