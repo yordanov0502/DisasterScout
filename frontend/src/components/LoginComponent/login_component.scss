@@ -172,18 +172,6 @@
       );
       color: #fff;
       border: 3px solid #000000;
-
-      @media (hover: hover) and (pointer: coarse) {
-        .login__component__submit:hover {
-          background: linear-gradient(
-            1deg,
-            #e44e4e,
-            rgb(213, 213, 213) 50%,
-            #da5f5f
-          );
-          /* Either keep the hover effect same as the normal state or apply a mild effect */
-        }
-      }
     }
 
     &__submit:hover {
@@ -206,5 +194,18 @@
       );
       transition: all 0.4s ease;
     }
+  }
+}
+
+@media (hover: hover) and (pointer: coarse) {
+  .login__component__submit:hover {
+    // Keep the styles same as the normal state to effectively "disable" the hover effect
+    background: linear-gradient(144deg, #000000, rgb(60, 48, 134) 50%, #000000);
+  }
+
+  .login__component__submit:active {
+    // Keep the styles same as the normal state to effectively "disable" the hover effect
+    background: linear-gradient(164deg, #000000, rgb(92, 74, 206) 50%, #000000);
+    transition: all 0.4s ease;
   }
 }
