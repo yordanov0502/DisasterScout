@@ -172,6 +172,18 @@
       );
       color: #fff;
       border: 3px solid #000000;
+
+      @media (hover: hover) and (pointer: coarse) {
+        .login__component__submit:hover {
+          background: linear-gradient(
+            1deg,
+            #e44e4e,
+            rgb(213, 213, 213) 50%,
+            #da5f5f
+          );
+          /* Either keep the hover effect same as the normal state or apply a mild effect */
+        }
+      }
     }
 
     &__submit:hover {
