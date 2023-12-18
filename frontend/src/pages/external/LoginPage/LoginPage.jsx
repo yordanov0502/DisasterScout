@@ -13,7 +13,7 @@ export const LoginPage = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const loginMutation = useMutation(data => {
+  const loginMutation = useMutation((data) => {
     return axios.post(API_URL + "/external/login", data);
   });
 
@@ -39,20 +39,21 @@ export const LoginPage = () => {
   //! Authentication -> API (JWT...httpOnlyCookie...)
   const onPressLogin = (event) => {
     event.preventDefault();
-    setErrorMessage(validateLoginForm(loginForm.username, loginForm.password)); //* If validation passes, errorMessage remains ""
-    
-    if(!errorMessage){
-        loginMutation.mutate(loginForm, {
-          onSuccess: (response) => {
-            // Handle success (e.g., navigate to dashboard, store token, etc.)
-            console.log('Login Successful', response.data);
-          },
-          onError: (error) => {
-            // Handle error
-            console.error('Login Failed', error);
-            //setErrorMessage('Login failed. Please try again.');
-          }
-        })
+    const validationMessage = validateLoginForm(loginForm.username, loginForm.password); //* If validation passes, validationMessage is ""
+    setErrorMessage(validationMessage);
+
+    if (!validationMessage) {
+      loginMutation.mutate(loginForm, {
+        onSuccess: (response) => {
+          // Handle success (e.g., navigate to dashboard, store token, etc.)
+          console.log("Login Successful", response.data);
+        },
+        onError: (error) => {
+          // Handle error
+          console.error("Login Failed", error);
+          //setErrorMessage('Login failed. Please try again.');
+        },
+      });
     }
   };
 
