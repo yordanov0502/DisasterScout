@@ -14,13 +14,14 @@ export const ResetPasswordPage = () => {
 
   const onPressResetPassword = (event) => {
     event.preventDefault();
+    const validationMessage = validateResetPasswordForm(email); //* If validation passes, validationMessage is ""
+    setErrorMessage(validationMessage);
 
-    setErrorMessage(validateResetPasswordForm(email));
-    !errorMessage &&
-      {
+    if(!validationMessage){
         // Proceed with your login logic
         //? send email with newly generated password and instructions to the user with the provided email existing in DB
-      };
+      
+    }
   };
 
   return (
