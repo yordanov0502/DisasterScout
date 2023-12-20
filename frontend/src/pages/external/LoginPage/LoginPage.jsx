@@ -13,33 +13,24 @@ export const LoginPage = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const loginMutation = useMutation((data) => {
-    return axios.post(API_URL + "/external/login", data);
-  });
-
   const handleInput = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value.trim() });
     setErrorMessage(""); // Clear error message when user starts typing
   };
 
-  // useEffect(() => {
-  //   const fetchData = async () => {
-  //     try {
-  //       const response = await axios.post(API_URL+"/external/login", user);
-  //       setUser(response.data);
-  //     } catch (error) {
-  //       console.log(error);
-  //     }
-  //   };
+  // const loginMutation = useMutation((data) => {
+  //   return axios.post(API_URL + "/external/login", data);
+  // });
 
-  //   fetchData();
-  // }, []);
+  const loginMutation = useMutation({
+    mutationFn: (data) => {
+      return axios.post(API_URL + "/external/login", data);
+    },
+  });
 
-  // Proceed with your login logic
-  //! Authentication -> API (JWT...httpOnlyCookie...)
   const onPressLogin = (event) => {
     event.preventDefault();
-    const validationMessage = validateLoginForm(loginForm.username, loginForm.password); //* If validation passes, validationMessage is ""
+    const validationMessage = validateLoginForm(loginForm.username,loginForm.password); //* If validation passes, validationMessage is ""
     setErrorMessage(validationMessage);
 
     if (!validationMessage) {
