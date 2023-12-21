@@ -10,15 +10,15 @@ const queryClient = new QueryClient({}); //TODO: Should be properly configured t
 
 ReactDOM.createRoot(document.getElementById("root")).render(
   <React.StrictMode>
-    <BrowserRouter>
-      <QueryClientProvider client={queryClient}>
+    <QueryClientProvider client={queryClient}>
+      <BrowserRouter>
         <App />
-        <ReactQueryDevtools //!Should be deleted when the whole project is finished on 100%
+        <ReactQueryDevtools //!For development purposes ONLY
           initialIsOpen
           position="right"
           buttonPosition="bottom-right"
         />
-      </QueryClientProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </QueryClientProvider>
   </React.StrictMode>
 );

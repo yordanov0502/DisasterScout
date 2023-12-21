@@ -23,8 +23,8 @@ export const LoginPage = () => {
   // });
 
   const loginMutation = useMutation({
-    mutationFn: (data) => {
-      return axios.post(API_URL + "/external/login", data);
+    mutationFn: (credentials) => {
+      return axios.post(API_URL + "/external/login", credentials);
     },
   });
 
