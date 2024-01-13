@@ -1,49 +1,65 @@
 .not_found_component {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    color: white;
-    font-size: 38px;
-  
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  color: white;
+  font-size: 38px;
+
+  position: relative;
+  width: 70%;
+  height: 70%;
+
+  &__button {
+    font-weight: 600;
+    font-family: inherit;
+    width: 10em;
+    height: 2.6em;
+    overflow: hidden;
+    margin: 20px;
+    font-size: 20px;
+    z-index: 1;
+    color: white; /*color of text*/
+    border: 4px solid #0000da;
     position: relative;
-    width: 70%;
-    height: 70%;
-  
-    &__button {
-      font-weight: 600;
-      font-family: inherit;
-      width: 10em;
-      height: 2.6em;
-      overflow: hidden;
-      margin: 20px;
-      font-size: 20px;
-      z-index: 1;
-      color: white; /*color of text*/
-      border: 4px solid #0000da;
-      position: relative;
-      background-color: rgb(60,60,60,0.7);
-      transition: background-color 0.3s;
-    }
-  
-    &__button::before {
+    background-color: rgb(60, 60, 60, 0.7);
+    transition: background-color 0.3s;
+  }
+
+  &__button::before {
     position: absolute;
     content: "";
     background: #0000da; /* The blue background color */
-    width: 100%; 
-    height: 100%; 
+    width: 100%;
+    height: 100%;
     z-index: -1;
     transform: scale(0);
     transition: transform 0.3s;
-    }
-  
-    &__button:hover {
-      color: white;
-    }
-  
+  }
+
+  &__button:hover {
+    color: white;
+  }
+
+  &__button:hover::before {
+    transform: scale(1); /* scale to the full size of the button */
+  }
+
+  //! This media query overrides all previous configurations for the specified button. So if I use it after any other configurations it will disable it on touchscreen devices.
+  // Disables hover effect on touchscreen devices
+  @media (pointer: coarse) {
     &__button:hover::before {
-      transform: scale(1); /* scale to the full size of the button */
+      transform: scale(0); /* Keeps it at the normal state */
+    }
+    &__button:active::before {
+      transform: scale(1); /* Scales to full size on click/active */
+    }
+    &__button:active {
+    background-color: rgb(60, 60, 60, 0.7); /* Grey background on active */
+    }
+    &__button:not(:active) {
+    background-color: rgb(60, 60, 60, 0.7); /* Resets to grey background after release */
     }
   }
-  
+}
