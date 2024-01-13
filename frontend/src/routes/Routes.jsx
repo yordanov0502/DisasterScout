@@ -31,7 +31,7 @@ export const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-      <Route index element={<WelcomePage />} />
+      <Route index element={<WelcomePage />} /> {/* "index" is equal to "/" */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
