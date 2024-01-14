@@ -14,9 +14,9 @@ const ResetPasswordPage = lazy(() =>
     default: module.ResetPasswordPage,
   }))
 );
-const WelcomePage = lazy(() =>
-  import("../pages/external/WelcomePage").then((module) => ({
-    default: module.WelcomePage,
+const HomePage = lazy(() =>
+  import("../pages/external/HomePage").then((module) => ({
+    default: module.HomePage,
   }))
 );
 const NotFoundPage = lazy(() =>
@@ -31,7 +31,7 @@ export const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/reset-password" element={<ResetPasswordPage />} />
 
-      <Route index element={<WelcomePage />} /> {/* "index" is equal to "/" */}
+      <Route index element={<HomePage />} /> {/* "index" is equal to "/" */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );
