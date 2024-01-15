@@ -36,7 +36,7 @@ export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLog
               className={errorMessage ? "login__component__error" : "login__component__password-field__input"}
             />
           </div>
-          <Link to="/reset-password" className="login__component__forgot-password">
+          <Link to="/forgot-password" className="login__component__forgot-password">
           Забравена парола?
           </Link> 
           {errorMessage && <div className="login__component__error-message">{errorMessage}</div>}

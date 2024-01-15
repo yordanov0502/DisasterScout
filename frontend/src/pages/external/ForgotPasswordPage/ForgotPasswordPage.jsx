@@ -1,9 +1,9 @@
 import { useState } from "react";
-import "./reset_password_page.scss";
-import { validateResetPasswordForm } from "../../../validations/userRegexValidation";
-import { ResetPasswordComponent } from "../../../components/ResetPasswordComponent";
+import "./forgot_password_page.scss";
+import { validateForgotPasswordForm } from "../../../validations/userRegexValidation";
+import { ForgotPasswordComponent } from "../../../components/ForgotPasswordComponent";
 
-export const ResetPasswordPage = () => {
+export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -12,9 +12,9 @@ export const ResetPasswordPage = () => {
     setErrorMessage(""); // Clear error message when user starts typing
   };
 
-  const onPressResetPassword = (event) => {
+  const onPressForgotPassword = (event) => {
     event.preventDefault();
-    const validationMessage = validateResetPasswordForm(email); //* If validation passes, validationMessage is ""
+    const validationMessage = validateForgotPasswordForm(email); //* If validation passes, validationMessage is ""
     setErrorMessage(validationMessage);
 
     if(!validationMessage){
@@ -25,13 +25,13 @@ export const ResetPasswordPage = () => {
   };
 
   return (
-    <div className="reset_password_page">
+    <div className="forgot_password_page">
       {
-        <ResetPasswordComponent
+        <ForgotPasswordComponent
           email={email}
           errorMessage={errorMessage}
           handleInput={handleInput}
-          onPressResetPassword={onPressResetPassword}
+          onPressResetPassword={onPressForgotPassword}
         />
       }
     </div>

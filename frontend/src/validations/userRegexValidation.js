@@ -17,7 +17,7 @@ export const validateLoginForm = (username, password) => { //? function returns 
     else return ""; //* OK
  };
 
-export const validateResetPasswordForm = (email) => { //? function returns error message
+export const validateForgotPasswordForm = (email) => { //? function returns error message
   const isEmailValid = emailRegex.test(email);
 
   if (!email) {
