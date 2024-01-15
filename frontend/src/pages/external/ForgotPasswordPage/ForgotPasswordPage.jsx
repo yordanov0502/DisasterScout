@@ -31,7 +31,7 @@ export const ForgotPasswordPage = () => {
           email={email}
           errorMessage={errorMessage}
           handleInput={handleInput}
-          onPressResetPassword={onPressForgotPassword}
+          onPressForgotPassword={onPressForgotPassword}
         />
       }
     </div>
