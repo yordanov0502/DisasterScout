@@ -50,6 +50,10 @@
   //! This media query overrides all previous configurations for the specified button. So if I use it after any other configurations it will disable it on touchscreen devices.
   // Disables hover effect on touchscreen devices
   @media (pointer: coarse) {
+    width: 90%;
+    height: 90%;
+    font-size: 29px;
+    
     &__button:hover::before {
       transform: scale(0); /* Keeps it at the normal state */
     }
