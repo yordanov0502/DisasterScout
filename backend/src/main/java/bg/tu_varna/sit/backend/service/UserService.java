@@ -10,7 +10,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static bg.tu_varna.sit.backend.models.enums.Role.USER;
+import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
 
 @Service
@@ -44,14 +44,14 @@ public class UserService {
         else {return user;}
     }
 
-    public void registerNewUser(RegistrationDTO registrationDTO){
+    public void registerNewDispatcher(RegistrationDTO registrationDTO){
         User user = User.builder()
                 .firstName(registrationDTO.firstName())
                 .lastName(registrationDTO.lastName())
                 .email(registrationDTO.email())
                 .username(registrationDTO.username())
                 .password(passwordEncoder.encode(registrationDTO.password()))
-                .role(USER)
+                .role(DISPATCHER)
                 .status(ACTIVE)
                 .build();
 

@@ -13,7 +13,11 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
+
+import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
 
 @Service
 public class JwtService {
@@ -44,12 +48,16 @@ public class JwtService {
     }
 
     private String generateToken(Map<String,Object> extraClaims, User user){
+        long hoursInMillis = TimeUnit.HOURS.toMillis(1);//? 1H Default time for ordinary users
+        if(user.getRole().equals(DISPATCHER)) {hoursInMillis = TimeUnit.HOURS.toMillis(12);} //? 12H for dispatcher
+        else if(user.getRole().equals(ADMIN)) {hoursInMillis = TimeUnit.HOURS.toMillis(24);} //? 24H for admin
+
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getId())
                 .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + 3600000))//1 hour
+                .setExpiration(new Date(System.currentTimeMillis() + hoursInMillis))//! Duration vary to the user ROLE
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }

@@ -11,8 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.Role.USER;
+import static bg.tu_varna.sit.backend.models.enums.Role.*;
 
 
 @Configuration
@@ -39,7 +38,8 @@ public class WebSecurityConfig {
         http.addFilterBefore(jwtAuthorizationFilter, loginAuthenticationFilter.getClass());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasRole(ADMIN.name())); //"ROLE_" is automatically prepended as requirement
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyRole(USER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/dispatcher/**").hasAnyRole(DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyRole(SCOUT.name(),DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);

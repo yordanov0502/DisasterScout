@@ -16,9 +16,9 @@ public class AdminController {
 
     //? What return type best suits me ?
     @Operation(summary = "Registration",
-               description = "Registration of a new user is performed when this endpoint is called.")
-    @PostMapping("/register/account")
-    public void registerNewAccount(@Validated(value = RegistrationDTO.Group.class) @RequestBody RegistrationDTO registrationDTO){
-           userService.registerNewUser(registrationDTO);
+               description = "Registration of a new dispatcher is performed when this endpoint is called.")
+    @PostMapping("/register/dispatcher")
+    public void registerNewDispatcher(@Validated(value = RegistrationDTO.Group.class) @RequestBody RegistrationDTO registrationDTO){
+           userService.registerNewDispatcher(registrationDTO);
     }
 }

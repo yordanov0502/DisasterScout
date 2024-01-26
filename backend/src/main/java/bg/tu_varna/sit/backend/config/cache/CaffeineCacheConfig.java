@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 import java.util.Collections;
+import java.util.concurrent.TimeUnit;
 
 //? .recordStats() can be used with Caffeine builder to monitor metrics
 @Configuration
@@ -27,10 +28,11 @@ public class CaffeineCacheConfig {
         return cacheManager;
     }
 
-    //* Entries in this type of cache will never automatically expire due to time-based policies.
+    //If I want the cache entries to NEVER expire due to time-based policies, I must remove the .expireAfterAccess() method.
     private static Cache<Object,Object> smallCache() {
         return Caffeine.newBuilder()
-                .maximumSize(5)
+                .maximumSize(29) //? 1 admin and 28 dispatchers
+                .expireAfterAccess(15, TimeUnit.MINUTES) //? Each cache entry has its own timer. When an entry is accessed (read or written), its timer is reset.
                 .build();
     }
 
