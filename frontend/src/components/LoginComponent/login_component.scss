@@ -4,9 +4,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  border: 7px solid #0000a0;
+  border: 7px #017c45;
   border-radius: 8%;
-  border-style: double;
+  border-style: solid;
 
   &__component {
     position: relative;
@@ -41,7 +41,7 @@
         left: 7px;
         top: 50%;
         transform: translateY(-55%);
-        color: #4366ff;
+        color: #009F58;
         pointer-events: none; // Prevent the icon from interfering with clicking on the input
       }
       &__icon-active {
@@ -64,7 +64,7 @@
       }
 
       &__input::placeholder {
-        color: #4366ff;
+        color: #009F58;
       }
     }
 
@@ -76,7 +76,7 @@
         left: 7px;
         top: 50%;
         transform: translateY(-60%);
-        color: #4366ff;
+        color: #009F58;
         pointer-events: none; // Prevent the icon from interfering with clicking on the input
       }
 
@@ -100,7 +100,7 @@
       }
 
       &__input::placeholder {
-        color: #4366ff;
+        color: #009F58;
       }
     }
 
@@ -124,7 +124,7 @@
     }
 
     &__error::placeholder {
-      color: #4366ff;
+      color: #009F58;
     }
 
     &__forgot-password {
