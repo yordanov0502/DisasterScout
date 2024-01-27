@@ -11,7 +11,7 @@
   &__component {
     position: relative;
     width: 250px;
-    height: 250px;
+    height: 270px;
     background-color: #ffffff;
     padding: 40px;
     border-radius: 20px;
@@ -22,15 +22,15 @@
       background-image: url(/src/assets/images/logo.svg);
       background-size: cover;
       background-position: center;
-      height: 130px;
-      width: 250px;
+      height: 140px;
+      width: 140px;
       text-align: center;
       padding: 0;
       position: relative;
-      top: -40px;
-      //left: +0px;
+      top: -33px;
+      left: +50px;
       display: block;
-      margin-bottom: -55px; // Space between the image and the text fields
+      margin-bottom: -37px; // Space between the image and the text fields
     }
 
     &__username-field {
@@ -157,7 +157,7 @@
 
     &__submit {
       position: absolute;
-      bottom: 12px;
+      bottom: 8px;
       left: 42px;
       width: 75%;
       padding: 16px !important;
