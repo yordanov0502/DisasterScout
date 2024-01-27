@@ -40,7 +40,7 @@ export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLog
           Забравена парола?
           </Link> 
           {errorMessage && <div className="login__component__error-message">{errorMessage}</div>}
-          <input value="Вход" type="submit" className="login__component__submit" />
+          <button type="submit" className="login__component__submit">Вход</button>
         </form>
       </div>
     </div>

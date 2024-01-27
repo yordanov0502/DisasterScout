@@ -11,7 +11,7 @@
   &__component {
     position: relative;
     width: 250px;
-    height: 270px;
+    height: 280px;
     background-color: #ffffff;
     padding: 40px;
     border-radius: 20px;
@@ -54,13 +54,14 @@
         border: none;
         outline: none;
         width: 100%;
-        padding: 10px 13px 10px 34px;
+        padding: 15px 13px 13px 34px;
         margin: 10px 0 0 0;
         font-size: 0.8em;
         border-radius: 150px;
         background: #3c3c3c;
         color: #ffffff;
         box-sizing: border-box;
+        line-height: 20px;
       }
 
       &__input::placeholder {
@@ -75,7 +76,7 @@
         position: absolute;
         left: 7px;
         top: 50%;
-        transform: translateY(-60%);
+        transform: translateY(-58%);
         color: #009F58;
         pointer-events: none; // Prevent the icon from interfering with clicking on the input
       }
@@ -90,13 +91,14 @@
         border: none;
         outline: none;
         width: 100%;
-        padding: 10px 13px 10px 34px;
+        padding: 15px 13px 13px 34px;
         margin: 10px 0 0 0;
         font-size: 0.8em;
         border-radius: 150px;
         background: #3c3c3c;
         color: #ffffff;
         box-sizing: border-box;
+        line-height: 20px;
       }
 
       &__input::placeholder {
@@ -110,17 +112,14 @@
       border: none;
       outline: none;
       width: 100%;
-      padding: 10px 13px 10px 34px;
+      padding: 15px 13px 13px 34px;
       margin: 10px 0 0 0;
       font-size: 0.8em;
       border-radius: 150px;
       color: #ffffff;
       box-sizing: border-box;
-      background: rgb(
-        130,
-        0,
-        0
-      ) !important; //! This makes color of fields red when there is an error
+      line-height: 20px;
+      background: rgb(130,0,0) !important; //! This makes color of fields red when there is an error
     }
 
     &__error::placeholder {
@@ -132,7 +131,7 @@
       color: #0000ee;
       font-size: 0.7em;
       text-align: right;
-      margin-top: 12px;
+      margin-top: 10px;
       text-decoration: none;
       cursor: pointer;
     }
@@ -149,63 +148,65 @@
       position: relative;
       color: red; // or any color you want for the error message
       font-size: 0.7em; // adjust size as needed
-      margin-top: 10px; // space between the error message and the input fields
+      margin-top: 4px; // space between the error message and the input fields
       text-align: center; // center the error message
       left: -10%;
       width: 120%;
     }
 
     &__submit {
-      position: absolute;
-      bottom: 8px;
-      left: 42px;
-      width: 75%;
-      padding: 16px !important;
-      margin: 38px 0 0 0;
-      border-radius: 30px;
-      font-weight: 600;
-      background: linear-gradient(
-        144deg,
-        #000000,
-        #0000a0 50%,
-        #000000
-      );
-      color: #fff;
-      border: 3px solid #000000;
+    position: absolute;
+    left: 25%;
+    bottom: 1%;
+    width: 50%;
+    height: 13%;
+    padding: 10px 40px;
+    margin: 0px 10px 10px 0px;
+    float: left;
+    border-radius: 3px;
+    font-size: 20px;
+    color: #FFF;
+    text-decoration: none;
+    background-color: #009F58;
+    border: none;
+    border-bottom: 5px solid #00693a;
+    text-shadow: 0px -2px #266540;
+    -webkit-transition: all 0.1s;
+    transition: all 0.1s;
     }
 
-    &__submit:hover {
-      background: linear-gradient(
-        144deg,
-        #000000,
-        #0000da 50%,
-        #000000
-      );
-      cursor: pointer;
-      transition: all 0.4s ease;
-    }
+     &__submit:active {
+      -webkit-transform: translate(0px,5px);
+      -ms-transform: translate(0px,5px);
+      transform: translate(0px,5px);
+      border-bottom: 1px solid #00693a;
+     }
+
+     &__submit:hover {
+      background-color: #00b463;
+     }
 
     //! This media query overrides all previous configurations for the specified button. So if I use it after the :active clause down below or any other configurations it will disable it on touchscreen devices.
-    @media (pointer: coarse) {
-      &__submit:hover {
-        // Keep the styles same as the normal state to effectively "disable" the hover effect
-        background: linear-gradient(
-          144deg,
-          #000000,
-          #0000a0 50%,
-          #000000
-        );
-      }
-    }
+    // @media (pointer: coarse) {
+    //   &__submit:hover {
+    //     // Keep the styles same as the normal state to effectively "disable" the hover effect
+    //     background: linear-gradient(
+    //       144deg,
+    //       #000000,
+    //       #0000a0 50%,
+    //       #000000
+    //     );
+    //   }
+    // }
 
-    &__submit:active {
-      background: linear-gradient(
-        164deg,
-        #000000,
-        #0000da 50%,
-        #000000
-      );
-      transition: all 0.4s ease;
-    }
+    // &__submit:active {
+    //   background: linear-gradient(
+    //     164deg,
+    //     #000000,
+    //     #0000da 50%,
+    //     #000000
+    //   );
+    //   transition: all 0.4s ease;
+    // }
   }
 }
