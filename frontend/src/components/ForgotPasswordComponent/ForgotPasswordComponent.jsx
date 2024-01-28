@@ -27,7 +27,7 @@ export const ForgotPasswordComponent = ({ email, errorMessage, handleInput, onPr
             />
           </div>
           {errorMessage && <div className="forgot_password__component__error-message">{errorMessage}</div>}
-          <input value="Нова парола" type="submit" className="forgot_password__component__submit" />
+          <button type="submit" className="forgot_password__component__submit">Нова парола</button>
         </form>
       </div>
     </div>
