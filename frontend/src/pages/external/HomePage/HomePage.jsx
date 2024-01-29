@@ -1,10 +1,9 @@
-
+import { PageLoader } from "../../../components/Loaders/PageLoader";
 
 export const HomePage = () => {
-
-
-
-    return(
-      <div>Начало</div>
-    );
+  return (
+    <div>
+      <PageLoader />
+    </div>
+  );
 };

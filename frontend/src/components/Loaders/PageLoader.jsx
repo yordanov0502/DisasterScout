@@ -1,30 +1,97 @@
-import Box from "@mui/material/Box";
-import Fade from "@mui/material/Fade";
-import CircularProgress from "@mui/material/CircularProgress";
-
 export const PageLoader = () => {
-  //? disableShrink property of CircularProgress is used for optimal animation performance on eventual heavy load
   return (
-    <Box
-      sx={{
-        position: "fixed", // The position: 'fixed' style removes the Box from the normal document flow. This means it won't affect the layout of other elements since it's positioned in relation to the viewport, not the document flow.
-        top: "50%",
-        left: "50%",
-        transform: "translate(-50%, -50%)",
-        // zIndex: 1200,  the z-index property is only necessary when there's a need to control the stacking order of multiple elements that overlap.
-      }}
-    >
-      <Box sx={{ height: 40 }}>
-        <Fade
-          in={true}
-          style={{
-            transitionDelay: "800ms",
-          }}
-          unmountOnExit
-        >
-          <CircularProgress disableShrink />
-        </Fade>
-      </Box>
-    </Box>
+    <>
+      <style>
+        {`
+          .loader-container {
+            position: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh; /* This makes the container take full viewport height */
+            width: 100vw; /* This makes the container take full viewport width */
+          }
+
+          .loader {
+            --cell-size: 52px;
+            --cell-spacing: 1px;
+            --cells: 3;
+            --total-size: calc(var(--cells) * (var(--cell-size) + 2 * var(--cell-spacing)));
+            display: flex;
+            flex-wrap: wrap;
+            width: var(--total-size);
+            height: var(--total-size);
+          }
+
+          .cell {
+            flex: 0 0 var(--cell-size);
+            margin: var(--cell-spacing);
+            background-color: transparent;
+            box-sizing: border-box;
+            border-radius: 4px;
+            animation: ripple 1.5s ease infinite;
+          }
+
+          .cell.d-1 {
+            animation-delay: 100ms;
+          }
+
+          .cell.d-2 {
+            animation-delay: 200ms;
+          }
+
+          .cell.d-3 {
+            animation-delay: 300ms;
+          }
+
+          .cell.d-4 {
+            animation-delay: 400ms;
+          }
+
+          .cell:nth-child(1), .cell:nth-child(2), .cell:nth-child(3) {
+            --cell-color: #ced3d9;
+          }
+
+          .cell:nth-child(4), .cell:nth-child(5), .cell:nth-child(6) {
+            --cell-color: #009F58;
+          }
+
+          .cell:nth-child(7), .cell:nth-child(8), .cell:nth-child(9) {
+            --cell-color: #E80000;
+          }
+
+          @keyframes ripple {
+            0% {
+              background-color: transparent;
+            }
+
+            30% {
+              background-color: var(--cell-color);
+            }
+
+            60% {
+              background-color: transparent;
+            }
+
+            100% {
+              background-color: transparent;
+            }
+          }
+        `}
+      </style>
+      <div className="loader-container">
+        <div className="loader">
+          <div className="cell d-0"></div>
+          <div className="cell d-1"></div>
+          <div className="cell d-2"></div>
+          <div className="cell d-1"></div>
+          <div className="cell d-2"></div>
+          <div className="cell d-2"></div>
+          <div className="cell d-3"></div>
+          <div className="cell d-3"></div>
+          <div className="cell d-4"></div>
+        </div>
+      </div>
+    </>
   );
 };
