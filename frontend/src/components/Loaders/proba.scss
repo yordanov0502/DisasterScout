@@ -1,0 +1,48 @@
+.a {
+    position: fixed;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh; // This makes the container take full viewport height
+    width: 100vw; // This makes the container take full viewport width
+  
+    .b {
+      --cell-size: 52px;
+      --cell-spacing: 1px;
+      --cells: 3;
+      --total-size: calc(var(--cells) * (var(--cell-size) + 2 * var(--cell-spacing)));
+      display: flex;
+      flex-wrap: wrap;
+      width: var(--total-size);
+      height: var(--total-size);
+  
+      .c1, .c2, .c3, .c4, .c5, .c6, .c7, .c8, .c9 {
+        flex: 0 0 var(--cell-size);
+        margin: var(--cell-spacing);
+        background-color: transparent;
+        box-sizing: border-box;
+        border-radius: 4px;
+        animation: ripple 1.5s ease infinite;
+      }
+  
+      .c1, .c2, .c3 { --cell-color: #ced3d9; animation-delay: 100ms; }
+      .c4, .c5, .c6 { --cell-color: #009F58; animation-delay: 400ms; }
+      .c7, .c8, .c9 { --cell-color: #E80000; animation-delay: 700ms; }
+    }
+  }
+  
+  @keyframes ripple {
+    0% {
+      background-color: transparent;
+    }
+    30% {
+      background-color: var(--cell-color);
+    }
+    60% {
+      background-color: transparent;
+    }
+    100% {
+      background-color: transparent;
+    }
+  }
+  

@@ -1,4 +1,3 @@
-import { Button } from "@mui/material";
 import "./not_found_component.scss";
 import { useNavigate } from "react-router-dom";
 
@@ -13,9 +12,9 @@ export const NotFoundComponent = () => {
     <div className="not_found_component">
       Изглежда, че се отклонихте от маршрута. Страницата, която търсите не
       съществува или в момента не е налична.
-      <Button className="not_found_component__button" onClick={handleClick}>
+      <button className="not_found_component__button" onClick={handleClick}>
         Начало
-      </Button>
+      </button>
     </div>
   );
 };
