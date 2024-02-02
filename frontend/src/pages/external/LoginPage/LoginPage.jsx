@@ -18,13 +18,16 @@ export const LoginPage = () => {
     setErrorMessage(""); // Clear error message when user starts typing
   };
 
-  // const loginMutation = useMutation((data) => {
-  //   return axios.post(API_URL + "/external/login", data);
-  // });
-
   const loginMutation = useMutation({
-    mutationFn: (credentials) => {
-      return axios.post(API_URL + "/external/login", credentials);
+    mutationFn: (credentials) => { return axios.post(API_URL + "/external/login", credentials);},
+    onSuccess: (response) => {
+      // Handle success (e.g., navigate to dashboard, store token, etc.)
+      console.log("Login Successful", response.data);
+    },
+    onError: (error) => {
+      // Handle error
+      console.error("Login Failed", error);
+      //setErrorMessage('Login failed on server. Please try again.');
     },
   });
 
@@ -34,17 +37,7 @@ export const LoginPage = () => {
     setErrorMessage(validationMessage);
 
     if (!validationMessage) {
-      loginMutation.mutate(loginForm, {
-        onSuccess: (response) => {
-          // Handle success (e.g., navigate to dashboard, store token, etc.)
-          console.log("Login Successful", response.data);
-        },
-        onError: (error) => {
-          // Handle error
-          console.error("Login Failed", error);
-          //setErrorMessage('Login failed. Please try again.');
-        },
-      });
+      loginMutation.mutate(loginForm); //? here the above useMutation hook is called
     }
   };
 
