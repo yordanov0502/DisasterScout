@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.backend.models.entity;
 
+import bg.tu_varna.sit.backend.models.enums.Activity;
 import bg.tu_varna.sit.backend.models.enums.Role;
 import bg.tu_varna.sit.backend.models.enums.Status;
 import lombok.AllArgsConstructor;
@@ -31,8 +32,9 @@ public class User implements UserDetails {
     @Indexed(unique = true)
     private String username;
     private String password;
-    private Role role;
-    private Status status;
+    private Role role; //? ADMIN / DISPATCHER
+    private Status status; //? ACTIVE / LOCKED
+    private Activity activity; //? ONLINE / OFFLINE
 
     //The following method is invoked by Spring Security everytime a user try to reach a protected resource
     @Override

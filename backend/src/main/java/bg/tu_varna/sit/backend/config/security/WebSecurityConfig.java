@@ -39,7 +39,7 @@ public class WebSecurityConfig {
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasRole(ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/dispatcher/**").hasAnyRole(DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyRole(SCOUT.name(),DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
+        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyRole(DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);

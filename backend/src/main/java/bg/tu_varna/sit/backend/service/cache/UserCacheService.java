@@ -1,6 +1,7 @@
 package bg.tu_varna.sit.backend.service.cache;
 
 import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.enums.Activity;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.annotation.PostConstruct;
@@ -12,6 +13,8 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+
+//? More info about unless cache clause -> https://stackoverflow.com/questions/12113725/how-do-i-tell-spring-cache-not-to-cache-null-value-in-cacheable-annotation
 
 @Service
 @AllArgsConstructor
@@ -48,7 +51,20 @@ public class UserCacheService {
             @CachePut(value = "email", key = "#result.email", unless = "#result == null"),
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
+    //!!!!!!!!!!!!!!! This method is used for testing purpose (testing cache and etc.)
     public User updateUser(User user,String oldUsername,String oldEmail){return userRepository.save(user);}
+
+    @Caching(put = {
+            @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            @CachePut(value = "username", key = "#result.username", unless = "#result == null"),
+            @CachePut(value = "email", key = "#result.email", unless = "#result == null"),
+            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
+    })
+    public User updateUserActivity(User user, Activity activity) {
+        user.setActivity(activity);
+        return userRepository.save(user);
+        }
+
 
     //* Deletes a user from DB and all related caches.
     @Caching(evict = {
@@ -81,6 +97,7 @@ public class UserCacheService {
     //* Evicts a user from all related caches
     //? This will be useful when admin decides to modify the production database directly(due to different reasons)
     //? and data inconsistency(between the cache and DB) occur in the real web application
+    //!!!!! So this should be accessed by endpoint given specific user for which the cache to be invalidated and moreover every dispatcher and admin must have a button for cache invalidation on the front end which should be available only to the admin/s of the whole system
     @Caching(evict = {
             @CacheEvict(value = "user", key = "#user.id", beforeInvocation = true),
             @CacheEvict(value = "username", key = "#user.username", beforeInvocation = true),

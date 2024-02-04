@@ -21,8 +21,13 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 
+import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
 
+//? This filter is applied every time when someone tries to access a protected endpoint
+//? and if the "someone" has a valid JWT, a UsernamePasswordAuthenticationToken is created for this "someone" and then
+//? added to the context of the SecurityContextHolder, which means that this "someone" has become
+//? an authenticated user a.k.a "principal" BUT ONLY for the specific request executed within a thread from the thread pool
 @Component
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
@@ -64,14 +69,15 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         catch (IllegalArgumentException exception){
             System.out.println("Unable to get JWT token");
         }
-
+        //!System.out.println("JWT authorization filter executed");
 
         if(extractedId != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
              {
                 User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
                  //? A user status should be changed from ACTIVE(default) to LOCKED if too many(20 consecutive) login attempts are applied
-                 //! ONLY ADMIN should be able to activate again user account
-                if(extractedId.equals(user.getId()) && user.getStatus().equals(ACTIVE))
+                 //! Additional checks should be applied for JWT usage after user logout
+                 //* user is checked whether it is null or not because it is possible for a jwt to be valid after user logged in but if an admin theoretically deletes the account of the user, the jwt will still be active and valid for certain time and if someone uses the jwt of a user which id does not exist in the DB/cache server error will be produced
+                 if(user!=null && user.getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) /*It means user needs to be logged in a.k.a his status to be ONLINE before requesting protected resource*/ /*!!!!!!!! && It is good to check if the user has activity ONLINE so even if the account is active if someone tries to use his jwt when he is online , BUT ALSO this might not be needed if MY SOLUTION written on my phone notes is applied. */)
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

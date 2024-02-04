@@ -4,12 +4,15 @@ import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.enums.Activity;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import static bg.tu_varna.sit.backend.models.enums.Activity.OFFLINE;
+import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
 
@@ -35,13 +38,18 @@ public class UserService {
     //* Used for validation when updating already existing user.
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
+    //! This method should be called only by admin or by scheduled security methods
+    public User updateUserActivity(User user, Activity activity) {return userCacheService.updateUserActivity(user,activity);}
+
+
+    //! Should be called only by LoginAuthenticationFilter, because it updates user's activity to ONLINE on successful login
     public User checkUserCredentials(LoginDTO loginDTO){
         User user = userCacheService.getUserByUsername(loginDTO.getUsername());
 
         if (!(user!=null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())))
         {throw new BadCredentialsException("Invalid username or password.");}
 
-        else {return user;}
+        else {return  userCacheService.updateUserActivity(user,ONLINE);}
     }
 
     public void registerNewDispatcher(RegistrationDTO registrationDTO){
@@ -53,6 +61,7 @@ public class UserService {
                 .password(passwordEncoder.encode(registrationDTO.password()))
                 .role(DISPATCHER)
                 .status(ACTIVE)
+                .activity(OFFLINE)
                 .build();
 
         userCacheService.saveUser(user);
