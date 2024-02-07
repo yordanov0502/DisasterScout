@@ -78,7 +78,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
              {
                 User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
                  //? A user status should be changed from ACTIVE(default) to LOCKED if too many(20 consecutive) login attempts are applied
-                 //! Additional checks should be applied for JWT usage after user logout
                  //* user is checked whether it is null or not because it is possible for a jwt to be valid after user logged in but if an admin theoretically deletes the account of the user, the jwt will still be active and valid for certain time and if someone uses the jwt of a user which id does not exist in the DB/cache server error will be produced
                  if(user!=null && user.getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) && !jwtService.extractIssuedAt(jwt).before(user.getLastLogin()))
                 {
