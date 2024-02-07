@@ -1,11 +1,13 @@
 package bg.tu_varna.sit.backend.config.security;
 
 import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.service.util.TimeService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
+import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -13,20 +15,24 @@ import java.security.Key;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.function.Function;
 
 import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
 
 @Service
+@RequiredArgsConstructor
 public class JwtService {
 
     @Value("${spring.security.jwt.secret}")
     private String SECRET_KEY;
+    private final TimeService timeService;
 
     public String extractId(String token) {
         return extractClaim(token,Claims::getSubject);//the subject should be the username of a certain user (or email), but we use ID, in order not to generate a new JWT, when a user update their username or email.
+    }
+
+    public Date extractIssuedAt(String token){
+        return extractClaim(token,Claims::getIssuedAt);
     }
 
     private  <T> T extractClaim(String token, Function<Claims,T> claimsResolver){
@@ -48,16 +54,16 @@ public class JwtService {
     }
 
     private String generateToken(Map<String,Object> extraClaims, User user){
-        long hoursInMillis = TimeUnit.HOURS.toMillis(1);//? 1H Default time for ordinary users
-        if(user.getRole().equals(DISPATCHER)) {hoursInMillis = TimeUnit.HOURS.toMillis(12);} //? 12H for dispatcher
-        else if(user.getRole().equals(ADMIN)) {hoursInMillis = TimeUnit.HOURS.toMillis(24);} //? 24H for admin
+        int hoursOfJwtValidity = 12; //? 12H for dispatcher
+        if(user.getRole().equals(ADMIN)) {hoursOfJwtValidity = 24;} //? 24H for admin
+        Date currentDateAndTimeInBulgaria = timeService.getCurrentDateAndTimeInBulgaria();
 
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getId())
-                .setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + hoursInMillis))//! Duration vary to the user ROLE
+                .setIssuedAt(timeService.addMinutesToCurrentDateAndTime(currentDateAndTimeInBulgaria,1)) //? JWT issuedAt field is set to be plus 1 minute over the actual data & time of user login, because if it is exactly the same as the login date & time the business logic for JWT validation will break and fail, because always the JWT must be created exactly at the same time of login or shortly after it, but NEVER BEFORE for security reasons.
+                .setExpiration(timeService.addHoursToCurrentDateAndTime(currentDateAndTimeInBulgaria,hoursOfJwtValidity)) //! Duration varies according to the user's ROLE
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -67,20 +73,14 @@ public class JwtService {
         return Keys.hmacShaKeyFor(keyBytes);
     }
 
-    @Deprecated(forRemoval = true)
-    public boolean isTokenValid(String token,User user){
-        final String extractedId = extractId(token);
-        return (extractedId.equals(user.getId()) /*&& !isTokenExpired(token)*/);
-    }
+//    @Deprecated(forRemoval = false)
+//    public boolean isTokenExpired(String token) {
+//        //Date d = new Date();
+//        return extractExpiration(token).before(new Date());
+//    }
 
-    @Deprecated(forRemoval = false)
-    public boolean isTokenExpired(String token) {
-        //Date d = new Date();
-        return extractExpiration(token).before(new Date());
-    }
-
-    @Deprecated(forRemoval = false)
-    private Date extractExpiration(String token) {
-        return extractClaim(token,Claims::getExpiration);
-    }
+//    @Deprecated(forRemoval = false)
+//    private Date extractExpiration(String token) {
+//        return extractClaim(token,Claims::getExpiration);
+//    }
 }

@@ -50,6 +50,7 @@ public class LoginAuthenticationFilter {
     private void successHandler(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             User principal = (User) authentication.getPrincipal();
+            userService.updateUserActivityAndLastLogin(principal);
             httpServletResponse.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtService.generateToken(userService.getUserById(principal.getId())));
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             SecurityContextHolder.getContext().setAuthentication(authentication);

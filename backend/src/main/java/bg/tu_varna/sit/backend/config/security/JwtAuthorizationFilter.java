@@ -20,6 +20,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
+import java.util.Date;
 
 import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
@@ -45,6 +46,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);//header which contains JWT token
         final String jwt;
         String extractedId=null;
+        Date extractedIssuedAt=null;
 
         if (authHeader == null || !authHeader.startsWith("Bearer "))
         {
@@ -56,6 +58,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         try
         {
             extractedId = jwtService.extractId(jwt);
+            extractedIssuedAt = jwtService.extractIssuedAt(jwt);
         }
         catch (ExpiredJwtException exception){
             System.out.println("JWT expired");
@@ -71,13 +74,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         //!System.out.println("JWT authorization filter executed");
 
-        if(extractedId != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
+        if(extractedId != null && extractedIssuedAt != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
              {
                 User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
                  //? A user status should be changed from ACTIVE(default) to LOCKED if too many(20 consecutive) login attempts are applied
                  //! Additional checks should be applied for JWT usage after user logout
                  //* user is checked whether it is null or not because it is possible for a jwt to be valid after user logged in but if an admin theoretically deletes the account of the user, the jwt will still be active and valid for certain time and if someone uses the jwt of a user which id does not exist in the DB/cache server error will be produced
-                 if(user!=null && user.getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) /*It means user needs to be logged in a.k.a his status to be ONLINE before requesting protected resource*/ /*!!!!!!!! && It is good to check if the user has activity ONLINE so even if the account is active if someone tries to use his jwt when he is online , BUT ALSO this might not be needed if MY SOLUTION written on my phone notes is applied. */)
+                 if(user!=null && user.getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) && !jwtService.extractIssuedAt(jwt).before(user.getLastLogin()))
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

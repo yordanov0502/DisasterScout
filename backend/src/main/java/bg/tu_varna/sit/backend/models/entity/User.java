@@ -3,10 +3,8 @@ package bg.tu_varna.sit.backend.models.entity;
 import bg.tu_varna.sit.backend.models.enums.Activity;
 import bg.tu_varna.sit.backend.models.enums.Role;
 import bg.tu_varna.sit.backend.models.enums.Status;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import com.mongodb.annotations.Immutable;
+import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
@@ -15,26 +13,30 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import java.util.Collection;
+import java.util.Date;
 import java.util.List;
 
-@Data
-@Builder
+@Builder(toBuilder = true)
+@Getter
+@ToString
+@EqualsAndHashCode
 @AllArgsConstructor
-@NoArgsConstructor
+@Immutable //? marker/documentation annotation
 @Document(collection = "users")
 public class User implements UserDetails {
     @Id
-    private String id;
-    private String firstName;
-    private String lastName;
+    private final String id;
+    private final String firstName;
+    private final String lastName;
     @Indexed(unique = true)
-    private String email;
+    private final String email;
     @Indexed(unique = true)
-    private String username;
-    private String password;
-    private Role role; //? ADMIN / DISPATCHER
-    private Status status; //? ACTIVE / LOCKED
-    private Activity activity; //? ONLINE / OFFLINE
+    private final String username;
+    private final String password;
+    private final Role role; //? ADMIN / DISPATCHER
+    private final Status status; //? ACTIVE / LOCKED
+    private final Activity activity; //? ONLINE / OFFLINE
+    private final Date lastLogin;
 
     //The following method is invoked by Spring Security everytime a user try to reach a protected resource
     @Override
@@ -72,4 +74,9 @@ public class User implements UserDetails {
         return true;
     }
 
+    //? Safe getter method returning defensive copy of the date(lastLogin), rather than expose the original reference,
+    //? in order to avoid any future modifications performed wherever in the code to this instance(lastLogin.getTime()).
+    public Date getLastLogin(){
+        return new Date(lastLogin.getTime());
+    }
 }
