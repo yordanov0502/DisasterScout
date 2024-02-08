@@ -64,7 +64,7 @@ public class UserCacheService {
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User updateUser(User user, UserDTO userDTO){
-        User updatedUser = user.toBuilder() //! should be exatly the same user with old data -> if admin updates other user , the other data from the admin which is not updated will be casted to the user about to be and eventually updated leading to mismathcing of data and breaking whole business logic of application
+        User updatedUser = user.toBuilder()
                 .firstName(userDTO.firstName())
                 .lastName(userDTO.lastName())
                 .username(userDTO.username())

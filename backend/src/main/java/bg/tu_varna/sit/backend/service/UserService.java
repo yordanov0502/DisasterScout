@@ -71,6 +71,6 @@ public class UserService {
     //? because PasswordEncoder cannot be injected into userCacheService, due to circular dependency issue
     public User registerNewDispatcher(RegistrationDTO registrationDTO){return userCacheService.registerNewDispatcher(registrationDTO,passwordEncoder.encode(registrationDTO.password()));}
 
-    //! TO BE IMPLEMENTED CAREFULLY
+    //! This method should be called ONLY by a user, who intends to update HIS data
     public User updateUser(User user, UserDTO userDTO){return userCacheService.updateUser(user,userDTO);}
 }
