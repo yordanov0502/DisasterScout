@@ -1,5 +1,7 @@
 package bg.tu_varna.sit.backend.service.cache;
 
+import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.util.TimeService;
@@ -16,6 +18,9 @@ import org.springframework.stereotype.Service;
 
 import static bg.tu_varna.sit.backend.models.enums.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.Status.LOCKED;
 
 //? More info about unless cache clause -> https://stackoverflow.com/questions/12113725/how-do-i-tell-spring-cache-not-to-cache-null-value-in-cacheable-annotation
 
@@ -36,22 +41,50 @@ public class UserCacheService {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
-    public User saveUser(User user) {return userRepository.save(user);}
+    public User registerNewDispatcher(RegistrationDTO registrationDTO,String encodedPassword) {
+        User newUser = User.builder()
+                .firstName(registrationDTO.firstName())
+                .lastName(registrationDTO.lastName())
+                .email(registrationDTO.email())
+                .username(registrationDTO.username())
+                .password(encodedPassword)
+                .role(DISPATCHER)
+                .status(ACTIVE)
+                .activity(OFFLINE)
+                .lastLogin(timeService.getInitialUnixEpochDateAndTimeInEET())
+                .build();
+        return userRepository.save(newUser);
+    }
 
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO BE IMPLEMENTED CAREFULLY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
     //* Updates existing user and all related caches.
-    //! We first evict the old entries from username(x1) and email(x1) caches related to a specific user.
-    //! Then we cache new entries to username(x1) and email(x1) caches related to the specific user.
-    //! This is done, because even if we update the values of existing entries, we cannot update the keys.
-    //! The aforementioned statement does NOT relate to user and users caches, because they use IDs of users as keys, which are never meant to be changed once created(IDs of users). So entries of user(x1) and users(x1) caches are directly updated.
-    @Caching(
+   @Caching(
     put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
-    //!!!!!!!!!!!!!!! This method is used for testing purpose (testing cache and etc.)
-    public User updateUser(User user,String oldUsername,String oldEmail){return userRepository.save(user);}
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TO BE IMPLEMENTED CAREFULLY!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+    public User updateUser(User user, UserDTO userDTO){
+        User updatedUser = user.toBuilder() //! should be exatly the same user with old data -> if admin updates other user , the other data from the admin which is not updated will be casted to the user about to be and eventually updated leading to mismathcing of data and breaking whole business logic of application
+                .firstName(userDTO.firstName())
+                .lastName(userDTO.lastName())
+                .username(userDTO.username())
+                .email(userDTO.email())
+                .build();
+        return userRepository.save(updatedUser);
+    }
+
+    //? Updates DB and caches when a user logs in
+    @Caching(put = {
+            @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
+    })
+    public User updateUserActivityAndLastLogin(User user) {
+        User updatedUser = user.toBuilder()
+                .activity(ONLINE)
+                .lastLogin(timeService.getCurrentDateAndTimeInBulgaria())
+                .build();
+        return userRepository.save(updatedUser);
+    }
 
     //? Updates DB and caches when a user logs out
     @Caching(put = {
@@ -65,15 +98,27 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
         }
 
-    //? Updates DB and caches when a user logs in
+    //? Updates DB and caches when a user is LOCKED
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
-    public User updateUserActivityAndLastLogin(User user) {
+   public User lockUser(User user){
         User updatedUser = user.toBuilder()
-                .activity(ONLINE)
-                .lastLogin(timeService.getCurrentDateAndTimeInBulgaria())
+                .status(LOCKED)
+                .activity(OFFLINE)
+                .build();
+        return userRepository.save(updatedUser);
+   }
+
+    //? Updates DB and caches when a user is UNLOCKED
+    @Caching(put = {
+            @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
+    })
+    public User unlockUser(User user){
+        User updatedUser = user.toBuilder()
+                .status(ACTIVE)
                 .build();
         return userRepository.save(updatedUser);
     }

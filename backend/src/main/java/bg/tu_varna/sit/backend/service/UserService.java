@@ -5,15 +5,13 @@ import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
-import bg.tu_varna.sit.backend.service.util.TimeService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static bg.tu_varna.sit.backend.models.enums.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
-import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.Status.LOCKED;
 
 @Service
 @RequiredArgsConstructor
@@ -21,8 +19,6 @@ public class UserService {
 
     private final UserCacheService userCacheService;
     private final PasswordEncoder passwordEncoder;
-    private final TimeService timeService;
-
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
@@ -38,11 +34,17 @@ public class UserService {
     //* Used for validation when updating already existing user.
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
-
-    //public User updateUserActivity(User user, Activity activity) {return userCacheService.updateUserActivity(user,activity);}
-
-    //!This method should only be called by the successHandler of LoginAuthenticationFilter
+    //! This method should only be called by the successHandler of LoginAuthenticationFilter
     public User updateUserActivityAndLastLogin(User user) {return userCacheService.updateUserActivityAndLastLogin(user);}
+
+    //! This method should only be called when a user sent a request to logout
+    public User updateUserActivityOnLogout(User user) {return userCacheService.updateUserActivityOnLogout(user);}
+
+    //? Should be called when a dispatcher or "someone" tries to logs in several times but fails inside a predetermined time interval (unsuccessful login attempts rate limit is met or exceeded)
+    public User lockUser(User user) {return userCacheService.lockUser(user);}
+
+    //? Should be called only by admin (to unlock a certain dispatcher)
+    public User unlockUser(User user) {return userCacheService.unlockUser(user);}
 
     //! Should be called only by LoginAuthenticationFilter
     public User checkUserCredentials(LoginDTO loginDTO){
@@ -51,48 +53,24 @@ public class UserService {
         if (!(user!=null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())))
         {throw new BadCredentialsException("Invalid username or password.");}
 
+        //? Checks if a user is already logged in, in order to prevent logging in
+        //? 2nd time from another device, if a user is already logged in.(This is done for security reasons)
+        //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
+        if(user.getActivity().equals(ONLINE))
+        {throw new BadCredentialsException("User is already logged in.");}
+
+        //? Checks if a user's account is locked, in order to prevent logging in, if a user's account is indeed locked
+        //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
+        if(user.getStatus().equals(LOCKED))
+        {throw new BadCredentialsException("User is currently locked.");}
+
         else {return user;}
     }
 
-    public void registerNewDispatcher(RegistrationDTO registrationDTO){
-        User user = User.builder()
-                .firstName(registrationDTO.firstName())
-                .lastName(registrationDTO.lastName())
-                .email(registrationDTO.email())
-                .username(registrationDTO.username())
-                .password(passwordEncoder.encode(registrationDTO.password()))
-                .role(DISPATCHER)
-                .status(ACTIVE)
-                .activity(OFFLINE)
-                .lastLogin(timeService.getInitialUnixEpochDateAndTimeInEET())
-                .build();
-
-        userCacheService.saveUser(user);
-    }
+    //? password from registrationDTO is encoded here in the method and sent to the userCacheService,
+    //? because PasswordEncoder cannot be injected into userCacheService, due to circular dependency issue
+    public User registerNewDispatcher(RegistrationDTO registrationDTO){return userCacheService.registerNewDispatcher(registrationDTO,passwordEncoder.encode(registrationDTO.password()));}
 
     //! TO BE IMPLEMENTED CAREFULLY
-    public User updateUser(User user, UserDTO userDTO){
-        String oldUsername = user.getUsername();
-        String oldEmail = user.getEmail();
-
-        /*System.out.println("BEFORE");
-        userCacheService.printCacheContentUSER_ID();
-        userCacheService.printCacheContentsUSERNAME_USERNAME();
-        userCacheService.printCacheContentEMAIL_EMAIL();*/
-
-        //*******************user.setFirstName(userDTO.firstName());
-        //*******************user.setLastName(userDTO.lastName());
-        //*******************user.setEmail(userDTO.email());
-        //*******************user.setUsername(userDTO.username());
-
-        //? This variable is used for better monitoring. When done it should be inlined to the return statement.
-        User updatedUser = userCacheService.updateUser(user,oldUsername,oldEmail);
-
-        /*System.out.println("After");
-        userCacheService.printCacheContentUSER_ID();
-        userCacheService.printCacheContentsUSERNAME_USERNAME();
-        userCacheService.printCacheContentEMAIL_EMAIL();*/
-
-        return updatedUser;
-    }
+    public User updateUser(User user, UserDTO userDTO){return userCacheService.updateUser(user,userDTO);}
 }
