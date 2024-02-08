@@ -78,13 +78,6 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
     }
 
-    //* Deletes a user from DB and all related caches.
-    @Caching(evict = {
-            @CacheEvict(value = "user", key = "#user.id"),
-            @CacheEvict(value = "users", key = "#user.id")
-    })
-    public void deleteUser(User user) {userRepository.delete(user);}
-
     //* Evicts a user from all related caches
     //? This will be useful when admin decides to modify the production database directly(due to different reasons)
     //? and data inconsistency(between the cache and DB) occur in the real web application
