@@ -20,12 +20,14 @@ public class AdminController {
     //
 
     //? What return type best suits me ?
-    @Operation(summary = "Registration",
+    @Operation(summary = "Register a new dispatcher",
                description = "Registration of a new dispatcher is performed when this endpoint is called.")
     @PostMapping("/register/dispatcher")
     public void registerNewDispatcher(@Validated(value = RegistrationDTO.Group.class) @RequestBody RegistrationDTO registrationDTO){
            userService.registerNewDispatcher(registrationDTO);
     }
+
+
 
 //    @GetMapping("/testt")
 //    public void testingCache(){
