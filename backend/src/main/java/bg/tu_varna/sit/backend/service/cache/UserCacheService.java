@@ -127,11 +127,13 @@ public class UserCacheService {
     //? This will be useful when admin decides to modify the production database directly(due to different reasons)
     //? and data inconsistency(between the cache and DB) occur in the real web application
     //!!!!! So this should be accessed by endpoint given specific user for which the cache to be invalidated and moreover every dispatcher and admin must have a button for cache invalidation on the front end which should be available only to the admin/s of the whole system
+    //!!!!!!!!!!!!!!!!!What will happen if we try to erase a user from cache which is currently not cached???????????????????
     @Caching(evict = {
             @CacheEvict(value = "user", key = "#user.id", beforeInvocation = true),
             @CacheEvict(value = "users", key = "#user.id", beforeInvocation = true)
     })
     public void evictUserFromCache(User user){}
+    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
     //* Evicts all entries from user-related caches.
     @Caching(evict = {
