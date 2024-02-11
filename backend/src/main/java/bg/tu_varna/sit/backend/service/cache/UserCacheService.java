@@ -52,6 +52,7 @@ public class UserCacheService {
                 .status(ACTIVE)
                 .activity(OFFLINE)
                 .lastLogin(timeService.getInitialUnixEpochDateAndTimeInEET())
+                .unsuccessfulLoginAttempts(0)
                 .build();
         return userRepository.save(newUser);
     }
@@ -82,6 +83,7 @@ public class UserCacheService {
         User updatedUser = user.toBuilder()
                 .activity(ONLINE)
                 .lastLogin(timeService.getCurrentDateAndTimeInBulgaria())
+                .unsuccessfulLoginAttempts(0)
                 .build();
         return userRepository.save(updatedUser);
     }
@@ -97,6 +99,18 @@ public class UserCacheService {
                 .build();
         return userRepository.save(updatedUser);
         }
+
+    //? Updates DB and caches when unsuccessful login attempts of a user are incremented
+    @Caching(put = {
+            @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
+    })
+    public User incrementUnsuccessfulLoginAttemptsOfUser(User user){
+        User updatedUser = user.toBuilder()
+                .unsuccessfulLoginAttempts(user.getUnsuccessfulLoginAttempts()+1)
+                .build();
+        return userRepository.save(updatedUser);
+    }
 
     //? Updates DB and caches when a user is LOCKED
     @Caching(put = {
@@ -119,6 +133,7 @@ public class UserCacheService {
     public User unlockUser(User user){
         User updatedUser = user.toBuilder()
                 .status(ACTIVE)
+                .unsuccessfulLoginAttempts(0)
                 .build();
         return userRepository.save(updatedUser);
     }

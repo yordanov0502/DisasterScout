@@ -8,6 +8,7 @@ import lombok.*;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.index.Indexed;
 import org.springframework.data.mongodb.core.mapping.Document;
+import org.springframework.data.mongodb.core.mapping.Field;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -37,6 +38,8 @@ public class User implements UserDetails {
     private final Status status; //? ACTIVE / LOCKED
     private final Activity activity; //? ONLINE / OFFLINE
     private final Date lastLogin;
+    @Field("ula")
+    private final int unsuccessfulLoginAttempts; //? max 3 for ADMIN & max 5 for DISPATCHER
 
     //The following method is invoked by Spring Security everytime a user try to reach a protected resource
     @Override

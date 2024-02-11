@@ -11,6 +11,8 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.Status.LOCKED;
 
 @Service
@@ -40,31 +42,68 @@ public class UserService {
     //! This method should only be called when a user sent a request to logout
     public User updateUserActivityOnLogout(User user) {return userCacheService.updateUserActivityOnLogout(user);}
 
-    //? Should be called when a dispatcher or "someone" tries to logs in several times but fails inside a predetermined time interval (unsuccessful login attempts rate limit is met or exceeded)
+    //? Should be called when a dispatcher or "someone" tries to log in several times but fails (unsuccessful login attempts rate limit is exceeded)
     public User lockUser(User user) {return userCacheService.lockUser(user);}
 
     //? Should be called only by admin (to unlock a certain dispatcher)
     public User unlockUser(User user) {return userCacheService.unlockUser(user);}
 
     //! Should be called only by LoginAuthenticationFilter
+    //? Unsuccessful login attempts(valid username, BUT invalid password) are incremented only if user is OFFLINE AND ACTIVE
     public User checkUserCredentials(LoginDTO loginDTO){
         User user = userCacheService.getUserByUsername(loginDTO.getUsername());
 
-        if (!(user!=null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())))
-        {throw new BadCredentialsException("Invalid username or password.");}
+        //* if user does NOT exist or password from loginDTO does NOT match the password of the existing user
+        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
 
-        //? Checks if a user is already logged in, in order to prevent logging in
-        //? 2nd time from another device, if a user is already logged in.(This is done for security reasons)
-        //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
-        if(user.getActivity().equals(ONLINE))
-        {throw new BadCredentialsException("User is already logged in.");}
+            //*user DOES exist BUT the password from loginDTO does NOT match the password of the existing user
+            if (user != null)
+            {
+                //? Checks if a user is already logged in, in order to prevent incrementing unsuccessful login attempts
+                //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
+                if(user.getActivity().equals(ONLINE))
+                {throw new BadCredentialsException("User is already logged in.");}
 
-        //? Checks if a user's account is locked, in order to prevent logging in, if a user's account is indeed locked
-        //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
-        if(user.getStatus().equals(LOCKED))
-        {throw new BadCredentialsException("User is currently locked.");}
+                //? Checks if a user's account is locked, in order to prevent incrementing unsuccessful login attempts
+                //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
+                else if(user.getStatus().equals(LOCKED))
+                {throw new BadCredentialsException("User is currently locked.");}
 
-        else {return user;}
+                else
+                {
+                    User updatedUser = userCacheService.incrementUnsuccessfulLoginAttemptsOfUser(user);
+
+                    if(updatedUser.getRole().equals(ADMIN) && updatedUser.getUnsuccessfulLoginAttempts()>3)
+                    {   lockUser(updatedUser);
+                        throw new BadCredentialsException("Admin has been locked.");
+                    }
+
+                    if(updatedUser.getRole().equals(DISPATCHER) && updatedUser.getUnsuccessfulLoginAttempts()>5)
+                    {   lockUser(updatedUser);
+                        throw new BadCredentialsException("Dispatcher has been locked.");
+                    }
+                }
+
+            }
+            throw new BadCredentialsException("Invalid username or password.");
+        }
+
+        //* username and password from loginDTO matched the username and password of existing user
+        else
+        {
+            //? Checks if a user is already logged in, in order to prevent logging in
+            //? 2nd time from another device, if a user is already logged in.(This is done for security reasons)
+            //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
+            if(user.getActivity().equals(ONLINE))
+            {throw new BadCredentialsException("User is already logged in.");}
+
+            //? Checks if a user's account is locked, in order to prevent logging in, if a user's account is indeed locked
+            //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
+            else if(user.getStatus().equals(LOCKED))
+            {throw new BadCredentialsException("User is currently locked.");}
+
+            else {return user;}
+        }
     }
 
     //? password from registrationDTO is encoded here in the method and sent to the userCacheService,

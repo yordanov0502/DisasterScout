@@ -42,7 +42,7 @@ class ExistingUsernameValidationUTest {
     @Test
     void isValid_withDifferentUsername_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","currentUsername","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date());
+        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","currentUsername","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date(),0);
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
@@ -56,7 +56,7 @@ class ExistingUsernameValidationUTest {
     @Test
     void isValid_withSameUsername_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","currentUsername","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date());
+        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","currentUsername","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date(),0);
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
@@ -70,7 +70,7 @@ class ExistingUsernameValidationUTest {
     @Test
     void isValid_withExistingUsername_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","currentUsername","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date());
+        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","currentUsername","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date(),0);
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
