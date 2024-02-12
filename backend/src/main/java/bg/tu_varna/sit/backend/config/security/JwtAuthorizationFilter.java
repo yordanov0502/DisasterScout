@@ -22,8 +22,8 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 import java.util.Date;
 
-import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
 
 //? This filter is applied every time when someone tries to access a protected endpoint
 //? and if the "someone" has a valid JWT, a UsernamePasswordAuthenticationToken is created for this "someone" and then

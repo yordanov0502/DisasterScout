@@ -10,10 +10,10 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
-import static bg.tu_varna.sit.backend.models.enums.Status.LOCKED;
+import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
 
 @Service
 @RequiredArgsConstructor

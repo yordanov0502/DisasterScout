@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.backend.models.mapper;
+package bg.tu_varna.sit.backend.models.mapper.user;
 
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;

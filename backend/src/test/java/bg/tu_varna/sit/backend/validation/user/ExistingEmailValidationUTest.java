@@ -15,9 +15,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.Date;
 
-import static bg.tu_varna.sit.backend.models.enums.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

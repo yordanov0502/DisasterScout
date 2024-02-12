@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static bg.tu_varna.sit.backend.models.enums.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
 
 @Service
 @RequiredArgsConstructor

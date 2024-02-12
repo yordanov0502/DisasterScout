@@ -1,8 +1,8 @@
 package bg.tu_varna.sit.backend.models.entity;
 
-import bg.tu_varna.sit.backend.models.enums.Activity;
-import bg.tu_varna.sit.backend.models.enums.Role;
-import bg.tu_varna.sit.backend.models.enums.Status;
+import bg.tu_varna.sit.backend.models.enums.user.Activity;
+import bg.tu_varna.sit.backend.models.enums.user.Role;
+import bg.tu_varna.sit.backend.models.enums.user.Status;
 import com.mongodb.annotations.Immutable;
 import lombok.*;
 import org.springframework.data.annotation.Id;

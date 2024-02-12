@@ -2,7 +2,7 @@ package bg.tu_varna.sit.backend.controller.external;
 
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.mapper.UserMapper;
+import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

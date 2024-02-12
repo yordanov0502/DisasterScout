@@ -5,22 +5,19 @@ import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.util.TimeService;
-import com.github.benmanes.caffeine.cache.Cache;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
-import static bg.tu_varna.sit.backend.models.enums.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.Role.DISPATCHER;
-import static bg.tu_varna.sit.backend.models.enums.Status.ACTIVE;
-import static bg.tu_varna.sit.backend.models.enums.Status.LOCKED;
+import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
 
 //? More info about unless cache clause -> https://stackoverflow.com/questions/12113725/how-do-i-tell-spring-cache-not-to-cache-null-value-in-cacheable-annotation
 

@@ -11,7 +11,7 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import static bg.tu_varna.sit.backend.models.enums.Role.*;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.*;
 
 
 @Configuration

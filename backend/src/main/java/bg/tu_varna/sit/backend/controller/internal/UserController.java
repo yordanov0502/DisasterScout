@@ -2,7 +2,7 @@ package bg.tu_varna.sit.backend.controller.internal;
 
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.mapper.UserMapper;
+import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import bg.tu_varna.sit.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
