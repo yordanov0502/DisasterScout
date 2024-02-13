@@ -54,14 +54,15 @@ public class JwtService {
     }
 
     private String generateToken(Map<String,Object> extraClaims, User user){
-        Date currentDateAndTimeInBulgaria = timeService.getCurrentDateAndTimeInBulgaria();
+        Date jwtIssuedAt = timeService.addMinutesToCurrentDateAndTime(timeService.getCurrentDateAndTimeInBulgaria(),1);
+        Date jwtExpiration = timeService.addHoursToCurrentDateAndTime(jwtIssuedAt,getHoursOfJwtValidity(user));
 
         return Jwts
                 .builder()
                 .setClaims(extraClaims)
                 .setSubject(user.getId())
-                .setIssuedAt(timeService.addMinutesToCurrentDateAndTime(currentDateAndTimeInBulgaria,1)) //? JWT issuedAt field is set to be plus 1 minute over the actual data & time of user login, because if it is exactly the same as the login date & time, the business logic for JWT validation might break and fail due to high network traffic or slow internet connection. Generally, it is good for a JWT to be created(issuedAt) shortly after user has logged in, but NEVER BEFORE it for security reasons.
-                .setExpiration(timeService.addHoursToCurrentDateAndTime(currentDateAndTimeInBulgaria,getHoursOfJwtValidity(user))) //! Duration varies according to the user's ROLE
+                .setIssuedAt(jwtIssuedAt) //? JWT issuedAt field is set to be plus 1 minute over the actual data & time of user login, because if it is exactly the same as the login date & time, the business logic for JWT validation might break and fail due to high network traffic or slow internet connection. Generally, it is good for a JWT to be created(issuedAt) shortly after user has logged in, but NEVER BEFORE it for security reasons.
+                .setExpiration(jwtExpiration) //! Duration varies according to the user's ROLE
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
