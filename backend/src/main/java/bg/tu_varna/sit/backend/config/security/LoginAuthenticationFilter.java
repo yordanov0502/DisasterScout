@@ -5,13 +5,16 @@ import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.UserService;
 import bg.tu_varna.sit.backend.validation.user.CustomLoginRegexValidation;
 import com.google.gson.Gson;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseCookie;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -28,6 +31,14 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class LoginAuthenticationFilter {
 
+    @Value("${env.BACKEND_DOMAIN}")
+    private String BACKEND_DOMAIN;
+    @Value("${env.BACKEND_SECURED_PATH}")
+    private String BACKEND_SECURED_PATH;
+    @Value("${env.SAME_SITE_POLICY1}")
+    private String SAME_SITE_POLICY1;
+    @Value("${env.HTTP_ONLY_COOKIE_NAME}")
+    private String HTTP_ONLY_COOKIE_NAME;
     private final AuthenticationManager authenticationManager;
     private final UserService userService;
     private final JwtService jwtService;
@@ -44,14 +55,26 @@ public class LoginAuthenticationFilter {
         return authenticationFilter;
     }
 
-    private static boolean matches(HttpServletRequest httpServletRequest) {
+    private static boolean matches(HttpServletRequest httpServletRequest) {                             //?path of the login endpoint
         return httpServletRequest.getMethod().equals("POST") && httpServletRequest.getRequestURI().equals("/api/external/login");
     }
     private void successHandler(HttpServletRequest httpServletRequest, HttpServletResponse httpServletResponse, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             User principal = (User) authentication.getPrincipal();
             userService.updateUserActivityAndLastLogin(principal);
-            httpServletResponse.setHeader(HttpHeaders.AUTHORIZATION, "Bearer " + jwtService.generateToken(userService.getUserById(principal.getId())));
+            String generatedJWT = jwtService.generateToken(userService.getUserById(principal.getId()));
+            //? cookie of type "ResponseCookie" is used instead of type "Cookie", because the "ResponseCookie" type has an attribute SameSite, which I can set for security reasons
+            ResponseCookie cookie = ResponseCookie.from(HTTP_ONLY_COOKIE_NAME,generatedJWT)
+                    .httpOnly(true)
+                    .secure(true) //? Indicates to the browser whether the cookie should only be sent using a secure protocol, such as HTTPS or SSL.
+                    .domain(BACKEND_DOMAIN)
+                    .path(BACKEND_SECURED_PATH) //! This cookie should be sent from the client to the backend only when this specific path is matched. All secured paths begin with this part.
+                    .maxAge(jwtService.getSecondsOfJwtValidity(principal)) //? Max age of the httpOnly cookie MUST be equal to the validity period of the JWT, just to make sure the httpOnly cookie is not deleted by the browser while the JWT is still valid (in normal conditions excluding the logout business logic). Both depending on the role of the user.
+                    .sameSite(SAME_SITE_POLICY1)
+                    .build();
+            //!!! ANOTHER COOKIE TO SET FOR LOCAL STORAGE
+            httpServletResponse.setHeader(HttpHeaders.SET_COOKIE, cookie.toString());
+            //!!! ANOTHER HEADER TO SET WITH THE COOKIE FOR THE LOCAL STORAGE
             httpServletResponse.setStatus(HttpServletResponse.SC_OK);
             SecurityContextHolder.getContext().setAuthentication(authentication);
         }

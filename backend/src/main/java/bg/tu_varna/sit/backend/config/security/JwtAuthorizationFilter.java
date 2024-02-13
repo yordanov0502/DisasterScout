@@ -8,16 +8,18 @@ import io.jsonwebtoken.UnsupportedJwtException;
 import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpHeaders;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.lang.NonNull;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetailsSource;
 import org.springframework.stereotype.Component;
 import org.springframework.web.filter.OncePerRequestFilter;
+import org.springframework.web.util.WebUtils;
 
 import java.io.IOException;
 import java.util.Date;
@@ -33,6 +35,8 @@ import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
 @RequiredArgsConstructor
 public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
+    @Value("${env.HTTP_ONLY_COOKIE_NAME}")
+    private String HTTP_ONLY_COOKIE_NAME;
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
 
@@ -43,18 +47,26 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
-        final String authHeader = request.getHeader(HttpHeaders.AUTHORIZATION);//header which contains JWT token
-        final String jwt;
-        String extractedId=null;
-        Date extractedIssuedAt=null;
+        String jwt;
 
-        if (authHeader == null || !authHeader.startsWith("Bearer "))
+        //? Check whether the request contains a cookie with name "httpOnlyCookie"
+        Cookie httpOnlyCookie = WebUtils.getCookie(request,HTTP_ONLY_COOKIE_NAME);
+
+        if (httpOnlyCookie != null)
         {
-            filterChain.doFilter(request, response);//passing request and response to the next filter
+            //* Extract jwt from the httpOnlyCookie
+            jwt = httpOnlyCookie.getValue();
+        }
+        else
+        {
+            //! If no cookie found, proceed without setting authentication context
+            filterChain.doFilter(request, response);
             return;
         }
-
-        jwt = authHeader.substring(7);
+        //* Otherwise proceed with the found JWT...
+        String extractedId = null;
+        Date extractedIssuedAt = null;
+        System.out.println("FOR DEBUG PURPOSES:"+jwt); //????????????????????????????????????? JUST FOR DEBUG PURPOSE TO SEE IF IT MATCHES INDEED THE EXPECTED REUSLT
         try
         {
             extractedId = jwtService.extractId(jwt);
@@ -62,6 +74,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         }
         catch (ExpiredJwtException exception){
             System.out.println("JWT expired");
+            //????????????????????????????????????
+            //!!! IF JWT IS EXPIRED, THEN THE USER ACTIVITY MUST BE SET TO "OFFLINE" right here by calling the method(to be created if it doesn't exist) for logout in the userService calling the method "updateUserActivityOnLogout(User user)" from the userCacheService respectfully
+            //????????????????????????????????????
         }
         catch (SignatureException | MalformedJwtException | UnsupportedJwtException exception){
             System.out.println("Signature exception");
@@ -72,7 +87,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         catch (IllegalArgumentException exception){
             System.out.println("Unable to get JWT token");
         }
-        //!System.out.println("JWT authorization filter executed");
 
         if(extractedId != null && extractedIssuedAt != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated
              {

@@ -28,9 +28,18 @@ const NotFoundPage = lazy(() =>
 export const Router = () => {
   return (
     <Routes>
+      
+       {/* Pages should have redirect to cms main page if authenticatedCookie is available on the local storage, after that request to empty but secured endpoint should be made to check the validity of the jwt inside httpOnly cookie if of course exists */}
       <Route path="/login" element={<LoginPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-      <Route index element={<HomePage />} /> {/* "index" is equal to "/" */}
+        {/* Pages should have redirect to cms main page if authenticatedCookie is available on the local storage, after that request to empty but secured endpoint should be made to check the validity of the jwt inside httpOnly cookie if of course exists */}
+
+
+
+
+
+
+        <Route index element={<HomePage />} /> {/* "index" is equal to "/" */}
       <Route path="*" element={<NotFoundPage />} />
     </Routes>
   );

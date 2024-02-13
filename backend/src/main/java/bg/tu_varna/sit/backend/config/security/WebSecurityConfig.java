@@ -43,7 +43,10 @@ public class WebSecurityConfig {
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);
-        //TODO: Strict CSP (to prevent potential XSS attacks, despite the fact that user input is validated by regex)
+        //TODO: Strict CSP (to prevent potential XSS attacks, despite the fact that user input is validated by regex) // Using HttpOnly cookies for authentication tokens is a best practice to mitigate XSS (Cross-Site Scripting) attacks, as it prevents malicious scripts from accessing the authentication token.
+        //TODO: [Cross-Origin Isolated: NO] to be reviewed at certain point -> Developer Tools -> Application
+        //TODO: [COEP: None] to be reviewed at certain point -> Developer Tools -> Application
+        //TODO: [COOP: UnsafeNone] to be reviewed at certain point -> Developer Tools -> Application
         return http.build();
     }
 }

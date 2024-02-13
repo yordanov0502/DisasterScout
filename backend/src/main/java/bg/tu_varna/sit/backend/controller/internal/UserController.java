@@ -6,12 +6,11 @@ import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import bg.tu_varna.sit.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.PutMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -31,6 +30,11 @@ public class UserController {
     @PutMapping()
     public UserDTO updateUser(@AuthenticationPrincipal User user, @Validated(value = UserDTO.Group.class) @RequestBody UserDTO userDTO) {
        return userMapper.mapToUserDTO(userService.updateUser(user, userDTO));
+    }
+
+    @GetMapping()
+    public ResponseEntity<String> getUser(@AuthenticationPrincipal User user){
+        return new ResponseEntity<>("User "+ user.getFirstName() +" has been authenticated successfully",HttpStatus.OK);
     }
 
     // /update/password

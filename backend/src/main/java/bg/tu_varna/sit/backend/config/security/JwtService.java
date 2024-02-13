@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
 
 @Service
 @RequiredArgsConstructor
@@ -54,8 +54,6 @@ public class JwtService {
     }
 
     private String generateToken(Map<String,Object> extraClaims, User user){
-        int hoursOfJwtValidity = 12; //? 12H for dispatcher
-        if(user.getRole().equals(ADMIN)) {hoursOfJwtValidity = 24;} //? 24H for admin
         Date currentDateAndTimeInBulgaria = timeService.getCurrentDateAndTimeInBulgaria();
 
         return Jwts
@@ -63,7 +61,7 @@ public class JwtService {
                 .setClaims(extraClaims)
                 .setSubject(user.getId())
                 .setIssuedAt(timeService.addMinutesToCurrentDateAndTime(currentDateAndTimeInBulgaria,1)) //? JWT issuedAt field is set to be plus 1 minute over the actual data & time of user login, because if it is exactly the same as the login date & time, the business logic for JWT validation might break and fail due to high network traffic or slow internet connection. Generally, it is good for a JWT to be created(issuedAt) shortly after user has logged in, but NEVER BEFORE it for security reasons.
-                .setExpiration(timeService.addHoursToCurrentDateAndTime(currentDateAndTimeInBulgaria,hoursOfJwtValidity)) //! Duration varies according to the user's ROLE
+                .setExpiration(timeService.addHoursToCurrentDateAndTime(currentDateAndTimeInBulgaria,getHoursOfJwtValidity(user))) //! Duration varies according to the user's ROLE
                 .signWith(getSignInKey(), SignatureAlgorithm.HS256)
                 .compact();
     }
@@ -71,6 +69,21 @@ public class JwtService {
     private Key getSignInKey() {
         byte [] keyBytes = Decoders.BASE64.decode(SECRET_KEY);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    //? Returns how long a JWT should be valid based on the role of a user
+    // 12H for DISPATCHER
+    // 24H for ADMIN
+    public int getHoursOfJwtValidity(User user){
+        if(user.getRole().equals(DISPATCHER)) return 12;
+        else return 24;
+    }
+
+    //? Returns how long a JWT should be valid based on the role of a user
+    // 12H for DISPATCHER
+    // 24H for ADMIN
+    public int getSecondsOfJwtValidity(User user){
+       return getHoursOfJwtValidity(user) * 60 * 60;
     }
 
 //    @Deprecated(forRemoval = false)
