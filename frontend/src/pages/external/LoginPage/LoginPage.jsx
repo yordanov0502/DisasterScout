@@ -19,10 +19,15 @@ export const LoginPage = () => {
   };
 
   const loginMutation = useMutation({
-    mutationFn: (credentials) => { return axios.post(API_URL + "/external/login", credentials);},
+    mutationFn: (credentials) => { return axios.post(API_URL + "/external/login", credentials,{withCredentials: true});},
     onSuccess: (response) => {
       // Handle success (e.g., navigate to dashboard, store token, etc.)
       console.log("Login Successful", response.data);
+      console.log(
+        axios.get(API_URL + "/internal/user", { withCredentials: true })
+        .then(response => console.log(response))
+        .catch(error => console.error(error))
+      ); //????????????????????????????????
     },
     onError: (error) => {
       // Handle error

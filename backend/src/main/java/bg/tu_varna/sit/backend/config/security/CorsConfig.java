@@ -20,7 +20,8 @@ public class CorsConfig {
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //TODO: "https://localhost" should be replaced with original domain name when webapp is deployed
-        corsConfiguration.setAllowedOrigins(List.of("https://localhost"));
+        //corsConfiguration.setAllowedOrigins(List.of("https://localhost")); //this also works, but the line below is preferred, because it written in the docs when you click over "setAllowedOriginPatterns" that it can work along with setAllowCredentials set to true
+        corsConfiguration.setAllowedOriginPatterns(List.of("https://localhost")); //? allowedOriginPatterns can be used in combination with setAllowCredentials set to true.
         corsConfiguration.setAllowCredentials(true); //? allows cookies
         corsConfiguration.setAllowedHeaders(List.of("*"));
         corsConfiguration.setAllowedMethods(List.of("*"));
