@@ -64,9 +64,9 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             return;
         }
         //* Otherwise proceed with the found JWT...
+
         String extractedId = null;
         Date extractedIssuedAt = null;
-        System.out.println("FOR DEBUG PURPOSES:"+jwt); //????????????????????????????????????? JUST FOR DEBUG PURPOSE TO SEE IF IT MATCHES INDEED THE EXPECTED REUSLT
         try
         {
             extractedId = jwtService.extractId(jwt);
@@ -75,7 +75,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
         catch (ExpiredJwtException exception){
             System.out.println("JWT expired");
             //????????????????????????????????????
-            //!!! IF JWT IS EXPIRED, THEN THE USER ACTIVITY MUST BE SET TO "OFFLINE" right here by calling the method(to be created if it doesn't exist) for logout in the userService calling the method "updateUserActivityOnLogout(User user)" from the userCacheService respectfully
+            //!!! IF JWT IS EXPIRED, THEN THE USER ACTIVITY MUST BE SET TO "OFFLINE" right here by calling the method(to be created if it doesn't exist) for logout in the userService calling the method "updateUserActivityOnLogout(User user)" from the userCacheService respectfully and ALSO INVALIDATING THE httpOnlyCookie on the frontEnd with setting its maxAge at 0(A value of 0 means the cookie should expire immediately)
             //????????????????????????????????????
         }
         catch (SignatureException | MalformedJwtException | UnsupportedJwtException exception){
