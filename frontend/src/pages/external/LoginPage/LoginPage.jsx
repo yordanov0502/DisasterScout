@@ -2,9 +2,8 @@ import { useState } from "react";
 import "./login_page.scss";
 import { validateLoginForm } from "../../../validations/userRegexValidation";
 import { LoginComponent } from "../../../components/LoginComponent";
-import axios from "axios";
-import { API_URL } from "../../../utils/constants.js";
 import { useMutation } from "@tanstack/react-query";
+import { loginRequest } from "../../../services/userService";
 
 export const LoginPage = () => {
   const [loginForm, setLoginForm] = useState({
@@ -13,21 +12,11 @@ export const LoginPage = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const handleInput = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value.trim() });
-    setErrorMessage(""); // Clear error message when user starts typing
-  };
-
   const loginMutation = useMutation({
-    mutationFn: (credentials) => { return axios.post(API_URL + "/external/login", credentials,{withCredentials: true});},
+    mutationFn: loginRequest,
     onSuccess: (response) => {
       // Handle success (e.g., navigate to dashboard, store token, etc.)
       console.log("Login Successful", response.data);
-      console.log(
-        axios.get(API_URL + "/internal/user", { withCredentials: true })
-        .then(response => console.log(response))
-        .catch(error => console.error(error))
-      ); //????????????????????????????????
     },
     onError: (error) => {
       // Handle error
@@ -35,6 +24,11 @@ export const LoginPage = () => {
       //setErrorMessage('Login failed on server. Please try again.');
     },
   });
+
+  const handleInput = (e) => {
+    setLoginForm({ ...loginForm, [e.target.name]: e.target.value.trim() });
+    setErrorMessage(""); // Clear error message when user starts typing
+  };
 
   const onPressLogin = (event) => {
     event.preventDefault();
