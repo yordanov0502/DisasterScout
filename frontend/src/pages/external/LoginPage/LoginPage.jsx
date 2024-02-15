@@ -12,7 +12,7 @@ export const LoginPage = () => {
   });
   const [errorMessage, setErrorMessage] = useState("");
 
-  const loginMutation = useMutation({
+  const loginMutation = useMutation({ //!!!!!!!!!!!!!!!!!!!!TODO: IMPLEMENT LOGIN RATE LIMIT 10 PER COUPLE OF MINUTES
     mutationFn: loginRequest,
     onSuccess: (response) => {
       // Handle success (e.g., navigate to dashboard, store token, etc.)
@@ -20,8 +20,10 @@ export const LoginPage = () => {
     },
     onError: (error) => {
       // Handle error
+      setErrorMessage("Невалидно потребителско име или парола.") //! regex passed, but apparently wrong credentials
       console.error("Login Failed", error);
       //setErrorMessage('Login failed on server. Please try again.');
+      //!TODO based on different error codes, different snackbars/alerts to appear
     },
   });
 

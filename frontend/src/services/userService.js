@@ -1,6 +1,6 @@
-import axios from "axios";
-import { API_URL } from "../utils/constants";
+import { axiosInstanceWithCredentials } from "../utils/axiosInstances";
 
-export const loginRequest = (credentials) => {
-  return axios.post(`${API_URL}/external/login`, credentials, { withCredentials: true });
+
+export const loginRequest = (loginForm) => {
+  return axiosInstanceWithCredentials.post("/external/login", loginForm);
 };
