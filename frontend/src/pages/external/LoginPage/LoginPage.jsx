@@ -4,6 +4,7 @@ import { validateLoginForm } from "../../../validations/userRegexValidation";
 import { LoginComponent } from "../../../components/LoginComponent";
 import { useMutation } from "@tanstack/react-query";
 import { loginRequest } from "../../../services/userService";
+import { useLoginRateLimit } from "../../../hooks/useLoginRateLimit";
 
 export const LoginPage = () => {
   const [loginForm, setLoginForm] = useState({
@@ -11,20 +12,27 @@ export const LoginPage = () => {
     password: "",
   });
   const [errorMessage, setErrorMessage] = useState("");
+  const { isSuspended, incrementLoginAttempts, resetSuspension } = useLoginRateLimit(); //? On 10th unsuccessful login attempt, suspension is set for a duration of 10 minutes for the current browser tab session
 
-  const loginMutation = useMutation({ //!!!!!!!!!!!!!!!!!!!!TODO: IMPLEMENT LOGIN RATE LIMIT 10 PER COUPLE OF MINUTES
+  const loginMutation = useMutation({ 
     mutationFn: loginRequest,
     onSuccess: (response) => {
-      // Handle success (e.g., navigate to dashboard, store token, etc.)
       console.log("Login Successful", response.data);
+      resetSuspension();
+      // Handle success (e.g., navigate to dashboard, store token, etc.)
     },
-    onError: (error) => {
-      // Handle error
-      setErrorMessage("Невалидно потребителско име или парола.") //! regex passed, but apparently wrong credentials
-      console.error("Login Failed", error);
-      //setErrorMessage('Login failed on server. Please try again.');
-      //!TODO based on different error codes, different snackbars/alerts to appear
-    },
+    onError: (error) => { //? Regex passed, API call made, but apparently wrong credentials
+      if (!isSuspended()) 
+      {
+        setErrorMessage("Невалидно потребителско име или парола."); 
+        console.log("Login Failed", error);
+        incrementLoginAttempts(); // Increment loginAttempts after unfulfilling API response
+      } 
+      else 
+      {
+        setErrorMessage("Невалидно потребителско име или парола.");
+      }
+    }
   });
 
   const handleInput = (e) => {
@@ -34,11 +42,24 @@ export const LoginPage = () => {
 
   const onPressLogin = (event) => {
     event.preventDefault();
-    const validationMessage = validateLoginForm(loginForm.username,loginForm.password); //* If validation passes, validationMessage is ""
+    //!!!!!!!!!!!!!!!!DISABLE BUTTON FOR COUPLE OF SECONDS AFTER CLICK 
+    //!!!!!!!!!!!!!!!!IN ORDER TO PREVENT SENDING SAME CREDENTIALS 2 OR MORE TIMES, BEFORE RECEIVING RESPONSE FROM REGEX OR API
+
+    const validationMessage = validateLoginForm(loginForm.username,loginForm.password); //If validation passes, validationMessage is ""
     setErrorMessage(validationMessage);
 
-    if (!validationMessage) {
-      loginMutation.mutate(loginForm); //? here the above useMutation hook is called
+    if (isSuspended()) 
+    { 
+      return;
+    }
+
+    if (!validationMessage) 
+    {
+      loginMutation.mutate(loginForm); //? Here the above useMutation hook is called
+    }
+    else
+    { 
+      incrementLoginAttempts();  //Increment loginAttempts on a regex validation error
     }
   };
 
