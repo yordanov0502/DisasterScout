@@ -1,7 +1,7 @@
 import { useState } from "react";
-import "./forgot_password_page.scss";
 import { validateForgotPasswordForm } from "../../../validations/userRegexValidation";
 import { ForgotPasswordComponent } from "../../../components/ForgotPasswordComponent";
+import "./forgot_password_page.scss";
 
 export const ForgotPasswordPage = () => {
   const [email, setEmail] = useState("");

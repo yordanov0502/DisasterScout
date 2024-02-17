@@ -1,5 +1,5 @@
-import "./forgot_password_component.scss";
 import EmailIcon from "@mui/icons-material/Email";
+import "./forgot_password_component.scss";
 
 export const ForgotPasswordComponent = ({ email, errorMessage, handleInput, onPressForgotPassword }) => {
 

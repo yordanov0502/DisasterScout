@@ -1,7 +1,7 @@
-import "./login_component.scss";
+import { Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
-import { Link } from "react-router-dom";
+import "./login_component.scss";
 
 export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin, isRequestSent}) => {
 

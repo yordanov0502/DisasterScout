@@ -1,5 +1,5 @@
-import "./not_found_component.scss";
 import { useNavigate } from "react-router-dom";
+import "./not_found_component.scss";
 
 export const NotFoundComponent = () => {
   const navigate = useNavigate();
