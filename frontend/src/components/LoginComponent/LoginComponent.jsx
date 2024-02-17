@@ -3,7 +3,7 @@ import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
 import { Link } from "react-router-dom";
 
-export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin}) => {
+export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin, isRequestSent}) => {
 
   return (
     <div className="login">
@@ -40,7 +40,7 @@ export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLog
           Забравена парола?
           </Link> 
           {errorMessage && <div className="login__component__error-message">{errorMessage}</div>}
-          <button type="submit" className="login__component__submit">Вход</button>
+          <button type="submit" className="login__component__submit" disabled={isRequestSent}>Вход</button>
         </form>
       </div>
     </div>
