@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.controller.external;
 
-import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
+import bg.tu_varna.sit.backend.models.dto.user.LoginResponseDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import io.swagger.v3.oas.annotations.Operation;
@@ -19,6 +19,6 @@ public class LoginController {
 
     @Operation(summary = "Login",
                description = "When this endpoint is called LoginAuthenticationFilter is triggered. Inside the filter is performed all logic related to the login process.")
-    @PostMapping
-    public UserDTO login(@AuthenticationPrincipal User user) {return userMapper.mapToUserDTO(user);}
+    @PostMapping()
+    public LoginResponseDTO login(@AuthenticationPrincipal User user) {return userMapper.mapToLoginResponseDTO(user);}
 }
