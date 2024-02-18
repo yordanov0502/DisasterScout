@@ -3,13 +3,10 @@ package bg.tu_varna.sit.backend.models.dto.user;
 import bg.tu_varna.sit.backend.validation.user.PasswordRegexValidation;
 import bg.tu_varna.sit.backend.validation.user.annotation.PasswordRegex;
 import jakarta.validation.GroupSequence;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.NotNull;
 
 //? In future I intend to implement forgot password/reset password though email service(sending email for password reset / new password).
 
-public record PasswordChangeDTO(
+public record PasswordUpdateRequestDTO(
         //! Do I really need id here?
         //@NotBlank
         //@NotEmpty

@@ -16,7 +16,7 @@ public class UserMapper {
                 .email(user.getEmail())
                 .username(user.getUsername())
                 .role(user.getRole())
-                //! .array of integers(id of available zones)
+                .availableZones(user.getAvailableZones())
                 .build();
     }
 
