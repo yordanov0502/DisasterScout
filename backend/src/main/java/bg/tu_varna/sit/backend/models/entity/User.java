@@ -13,9 +13,7 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @Builder(toBuilder = true)
 @Getter
@@ -40,6 +38,8 @@ public class User implements UserDetails {
     private final Date lastLogin;
     @Field("ula")
     private final int unsuccessfulLoginAttempts; //? max 3 for ADMIN & max 5 for DISPATCHER
+    @Field("availableZones")
+    private final List<Integer> availableZones;
 
     //The following method is invoked by Spring Security everytime a user try to reach a protected resource
     @Override
@@ -82,4 +82,8 @@ public class User implements UserDetails {
     public Date getLastLogin(){
         return new Date(lastLogin.getTime());
     }
+
+    //? Safe getter method returning a defensive copy of the original entity's list, rather than expose the original one,
+    //? in order to avoid any future modifications performed wherever in the code.
+    public List<Integer> getAvailableZones(){return new ArrayList<>(availableZones);}
 }

@@ -1,8 +1,8 @@
 package bg.tu_varna.sit.backend.service;
 
 import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
+import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
-import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import lombok.RequiredArgsConstructor;
@@ -106,9 +106,9 @@ public class UserService {
         }
     }
 
-    //? password from registrationDTO is encoded here in the method and sent to the userCacheService,
+    //? password from registrationRequestDTO is encoded here in the method and sent to the userCacheService,
     //? because PasswordEncoder cannot be injected into userCacheService, due to circular dependency issue
-    public User registerNewDispatcher(RegistrationDTO registrationDTO){return userCacheService.registerNewDispatcher(registrationDTO,passwordEncoder.encode(registrationDTO.password()));}
+    public User registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO){return userCacheService.registerNewDispatcher(registrationRequestDTO,passwordEncoder.encode(registrationRequestDTO.password()));}
 
     //! This method should be called ONLY by a user, who intends to update HIS data
     public User updateUser(User user, UserDTO userDTO){return userCacheService.updateUser(user,userDTO);}

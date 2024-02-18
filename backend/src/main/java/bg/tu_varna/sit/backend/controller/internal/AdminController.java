@@ -1,9 +1,7 @@
 package bg.tu_varna.sit.backend.controller.internal;
 
-import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.service.UserService;
-import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -23,8 +21,8 @@ public class AdminController {
     @Operation(summary = "Register a new dispatcher",
                description = "Registration of a new dispatcher is performed when this endpoint is called.")
     @PostMapping("/register/dispatcher")
-    public void registerNewDispatcher(@Validated(value = RegistrationDTO.Group.class) @RequestBody RegistrationDTO registrationDTO){
-           userService.registerNewDispatcher(registrationDTO);
+    public void registerNewDispatcher(@Validated(value = RegistrationRequestDTO.Group.class) @RequestBody RegistrationRequestDTO registrationRequestDTO){
+           userService.registerNewDispatcher(registrationRequestDTO);
     }
 
 

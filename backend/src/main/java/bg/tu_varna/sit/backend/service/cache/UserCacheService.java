@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.service.cache;
 
-import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
+import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.repository.UserRepository;
@@ -12,6 +12,9 @@ import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
@@ -38,18 +41,19 @@ public class UserCacheService {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
-    public User registerNewDispatcher(RegistrationDTO registrationDTO,String encodedPassword) {
+    public User registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO, String encodedPassword) {
         User newUser = User.builder()
-                .firstName(registrationDTO.firstName())
-                .lastName(registrationDTO.lastName())
-                .email(registrationDTO.email())
-                .username(registrationDTO.username())
+                .firstName(registrationRequestDTO.firstName())
+                .lastName(registrationRequestDTO.lastName())
+                .email(registrationRequestDTO.email())
+                .username(registrationRequestDTO.username())
                 .password(encodedPassword)
                 .role(DISPATCHER)
                 .status(ACTIVE)
                 .activity(OFFLINE)
                 .lastLogin(timeService.getInitialUnixEpochDateAndTimeInEET())
                 .unsuccessfulLoginAttempts(0)
+                .availableZones(new ArrayList<>(List.of(registrationRequestDTO.initialZone())))
                 .build();
         return userRepository.save(newUser);
     }
