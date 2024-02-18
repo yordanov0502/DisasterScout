@@ -10,7 +10,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @NoArgsConstructor
 //* validations of this DTO are applied in the LoginAuthenticationFilter by CustomLoginRegexValidation
-public class LoginDTO {
+public class LoginRequestDTO {
     private String username;
     private String password;
 }

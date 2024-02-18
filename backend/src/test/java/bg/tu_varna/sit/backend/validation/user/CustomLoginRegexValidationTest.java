@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.validation.user;
 
-import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
+import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -16,38 +16,38 @@ class CustomLoginRegexValidationTest {
 
     @Test
     public void testValidLoginDTO() {
-        LoginDTO validLoginDTO = new LoginDTO("ValidUser123", "Passw0rd!");
-        customLoginRegexValidation.validateLoginDTO(validLoginDTO);
+        LoginRequestDTO validLoginRequestDTO = new LoginRequestDTO("ValidUser123", "Passw0rd!");
+        customLoginRegexValidation.validateLoginRequestDTO(validLoginRequestDTO);
     }
 
     @Test
     public void testInvalidUsername() {
-        LoginDTO invalidUsernameDTO = new LoginDTO("Invalid User", "Passw0rd!");
-        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginDTO(invalidUsernameDTO));
+        LoginRequestDTO invalidUsernameDTO = new LoginRequestDTO("Invalid User", "Passw0rd!");
+        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginRequestDTO(invalidUsernameDTO));
     }
 
     @Test
     public void testInvalidPassword() {
-        LoginDTO invalidPasswordDTO = new LoginDTO("ValidUser123", "invalidpassword");
-        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginDTO(invalidPasswordDTO));
+        LoginRequestDTO invalidPasswordDTO = new LoginRequestDTO("ValidUser123", "invalidpassword");
+        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginRequestDTO(invalidPasswordDTO));
     }
 
     @Test
     public void testInvalidNonAsciiPrintablePassword() {
-        LoginDTO invalidPasswordDTO = new LoginDTO("ValidUser123", "invalidpassword©");
-        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginDTO(invalidPasswordDTO));
+        LoginRequestDTO invalidPasswordDTO = new LoginRequestDTO("ValidUser123", "invalidpassword©");
+        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginRequestDTO(invalidPasswordDTO));
     }
 
     @Test
     public void testNullUsername() {
-        LoginDTO nullUsernameDTO = new LoginDTO(null, "Passw0rd!");
-        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginDTO(nullUsernameDTO));
+        LoginRequestDTO nullUsernameDTO = new LoginRequestDTO(null, "Passw0rd!");
+        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginRequestDTO(nullUsernameDTO));
     }
 
     @Test
     public void testNullPassword() {
-        LoginDTO nullPasswordDTO = new LoginDTO("ValidUser123", null);
-        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginDTO(nullPasswordDTO));
+        LoginRequestDTO nullPasswordDTO = new LoginRequestDTO("ValidUser123", null);
+        assertThrows(BadCredentialsException.class, () -> customLoginRegexValidation.validateLoginRequestDTO(nullPasswordDTO));
     }
 
 }

@@ -5,7 +5,9 @@ import bg.tu_varna.sit.backend.validation.user.annotation.*;
 import jakarta.validation.GroupSequence;
 import lombok.Builder;
 
-//? This DTO is used for updating a user data(this DTO arrives from frontend)
+//? This DTO is used for updating a user data
+//* It arrives from the frontend as part of a request from a client
+//* It is used as part of a response from the server
 @Builder
 public record UserDTO(
         @NameRegex(groups = {NameRegexValidation.class})

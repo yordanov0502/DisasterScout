@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.config.security;
 
-import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
+import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.UserService;
 import bg.tu_varna.sit.backend.validation.user.CustomLoginRegexValidation;
@@ -86,10 +86,10 @@ public class LoginAuthenticationFilter {
         {
             ContentCachingRequestWrapper requestWrapper = new ContentCachingRequestWrapper(request);
             Gson gson = new Gson();
-            LoginDTO loginDTO = gson.fromJson(requestWrapper.getReader(), LoginDTO.class); //! .getReader() can possibly throw IO exception(it is the reason for the try-catch)
-            customLoginRegexValidation.validateLoginDTO(loginDTO); //* validates that username & password match their corresponding regex
-            User user = userService.checkUserCredentials(loginDTO); //* checks whether user credentials match with a document(user)/entry from DB/cache and if so return the user
-            return new UsernamePasswordAuthenticationToken(user.getId(), loginDTO.getPassword());
+            LoginRequestDTO loginRequestDTO = gson.fromJson(requestWrapper.getReader(), LoginRequestDTO.class); //! .getReader() can possibly throw IO exception(it is the reason for the try-catch)
+            customLoginRegexValidation.validateLoginRequestDTO(loginRequestDTO); //* validates that username & password match their corresponding regex
+            User user = userService.checkUserCredentials(loginRequestDTO); //* checks whether user credentials match with a document(user)/entry from DB/cache and if so return the user
+            return new UsernamePasswordAuthenticationToken(user.getId(), loginRequestDTO.getPassword());
         } catch (IOException exception)
         {
             throw new BadCredentialsException("Invalid credentials type.");

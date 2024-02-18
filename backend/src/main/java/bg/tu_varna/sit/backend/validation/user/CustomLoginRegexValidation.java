@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.validation.user;
 
-import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
+import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.stereotype.Service;
@@ -14,8 +14,8 @@ import java.util.regex.Pattern;
 public class CustomLoginRegexValidation {
 
 
-    public void validateLoginDTO(LoginDTO loginDTO){
-        if(!validateUsername(loginDTO.getUsername()) || !validatePassword(loginDTO.getPassword()))
+    public void validateLoginRequestDTO(LoginRequestDTO loginRequestDTO){
+        if(!validateUsername(loginRequestDTO.getUsername()) || !validatePassword(loginRequestDTO.getPassword()))
             throw new BadCredentialsException("Invalid username or password.");
     }
 

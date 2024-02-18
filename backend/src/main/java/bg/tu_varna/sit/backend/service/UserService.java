@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.service;
 
+import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
-import bg.tu_varna.sit.backend.models.dto.user.LoginDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
@@ -50,13 +50,13 @@ public class UserService {
 
     //! Should be called only by LoginAuthenticationFilter
     //? Unsuccessful login attempts(valid username, BUT invalid password) are incremented only if user is OFFLINE AND ACTIVE
-    public User checkUserCredentials(LoginDTO loginDTO){
-        User user = userCacheService.getUserByUsername(loginDTO.getUsername());
+    public User checkUserCredentials(LoginRequestDTO loginRequestDTO){
+        User user = userCacheService.getUserByUsername(loginRequestDTO.getUsername());
 
-        //* if user does NOT exist or password from loginDTO does NOT match the password of the existing user
-        if (user == null || !passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+        //* if user does NOT exist or password from loginRequestDTO does NOT match the password of the existing user
+        if (user == null || !passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
 
-            //*user DOES exist BUT the password from loginDTO does NOT match the password of the existing user
+            //*user DOES exist BUT the password from loginRequestDTO does NOT match the password of the existing user
             if (user != null)
             {
                 //? Checks if a user is already logged in, in order to prevent incrementing unsuccessful login attempts
@@ -88,7 +88,7 @@ public class UserService {
             throw new BadCredentialsException("Invalid username or password.");
         }
 
-        //* username and password from loginDTO matched the username and password of existing user
+        //* username and password from loginRequestDTO matched the username and password of existing user
         else
         {
             //? Checks if a user is already logged in, in order to prevent logging in
