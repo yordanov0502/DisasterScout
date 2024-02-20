@@ -15,6 +15,13 @@ const ForgotPasswordPage = lazy(() =>
     default: module.ForgotPasswordPage,
   }))
 );
+
+const CmsHomePage = lazy(() =>
+  import("../pages/internal/CmsHomePage").then((module) => ({
+    default: module.CmsHomePage,
+  }))
+);
+
 const HomePage = lazy(() =>
   import("../pages/external/HomePage").then((module) => ({
     default: module.HomePage,
@@ -32,6 +39,8 @@ export const Router = () => {
       <Routes>
         <Route path="/login" element={<LoginPage />} />
         <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        
+        <Route path="/cms" element={<CmsHomePage/>}/>
 
         <Route index element={<HomePage />} />
         <Route path="*" element={<NotFoundPage />} />

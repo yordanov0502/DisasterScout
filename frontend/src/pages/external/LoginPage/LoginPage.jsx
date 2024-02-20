@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { useRateLimit } from "../../../hooks/useRateLimit";
@@ -17,6 +18,7 @@ export const LoginPage = () => {
   const { isRequestSent, setIsRequestSent } = useIsRequestSent();
   const { isSuspended, incrementAttempts, resetSuspension } = useRateLimit(); //? On 10th unsuccessful login attempt, suspension is set for a duration of 10 minutes for the current browser tab session
   const { updateUserContext } = useUserContext();
+  const navigate = useNavigate();
 
   const loginMutation = useMutation({
     mutationFn: loginRequest,
@@ -27,8 +29,8 @@ export const LoginPage = () => {
       console.log("Login Successful", response.data); //TODO: remove this log when no more is needed
       resetSuspension();
       updateUserContext(response.data);
-      //set localStorage key value to indicate that user is authenticated
-      //navigate to main cms page
+      localStorage.setItem("isAuthenticated", "TRUE");
+      navigate("/cms");
     },
     onError: (error) => { //? Regex passed, API call made, but apparently wrong credentials
       console.log("Login Failed", error); //TODO: remove this log when no more is needed
