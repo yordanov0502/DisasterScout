@@ -27,10 +27,10 @@ public class AdminController {
 
 
 
-    @GetMapping("/testt")
-    public void testingCache(){
-        System.out.println("CONTROLLEER");
-        System.out.println(userService.getUserById("65c007400dd2a26b5450bc56").toString());
-    }
+//    @GetMapping("/testt")
+//    public void testingCache(){
+//        System.out.println("CONTROLLEER");
+//        System.out.println(userService.getUserById("65c007400dd2a26b5450bc56").toString());
+//    }
 
 }

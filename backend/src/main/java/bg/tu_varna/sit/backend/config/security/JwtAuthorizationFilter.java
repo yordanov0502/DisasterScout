@@ -37,8 +37,13 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
 
     @Value("${env.HTTP_ONLY_COOKIE_NAME}")
     private String HTTP_ONLY_COOKIE_NAME;
+    @Value("${env.EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1}")
+    private String EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1;
+    @Value("${env.EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE2}")
+    private String EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE2;
     private final JwtService jwtService;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
+    private final CustomLogoutHandler customLogoutHandler;
 
     @Override
     protected void doFilterInternal(
@@ -63,8 +68,8 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             filterChain.doFilter(request, response);
             return;
         }
-        //* Otherwise proceed with the found JWT...
 
+        //* Otherwise proceed with the found JWT...
         String extractedId = null;
         Date extractedIssuedAt = null;
         try
@@ -73,19 +78,31 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             extractedIssuedAt = jwtService.extractIssuedAt(jwt);
         }
         catch (ExpiredJwtException exception){
-            System.out.println("JWT expired");
-            //????????????????????????????????????
-            //!!! IF JWT IS EXPIRED, THEN THE USER ACTIVITY MUST BE SET TO "OFFLINE" right here by calling the method(to be created if it doesn't exist) for logout in the userService calling the method "updateUserActivityOnLogout(User user)" from the userCacheService respectfully and ALSO INVALIDATING THE httpOnlyCookie on the frontEnd with setting its maxAge at 0(A value of 0 means the cookie should expire immediately)
-            //????????????????????????????????????
+            System.out.println("ExpiredJwtException thrown in jwt auth filter");
+            request.setAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1,true);
+            request.setAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE2, exception);
+            customLogoutHandler.logout(request,response,null);
+            //! If exception is caught, proceed with the next filter/s and then exit the JwtAuthorizationFilter
+            filterChain.doFilter(request, response);
+            return;
         }
         catch (SignatureException | MalformedJwtException | UnsupportedJwtException exception){
             System.out.println("Signature exception");
+            //! If exception is caught, proceed with the next filter/s and then exit the JwtAuthorizationFilter
+            filterChain.doFilter(request, response);
+            return;
         }
         catch (JwtException exception){
             System.out.println("JwtException");
+            //! If exception is caught, proceed with the next filter/s and then exit the JwtAuthorizationFilter
+            filterChain.doFilter(request, response);
+            return;
         }
         catch (IllegalArgumentException exception){
             System.out.println("Unable to get JWT token");
+            //! If exception is caught, proceed with the next filter/s and then exit the JwtAuthorizationFilter
+            filterChain.doFilter(request, response);
+            return;
         }
 
         if(extractedId != null && extractedIssuedAt != null && SecurityContextHolder.getContext().getAuthentication() == null) //checks if a user is not authenticated

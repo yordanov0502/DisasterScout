@@ -51,7 +51,7 @@ public class UserCacheService {
                 .role(DISPATCHER)
                 .status(ACTIVE)
                 .activity(OFFLINE)
-                .lastLogin(timeService.getInitialUnixEpochDateAndTimeInEET())
+                .lastLogin(timeService.getUnixEpochDateAndTime())
                 .unsuccessfulLoginAttempts(0)
                 .availableZones(new ArrayList<>(List.of(registrationRequestDTO.initialZone())))
                 .build();

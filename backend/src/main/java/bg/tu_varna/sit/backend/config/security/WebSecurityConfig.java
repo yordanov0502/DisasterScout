@@ -1,8 +1,10 @@
 package bg.tu_varna.sit.backend.config.security;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpStatus;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -10,6 +12,7 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Role.*;
 
@@ -24,6 +27,9 @@ public class WebSecurityConfig {
     private final JwtAuthenticationEntryPoint jwtAuthenticationEntryPoint;
     private final JwtAuthorizationFilter jwtAuthorizationFilter;
     private final AuthenticationFilter loginAuthenticationFilter; //* Here AuthenticationFilter is bean LoginAuthenticationFilter
+    private final CustomLogoutHandler customLogoutHandler;
+    @Value("${env.HTTP_ONLY_COOKIE_NAME}")
+    private String HTTP_ONLY_COOKIE_NAME;
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception{
@@ -36,10 +42,16 @@ public class WebSecurityConfig {
         http.authenticationManager(securityConfig.authenticationManager());
         http.addFilterAt(loginAuthenticationFilter, UsernamePasswordAuthenticationFilter.class);
         http.addFilterBefore(jwtAuthorizationFilter, loginAuthenticationFilter.getClass());
+        //? "Since the LogoutFilter appears before the AuthorizationFilter in the filter chain, it is not necessary by default to explicitly permit the /logout endpoint. Thus, only custom logout endpoints that you create inside controllers yourself generally require a permitAll configuration to be reachable."
+        http.logout(logout -> logout.logoutUrl("/api/external/logout") //? Uses POST method by default
+                .addLogoutHandler(customLogoutHandler)
+                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                .clearAuthentication(true)
+                .deleteCookies(HTTP_ONLY_COOKIE_NAME) //! This scope is not triggered when we enter the first case of the customLogoutHandler. Thats why in that first case we manually delete the cookie when we call cookieService and get cookie for deletion
+        );
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasRole(ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/dispatcher/**").hasAnyRole(DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
-        http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/user/**").hasAnyRole(DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.exceptionHandling(exceptionHandling -> exceptionHandling.authenticationEntryPoint(jwtAuthenticationEntryPoint));
         http.sessionManagement((sessionManagement)-> sessionManagement.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         http.csrf(AbstractHttpConfigurer::disable);

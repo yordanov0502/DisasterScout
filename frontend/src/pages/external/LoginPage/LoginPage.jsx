@@ -73,7 +73,8 @@ export const LoginPage = () => {
       {
         setErrorMessage("Невалидно потребителско име или парола."); // error message for suspension
         return;
-      } else 
+      } 
+      else 
       {
         loginMutation.mutate(loginForm); //? Here the above useMutation hook is called
       }

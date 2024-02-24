@@ -37,10 +37,10 @@ public class UserService {
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
     //! This method should only be called by the successHandler of LoginAuthenticationFilter
-    public User updateUserActivityAndLastLogin(User user) {return userCacheService.updateUserActivityAndLastLogin(user);}
+    public User login(User user) {return userCacheService.updateUserActivityAndLastLogin(user);}
 
     //! This method should only be called when a user sent a request to logout
-    public User updateUserActivityOnLogout(User user) {return userCacheService.updateUserActivityOnLogout(user);}
+    public User logout(User user) {return userCacheService.updateUserActivityOnLogout(user);}
 
     //? Should be called when a dispatcher or "someone" tries to log in several times but fails (unsuccessful login attempts rate limit is exceeded)
     public User lockUser(User user) {return userCacheService.lockUser(user);}
