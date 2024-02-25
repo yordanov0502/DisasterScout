@@ -9,6 +9,9 @@ import { useUserContext } from "../../../hooks/useUserContext";
 import { LoginComponent } from "../../../components/LoginComponent";
 import "./login_page.scss";
 
+const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`; 
+const LOCAL_STORAGE_VALUE1 = `${import.meta.env.VITE_LOCAL_STORAGE_VALUE1}`; 
+
 export const LoginPage = () => {
   const [loginForm, setLoginForm] = useState({
     username: "",
@@ -29,7 +32,7 @@ export const LoginPage = () => {
       console.log("Login Successful", response.data); //TODO: remove this log when no more is needed
       resetSuspension();
       updateUserContext(response.data);
-      localStorage.setItem("isAuthenticated", "TRUE");
+      localStorage.setItem(LOCAL_STORAGE_KEY1, LOCAL_STORAGE_VALUE1);
       navigate("/cms");
     },
     onError: (error) => { //? Regex passed, API call made, but apparently wrong credentials

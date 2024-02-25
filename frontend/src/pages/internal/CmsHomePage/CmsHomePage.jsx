@@ -5,6 +5,8 @@ import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { logoutRequest, testRequest } from "../../../services/userService";
 //! Must add import from scss when creating the page
 
+const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`; 
+
 export const CmsHomePage = () => {
 
     const { isRequestSent, setIsRequestSent } = useIsRequestSent();
@@ -32,7 +34,7 @@ export const CmsHomePage = () => {
         onSuccess: (response) => {
           console.log("Logout Successful", response.data); //TODO: remove this log when no more is needed
           clearUserContext();
-          localStorage.removeItem("isAuthenticated");
+          localStorage.removeItem(LOCAL_STORAGE_KEY1);
           navigate("/login");
         },
         onError: (error) => {
