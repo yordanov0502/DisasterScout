@@ -12,3 +12,16 @@ export const logoutRequest = () => {
 export const testRequest = () => {
   return axiosInstanceWithCredentials.get("/internal/dispatcher");
 };
+
+export const addNewDispatcherRequest = () => {
+   return axiosInstanceWithCredentials.post("/internal/admin/register/dispatcher",
+    {
+      firstName:"Емил",
+      lastName:"Ефтимов",
+      email:"eftimovemil20@gmail.com",
+      username:"emil20",
+      password:"B0502HTto$hko",
+      initialZone: 3
+    }
+   );
+};

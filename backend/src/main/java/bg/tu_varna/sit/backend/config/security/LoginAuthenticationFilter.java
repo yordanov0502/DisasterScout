@@ -52,8 +52,7 @@ public class LoginAuthenticationFilter {
     private void successHandler(HttpServletRequest request, HttpServletResponse response, Authentication authentication) {
         if (authentication.isAuthenticated()) {
             User principal = (User) authentication.getPrincipal();
-            userService.login(principal);
-            String generatedJWT = jwtService.generateToken(userService.getUserById(principal.getId()));
+            String generatedJWT = jwtService.generateToken(userService.login(principal));
             response.setHeader(HttpHeaders.SET_COOKIE, cookieService.createHttpOnlyCookie(generatedJWT).toString());
             response.setStatus(HttpServletResponse.SC_OK);
             SecurityContextHolder.getContext().setAuthentication(authentication);

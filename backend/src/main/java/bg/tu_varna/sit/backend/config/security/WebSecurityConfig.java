@@ -45,10 +45,10 @@ public class WebSecurityConfig {
         //? "Since the LogoutFilter appears before the AuthorizationFilter in the filter chain, it is not necessary by default to explicitly permit the /logout endpoint. Thus, only custom logout endpoints that you create inside controllers yourself generally require a permitAll configuration to be reachable."
         http.logout(logout -> logout.logoutUrl("/api/external/logout") //? Uses POST method by default
                 .addLogoutHandler(customLogoutHandler)
-                .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
-                .clearAuthentication(true)
-                .deleteCookies(HTTP_ONLY_COOKIE_NAME) //! This scope is not triggered when we enter the first case of the customLogoutHandler. Thats why in that first case we manually delete the cookie when we call cookieService and get cookie for deletion
-        );
+                        .clearAuthentication(true)
+                        .deleteCookies(HTTP_ONLY_COOKIE_NAME) //! This scope is not triggered when we enter the first case of the customLogoutHandler. Thats why in that first case we manually delete the cookie when we call cookieService and get cookie for deletion
+                        .logoutSuccessHandler(new HttpStatusReturningLogoutSuccessHandler(HttpStatus.OK))
+                );
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/external/**","/error").permitAll());
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/admin/**").hasRole(ADMIN.name())); //"ROLE_" is automatically prepended as requirement
         http.authorizeHttpRequests(authorize -> authorize.requestMatchers("/api/internal/dispatcher/**").hasAnyRole(DISPATCHER.name(), ADMIN.name())); //"ROLE_" is automatically prepended as requirement

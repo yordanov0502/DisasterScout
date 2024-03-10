@@ -1,6 +1,5 @@
 import { lazy } from "react";
 import { Route, Routes } from "react-router-dom";
-import { UserContextProvider } from "../contexts/UserContext";
 
 //* Pages are loaded lazily for successfull implementation of code splitting
 //! React.lazy can work ONLY with default exports
@@ -35,16 +34,14 @@ const NotFoundPage = lazy(() =>
 
 export const Router = () => {
   return (
-    <UserContextProvider>
-      <Routes>
-        <Route path="/login" element={<LoginPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+    <Routes>
+      <Route path="/login" element={<LoginPage />} />
+      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         
-        <Route path="/cms" element={<CmsHomePage/>}/>
+      <Route path="/cms" element={<CmsHomePage/>}/>
 
-        <Route index element={<HomePage />} />
-        <Route path="*" element={<NotFoundPage />} />
-      </Routes>
-    </UserContextProvider>
+      <Route index element={<HomePage />} />
+      <Route path="*" element={<NotFoundPage />} />
+    </Routes>    
   );
 };

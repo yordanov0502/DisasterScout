@@ -13,7 +13,8 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
     @Override
     public void commence(HttpServletRequest request, HttpServletResponse response, AuthenticationException authException) throws IOException {
         //*This method will be called when a user tries to access a protected resource without a valid JWT
-        //*or with an expired/invalid JWT.
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized");
+        //*or with an expired/invalid JWT or even without a JWT.
+        System.out.println("commence triggered");
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorizedddd");
     }
 }

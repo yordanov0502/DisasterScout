@@ -4,10 +4,6 @@ import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.UserService;
 import bg.tu_varna.sit.backend.service.util.CookieService;
 import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
-import io.jsonwebtoken.MalformedJwtException;
-import io.jsonwebtoken.UnsupportedJwtException;
-import io.jsonwebtoken.security.SignatureException;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -37,6 +33,10 @@ public class CustomLogoutHandler implements LogoutHandler {
     private String EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE2;
     @Value("${env.JWT_CLAIM_NAME_FOR_USER_ID}")
     private String JWT_CLAIM_NAME_FOR_USER_ID;
+    @Value("${env.REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER}")
+    private String REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER;
+    @Value("${env.REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER_VALUE}")
+    private String REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER_VALUE;
     private final UserService userService;
     private final UserDetailsServiceImpl userDetailsServiceImpl;
     private final JwtService jwtService;
@@ -48,7 +48,7 @@ public class CustomLogoutHandler implements LogoutHandler {
         //? This if statement is ONLY executed when ExpiredJwtException was thrown and caught inside JwtAuthorizationFilter.
         //? (when a user has tried to access a protected resource with expired jwt stored inside the httpOnlyCookie)
         //* When this statement is true, we manually delete the httpOnlyCookie.
-        Boolean requestAttributeForJwtExpiration = (Boolean) request.getAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1);//? If a ExpiredJwtException was thrown inside the JwtAuthorizationFilter, then this request attribute must have been set
+        Boolean requestAttributeForJwtExpiration = (Boolean) request.getAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1);//? If an ExpiredJwtException was thrown inside the JwtAuthorizationFilter, then this request attribute must have been set
         if(requestAttributeForJwtExpiration != null && requestAttributeForJwtExpiration.equals(TRUE))
         {System.out.println("Entered unintentional logout case");
             String extractedId = null;
@@ -64,15 +64,17 @@ public class CustomLogoutHandler implements LogoutHandler {
 
             if(extractedId != null)
             {
-                User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
-                if(user != null)
-                {
+                try {
+                    User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
                     userService.logout(user);
+                }
+                catch (Exception exception){
+                    System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
                 }
             }
 
             response.setHeader(HttpHeaders.SET_COOKIE, cookieService.createHttpOnlyCookieForDeletion().toString()); //? Here we call the cookieService in order to create httpOnlyCookie for deletion and send it back as a header in the response.
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.setHeader(REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER,REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER_VALUE);
         }
 
         //? This statement is ONLY executed when a user sends a logout request himself.
@@ -95,6 +97,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             }
             else
             {
+                //* NO need for redirect response header as the result should be considered OK
                 return; //! If no httpOnlyCookie was sent with the request exit the CustomLogoutHandler
             }
 
@@ -104,42 +107,46 @@ public class CustomLogoutHandler implements LogoutHandler {
             {
                 extractedId = jwtService.extractId(jwt);
             }
-            catch (ExpiredJwtException expiredJwtException){
-                //* This code executes ONLY when a user wants to logout, but his jwt has expired
-                try{
-                    extractedId = expiredJwtException.getClaims().get(JWT_CLAIM_NAME_FOR_USER_ID,String.class);
-                }
-                catch (Exception exception){
-                    System.out.println("Error extracting user ID from expired JWT: " + exception.getMessage());
-                }
-
-                if(extractedId != null)
+            catch (Exception exception)
+            {
+                System.out.println("Exception caught inside customLogoutHandler: " + exception.getClass().getName());
+                if(exception instanceof ExpiredJwtException)
                 {
-                    User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
-                    if(user != null)
+                    //* This code executes ONLY when a user wants to logout, but his jwt has expired
+                    try{
+                        extractedId = ((ExpiredJwtException)exception).getClaims().get(JWT_CLAIM_NAME_FOR_USER_ID,String.class);
+                    }
+                    catch (Exception e){
+                        System.out.println("Error extracting user ID from expired JWT: " + e.getMessage());
+                    }
+
+                    if(extractedId != null)
                     {
-                        userService.logout(user);
+                        //? It has a try catch block in case a operation with DB fails or user with the specified ID does not exist, so the code flow run smoothly and return OK from the setting set in the security filter chain so the user on the frontend to be redirected to login page successfully
+                        try {
+                            User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
+                            userService.logout(user);
+                        }
+                        catch (Exception ex){
+                            System.out.println("Exception caught: " + ex.getClass().getName()+ex.getMessage() + "\n message: " + ex.getMessage());
+                        }
                     }
                 }
                 return;
             }
-            catch (SignatureException | MalformedJwtException | UnsupportedJwtException exception){
-                System.out.println("Signature exception");
-                return;
-            }
-            catch (JwtException exception){
-                System.out.println("JwtException");
-                return;
-            }
-            catch (IllegalArgumentException exception){
-                System.out.println("Unable to get JWT token");
-                return;
-            }
 
             //* This code executes ONLY when a user wants to logout with still valid(not expired) jwt
-            User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
-            userService.logout(user);
-        }
+            //? It has a try catch block in case a operation with DB fails or user with the specified ID does not exist, so the code flow run smoothly and return OK from the setting set in the security filter chain so the user on the frontend to be redirected to login page successfully
+            try
+            {
+                User user = userDetailsServiceImpl.loadUserByUsername(extractedId);
+                userService.logout(user);
+            }
+            catch (Exception exception)
+            {
+                System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
+            }
 
+        }
     }
 }
