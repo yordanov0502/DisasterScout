@@ -1,16 +1,47 @@
-// import { useNavigate } from "react-router-dom";
-// import { useIsSessionExpired } from "../hooks/useIsSessionExpired";
-// import { useUserContext } from "../hooks/useUserContext";
-// import { useQueryClient } from "@tanstack/react-query";
+import { Navigate } from "react-router-dom";
+import { useUserContext } from "../hooks/useUserContext";
+import { useQuery } from "@tanstack/react-query";
+import { isUserAuthenticated } from "../services/userService";
 
-//const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`;
+const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`;
+const LOCAL_STORAGE_VALUE1 = `${import.meta.env.VITE_LOCAL_STORAGE_VALUE1}`;
 
-export const ProtectedRoute = ({children}) =>{
+export const ProtectedRoute = ({ children }) => {
+  const { isUserContextEmpty,updateUserContext } = useUserContext();
 
-   //isUserLoggedIn when context is null or when locaStorage item does not Exist then in the custom hook try to send api call to empty endpoint but secured just to check whether the cookie of the user is in the browser and the jwt is valid and if so update the context and localstorage item. DO THE SAME FOR LOGIN AND FORGOT PASSWORD PAGE BUT IN DIFFERENT CUSTOM HOOK AND WITH REDIRECT FORWARD IF EVERYTHING IS OK, BUT FOR THIS IF NOTHGIN IS OK THEN REDIRECT TO THE LOGINPAGE
+  const getUserAuthentication = useQuery({
+    queryKey: ["isUserAuthenticated"],
+    queryFn: isUserAuthenticated,
+    enabled: isUserContextEmpty(), //!The query executes ONLY if the userContext is empty
+  });
 
-   
-    
-
+  function doWork(data) {
+    updateUserContext(data);
+    console.log("updated user context");
     return children;
-}
+  }
+
+  if (
+    localStorage.getItem(LOCAL_STORAGE_KEY1) !== null &&
+    localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 &&
+    !isUserContextEmpty()
+  ) {console.log("case 1");
+    return children;
+   } 
+//    else if (
+//     localStorage.getItem(LOCAL_STORAGE_KEY1) !== null &&
+//     localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 &&
+//     isUserContextEmpty()
+//   ) {
+//     //getUserAuthentication.refetch();
+//     //console.log(getUserAuthentication.isSuccess);
+
+//     //return getUserAuthentication.isLoading && <h1>Loading...</h1>
+//     console.log("case 2");
+//      return (getUserAuthentication.isSuccess && doWork(getUserAuthentication.data));
+//   } 
+  else {
+    console.log("case 3");
+    return <Navigate to="/login" />;
+  }
+};

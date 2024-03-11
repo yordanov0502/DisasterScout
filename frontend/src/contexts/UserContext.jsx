@@ -27,8 +27,17 @@ export const UserContextProvider = ({ children }) => {
     });
   };
 
+  //? This function returns true if any of the properties of authenticatedUser is null, 
+  //? which means the context is considered "empty" if it's not fully populated. 
+  //? It will return false only when all properties have been set to non-null values, indicating that 
+  //? the context is fully populated.
+  const isUserContextEmpty = () => {
+    return Object.values(authenticatedUser).some(value => value === null);
+  };
+  
+
   return (
-    <UserContext.Provider value={{ authenticatedUser, updateUserContext, clearUserContext }}>
+    <UserContext.Provider value={{ authenticatedUser, updateUserContext, clearUserContext, isUserContextEmpty }}>
       {children}
     </UserContext.Provider>
   );

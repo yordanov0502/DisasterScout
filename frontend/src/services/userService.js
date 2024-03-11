@@ -14,7 +14,7 @@ export const testRequest = () => {
 };
 
 export const addNewDispatcherRequest = () => {
-   return axiosInstanceWithCredentials.post("/internal/admin/register/dispatcher",
+   return axiosInstanceWithCredentials.post("/internal/admin/register-new-dispatcher",
     {
       firstName:"Емил",
       lastName:"Ефтимов",
@@ -24,4 +24,8 @@ export const addNewDispatcherRequest = () => {
       initialZone: 3
     }
    );
+};
+
+export const isUserAuthenticated = () => {
+   return axiosInstanceWithCredentials.get("/internal/dispatcher/check-authentication");
 };

@@ -4,6 +4,7 @@ import { ForgotPasswordPage } from "../pages/external/ForgotPasswordPage";
 import { CmsHomePage } from "../pages/internal/CmsHomePage";
 import { HomePage } from "../pages/external/HomePage";
 import { NotFoundPage } from "../pages/external/NotFoundPage"; 
+import { ProtectedRoute } from "./ProtectedRoute.jsx";
 
 export const Router = () => {
   return (
@@ -11,7 +12,11 @@ export const Router = () => {
       <Route path="/login" element={<LoginPage />} />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         
-      <Route path="/cms" element={<CmsHomePage/>}/>
+      <Route path="/cms" element={
+      <ProtectedRoute>
+      <CmsHomePage />
+      </ProtectedRoute>
+      }/>
 
       <Route index element={<HomePage />} />
       <Route path="*" element={<NotFoundPage />} />
