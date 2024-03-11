@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
@@ -30,9 +31,16 @@ public class CorsConfig {
         corsConfiguration.setAllowedOriginPatterns(List.of("https://localhost")); //? allowedOriginPatterns can be used in combination with setAllowCredentials set to true.
         corsConfiguration.setAllowCredentials(true); //? allows cookies
         corsConfiguration.setAllowedHeaders(List.of("*",REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER)); //!If you do not add the custom header to the CORS configuration, the browser will not expose it to the JavaScript on the client side, even though it might still be sent by the server and visible in the developer tools. When credentials are involved, wildcard characters like "*" do not work as expected. By default, only a few headers are exposed (Cache-Control, Content-Language, Content-Type, Expires, Last-Modified, Pragma).
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-        corsConfiguration.setAllowedMethods(List.of("*"/*,GET,POST,PUT,DELETE,OPTIONS...*/)); //!MUST ADD METHODS WHICH ARE ALLOWED TO BE USED "WITH CREDENTIALS"
-        //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        corsConfiguration.setAllowedMethods(List.of(
+                HttpMethod.GET.name(),
+                HttpMethod.POST.name(),
+                HttpMethod.PUT.name(),
+                HttpMethod.DELETE.name(),
+                HttpMethod.OPTIONS.name(),
+                HttpMethod.HEAD.name(),
+                HttpMethod.TRACE.name(),
+                HttpMethod.PATCH.name(),
+                "CONNECT"));
         corsConfiguration.setExposedHeaders(List.of("*",REDIRECT_TO_LOGIN_PAGE_RESPONSE_HEADER)); //!!! Should I expose all headers on response ? or not to expose any (new ArrayList<>())? https://docs.spring.io/spring-framework/docs/current/javadoc-api/org/springframework/web/cors/CorsConfiguration.html#setExposedHeaders(java.util.List)  https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Access-Control-Expose-Headers
 
         //* Different browsers might have their own maximum limits for caching, and these limits could be much lower
