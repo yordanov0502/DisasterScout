@@ -6,7 +6,7 @@ import lombok.Builder;
 import java.util.List;
 
 @Builder
-public record LoginResponseDTO(
+public record AuthenticationResponseDTO(
         String firstName,
         String lastName,
         String email,
