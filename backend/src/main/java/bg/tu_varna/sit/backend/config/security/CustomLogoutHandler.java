@@ -48,7 +48,7 @@ public class CustomLogoutHandler implements LogoutHandler {
         //? This if statement is ONLY executed when ExpiredJwtException was thrown and caught inside JwtAuthorizationFilter.
         //? (when a user has tried to access a protected resource with expired jwt stored inside the httpOnlyCookie)
         //* When this statement is true, we manually delete the httpOnlyCookie.
-        Boolean requestAttributeForJwtExpiration = (Boolean) request.getAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1);//? If an ExpiredJwtException was thrown inside the JwtAuthorizationFilter, then this request attribute must have been set
+        Boolean requestAttributeForJwtExpiration = (Boolean) request.getAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1);
         if(requestAttributeForJwtExpiration != null && requestAttributeForJwtExpiration.equals(TRUE))
         {System.out.println("Entered unintentional logout case");
             String extractedId = null;
