@@ -50,7 +50,7 @@ public class CustomLogoutHandler implements LogoutHandler {
         //* When this statement is true, we manually delete the httpOnlyCookie.
         Boolean requestAttributeForJwtExpiration = (Boolean) request.getAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1);
         if(requestAttributeForJwtExpiration != null && requestAttributeForJwtExpiration.equals(TRUE))
-        {System.out.println("Entered unintentional logout case");
+        {
             String extractedId = null;
             try
             {
@@ -59,7 +59,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             }
             catch (Exception exception)
             {
-                System.out.println("Error extracting user ID from expired JWT: " + exception.getMessage());
+                //System.out.println("Error extracting user ID from expired JWT: " + exception.getMessage());
             }
 
             if(extractedId != null)
@@ -69,7 +69,7 @@ public class CustomLogoutHandler implements LogoutHandler {
                     userService.logout(user);
                 }
                 catch (Exception exception){
-                    System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
+                    //System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
                 }
             }
 
@@ -84,7 +84,6 @@ public class CustomLogoutHandler implements LogoutHandler {
         //! just like it is done inside the JwtAuthorizationFilter.
         else
         {
-            System.out.println("Entered intentional logout case");
             String jwt;
 
             //? Check whether the request contains a cookie with name "httpOnlyCookie"
@@ -109,7 +108,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             }
             catch (Exception exception)
             {
-                System.out.println("Exception caught inside customLogoutHandler: " + exception.getClass().getName());
+                //System.out.println("Exception caught inside customLogoutHandler: " + exception.getClass().getName());
                 if(exception instanceof ExpiredJwtException)
                 {
                     //* This code executes ONLY when a user wants to logout, but his jwt has expired
@@ -117,7 +116,7 @@ public class CustomLogoutHandler implements LogoutHandler {
                         extractedId = ((ExpiredJwtException)exception).getClaims().get(JWT_CLAIM_NAME_FOR_USER_ID,String.class);
                     }
                     catch (Exception e){
-                        System.out.println("Error extracting user ID from expired JWT: " + e.getMessage());
+                        //System.out.println("Error extracting user ID from expired JWT: " + e.getMessage());
                     }
 
                     if(extractedId != null)
@@ -128,7 +127,7 @@ public class CustomLogoutHandler implements LogoutHandler {
                             userService.logout(user);
                         }
                         catch (Exception ex){
-                            System.out.println("Exception caught: " + ex.getClass().getName()+ex.getMessage() + "\n message: " + ex.getMessage());
+                            //System.out.println("Exception caught: " + ex.getClass().getName()+ex.getMessage() + "\n message: " + ex.getMessage());
                         }
                     }
                 }
@@ -144,7 +143,7 @@ public class CustomLogoutHandler implements LogoutHandler {
             }
             catch (Exception exception)
             {
-                System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
+                //System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
             }
 
         }

@@ -82,7 +82,6 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             }
             catch (Exception exception)
             {
-                System.out.println("Exception caught: " + exception.getClass().getName()+exception.getMessage() + "\n message: " + exception.getMessage());
                 if(exception instanceof ExpiredJwtException)
                 {
                     request.setAttribute(EXPIRED_JWT_EXCEPTION_REQUEST_ATTRIBUTE1,true);
