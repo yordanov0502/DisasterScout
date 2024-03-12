@@ -5,14 +5,19 @@ import { CmsHomePage } from "../pages/internal/CmsHomePage";
 import { HomePage } from "../pages/external/HomePage";
 import { NotFoundPage } from "../pages/external/NotFoundPage"; 
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
+import { BorderRoute } from "./BorderRoute.jsx";
 
 export const Router = () => {
   return (
     <Routes>
-      <Route path="/login" element={<LoginPage />} />
+      <Route path="/login" element={
+      <BorderRoute>
+      <LoginPage />
+      </BorderRoute>
+      } />
       <Route path="/forgot-password" element={<ForgotPasswordPage />} />
         
-      <Route path="/cms" element={
+      <Route path="/cms-home" element={
       <ProtectedRoute>
       <CmsHomePage />
       </ProtectedRoute>

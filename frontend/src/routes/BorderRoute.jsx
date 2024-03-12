@@ -7,13 +7,13 @@ import { useEffect, } from "react";
 const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`;
 const LOCAL_STORAGE_VALUE1 = `${import.meta.env.VITE_LOCAL_STORAGE_VALUE1}`;
 
-export const ProtectedRoute = ({ children }) => {
+export const BorderRoute = ({ children }) => {
   const { isUserContextEmpty,updateUserContext } = useUserContext();
 
   const getUserAuthentication = useQuery({
-    queryKey: ["isUserAuthenticatedPR"],
+    queryKey: ["isUserAuthenticatedBR"],
     queryFn: isUserAuthenticated,
-    enabled: isUserContextEmpty(), //!The query executes ONLY if the userContext is empty
+    enabled: false, //!The query is disabled from running automatically
   });
 
   useEffect(() => {
@@ -29,14 +29,17 @@ export const ProtectedRoute = ({ children }) => {
 
   if(localStorage.getItem(LOCAL_STORAGE_KEY1) !== null && localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 && !isUserContextEmpty())
     {
-      return children;
+        
+      return <Navigate to="/cms-home" />;
     }
 
   if(localStorage.getItem(LOCAL_STORAGE_KEY1) !== null && localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 && isUserContextEmpty())
     {
+      getUserAuthentication.refetch();  
       if(getUserAuthentication.isLoading) return <h1> Loading</h1>
-      if(getUserAuthentication.isSuccess) return children;
+      if(getUserAuthentication.isSuccess) return <Navigate to="/cms-home" />;
     }
 
-    return <Navigate to="/login" />;
+
+    return children;
 };

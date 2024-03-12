@@ -39,7 +39,7 @@ function App() {
           retry:false,
     
           //? https://dev.to/delisrey/react-query-staletime-vs-cachetime-hml
-          staleTime:5*60*1000,
+          staleTime:0, //5*60*1000,
     
           //!By default, data will be retained in the cache for 5 minutes (cacheTime of 300,000 milliseconds). After that time elapses, the data will be automatically removed from the cache.
           //gcTime:0 //! is actually cacheTime in v5
@@ -52,7 +52,7 @@ function App() {
       mutationCache: new MutationCache({
         onError: checkErrorForRedirectHeader //? This callback is used as a global error callback of useMutation to handle error(perform specific logic - check for custom header for redirect). HOWEVER, the onError callback inside the useMutation(wherever it is in the component tree) is still executed.
       })
-    }); //TODO: Should be properly configured to match the usecases of the whole webapp
+    });
   }
   //else { console.log('queryClientInstance ALREADY created');}
 

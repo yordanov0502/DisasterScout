@@ -16,7 +16,7 @@ export const CmsHomePage = () => {
     const navigate = useNavigate();
     const queryClient = useQueryClient();
     const testQuery = useQuery({
-     queryKey:['testRequestt'],
+     queryKey:["testRequestt"],
      queryFn: testRequest,
      //meta: {}, 
      enabled: false, //!Disables the query from automatically running. 

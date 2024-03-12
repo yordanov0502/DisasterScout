@@ -33,7 +33,7 @@ export const LoginPage = () => {
       resetSuspension();
       updateUserContext(response.data);
       localStorage.setItem(LOCAL_STORAGE_KEY1, LOCAL_STORAGE_VALUE1);
-      navigate("/cms");
+      navigate("/cms-home");
     },
     onError: (error) => { //? Regex passed, API call made, but apparently wrong credentials
       console.log("Login Failed", error); //TODO: remove this log when no more is needed
