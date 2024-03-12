@@ -15,7 +15,11 @@ export const Router = () => {
       <LoginPage />
       </BorderRoute>
       } />
-      <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+      <Route path="/forgot-password" element={
+      <BorderRoute>
+      <ForgotPasswordPage /> 
+      </BorderRoute>
+      }/>
         
       <Route path="/cms-home" element={
       <ProtectedRoute>
