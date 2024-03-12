@@ -15,6 +15,7 @@ export const CmsHomePage = () => {
     const { clearUserContext } = useUserContext();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+
     const testQuery = useQuery({
      queryKey:["testRequestt"],
      queryFn: testRequest,
@@ -22,9 +23,7 @@ export const CmsHomePage = () => {
      enabled: false, //!Disables the query from automatically running. 
   });
 
-    //useMutationHasError([{error: addDispatcherMutation.error}]);
 
-    
     const logoutMutation = useMutation({
         mutationFn: logoutRequest,
         onMutate: () => {
