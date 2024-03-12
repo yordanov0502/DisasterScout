@@ -42,7 +42,6 @@ public class DispatcherController {
             description = "This endpoint checks if a user is ALREADY authenticated and if so - returns AuthenticationResponseDTO, which is used to set the userContext on the frontend.")
     @GetMapping("/check-authentication")
     public AuthenticationResponseDTO isUserAuthenticated(@AuthenticationPrincipal User user){
-        System.out.println("endpoint called.");
         return userMapper.mapToAuthenticationResponseDTO(user);
     }
 
