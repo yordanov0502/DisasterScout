@@ -75,6 +75,18 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
     }
 
+    @Caching(
+            put = {
+                    @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+                    @CachePut(value = "users", key = "#result.id", unless = "#result == null")
+            })
+    public User updatePassword(User user,String newEncodedPassword){
+        User updatedUser = user.toBuilder()
+                .password(newEncodedPassword)
+                .build();
+        return userRepository.save(updatedUser);
+    }
+
     //? Updates DB and caches when a user logs in
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),

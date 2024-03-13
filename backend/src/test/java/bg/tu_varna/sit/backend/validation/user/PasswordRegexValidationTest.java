@@ -39,6 +39,13 @@ class PasswordRegexValidationTest {
         assertTrue(passwordRegexValidation.isValid("+++1Ll--_._--",constraintValidatorContext));
         assertTrue(passwordRegexValidation.isValid("`````````.SITo...1",constraintValidatorContext));
         assertTrue(passwordRegexValidation.isValid("87934242432432??sA",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("p82+-|jWvB|:",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("#VUv7)A<@w)l",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("x=Y/%dAT0.5R",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("M,LxO|(p9Yft",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("?5(gGASy}THb",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("o:8Qql8>t=1k",constraintValidatorContext));
+        assertTrue(passwordRegexValidation.isValid("ss&V.6A3G8$9",constraintValidatorContext));
 
         assertFalse(passwordRegexValidation.isValid(" B5968CH_PROob@.na.parola",constraintValidatorContext));
         assertFalse(passwordRegexValidation.isValid("B5968CH_PROob@.na.parola ",constraintValidatorContext));
