@@ -153,13 +153,14 @@ public class UserService {
             else
             {
                 userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
-                emailService.sendEmail(email, newPassword);
-                return ResponseEntity.ok().build();
+                boolean isEmailSentSuccessfully = emailService.sendEmail(user.getFirstName(),email,newPassword);
+                if(isEmailSentSuccessfully) return ResponseEntity.ok().build();
+                else return new ResponseEntity<>("Error occurred while sending email with the new password. Please try again.", HttpStatus.BAD_REQUEST);
             }
         }
         else
         {
-            emailService.sendWarningEmail(email);
+            emailService.sendWarningEmail(user.getFirstName(),email);
             return ResponseEntity.badRequest().build();
         }
     }
