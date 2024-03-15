@@ -1,7 +1,7 @@
 import EmailIcon from "@mui/icons-material/Email";
 import "./forgot_password_component.scss";
 
-export const ForgotPasswordComponent = ({ email, errorMessage, handleInput, onPressForgotPassword }) => {
+export const ForgotPasswordComponent = ({ forgotPasswordForm, errorMessage, handleInput, onPressForgotPassword }) => {
 
   return (
     <div className="forgot_password">
@@ -11,17 +11,16 @@ export const ForgotPasswordComponent = ({ email, errorMessage, handleInput, onPr
           <div className="forgot_password__component__text-between">
             Моля въведете вашия имейл адрес. Ще получите имейл с нова парола и
             инструкции.
-            {/* След като възстановите достъпа до вашия профил, е желателно да промените паролата си.  */}
           </div>
           <div className="forgot_password__component__email-field">
-            <EmailIcon className={`forgot_password__component__email-field__icon ${email && "forgot_password__component__email-field__icon-active"}`} />
+            <EmailIcon className={`forgot_password__component__email-field__icon ${forgotPasswordForm.email && "forgot_password__component__email-field__icon-active"}`} />
             <input
               id="email"
               name="email"
               type="text"
               placeholder="Имейл адрес"
               autoComplete="email"
-              value={email}
+              value={forgotPasswordForm.email}
               onChange={handleInput}
               className={errorMessage ? "forgot_password__component__error" : "forgot_password__component__email-field__input"}
             />

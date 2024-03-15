@@ -26,31 +26,29 @@ export const LoginPage = () => {
   const loginMutation = useMutation({
     mutationFn: loginRequest,
     onMutate: () => {
-      setIsRequestSent(true); // isRequestSent is set to true right before the mutation starts, to prevent any further button clicks, before the request is resolved
+      setIsRequestSent(true);
     },
     onSuccess: (response) => {
-      console.log("Login Successful", response.data); //TODO: remove this log when no more is needed
       resetSuspension();
       updateUserContext(response.data);
       localStorage.setItem(LOCAL_STORAGE_KEY1, LOCAL_STORAGE_VALUE1);
       navigate("/cms-home");
     },
-    onError: (error) => { //? Regex passed, API call made, but apparently wrong credentials
-      console.log("Login Failed", error); //TODO: remove this log when no more is needed
+    onError: (/*error*/) => {
       setErrorMessage("Невалидно потребителско име или парола.");
       if(!isSuspended()) 
       {
-        incrementAttempts(); // Increment loginAttempts after unfulfilling API response
+        incrementAttempts();
       }
     },
     onSettled: () => {
-      setIsRequestSent(false); // isRequestSent is set to false after mutation has completed(request has been resolved a.k.a response was received) regardless of success or error, to make button available again
+      setIsRequestSent(false);
     }
   });
 
   const handleInput = (e) => {
     setLoginForm({ ...loginForm, [e.target.name]: e.target.value.trim() });
-    setErrorMessage(""); // Clear error message when user starts typing
+    setErrorMessage("");
   };
 
   const onPressLogin = (event) => {
@@ -74,12 +72,12 @@ export const LoginPage = () => {
     {
       if(isRequestSent || isSuspended()) 
       {
-        setErrorMessage("Невалидно потребителско име или парола."); // error message for suspension
+        setErrorMessage("Невалидно потребителско име или парола.");
         return;
       } 
       else 
       {
-        loginMutation.mutate(loginForm); //? Here the above useMutation hook is called
+        loginMutation.mutate(loginForm);
       }
     }
   };

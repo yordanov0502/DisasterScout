@@ -149,13 +149,13 @@ public class UserService {
         if(user.getStatus().equals(ACTIVE) && user.getActivity().equals(OFFLINE))
         {
             String newPassword = generateRandomPassword();
-            if(newPassword==null) {return new ResponseEntity<>("Error occurred while generating the new password. Please try again.", HttpStatus.BAD_REQUEST);} //? In case of infinite loop(after 50 unsuccessful tries) in generateRandomPassword() method
+            if(newPassword==null) {return new ResponseEntity<>("Please try again. Error occurred while generating the new password.", HttpStatus.BAD_REQUEST);} //? In case of infinite loop(after 50 unsuccessful tries) in generateRandomPassword() method
             else
             {
                 userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
                 boolean isEmailSentSuccessfully = emailService.sendEmail(user.getFirstName(),email,newPassword);
                 if(isEmailSentSuccessfully) return ResponseEntity.ok().build();
-                else return new ResponseEntity<>("Error occurred while sending email with the new password. Please try again.", HttpStatus.BAD_REQUEST);
+                else return new ResponseEntity<>("Please try again. Error occurred while sending email with the new password.", HttpStatus.BAD_REQUEST);
             }
         }
         else
