@@ -193,11 +193,6 @@
 }
 
 
-@media (max-width: 420px) {
-  .sidebar li .tooltip{
-    display: none;
-  }
-}
 
 li:hover #dispatcherss-link_name,
 li:hover #dispatcherss-tooltip,
@@ -228,6 +223,13 @@ li:hover #logout-tooltip {
   background-color: rgb(180, 0, 0); 
 }
 
+.sidebar.open li.active:hover:active a{
+  background-color: rgb(255, 0, 0); 
+}
+.sidebar li.active:hover:active a{
+  background-color: rgb(255, 0, 0); 
+}
+
 .sidebar.open li.active:hover a .links_name,
 .sidebar.open li.active:hover a i,
 .sidebar.open li.active:hover a #dispatcherss-link_name,
@@ -235,6 +237,272 @@ li:hover #logout-tooltip {
 .sidebar.open li.active:hover a #loggerr-link_name,
 .sidebar.open li.active:hover a #loggerr-tooltip{
   color: #ffffff;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+@media (pointer: coarse) {
+  /* Insert your styles to override the hover state here */
+
+  .sidebar *{
+    padding: 0; /*!!! The styling is applied to all elements inside the .sidebar class !!!*/
+  }
+  .sidebar{
+    box-sizing: border-box;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100%;
+    width: 78px;
+    background: #009F58; /*#11101D*/
+    padding: 6px 14px;
+    transition: all 0.5s ease;
+    z-index: 3; /*CHANGEDDDDDDDDDDDDDDDDDDDD*/
+  }
+  .sidebar.open{
+    width: 250px;
+  }
+  .sidebar .logo-details{
+    height: 60px;
+    display: flex;
+    align-items: center;
+    position: relative;
+    top: -3px; /*!!!!!!!!!!!!!!!!!!!!!!!!!!icon vertical position in the sidebar!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  }
+  
+  
+  
+  .sidebar .logo-details .icon{
+    opacity: 0;
+    transition: all 0.4s ease;
+  
+     background-image: url(/src/assets/images/sidebarLogo.svg);
+     background-size: cover;
+     background-position: center;
+     height: 133px;
+     width: 133px;
+  }
+  .sidebar .logo-details{
+    position: relative;
+    color: #fff;
+    font-size: 20px;
+    font-weight: 600;
+    opacity: 1;
+    transition: all 0.5s ease;
+    height: 137px;
+  }
+  .sidebar.open .logo-details .icon{
+    opacity: 1;
+  }
+  /*!!!!!!!!!!!!!!!!!!!!!img transition on open and location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  .sidebar.open .icon{
+    position: absolute;
+    right: 45px;
+  }
+  /*!!!!!!!!!!!!!!!!!!!!!img transition on close and location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  .sidebar .icon{
+    position: absolute;
+    right: -37px;
+  }
+  
+  .sidebar .logo-details #btn{
+    position: absolute;
+    top: 50%;
+    right: 0;
+    transform: translateY(-50%);
+    transition: all 0.4s ease;
+    font-size: 23px;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.5s ease;
+  }
+  .sidebar.open .logo-details #btn{
+    text-align: right;
+    top: 50%;
+  }
+  .sidebar i{
+    color: #fff;
+    height: 50px; /*changed from 60 to 50*/
+    min-width: 50px;
+    font-size: 28px;
+    text-align: center;
+    line-height: 60px;
+  }
+  .sidebar .nav-list{
+    margin-top: -7px;
+    height: 100%;
+  }
+  .sidebar li{
+    position: relative;
+    margin: 8px 0;
+    list-style: none;
+    height: 48px;
+    cursor: pointer;
+  }
+  .sidebar li .tooltip{
+    position: absolute;
+    top: -20px;
+    left: calc(100% + 15px);
+    background: #fff;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 15px;
+    font-weight: 400;
+    opacity: 0;
+    white-space: nowrap;
+    pointer-events: none;
+    transition: 0s;
+    z-index: 10;
+    color: #009F58;
+  }
+  .sidebar li:hover .tooltip{
+    opacity: 1;
+    pointer-events: auto;
+    transition: all 0.4s ease;
+    top: 55%;
+    transform: translateY(-50%);
+  }
+  .sidebar.open li .tooltip{
+    display: none;
+  }
+  .sidebar li a{
+    display: flex;
+    height: 100%;
+    width: 100%;
+    border-radius: 12px;
+    align-items: center;
+    text-decoration: none;
+    transition: all 0.4s ease;
+    background: #009F58;
+    border: 2px #ffffff;
+    border-radius: 50%;
+    border-style: solid;
+  }
+  .sidebar.open li a{
+    border-radius: 0%;
+  }
+  .sidebar li a:hover{
+    background: #009F58;
+  }
+  .sidebar li a .links_name{
+    color: #fff;
+    font-size: 15px;
+    font-weight: 400;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: 0.4s;
+  }
+  .sidebar.open li a .links_name{
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .sidebar li a:hover .links_name,
+  .sidebar li a:hover i{
+    transition: all 0.5s ease;
+    color: #ffffff;
+  }
+  
+  .sidebar li a:hover .logout{
+    transition: all 0.5s ease;
+    color: #ffffff;
+  }
+  
+  .sidebar li a:hover .loggerr{
+    transition: all 0.5s ease;
+    color: #ffffff;
+  }
+  
+  .sidebar li a:hover .dispatcherss{
+    transition: all 0.5s ease;
+    color: #ffffff;
+  }
+
+  .sidebar li i{
+    display: flex;
+    align-items: center; 
+    justify-content: center; 
+    height: 50px;
+    line-height: 50px;
+    font-size: 18px;
+    border-radius: 12px;
+  }
+  
+  .sidebar.open{
+    width: 250px;
+  }
+  .sidebar li{
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
+  }
+  
+  
+  @media (max-width: 420px) {
+    .sidebar li .tooltip{
+      display: none;
+    }
+  }
+  
+  li:hover #dispatcherss-link_name,
+  li:hover #dispatcherss-tooltip,
+  li:hover #loggerr-link_name,
+  li:hover #loggerr-tooltip {
+    color: #fff;
+  }
+  
+  li:hover #logout-link_name,
+  li:hover #logout-tooltip {
+    color: #fff;
+  }
+  
+  .sidebar li.active a {
+    background-color: #E50000; 
+    border-radius: 15px; 
+  }
+  
+  .sidebar.open li.active a {
+    border-radius: 0%; 
+  }
+  
+  
+  .sidebar.open li.active:hover a{
+    background-color: #E50000; 
+  }
+  
+  .sidebar.open li.active:hover a .links_name,
+  .sidebar.open li.active:hover a i,
+  .sidebar.open li.active:hover a #dispatcherss-link_name,
+  .sidebar.open li.active:hover a #dispatcherss-tooltip,
+  .sidebar.open li.active:hover a #loggerr-link_name,
+  .sidebar.open li.active:hover a #loggerr-tooltip{
+    color: #ffffff;
+  }
+
+  
+
+  
+  
+  .sidebar li .tooltip{
+    display: none;
+  }
 }
 
 
@@ -250,7 +518,6 @@ li:hover #logout-tooltip {
     
   }
 }
-
 
 
 
