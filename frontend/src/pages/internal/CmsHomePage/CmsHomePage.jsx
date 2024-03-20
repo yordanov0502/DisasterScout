@@ -1,20 +1,13 @@
-import { useNavigate } from "react-router-dom";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { useUserContext } from "../../../hooks/useUserContext";
-import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
+import { useMutation, useQuery } from "@tanstack/react-query";
 // import { useQueryHasError } from "../../../hooks/useQueryHasError";
 // import { useMutationHasError } from "../../../hooks/useMutationHasError";
-import { addNewDispatcherRequest, logoutRequest, testRequest } from "../../../services/userService";
-//! Must add import from scss when creating the page
-
-const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`; 
+import { addNewDispatcherRequest, testRequest } from "../../../services/userService";
+import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
+import "./cms_home_page.scss";
 
 export const CmsHomePage = () => {
 
-    const { isRequestSent, setIsRequestSent } = useIsRequestSent();
-    const { clearUserContext } = useUserContext();
-    const navigate = useNavigate();
-    const queryClient = useQueryClient();
+  const { isRequestSent, setIsRequestSent } = useIsRequestSent();
 
     const testQuery = useQuery({
      queryKey:["testRequestt"],
@@ -23,35 +16,7 @@ export const CmsHomePage = () => {
      enabled: false, //!Disables the query from automatically running. 
   });
 
-
-    const logoutMutation = useMutation({
-        mutationFn: logoutRequest,
-        onMutate: () => {
-          setIsRequestSent(true); // isRequestSent is set to true right before the mutation starts, to prevent any further button clicks, before the request is resolved
-        },
-        onSuccess: (response) => {
-          console.log("Logout Successful", response.data); //TODO: remove this log when no more is needed
-        },
-        onError: (error) => {
-          console.log("Logout Failed", error); //TODO: remove this log when no more is needed
-        },
-        onSettled: () => {
-          //? This approach ensures that even if the server fails to process the logout for some reason 
-          //? (e.g., the server is down, or there's a network issue), the client application still behaves as 
-          //? if the user has been logged out, which is a safe default for security reasons.
-          queryClient.clear(); //! Completely clears the query cache of all queries and mutations. This method is the most drastic as it removes everything from the cache.
-          clearUserContext();
-          localStorage.removeItem(LOCAL_STORAGE_KEY1);
-          navigate("/login");
-          setIsRequestSent(false); // isRequestSent is set to false after mutation has completed(request has been resolved a.k.a response was received) regardless of success or error, to make button available again
-        }
-      });
-
-      const onPressLogout = (event) => {
-        event.preventDefault();
-        if(!isRequestSent){logoutMutation.mutate();}
-        }
-
+      
       const onFetchData = (event) => {
         event.preventDefault();
         testQuery.refetch();
@@ -70,7 +35,7 @@ export const CmsHomePage = () => {
           console.log("POST operation Failed", error); //TODO: remove this log when no more is needed
         },
          onSettled: () => {
-           setIsRequestSent(false); // isRequestSent is set to false after mutation has completed(request has been resolved a.k.a response was received) regardless of success or error, to make button available again
+           setIsRequestSent(false);
          }
       });
 
@@ -84,8 +49,7 @@ export const CmsHomePage = () => {
 
       /* {testQuery.isError && display a message with a snack bar}  MUST BE PUT INSIDE THE <div> in the return*/
   return (
-    <div>
-      <button onClick={onPressLogout}>Изход</button>
+    <div className="cms_home_page">
       <button onClick={onFetchData}>Fetch Data</button>
       <button onClick={addNewDispatcher}>Добави диспечер</button>
     </div>

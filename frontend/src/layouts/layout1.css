@@ -1,0 +1,38 @@
+.layout-container {
+  display: flex;
+  min-height: 100vh; /*ADDEDDDDD*/
+}
+
+  .home-section {
+  position: relative;
+  transition: margin-left 0.5s ease;
+  margin-left: 21px; 
+  /*padding: 1rem;*/ /*! TO BE REMOVED*/
+   /* min-height: 100vh;  */
+  background: #E4E9F7; 
+  flex-grow: 1; 
+  z-index: 2; 
+}
+
+.sidebar.open ~ .home-section {
+  margin-left: 195px; 
+}  
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* .home-section{
+  margin-left: 21px;
+} */
