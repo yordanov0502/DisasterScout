@@ -3,9 +3,9 @@ import { useMutation, useQuery } from "@tanstack/react-query";
 // import { useMutationHasError } from "../../../hooks/useMutationHasError";
 import { addNewDispatcherRequest, testRequest } from "../../../services/userService";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
-import "./cms_home_page.scss";
+import "./cms_dashboard_page.scss";
 
-export const CmsHomePage = () => {
+export const CmsDashboardPage = () => {
 
   const { isRequestSent, setIsRequestSent } = useIsRequestSent();
 
@@ -49,7 +49,7 @@ export const CmsHomePage = () => {
 
       /* {testQuery.isError && display a message with a snack bar}  MUST BE PUT INSIDE THE <div> in the return*/
   return (
-    <div className="cms_home_page">
+    <div className="cms_dashboard_page">
       <button onClick={onFetchData}>Fetch Data</button>
       <button onClick={addNewDispatcher}>Добави диспечер</button>
     </div>

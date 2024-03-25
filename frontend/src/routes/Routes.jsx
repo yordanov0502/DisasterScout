@@ -3,7 +3,8 @@ import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import { BorderRoute } from "./BorderRoute.jsx";
 import { LoginPage } from "../pages/external/LoginPage";
 import { ForgotPasswordPage } from "../pages/external/ForgotPasswordPage";
-import { CmsHomePage } from "../pages/internal/CmsHomePage";
+import { CmsDashboardPage } from "../pages/internal/CmsDashboardPage/index.js";
+import { CmsAccountPage } from "../pages/internal/CmsAccountPage";
 import { CmsSettingsPage } from "../pages/internal/CmsSettingsPage";
 import { HomePage } from "../pages/external/HomePage";
 import { NotFoundPage } from "../pages/external/NotFoundPage"; 
@@ -25,7 +26,12 @@ export const Router = () => {
         
       <Route path="/cms-dashboard" element={
       <ProtectedRoute>
-      <CmsHomePage />
+      <CmsDashboardPage />
+      </ProtectedRoute>
+      }/>
+       <Route path="/cms-account" element={
+      <ProtectedRoute>
+      <CmsAccountPage />
       </ProtectedRoute>
       }/>
       <Route path="/cms-settings" element={

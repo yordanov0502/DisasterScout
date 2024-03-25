@@ -10,7 +10,7 @@ export const CmsSettingsPage = () => {
   return (
     <div className="cms_settings_page">
      <button>Fetch Dataaaaaaaa</button>
-      <button>Добави диспечеррррррррррррр</button>
+      <button>Добави диспечеррррррррррррр</button> 
     </div>
   );
 };

@@ -3,7 +3,7 @@ import { Sidebar } from "../components/Sidebar";
 import './layout1.css';
 
 export const Layout = ({ children }) => {
-  const [isOpen, setIsOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(true);
 
   const toggleSidebar = () => {
     setIsOpen(!isOpen);

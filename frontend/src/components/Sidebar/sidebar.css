@@ -243,12 +243,9 @@ li:hover #logout-tooltip {
 
 @media (pointer: coarse) {
 
-  
-    .sidebar .logo-details #sidebar_burger {
+    /* .sidebar .logo-details #sidebar_burger {
       display: none;
-    }
-  
-  
+    } */
 
   .sidebar *{
     padding: 0; /*The styling is applied to all elements inside the .sidebar class*/
@@ -275,9 +272,6 @@ li:hover #logout-tooltip {
     position: relative;
     top: -3px; /*Icon vertical position in the sidebar*/
   }
-  
-  
-  
   .sidebar .logo-details .icon{
     opacity: 0;
     transition: all 0.4s ease;

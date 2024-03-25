@@ -32,6 +32,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     const path = location.pathname;
    
     if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
+    else if (path.includes("/cms-account")) setActiveButton('cms-account');
     else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
     // ...
   }, [location]);
@@ -108,11 +109,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
           </a>
         </li>
         <li className={activeButton === 'cms-account' ? 'active' : ''} onClick={() => handleButtonClick('cms-account')}>
-          <a>
+        <Link to={"/cms-account"}>
             <i><PersonIcon/></i>
             <span className="links_name">Акаунт</span>
             <span className="tooltip">Акаунт</span>
-          </a>
+        </Link>
         </li>
         <li className={activeButton === 'cms-settings' ? 'active' : ''} onClick={() => handleButtonClick('cms-settings')}>
         <Link to={"/cms-settings"}>

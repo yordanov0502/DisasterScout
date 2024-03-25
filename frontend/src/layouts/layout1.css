@@ -11,7 +11,7 @@
   transition: margin-left 0.5s ease;
 
   margin-left: 78px; 
-  padding-left: 23px;
+  /* padding-left: 23px; */
   
   flex-grow: 1; 
   z-index: 2; 
