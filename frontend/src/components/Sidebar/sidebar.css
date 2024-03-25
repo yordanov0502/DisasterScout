@@ -1,5 +1,5 @@
 .sidebar *{
-  padding: 0; /*!!! The styling is applied to all elements inside the .sidebar class !!!*/
+  padding: 0; /*The styling is applied to all elements inside the .sidebar class*/
 }
 .sidebar{
   box-sizing: border-box;
@@ -8,10 +8,10 @@
   top: 0;
   height: 100%;
   width: 78px;
-  background: #009F58; /*#11101D*/
+  background: #009F58;
   padding: 6px 14px;
   transition: all 0.5s ease;
-  z-index: 3; /*CHANGEDDDDDDDDDDDDDDDDDDDD*/
+  z-index: 3;
 }
 .sidebar.open{
   width: 250px;
@@ -21,7 +21,7 @@
   display: flex;
   align-items: center;
   position: relative;
-  top: -3px; /*!!!!!!!!!!!!!!!!!!!!!!!!!!icon vertical position in the sidebar!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  top: -3px; /*icon vertical position in the sidebar*/
 }
 
 
@@ -48,12 +48,12 @@
 .sidebar.open .logo-details .icon{
   opacity: 1;
 }
-/*!!!!!!!!!!!!!!!!!!!!!img transition on open and location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/*img transition on open and location*/
 .sidebar.open .icon{
   position: absolute;
   right: 45px;
 }
-/*!!!!!!!!!!!!!!!!!!!!!img transition on close and location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+/*img transition on close and location*/
 .sidebar .icon{
   position: absolute;
   right: -37px;
@@ -76,7 +76,7 @@
 }
 .sidebar i{
   color: #fff;
-  height: 50px; /*changed from 60 to 50*/
+  height: 50px;
   min-width: 50px;
   font-size: 28px;
   text-align: center;
@@ -107,7 +107,7 @@
   white-space: nowrap;
   pointer-events: none;
   transition: 0s;
-  z-index: 10;
+  z-index: 3;
   color: #009F58;
 }
 .sidebar li:hover .tooltip{
@@ -124,7 +124,6 @@
   display: flex;
   height: 100%;
   width: 100%;
-  border-radius: 12px;
   align-items: center;
   text-decoration: none;
   transition: all 0.4s ease;
@@ -242,26 +241,17 @@ li:hover #logout-tooltip {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 @media (pointer: coarse) {
-  /* Insert your styles to override the hover state here */
+
+  
+    .sidebar .logo-details #btn {
+      display: none;
+    }
+  
+  
 
   .sidebar *{
-    padding: 0; /*!!! The styling is applied to all elements inside the .sidebar class !!!*/
+    padding: 0; /*The styling is applied to all elements inside the .sidebar class*/
   }
   .sidebar{
     box-sizing: border-box;
@@ -270,10 +260,10 @@ li:hover #logout-tooltip {
     top: 0;
     height: 100%;
     width: 78px;
-    background: #009F58; /*#11101D*/
+    background: #009F58;
     padding: 6px 14px;
     transition: all 0.5s ease;
-    z-index: 3; /*CHANGEDDDDDDDDDDDDDDDDDDDD*/
+    z-index: 3;
   }
   .sidebar.open{
     width: 250px;
@@ -283,7 +273,7 @@ li:hover #logout-tooltip {
     display: flex;
     align-items: center;
     position: relative;
-    top: -3px; /*!!!!!!!!!!!!!!!!!!!!!!!!!!icon vertical position in the sidebar!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+    top: -3px; /*Icon vertical position in the sidebar*/
   }
   
   
@@ -310,12 +300,12 @@ li:hover #logout-tooltip {
   .sidebar.open .logo-details .icon{
     opacity: 1;
   }
-  /*!!!!!!!!!!!!!!!!!!!!!img transition on open and location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  /*img transition on open and location*/
   .sidebar.open .icon{
     position: absolute;
     right: 45px;
   }
-  /*!!!!!!!!!!!!!!!!!!!!!img transition on close and location!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!*/
+  /*img transition on close and location*/
   .sidebar .icon{
     position: absolute;
     right: -37px;
@@ -338,7 +328,7 @@ li:hover #logout-tooltip {
   }
   .sidebar i{
     color: #fff;
-    height: 50px; /*changed from 60 to 50*/
+    height: 50px;
     min-width: 50px;
     font-size: 28px;
     text-align: center;
@@ -369,7 +359,7 @@ li:hover #logout-tooltip {
     white-space: nowrap;
     pointer-events: none;
     transition: 0s;
-    z-index: 10;
+    z-index: 3;
     color: #009F58;
   }
   .sidebar li:hover .tooltip{
@@ -386,7 +376,6 @@ li:hover #logout-tooltip {
     display: flex;
     height: 100%;
     width: 100%;
-    border-radius: 12px;
     align-items: center;
     text-decoration: none;
     transition: all 0.4s ease;
@@ -454,13 +443,6 @@ li:hover #logout-tooltip {
     flex-wrap: nowrap;
   }
   
-  
-  @media (max-width: 420px) {
-    .sidebar li .tooltip{
-      display: none;
-    }
-  }
-  
   li:hover #dispatcherss-link_name,
   li:hover #dispatcherss-tooltip,
   li:hover #loggerr-link_name,
@@ -495,55 +477,24 @@ li:hover #logout-tooltip {
   .sidebar.open li.active:hover a #loggerr-tooltip{
     color: #ffffff;
   }
-
-  
-
-  
   
   .sidebar li .tooltip{
     display: none;
   }
 }
 
-
-
-
-/* This will apply styles when the viewport height is 600px or less */
-@media (max-height: 600px) {
-  .sidebar.open li {
-    
-  }
-
+@media (max-height: 699px) and (min-height: 600px) {
   .sidebar li {
-    
+    height: 38px;
   }
 }
-
-
-
-
-
-
-
- /* .home-section{
-  position: relative;
-  background: #E4E9F7;
-  min-height: 100vh;
-  top: 0;
-  left: 78px;
-  width: calc(100% - 78px);
-  transition: all 0.5s ease;
-  z-index: 2;
+@media (max-height: 599px) and (min-height: 500px) {
+  .sidebar li {
+    height: 28px;
+  }
 }
-.sidebar.open ~ .home-section{
-  left: 250px;
-  width: calc(100% - 250px);
+@media (max-height: 499px) and (min-height: 1px) {
+  .sidebar li {
+    height: 25px;
+  }
 }
-.home-section .text{
-  display: inline-block;
-  color: #11101d;
-  font-size: 25px;
-  font-weight: 500;
-  margin: 18px
-}  */
-

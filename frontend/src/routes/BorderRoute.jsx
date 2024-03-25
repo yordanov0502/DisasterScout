@@ -31,14 +31,14 @@ export const BorderRoute = ({ children }) => {
   if(localStorage.getItem(LOCAL_STORAGE_KEY1) !== null && localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 && !isUserContextEmpty())
     {
         
-      return <Navigate to="/cms-home" />;
+      return <Navigate to="/cms-dashboard" />;
     }
 
   if(localStorage.getItem(LOCAL_STORAGE_KEY1) !== null && localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 && isUserContextEmpty())
     {
       getUserAuthentication.refetch();  
       if(getUserAuthentication.isLoading) return <PageLoader/>
-      if(getUserAuthentication.isSuccess) return <Navigate to="/cms-home" />;
+      if(getUserAuthentication.isSuccess) return <Navigate to="/cms-dashboard" />;
     }
 
     return children;

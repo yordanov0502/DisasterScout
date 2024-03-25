@@ -10,9 +10,9 @@ export const Layout = ({ children }) => {
   };
 
   return (
-    <div className="layout-container">
+    <div className="layout1">
       <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
-      <div className={`home-section ${isOpen ? 'open' : ''}`}>
+      <div className={`section1 ${isOpen ? 'open' : ''}`}>
         {children}
       </div>
     </div>

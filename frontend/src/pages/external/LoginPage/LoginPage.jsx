@@ -32,7 +32,7 @@ export const LoginPage = () => {
       resetSuspension();
       updateUserContext(response.data);
       localStorage.setItem(LOCAL_STORAGE_KEY1, LOCAL_STORAGE_VALUE1);
-      navigate("/cms-home");
+      navigate("/cms-dashboard");
     },
     onError: (/*error*/) => {
       setErrorMessage("Невалидно потребителско име или парола.");

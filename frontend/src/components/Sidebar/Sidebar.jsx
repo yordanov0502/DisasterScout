@@ -1,27 +1,27 @@
+import { useState } from "react";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-import HomeIcon from '@mui/icons-material/Home';
+import DashboardIcon from '@mui/icons-material/Dashboard';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RestoreIcon from '@mui/icons-material/Restore';
-import QueryStatsIcon from '@mui/icons-material/QueryStats';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { Link, useNavigate } from "react-router-dom";
-import './sidebar.css'; 
-import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { logoutRequest } from "../../services/userService";
 import { useIsRequestSent } from "../../hooks/useIsRequestSent";
 import { useUserContext } from "../../hooks/useUserContext";
-import { useState } from "react";
+import './sidebar.css'; 
 
 const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`; 
 
 export const Sidebar = ({isOpen, toggleSidebar}) => {
 
+    const [activeButton, setActiveButton] = useState(null);
     const { isRequestSent, setIsRequestSent } = useIsRequestSent();
     const { clearUserContext, authenticatedUser } = useUserContext();
     const navigate = useNavigate();
@@ -50,20 +50,22 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     }
   });
 
+  const handleButtonClick = (buttonId) => {
+    setActiveButton(buttonId);
+  };
+
   const onPressLogout = (event) => {
     event.preventDefault();
     if(!isRequestSent){logoutMutation.mutate();}
     }
 
 
-   ///////////////////////////////////////////////////////////////////////
-   const [activeButton, setActiveButton] = useState(null);
+   
+   
    
 
-   const handleButtonClick = (buttonId) => {
-       setActiveButton(buttonId);
-   };
-   ///////////////////////////////////////////////////////////////////////
+   
+   
 
   return (
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -73,11 +75,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
         </div>
         <ul className="nav-list">
           
-        <li className={activeButton === 'cms-home' ? 'active' : ''} onClick={() => handleButtonClick('cms-home')}>
-          <Link to={"/cms-home"}>
-            <i className="bx bx-grid-alt"><HomeIcon/></i>
-            <span className="links_name">Начало</span>
-            <span className="tooltip">Начало</span>
+        <li className={activeButton === 'cms-dashboard' ? 'active' : ''} onClick={() => handleButtonClick('cms-dashboard')}>
+          <Link to={"/cms-dashboard"}>
+            <i className="bx bx-grid-alt"><DashboardIcon/></i>
+            <span className="links_name">Табло</span>
+            <span className="tooltip">Табло</span>
           </Link>
         </li>
         <li className={activeButton === 'cms-reports' ? 'active' : ''} onClick={() => handleButtonClick('cms-reports')}>
@@ -99,13 +101,6 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
             <i className="bx bx-pie-chart-alt-2"><RestoreIcon/></i>
             <span className="links_name">Хронология</span>
             <span className="tooltip">Хронология</span>
-          </a>
-        </li>
-        <li className={activeButton === 'cms-queries' ? 'active' : ''} onClick={() => handleButtonClick('cms-queries')}>
-          <a href="#">
-            <i className="bx bx-folder"><QueryStatsIcon/></i>
-            <span className="links_name">Справки</span>
-            <span className="tooltip">Справки</span>
           </a>
         </li>
         <li className={activeButton === 'cms-account' ? 'active' : ''} onClick={() => handleButtonClick('cms-account')}>

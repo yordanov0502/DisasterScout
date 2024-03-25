@@ -21,7 +21,7 @@ export const Router = () => {
       </BorderRoute>
       }/>
         
-      <Route path="/cms-home" element={
+      <Route path="/cms-dashboard" element={
       <ProtectedRoute>
       <CmsHomePage />
       </ProtectedRoute>
