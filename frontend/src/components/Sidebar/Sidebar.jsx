@@ -70,49 +70,49 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
   return (
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
         <div className="logo-details">
-          <i className="bx icon"></i> {/*TO BE REMOVED*/}
-          <i className={`bx ${isOpen ? "bx-menu-alt-right" : "bx-menu"}`} id="btn" onClick={toggleSidebar}>{isOpen ? <MenuOpenIcon fontSize="large"/> : <MenuIcon fontSize="large"/>}</i>
+          <i className="icon"/>
+          <i id="sidebar_burger" onClick={toggleSidebar}>{isOpen ? <MenuOpenIcon fontSize="large"/> : <MenuIcon fontSize="large"/>}</i>
         </div>
         <ul className="nav-list">
           
         <li className={activeButton === 'cms-dashboard' ? 'active' : ''} onClick={() => handleButtonClick('cms-dashboard')}>
           <Link to={"/cms-dashboard"}>
-            <i className="bx bx-grid-alt"><DashboardIcon/></i>
+            <i><DashboardIcon/></i>
             <span className="links_name">Табло</span>
             <span className="tooltip">Табло</span>
           </Link>
         </li>
         <li className={activeButton === 'cms-reports' ? 'active' : ''} onClick={() => handleButtonClick('cms-reports')}>
-          <a href="#">
-            <i className="bx bx-user"><DescriptionIcon/></i>
+          <a>
+            <i><DescriptionIcon/></i>
             <span className="links_name">Доклади</span>
             <span className="tooltip">Доклади</span>
           </a>
         </li>
         <li className={activeButton === 'cms-zones' ? 'active' : ''} onClick={() => handleButtonClick('cms-zones')}>
-          <a href="#">
-            <i className="bx bx-chat"><LocationOnIcon/></i>
+          <a>
+            <i><LocationOnIcon/></i>
             <span className="links_name">Области</span>
             <span className="tooltip">Области</span>
           </a>
         </li>
         <li className={activeButton === 'cms-chronology' ? 'active' : ''} onClick={() => handleButtonClick('cms-chronology')}>
-          <a href="#">
-            <i className="bx bx-pie-chart-alt-2"><RestoreIcon/></i>
+          <a>
+            <i><RestoreIcon/></i>
             <span className="links_name">Хронология</span>
             <span className="tooltip">Хронология</span>
           </a>
         </li>
         <li className={activeButton === 'cms-account' ? 'active' : ''} onClick={() => handleButtonClick('cms-account')}>
-          <a href="#">
-            <i className="bx bx-cart-alt"><PersonIcon/></i>
+          <a>
+            <i><PersonIcon/></i>
             <span className="links_name">Акаунт</span>
             <span className="tooltip">Акаунт</span>
           </a>
         </li>
         <li className={activeButton === 'cms-settings' ? 'active' : ''} onClick={() => handleButtonClick('cms-settings')}>
-          <a href="#">
-            <i className="bx bx-heart"><SettingsIcon/></i>
+          <a>
+            <i><SettingsIcon/></i>
             <span className="links_name">Настройки</span>
             <span className="tooltip">Настройки</span>
           </a>
@@ -121,15 +121,15 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
 { authenticatedUser && authenticatedUser.role === "ADMIN" && (
   <>
         <li className={activeButton === 'cms-dispatchers' ? 'active' : ''} onClick={() => handleButtonClick('cms-dispatchers')}>
-          <a href="#">
-            <i className="bx bx-heart dispatcherss"><GroupsIcon/></i>
+          <a>
+            <i className="dispatcherss"><GroupsIcon/></i>
             <span className="links_name" id="dispatcherss-link_name">Диспечери</span>
             <span className="tooltip" id="dispatcherss-tooltip">Диспечери</span>
           </a>
         </li>
         <li className={activeButton === 'cms-logger' ? 'active' : ''} onClick={() => handleButtonClick('cms-logger')}>
-          <a href="#">
-            <i className="bx bx-heart loggerr"><AutoStoriesIcon/></i>
+          <a>
+            <i className="loggerr"><AutoStoriesIcon/></i>
             <span className="links_name" id="loggerr-link_name">Логър</span>
             <span className="tooltip" id="loggerr-tooltip">Логър</span>
           </a>
@@ -139,7 +139,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
 }
         <li onClick={onPressLogout}>
           <a>
-            <i className="bx bx-cog logout"><LogoutIcon/></i>
+            <i className="logout"><LogoutIcon/></i>
             <span className="links_name" id="logout-link_name">Изход</span>
             <span className="tooltip" id="logout-tooltip">Изход</span>
           </a>

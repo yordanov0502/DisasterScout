@@ -14,6 +14,7 @@
   z-index: 2; 
 }
 
+/*.section1.shrank{}*/
 .sidebar.open ~ .section1 {
   margin-left: 250px; 
 }  

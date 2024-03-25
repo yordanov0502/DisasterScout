@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { Sidebar } from "../components/Sidebar/sidebar";
+import { Sidebar } from "../components/Sidebar";
 import './layout1.css';
 
 export const Layout = ({ children }) => {
@@ -12,7 +12,7 @@ export const Layout = ({ children }) => {
   return (
     <div className="layout1">
       <Sidebar isOpen={isOpen} toggleSidebar={toggleSidebar} />
-      <div className={`section1 ${isOpen ? 'open' : ''}`}>
+      <div className={`section1 ${isOpen ? 'shrank' : ''}`}>
         {children}
       </div>
     </div>

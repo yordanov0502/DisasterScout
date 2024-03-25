@@ -59,7 +59,7 @@
   right: -37px;
 }
 
-.sidebar .logo-details #btn{
+.sidebar .logo-details #sidebar_burger{
   position: absolute;
   top: 50%;
   right: 0;
@@ -70,7 +70,7 @@
   cursor: pointer;
   transition: all 0.5s ease;
 }
-.sidebar.open .logo-details #btn{
+.sidebar.open .logo-details #sidebar_burger{
   text-align: right;
   top: 50%;
 }
@@ -244,7 +244,7 @@ li:hover #logout-tooltip {
 @media (pointer: coarse) {
 
   
-    .sidebar .logo-details #btn {
+    .sidebar .logo-details #sidebar_burger {
       display: none;
     }
   
@@ -311,7 +311,7 @@ li:hover #logout-tooltip {
     right: -37px;
   }
   
-  .sidebar .logo-details #btn{
+  .sidebar .logo-details #sidebar_burger{
     position: absolute;
     top: 50%;
     right: 0;
@@ -322,7 +322,7 @@ li:hover #logout-tooltip {
     cursor: pointer;
     transition: all 0.5s ease;
   }
-  .sidebar.open .logo-details #btn{
+  .sidebar.open .logo-details #sidebar_burger{
     text-align: right;
     top: 50%;
   }
