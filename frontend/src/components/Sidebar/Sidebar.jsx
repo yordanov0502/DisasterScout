@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useEffect, useState } from "react";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import MenuIcon from '@mui/icons-material/Menu';
 import MenuOpenIcon from '@mui/icons-material/MenuOpen';
@@ -21,11 +21,20 @@ const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`;
 
 export const Sidebar = ({isOpen, toggleSidebar}) => {
 
+    const location = useLocation();
     const [activeButton, setActiveButton] = useState(null);
     const { isRequestSent, setIsRequestSent } = useIsRequestSent();
     const { clearUserContext, authenticatedUser } = useUserContext();
     const navigate = useNavigate();
     const queryClient = useQueryClient();
+
+  useEffect(() => { //? used for the sidebar buttons to be automatically selected based on the current URL path
+    const path = location.pathname;
+   
+    if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
+    else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
+    // ...
+  }, [location]);
   
   const logoutMutation = useMutation({
     mutationFn: logoutRequest,
@@ -60,12 +69,6 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     }
 
 
-   
-   
-   
-
-   
-   
 
   return (
       <div className={`sidebar ${isOpen ? "open" : ""}`}>
@@ -74,6 +77,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
           <i id="sidebar_burger" onClick={toggleSidebar}>{isOpen ? <MenuOpenIcon fontSize="large"/> : <MenuIcon fontSize="large"/>}</i>
         </div>
         <ul className="nav-list">
+          
           
         <li className={activeButton === 'cms-dashboard' ? 'active' : ''} onClick={() => handleButtonClick('cms-dashboard')}>
           <Link to={"/cms-dashboard"}>
@@ -111,11 +115,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
           </a>
         </li>
         <li className={activeButton === 'cms-settings' ? 'active' : ''} onClick={() => handleButtonClick('cms-settings')}>
-          <a>
+        <Link to={"/cms-settings"}>
             <i><SettingsIcon/></i>
             <span className="links_name">Настройки</span>
             <span className="tooltip">Настройки</span>
-          </a>
+        </Link>
         </li>
 
 { authenticatedUser && authenticatedUser.role === "ADMIN" && (

@@ -30,11 +30,11 @@
   opacity: 0;
   transition: all 0.4s ease;
 
-   background-image: url(/src/assets/images/sidebarLogo.svg);
-   background-size: cover;
-   background-position: center;
-   height: 133px;
-   width: 133px;
+  background-image: url(/src/assets/images/sidebarLogo.svg);
+  background-size: cover;
+  background-position: center;
+  height: 133px;
+  width: 133px;
 }
 .sidebar .logo-details{
   position: relative;
