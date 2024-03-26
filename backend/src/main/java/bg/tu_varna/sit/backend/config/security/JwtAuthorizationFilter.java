@@ -54,7 +54,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
             @NonNull HttpServletResponse response,
             @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
-
+                                                        //l
         if(request.getRequestURI().startsWith("/api/internal/")) //? This filter must be applied only for secured urls(starting with "/api/internal/")
         {
             Cookie httpOnlyCookie = WebUtils.getCookie(request,HTTP_ONLY_COOKIE_NAME);

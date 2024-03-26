@@ -9,6 +9,7 @@ export const UserContextProvider = ({ children }) => {
     email: null,
     username: null,
     role: null,
+    gender: null,
     availableZones: null,
   });
 
@@ -23,6 +24,7 @@ export const UserContextProvider = ({ children }) => {
       email: null,
       username: null,
       role: null,
+      gender: null,
       availableZones: null,
     });
   };

@@ -49,6 +49,7 @@ public class UserCacheService {
                 .username(registrationRequestDTO.username())
                 .password(encodedPassword)
                 .role(DISPATCHER)
+                .gender(registrationRequestDTO.gender())
                 .status(ACTIVE)
                 .activity(OFFLINE)
                 .lastLogin(timeService.getUnixEpochDateAndTime())

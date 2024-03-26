@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.backend.models.dto.user;
 
+import bg.tu_varna.sit.backend.models.enums.user.Gender;
 import bg.tu_varna.sit.backend.validation.user.*;
 import bg.tu_varna.sit.backend.validation.user.annotation.*;
 import bg.tu_varna.sit.backend.validation.zone.ZoneNumberRegexValidation;
@@ -19,6 +20,7 @@ public record RegistrationRequestDTO(
         String username,
         @PasswordRegex(groups = {PasswordRegexValidation.class})
         String password,
+        Gender gender,
         @ZoneNumberRegex(groups = {ZoneNumberRegexValidation.class})
         Integer initialZone)
         {

@@ -1,6 +1,7 @@
 package bg.tu_varna.sit.backend.models.entity;
 
 import bg.tu_varna.sit.backend.models.enums.user.Activity;
+import bg.tu_varna.sit.backend.models.enums.user.Gender;
 import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.models.enums.user.Status;
 import com.mongodb.annotations.Immutable;
@@ -33,6 +34,7 @@ public class User implements UserDetails {
     private final String username;
     private final String password;
     private final Role role; //? ADMIN / DISPATCHER
+    private final Gender gender; //? MALE / FEMALE
     private final Status status; //? ACTIVE / LOCKED
     private final Activity activity; //? ONLINE / OFFLINE
     private final Date lastLogin;
