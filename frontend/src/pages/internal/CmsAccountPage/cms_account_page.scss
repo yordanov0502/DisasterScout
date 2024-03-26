@@ -8,14 +8,14 @@
 
     &__box {
       display: flex;
-      width: 700px; /* You can set this to the width you desire */
-      height: 365px; /* You can set this to the height you desire */
-      background-color: white; /* Or any color you want */
-      box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.8); /* This adds the shadow */
-      border: 4px solid #ffffff; /* This adds the border */
+      width: 700px; 
+      height: 365px; 
+      background-color: white;
+      box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.8); 
+      border: 4px solid #ffffff; 
       background-color: #009F58;
 
-      &__image{
+      &__maleimage{
         position:relative;
         opacity: 1;
         transition: all 0.4s ease;
@@ -25,29 +25,42 @@
         background-size: cover;
         
         top: 18%;
-        left: 18px;
+        left: 19px;
         height: 224px;
         flex: 0 0 218px; /* Don't grow, don't shrink, fixed width */
       }
 
+      &__femaleimage{
+        position:relative;
+        opacity: 1;
+        transition: all 0.4s ease;
+      
+        background-image: url(/src/assets/images/female.svg);
+        background-repeat: no-repeat;
+        background-size: cover;
+        
+        top: 18%;
+        left: 21px;
+        height: 224px;
+        flex: 0 0 218px; /* Don't grow, don't shrink, fixed width */
+      }
+
+
+
     &__separator {
-        /* Fixed width, no growth */
-         flex: 0 0 4px; 
+        flex: 0 0 4px; 
         position: relative;
         background-color: white;
         height: 100%;
-        // margin-right: 22px; 
         left: 42px;
       }
 
       &__content {
-        /* Grow to use the remaining space */
         // flex-grow: 1; 
-        /* Adjust padding or margin as needed */
-        padding-left: 65px; /* For example */
+        padding-left: 65px;
         padding-top: 20px;
         padding-bottom: 1px;
-        padding-right: 23px; /* To respect the margin right of the separator */
+        padding-right: 23px;
         width: 390px;
         height: 344px;
         color: white;
@@ -56,10 +69,8 @@
       }
 
       .account_label {
-        color: rgb(18, 12, 104); /* Replace #yourColor with the actual color code you want to use */
+        color: rgb(18, 12, 104); 
       }
     }
-
-    
 
   }

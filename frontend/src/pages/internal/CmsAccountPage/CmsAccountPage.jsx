@@ -11,8 +11,7 @@ export const CmsAccountPage = () => {
   return (
     <div className="cms_account_page">
       <div className="cms_account_page__box">
-
-      <div className="cms_account_page__box__image"/>
+      <div className={authenticatedUser.gender === "FEMALE" ? "cms_account_page__box__femaleimage" : "cms_account_page__box__maleimage"} />
       <div className="cms_account_page__box__separator"/>
       <div className="cms_account_page__box__content">
     
