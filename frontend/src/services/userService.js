@@ -27,12 +27,13 @@ export const testRequest = () => {
 export const addNewDispatcherRequest = () => {
    return axiosInstanceWithCredentials.post("/internal/admin/register-new-dispatcher",
     {
+      id: "0246301025",
       firstName:"Емил",
       lastName:"Ефтимов",
       email:"eftimovemil20@gmail.com",
       username:"emil20",
       password:"B0502HTto$hko",
-      initialZone: 3
+      initialZoneId: "st4"
     }
    );
 };

@@ -9,8 +9,7 @@ export const UserContextProvider = ({ children }) => {
     email: null,
     username: null,
     role: null,
-    gender: null,
-    availableZones: null,
+    availableZoneIds: null, //["st1", "st2", "st3"] or [] for ADMIN
   });
 
   const updateUserContext = (newData) => {
@@ -24,8 +23,7 @@ export const UserContextProvider = ({ children }) => {
       email: null,
       username: null,
       role: null,
-      gender: null,
-      availableZones: null,
+      availableZoneIds: null,
     });
   };
 

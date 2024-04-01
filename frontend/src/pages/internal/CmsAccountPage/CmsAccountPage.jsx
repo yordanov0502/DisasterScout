@@ -11,7 +11,6 @@ export const CmsAccountPage = () => {
   return (
     <div className="cms_account_page">
       <div className="cms_account_page__box">
-      <div className={authenticatedUser.gender === "FEMALE" ? "cms_account_page__box__femaleimage" : "cms_account_page__box__maleimage"} />
       <div className="cms_account_page__box__separator"/>
       <div className="cms_account_page__box__content">
     
@@ -20,7 +19,7 @@ export const CmsAccountPage = () => {
       <span className="account_label"><u>Имейл:</u></span> <b><i>{authenticatedUser.email}</i></b><br/><br/>
       <span className="account_label"><u>Потребителско име:</u></span> <b><i>{authenticatedUser.username}</i></b><br/><br/>
       <span className="account_label"><u>Роля:</u></span> <b><i>{`${authenticatedUser.role === "ADMIN" ? "администратор" : "диспечер"}`}</i></b><br/><br/>
-      <span className="account_label"><u>Достъпни области:</u></span> <b><i>{authenticatedUser.role === "ADMIN" ? "всички" : (authenticatedUser.availableZones && authenticatedUser.availableZones.length > 0 ? mapIdsToZones(authenticatedUser.availableZones) : 'няма')}</i></b>
+      <span className="account_label"><u>Достъпни области:</u></span> <b><i>{authenticatedUser.role === "ADMIN" ? "всички" : (authenticatedUser.availableZoneIds && authenticatedUser.availableZoneIds.length > 0 ? mapIdsToZones(authenticatedUser.availableZoneIds) : 'няма')}</i></b>
   
       </div>
                          

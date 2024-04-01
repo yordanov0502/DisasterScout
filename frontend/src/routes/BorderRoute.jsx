@@ -30,7 +30,6 @@ export const BorderRoute = ({ children }) => {
 
   if(localStorage.getItem(LOCAL_STORAGE_KEY1) !== null && localStorage.getItem(LOCAL_STORAGE_KEY1) === LOCAL_STORAGE_VALUE1 && !isUserContextEmpty())
     {
-        
       return <Navigate to="/cms-dashboard" />;
     }
 

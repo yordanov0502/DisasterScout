@@ -15,8 +15,10 @@ public class CaffeineCacheConfig {
     @Bean
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
-        cacheManager.registerCustomCache("user",cacheWithoutExpiration());
-        cacheManager.registerCustomCache("users",cacheWithoutExpiration()); //? Do I need it
+        cacheManager.registerCustomCache("user", userCache());
+        cacheManager.registerCustomCache("users", userCache()); //? Do I need it
+        cacheManager.registerCustomCache("zone", zoneCache());
+        cacheManager.registerCustomCache("zones", zoneCache()); //? Do I need it
 
         //! To avoid dynamic caches and be sure each name is assigned to a specific config (dynamic = false)
         //! throws error when tries to use a new cache
@@ -26,9 +28,16 @@ public class CaffeineCacheConfig {
     }
 
     // Cache entries will NEVER expire due to time-based policies because of the .expireAfterAccess() method absence
-    private static Cache<Object,Object> cacheWithoutExpiration() {
+    private static Cache<Object,Object> userCache() {
         return Caffeine.newBuilder()
                 .maximumSize(29) //? 1 admin and 28 dispatchers
+                .build();
+    }
+
+    // Cache entries will NEVER expire due to time-based policies because of the .expireAfterAccess() method absence
+    private static Cache<Object,Object> zoneCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(28) //? 28 zones
                 .build();
     }
 

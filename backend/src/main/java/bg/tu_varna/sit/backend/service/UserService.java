@@ -34,13 +34,14 @@ public class UserService {
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
-    public User getUserByEmail(String email) {return userCacheService.getUserByEmail(email);}
+    //public User getUserByEmail(String email) {return userCacheService.getUserByEmail(email);}
+    public boolean isIdExists(String id){return userCacheService.isIdExists(id);}
 
     //* Used for validation when creating a new user.
-    public boolean isUsernameExists(String username) {return userCacheService.getUserByUsername(username) != null;}
+    public boolean isUsernameExists(String username) {return userCacheService.isUsernameExists(username);}
 
     //* Used for validation when creating a new user.
-    public boolean isEmailExists(String email) {return userCacheService.getUserByEmail(email) != null;}
+    public boolean isEmailExists(String email) {return userCacheService.isEmailExists(email);}
 
     //* Used for validation when updating already existing user.
     public boolean isUsernameExists(String usernameOfAuthenticatedUser,String username) {return !usernameOfAuthenticatedUser.equals(username) && isUsernameExists(username);}
@@ -85,12 +86,12 @@ public class UserService {
                 {
                     User updatedUser = userCacheService.incrementUnsuccessfulLoginAttemptsOfUser(user);
 
-                    if(updatedUser.getRole().equals(ADMIN) && updatedUser.getUnsuccessfulLoginAttempts()>3)
+                    if(updatedUser.getRole().equals(ADMIN) && updatedUser.getUnsuccessfulLoginAttempts()>=3)
                     {   lockUser(updatedUser);
                         throw new BadCredentialsException("Admin has been locked.");
                     }
 
-                    if(updatedUser.getRole().equals(DISPATCHER) && updatedUser.getUnsuccessfulLoginAttempts()>5)
+                    if(updatedUser.getRole().equals(DISPATCHER) && updatedUser.getUnsuccessfulLoginAttempts()>=5)
                     {   lockUser(updatedUser);
                         throw new BadCredentialsException("Dispatcher has been locked.");
                     }
@@ -145,7 +146,7 @@ public class UserService {
     }
 
     public ResponseEntity<?> setNewRandomPassword(String email){
-        User user = getUserByEmail(email);
+        User user = userCacheService.getUserByEmail(email);;
         if(user.getStatus().equals(ACTIVE) && user.getActivity().equals(OFFLINE))
         {
             String newPassword = generateRandomPassword();

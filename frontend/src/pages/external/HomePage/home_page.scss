@@ -1,0 +1,16 @@
+.home_page {
+    min-height: 100vh;
+  
+    background-repeat: no-repeat;
+    // background-image: url(/src/assets/images/notFoundBg.jpg);
+     background-size: cover;
+     background-position: center;
+     display: flex;
+    justify-content: center;
+     align-items: center;
+    &__container{
+        width: 60%;
+        height: 60%;
+    }
+  }
+  

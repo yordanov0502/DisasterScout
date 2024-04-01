@@ -4,9 +4,13 @@ import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.repository.UserRepository;
+import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
+import com.github.benmanes.caffeine.cache.Cache;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -32,6 +36,7 @@ public class UserCacheService {
     private final UserRepository userRepository;
     //private final CacheManager cacheManager;
     private final TimeService timeService;
+    private final ZoneService zoneService;
 
 
     //* Saves a new user to DB and all related caches.
@@ -43,18 +48,19 @@ public class UserCacheService {
     })
     public User registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO, String encodedPassword) {
         User newUser = User.builder()
+                .id(registrationRequestDTO.id())
                 .firstName(registrationRequestDTO.firstName())
                 .lastName(registrationRequestDTO.lastName())
                 .email(registrationRequestDTO.email())
                 .username(registrationRequestDTO.username())
                 .password(encodedPassword)
                 .role(DISPATCHER)
-                .gender(registrationRequestDTO.gender())
                 .status(ACTIVE)
                 .activity(OFFLINE)
                 .lastLogin(timeService.getUnixEpochDateAndTime())
                 .unsuccessfulLoginAttempts(0)
-                .availableZones(new ArrayList<>(List.of(registrationRequestDTO.initialZone())))
+                //! If circular dependency issue occur due to the injection of the ZoneService, ZoneCacheService can be used instead
+                .availableZones(new ArrayList<>(List.of(zoneService.getZoneById(registrationRequestDTO.initialZoneId()))))
                 .build();
         return userRepository.save(newUser);
     }
@@ -178,20 +184,30 @@ public class UserCacheService {
 
     public User getUserByEmail(String email){return userRepository.findUserByEmail(email);}
 
+    public boolean isIdExists(String id){return userRepository.existsUserById(id);}
+
+    public boolean isUsernameExists(String username){return userRepository.existsUserByUsername(username);}
+
+    public boolean isEmailExists(String email){return userRepository.existsUserByEmail(email);}
+
    //! Why do I need "users" cache ? Is "user" cache not enough for retrieval of all users ?
 
 //    @PostConstruct
 //    public void printCacheContentUSER_ID() {
 //        // Replace "myCache" with the name of your cache
 //        Cache<Object, Object> caffeineCache = (Cache<Object, Object>) cacheManager.getCache("user").getNativeCache();
-//
 //        System.out.println("********user-ID*********");
 //        // Print cache contents
 //        caffeineCache.asMap().forEach((key, value) -> {
 //            System.out.println("Key: " + key + ", Value: " + value);
 //        });System.out.println("*****************");
 //
-//
+//        Cache<Object, Object> caffeineCache1 = (Cache<Object, Object>) cacheManager.getCache("zone").getNativeCache();
+//        System.out.println("********zone-ID*********");
+//        // Print cache contents
+//        caffeineCache1.asMap().forEach((key, value) -> {
+//            System.out.println("Key: " + key + ", Value: " + value);
+//        });System.out.println("*****************");
 //    }
 
 }

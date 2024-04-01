@@ -13,9 +13,6 @@ import org.springframework.web.bind.annotation.*;
 public class AdminController {
 
     private final UserService userService;
-    //
-    //private final UserCacheService userCacheService;
-    //
 
     //? What return type best suits me ?
     @Operation(summary = "Register a new dispatcher",
@@ -24,13 +21,5 @@ public class AdminController {
     public void registerNewDispatcher(@Validated(value = RegistrationRequestDTO.Group.class) @RequestBody RegistrationRequestDTO registrationRequestDTO){
            userService.registerNewDispatcher(registrationRequestDTO);
     }
-
-
-
-//    @GetMapping("/testt")
-//    public void testingCache(){
-//        System.out.println("CONTROLLEER");
-//        System.out.println(userService.getUserById("65c007400dd2a26b5450bc56").toString());
-//    }
 
 }

@@ -1,6 +1,5 @@
 package bg.tu_varna.sit.backend.models.dto.user;
 
-import bg.tu_varna.sit.backend.models.enums.user.Gender;
 import bg.tu_varna.sit.backend.models.enums.user.Role;
 import lombok.Builder;
 
@@ -13,5 +12,4 @@ public record AuthenticationResponseDTO(
         String email,
         String username,
         Role role,
-        Gender gender,
-        List<Integer> availableZones) {}
+        List<String> availableZoneIds) {}

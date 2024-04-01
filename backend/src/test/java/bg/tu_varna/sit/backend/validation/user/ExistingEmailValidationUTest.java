@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.validation.user;
 
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.enums.user.Gender;
+import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.service.UserService;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +17,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import java.util.*;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.user.Gender.MALE;
 import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
 import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
@@ -44,12 +43,12 @@ class ExistingEmailValidationUTest {
     @Test
     void isValid_withDifferentEmail_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","tosheto","ASas2@dsadas12", ADMIN, MALE, ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(1)));
+        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("6505d8f5bbda1e36bbc2bdea")).thenReturn(authenticatedUser);
+        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isEmailExists("auth@example.com", "new@example.com")).thenReturn(false);
 
         assertTrue(existingEmailValidationU.isValid("new@example.com", constraintValidatorContext));
@@ -58,12 +57,12 @@ class ExistingEmailValidationUTest {
     @Test
     void isValid_withSameEmail_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","tosheto","ASas2@dsadas12", ADMIN,MALE, ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(1)));
+        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("6505d8f5bbda1e36bbc2bdea")).thenReturn(authenticatedUser);
+        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isEmailExists("auth@example.com", "auth@example.com")).thenReturn(false);
 
         assertTrue(existingEmailValidationU.isValid("auth@example.com", constraintValidatorContext));
@@ -72,12 +71,12 @@ class ExistingEmailValidationUTest {
     @Test
     void isValid_withExistingEmail_shouldReturnFalse() {
         // Mocking authentication
-        User authenticatedUser = new User("6505d8f5bbda1e36bbc2bdea","Todor","Yordanov","auth@example.com","tosheto","ASas2@dsadas12", ADMIN,MALE, ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(1)));
+        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", ADMIN, ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("6505d8f5bbda1e36bbc2bdea")).thenReturn(authenticatedUser);
+        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isEmailExists("auth@example.com", "different@example.com")).thenReturn(true);
 
         assertFalse(existingEmailValidationU.isValid("different@example.com", constraintValidatorContext));
