@@ -15,6 +15,7 @@
   
   flex-grow: 1; 
   z-index: 2; 
+  background-color: rgb(235, 255, 241);
 }
 
 /*.section1.shrank{}*/
