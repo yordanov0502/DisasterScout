@@ -1,12 +1,12 @@
-.page_loader {
-  position: fixed;
+.component_loader {
+  position: relative;
   display: flex;
   justify-content: center;
   align-items: center;
-  height: 100vh; /* This makes the container take full viewport height */
-  width: 100vw; /* This makes the container take full viewport width */
+  //height: 100vh; 
+  //width: 100vw;
 
-  &__component {
+  &__container {
     --cell-size: 52px;
     --cell-spacing: 1px;
     --cells: 3;

@@ -1,6 +1,6 @@
 import { Suspense, useRef} from "react";
-import { PageLoader } from "./components/Loaders/PageLoader.jsx";
-//import {Progress} from "./components/Loaders/Progress.jsx" //!kept for UI debug purposes because of PageLoader overriding MUI components. This progress loader does NOT override any of the MUI components
+import { PageLoader } from "./components/Loaders/PageLoader";
+//import {Progress} from "./components/Loaders/Progress" //!kept for UI debug purposes because of PageLoader overriding MUI components. This progress loader does NOT override any of the MUI components
 import { Router } from "./routes";
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { ReactQueryDevtools } from "@tanstack/react-query-devtools";

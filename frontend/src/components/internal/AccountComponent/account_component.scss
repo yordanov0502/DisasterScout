@@ -1,14 +1,22 @@
 .account_component {
   display: flex;
   flex-direction: column;
-  align-items: center; // This will center the child elements horizontally
-  //justify-content: center; // This will center the child elements vertically (if you want that)
+  align-items: center;
   width: 450px;
   height: 495px;
   background-color: white;
   box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.8);
   border: 4px solid #009f58;
   background-color: #ffffff;
+
+  &__loader-box {
+    display: flex;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+  }
 
   &__title {
     position: relative;
@@ -21,13 +29,6 @@
     position: relative;
     top: 25px;
     width: 50%;
-    // &__text-field_container {
-    //   //? MIGHT BE NEEDLESS AND DELETED IF WORKS WITHOUT IT
-    //   //width: 20%; // Or any fixed width
-    //   //position:relative;
-    //   //right: 50px;
-    //   //margin-bottom: 100px; // Space between TextFields
-    // }
   }
 
   &__error-message {
@@ -41,8 +42,7 @@
 
   &__buttons-container {
     display: flex;
-    //justify-content: space-evenly;
-    align-items: center; // This centers the buttons vertically in the container
+    align-items: center;
     position: relative;
     top: 40px;
     width: 100%;
@@ -51,17 +51,13 @@
 
     &__submit {
       display: flex;
-      align-items: center; // This centers the text vertically
-      justify-content: center; // This centers the text horizontally
+      align-items: center; 
+      justify-content: center;
       cursor: pointer;
       position: relative;
       left: 10%;
-      //bottom: 0%;
       width: 35%;
       height: 78%;
-      //padding: 12px 40px;
-      //margin: 0px 10px 10px 0px;
-      //float: left;
       border-radius: 3px;
       font-size: 18px;
       color: #fff;
@@ -92,12 +88,8 @@
       cursor: pointer;
       position: relative;
       left: 20%;
-      //bottom: 0%;
       width: 35%;
       height: 78%;
-      //padding: 12px 40px;
-      //margin: 0px 10px 10px 0px;
-      //float: left;
       border-radius: 3px;
       font-size: 18px;
       color: #fff;
@@ -118,7 +110,7 @@
       -webkit-transform: translate(0px, 5px);
       -ms-transform: translate(0px, 5px);
       transform: translate(0px, 5px);
-      border-bottom: 1px solid #00693a;
+      border-bottom: 1px solid #690000;
     }
   }
 }
