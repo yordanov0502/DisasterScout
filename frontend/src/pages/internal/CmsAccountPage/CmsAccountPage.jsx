@@ -6,8 +6,8 @@ import { processErrorForm, validateAccountForm } from "../../../validations/user
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { updateAccountRequest } from "../../../services/userService";
-import "./cms_account_page.scss";
 import { Alert, Snackbar } from "@mui/material";
+import "./cms_account_page.scss";
 
 export const CmsAccountPage = () => {
   const { authenticatedUser, isUserContextEmpty, updateUserContext } = useUserContext();
