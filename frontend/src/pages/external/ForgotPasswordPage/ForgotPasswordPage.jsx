@@ -48,7 +48,7 @@ export const ForgotPasswordPage = () => {
   });
 
   const handleInput = (e) => {
-    setForgotPasswordForm({ ...forgotPasswordForm, [e.target.name]: e.target.value.trim() });
+    setForgotPasswordForm(prevState => ({ ...prevState, [e.target.name]: e.target.value.trim()}));
     setErrorMessage("");
   };
 

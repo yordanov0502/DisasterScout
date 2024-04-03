@@ -1,9 +1,5 @@
 import { axiosInstanceWithCredentials } from "../utils/axiosInstances";
 
-export const isUserAuthenticated = () => {
-  return axiosInstanceWithCredentials.get("/internal/dispatcher/check-authentication");
-};
-
 export const loginRequest = (loginForm) => {
   return axiosInstanceWithCredentials.post("/external/login", loginForm);
 };
@@ -13,8 +9,19 @@ export const logoutRequest = () => {
 };
 
 export const forgotPasswordRequest = (forgotPasswordForm) => {
-  return axiosInstanceWithCredentials.post("external/user/forgot-password", forgotPasswordForm);
+  //!SLASH ADDED BEFORE external, cuz it was absent. I should test if it works as expected
+  return axiosInstanceWithCredentials.post("/external/user/forgot-password", forgotPasswordForm);
 };
+
+
+
+export const isUserAuthenticated = () => {
+  return axiosInstanceWithCredentials.get("/internal/dispatcher/check-authentication");
+};
+
+export const updateAccountRequest = (accountForm) =>{
+  return axiosInstanceWithCredentials.put("/internal/dispatcher/account/update",accountForm);
+}
 
 
 

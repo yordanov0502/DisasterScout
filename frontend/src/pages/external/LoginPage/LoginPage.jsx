@@ -47,7 +47,7 @@ export const LoginPage = () => {
   });
 
   const handleInput = (e) => {
-    setLoginForm({ ...loginForm, [e.target.name]: e.target.value.trim() });
+    setLoginForm(prevState => ({ ...prevState, [e.target.name]: e.target.value.trim() }));
     setErrorMessage("");
   };
 

@@ -2,7 +2,7 @@ package bg.tu_varna.sit.backend.service;
 
 import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
-import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import bg.tu_varna.sit.backend.service.util.EmailService;
@@ -124,7 +124,7 @@ public class UserService {
     public User registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO){return userCacheService.registerNewDispatcher(registrationRequestDTO,passwordEncoder.encode(registrationRequestDTO.password()));}
 
     //! This method should be called ONLY by a user, who intends to update HIS data
-    public User updateUser(User user, UserDTO userDTO){return userCacheService.updateUser(user,userDTO);}
+    public User updateUser(User user, UserUpdateDTO userUpdateDTO){return userCacheService.updateUser(user, userUpdateDTO);}
 
     public String generateRandomPassword(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&+=_*~!)(./:;<>?{}|`',-";
@@ -146,7 +146,7 @@ public class UserService {
     }
 
     public ResponseEntity<?> setNewRandomPassword(String email){
-        User user = userCacheService.getUserByEmail(email);;
+        User user = userCacheService.getUserByEmail(email);
         if(user.getStatus().equals(ACTIVE) && user.getActivity().equals(OFFLINE))
         {
             String newPassword = generateRandomPassword();

@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.models.mapper.user;
 
 import bg.tu_varna.sit.backend.models.dto.user.AuthenticationResponseDTO;
-import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import org.springframework.stereotype.Component;
 
@@ -20,9 +20,9 @@ public class UserMapper {
                 .build();
     }
 
-    public UserDTO mapToUserDTO(User user)
+    public UserUpdateDTO mapToUserUpdateDTO(User user)
     {
-        return UserDTO.builder()
+        return UserUpdateDTO.builder()
                 .firstName(user.getFirstName())
                 .lastName(user.getLastName())
                 .email(user.getEmail())

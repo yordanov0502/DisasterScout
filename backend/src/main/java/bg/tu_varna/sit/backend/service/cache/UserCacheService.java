@@ -1,16 +1,13 @@
 package bg.tu_varna.sit.backend.service.cache;
 
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
-import bg.tu_varna.sit.backend.models.dto.user.UserDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
-import com.github.benmanes.caffeine.cache.Cache;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -72,12 +69,12 @@ public class UserCacheService {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
             @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
-    public User updateUser(User user, UserDTO userDTO){
+    public User updateUser(User user, UserUpdateDTO userUpdateDTO){
         User updatedUser = user.toBuilder()
-                .firstName(userDTO.firstName())
-                .lastName(userDTO.lastName())
-                .username(userDTO.username())
-                .email(userDTO.email())
+                .firstName(userUpdateDTO.firstName())
+                .lastName(userUpdateDTO.lastName())
+                .username(userUpdateDTO.username())
+                .email(userUpdateDTO.email())
                 .build();
         return userRepository.save(updatedUser);
     }

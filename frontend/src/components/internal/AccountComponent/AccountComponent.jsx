@@ -1,17 +1,9 @@
-import { useEffect, useState } from "react";
-import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import { TextField } from "@mui/material";
-import { useUserContext } from "../../../hooks/useUserContext";
+import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import "./account_component.scss";
 
-export const AccountComponent = () => {
-  const { authenticatedUser, isUserContextEmpty } = useUserContext();
-  const [isLoading, setIsLoading] = useState(true); //? isLoading is based whether UserContext is empty or not
-
-  useEffect(() => {
-    setIsLoading(isUserContextEmpty());
-  }, [isUserContextEmpty]);
-
+export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessage, handleInput, role, onPressUpdate, isRequestSent, resetAccountForm }) => {
+ 
   if(isLoading)
   {
   return (
@@ -24,57 +16,62 @@ export const AccountComponent = () => {
   }
   /* {testQuery.isError && display a message with a snack bar}  MUST BE PUT INSIDE THE <div> in the return*/
   return (
-    <div className="account_component">
+    <form className="account_component" onSubmit={onPressUpdate}>
 
       <div className="account_component__title">Информация за акаунта</div>
 
       <div className="account_component__box">
 
       <TextField
+      name="firstName" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
+      required
       fullWidth
       label="Име"
       variant="outlined"
       color="success"
-      /*focused*/
       margin="dense"
-      defaultValue={authenticatedUser.firstName}
-      error
+      error={errorForm.firstName}
+      value={accountForm.firstName}
+      onChange={handleInput}
       />
 
       <TextField
+      name="lastName" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
+      required
       fullWidth
       label="Фамилия"
       variant="outlined"
       color="success"
       margin="dense"
-      /*focused*/
-      defaultValue={authenticatedUser.lastName}
-      error
+      error={errorForm.lastName}
+      value={accountForm.lastName}
+      onChange={handleInput}
       />
 
       <TextField
+      name="email" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
+      required
       fullWidth
       label="Имейл адрес"
       variant="outlined"
       color="success"
       margin="dense"
-      /*focused*/
-      defaultValue={authenticatedUser.email}
-      error
+      error={errorForm.email}
+      value={accountForm.email}
+      onChange={handleInput}
       />
 
       <TextField
+      name="username" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
+      required
       fullWidth
       label="Потребителско име"
       variant="outlined"
       color="success"
       margin="dense"
-      /*focused*/
-      error
-      defaultValue={authenticatedUser.username}
-      onChange={(event) => {
-        setName(event.target.value);
-      }}
+      error={errorForm.username}
+      value={accountForm.username}
+      onChange={handleInput}
       />
 
       <TextField
@@ -83,19 +80,20 @@ export const AccountComponent = () => {
       variant="outlined"
       color="success"
       margin="dense"
-      defaultValue={authenticatedUser.role === "ADMIN" ? "администратор" : "диспечер"}
-      /*focused*/
+      value={role === "ADMIN" ? "администратор" : "диспечер"}
+      //disabled
+      InputProps={{readOnly: true}}
       />
 
       </div>
 
-      <div className="account_component__error-message">оаяоаяоаоя</div>
+      <div className="account_component__error-message">{errorMessage}</div>
 
       <div className="account_component__buttons-container">
-      <button type="submit" className="account_component__buttons-container__submit" /*disabled={isRequestSent}*/>Актуализирай</button>
-      <button type="submit" className="account_component__buttons-container__clear" /*disabled={isRequestSent}*/>Изчисти</button>
+      <button type="submit" className="account_component__buttons-container__submit" disabled={isRequestSent}>Актуализирай</button>
+      <button type="button" className="account_component__buttons-container__clear" onClick={resetAccountForm}>Изчисти</button>
       </div>
 
-    </div>
+    </form>
   );
 };
