@@ -1,4 +1,4 @@
-import { Navigate } from "react-router-dom";
+import { Navigate} from "react-router-dom";
 import { useUserContext } from "../hooks/useUserContext";
 import { useQuery } from "@tanstack/react-query";
 import { isUserAuthenticated } from "../services/userService";
@@ -40,5 +40,6 @@ export const ProtectedRoute = ({ children }) => {
     if (getUserAuthentication.isSuccess) return <Layout1>{children}</Layout1>;
   }
 
-  return <Navigate to="/login" />;
+  //? replace={true} means the user won't be able to hit the back button to return to the previous page
+  return <Navigate to="/login" replace={true} state={{ showExpiredSessionSnackbar: true }} />; 
 };

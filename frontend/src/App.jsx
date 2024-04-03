@@ -23,7 +23,7 @@ function App() {
       clearUserContext();
       localStorage.removeItem(LOCAL_STORAGE_KEY1);
       queryClientRef.current.clear();
-      navigate("/login"); //? Navigation is possible because of the <BrowserRouter> in the index.jsx file, despite the fact that the routes are specified one level below - in the Routes.jsx file
+      navigate("/login", { replace:true, state: { showExpiredSessionSnackbar: true } }); //? Navigation is possible because of the <BrowserRouter> in the index.jsx file, despite the fact that the routes are specified one level below - in the Routes.jsx file
     } 
   }
 

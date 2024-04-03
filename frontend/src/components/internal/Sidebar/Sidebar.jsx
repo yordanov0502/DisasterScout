@@ -55,7 +55,8 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
       queryClient.clear(); //! Completely clears the query cache of all queries and mutations. This method is the most drastic as it removes everything from the cache.
       clearUserContext();
       localStorage.removeItem(LOCAL_STORAGE_KEY1);
-      navigate("/login");
+      //navigate("/login");
+      navigate("/login", { replace:true });
       setIsRequestSent(false);
     }
   });
