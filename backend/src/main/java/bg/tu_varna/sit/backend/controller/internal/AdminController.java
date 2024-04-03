@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
+//TODO: Delete this controller and move the endpoint to the related dispatcher controller
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/internal/admin")

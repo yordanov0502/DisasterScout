@@ -8,6 +8,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 
 //* ADMIN has access to this controller's endpoints.
+//TODO: Delete this controller
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/internal/dispatcher")
