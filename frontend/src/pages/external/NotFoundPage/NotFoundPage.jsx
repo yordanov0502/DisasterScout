@@ -1,4 +1,4 @@
-import { NotFoundComponent } from "../../../components/NotFoundComponent";
+import { NotFoundComponent } from "../../../components/external/NotFoundComponent";
 import "./not_found_page.scss";
 
 export const NotFoundPage = () => {

@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { validateForgotPasswordForm } from "../../../validations/userRegexValidation";
-import { ForgotPasswordComponent } from "../../../components/ForgotPasswordComponent";
+import { ForgotPasswordComponent } from "../../../components/external/ForgotPasswordComponent";
 import { useRateLimit } from "../../../hooks/useRateLimit";
 import { forgotPasswordRequest } from "../../../services/userService";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";

@@ -12,9 +12,9 @@ import SettingsIcon from '@mui/icons-material/Settings';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import LogoutIcon from '@mui/icons-material/Logout';
-import { logoutRequest } from "../../services/userService";
-import { useIsRequestSent } from "../../hooks/useIsRequestSent";
-import { useUserContext } from "../../hooks/useUserContext";
+import { logoutRequest } from "../../../services/userService";
+import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
+import { useUserContext } from "../../../hooks/useUserContext";
 import './sidebar.css'; 
 
 const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`; 

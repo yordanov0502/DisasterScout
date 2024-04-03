@@ -6,7 +6,7 @@ import { useRateLimit } from "../../../hooks/useRateLimit";
 import { validateLoginForm } from "../../../validations/userRegexValidation";
 import { loginRequest } from "../../../services/userService";
 import { useUserContext } from "../../../hooks/useUserContext";
-import { LoginComponent } from "../../../components/LoginComponent";
+import { LoginComponent } from "../../../components/external/LoginComponent";
 import "./login_page.scss";
 
 const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`; 
