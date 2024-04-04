@@ -60,7 +60,7 @@ export const CmsAccountPage = () => {
     },
     onSuccess: (response) => {
       updateUserContext(response.data);
-      showSnackbar("Успешно актуализирахте акаунта си.", "success","top","right")
+      showSnackbar("Успешно актуализирахте акаунта си.", "success","bottom","right")
     },
     onError: (error) => {
       if(error?.response?.data ==="Email already exists.")
@@ -79,7 +79,7 @@ export const CmsAccountPage = () => {
       {
         setErrorMessage("Невалидно потребителско име.");
       }
-      else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","top","right");}
+      else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
     },
     onSettled: () => {
       setIsRequestSent(false);
