@@ -60,7 +60,7 @@ export const CmsAccountPage = () => {
     },
     onSuccess: (response) => {
       updateUserContext(response.data);
-      showSnackbar("Успешно актуализирахте акаунта си.", "success","bottom","right")
+      showSnackbar("Успешно актуализирахте акаунта си.", "success","bottom","right");
     },
     onError: (error) => {
       if(error?.response?.data ==="Email already exists.")
