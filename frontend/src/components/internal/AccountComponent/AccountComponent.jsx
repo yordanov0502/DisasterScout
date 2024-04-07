@@ -14,7 +14,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
     </div>
   );
   }
-  /* {testQuery.isError && display a message with a snack bar}  MUST BE PUT INSIDE THE <div> in the return*/
+  
   return (
     <form className="account_component" onSubmit={onPressUpdate}>
 
