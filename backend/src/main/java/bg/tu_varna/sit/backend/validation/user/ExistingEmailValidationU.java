@@ -24,7 +24,7 @@ public class ExistingEmailValidationU implements ConstraintValidator<ExistingEma
     @Override
     public boolean isValid(String email, ConstraintValidatorContext context) {
         //* Gets email of authenticated user
-        String emailOfAuthenticatedUser = userService.getUserById(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getEmail();
+        String emailOfAuthenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getEmail();
         return !userService.isEmailExists(emailOfAuthenticatedUser,email);
     }
 }

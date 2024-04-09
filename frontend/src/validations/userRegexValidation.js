@@ -30,34 +30,11 @@ export const validateForgotPasswordForm = (email) => { //? function returns erro
   else return ""; //* OK
 };
 
-export const processErrorForm = (accountForm) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
-  const errors = {
-    firstName: !nameRegex.test(accountForm.firstName),
-    lastName: !nameRegex.test(accountForm.lastName),
-    email: !emailRegex.test(accountForm.email),
-    username: !usernameRegex.test(accountForm.username),
-  };
-  return errors;
-};
-
 export const validateAccountForm = (accountForm,authenticatedUser) => { //? function returns error message
 
-  if (!accountForm.firstName) {
-    return "Моля въведете име."; //! error
+  if (!accountForm.firstName || !accountForm.lastName || !accountForm.email || !accountForm.username) {
+    return "Моля въведете данни във всички полета."; //! error
   }
-  
-  if (!accountForm.lastName) {
-    return "Моля въведете фамилия."; //! error
-  }
-
-  if (!accountForm.email) {
-    return "Моля въведете имейл адрес."; //! error
-  }
-
-  if (!accountForm.username) {
-    return "Моля въведете потребителско име."; //! error
-  }
-
 
   if(accountForm.firstName === authenticatedUser.firstName 
      && accountForm.lastName === authenticatedUser.lastName
@@ -81,4 +58,91 @@ export const validateAccountForm = (accountForm,authenticatedUser) => { //? func
     return ""; //* OK
   }
 
+};
+
+export const processErrorForm = (accountForm) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  return {
+    firstName: !nameRegex.test(accountForm.firstName),
+    lastName: !nameRegex.test(accountForm.lastName),
+    email: !emailRegex.test(accountForm.email),
+    username: !usernameRegex.test(accountForm.username),
+  };
+};
+
+export const processErrorFormOnSubmit = (accountForm, validationMessage) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+  if(validationMessage === "Моля въведете нови данни, в поне едно от полетата.")
+  {
+    return {
+      firstName: true,
+      lastName: true,
+      email: true,
+      username: true,
+    };
+  }
+  else
+  {
+    return {
+      firstName: !nameRegex.test(accountForm.firstName),
+      lastName: !nameRegex.test(accountForm.lastName),
+      email: !emailRegex.test(accountForm.email),
+      username: !usernameRegex.test(accountForm.username),
+    };
+  }
+};
+
+export const validateChangePasswordForm = (changePasswordForm) => { //? function returns error message
+
+  if (!changePasswordForm.currentPassword || !changePasswordForm.newPassword || !changePasswordForm.confirmNewPassword) {
+    return "Моля въведете данни във всички полета."; //! error
+  }
+
+  const isCurrentPasswordValid = passwordRegex.test(changePasswordForm.currentPassword);
+  const isNewPasswordValid = passwordRegex.test(changePasswordForm.newPassword);
+  const isConfirmNewPasswordValid = passwordRegex.test(changePasswordForm.confirmNewPassword);
+
+  if (!isCurrentPasswordValid) {return "Невалиден формат на текущата парола. Изисквания: [бр.символи 8-30, поне 1 малка буква, поне 1 главна буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
+  if (!isNewPasswordValid) {return "Невалиден формат на новата парола. Изисквания: [бр.символи 8-30, поне 1 малка буква, поне 1 главна буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
+  if (!isConfirmNewPasswordValid) {return "Невалиден формат на потвърждението. Изисквания: [бр.символи 8-30, поне 1 малка буква, поне 1 главна буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
+
+
+  if(changePasswordForm.newPassword !== changePasswordForm.confirmNewPassword )
+  {
+    return "Полето за нова парола и полето за потвърждение се различават."; //! error
+  }
+  if(changePasswordForm.currentPassword === changePasswordForm.newPassword )
+  {
+    return "Новата парола трябва да се различава от текущата парола."; //! error
+  }
+  
+    return ""; //* OK
+}
+
+export const processChangePasswordErrorForm = (changePasswordForm) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  return {
+    currentPassword: changePasswordForm.currentPassword !== "" && !passwordRegex.test(changePasswordForm.currentPassword),
+    newPassword: changePasswordForm.newPassword !== "" && !passwordRegex.test(changePasswordForm.newPassword),
+    confirmNewPassword: changePasswordForm.confirmNewPassword !== "" && !passwordRegex.test(changePasswordForm.confirmNewPassword),
+  };
+};
+
+export const processChangePasswordErrorFormOnSubmit = (changePasswordForm, validationMessage) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+  if(validationMessage === "Полето за нова парола и полето за потвърждение се различават." ||
+     validationMessage === "Новата парола трябва да се различава от текущата парола.")
+  {
+    return {
+      currentPassword: false,
+      newPassword: true,
+      confirmNewPassword: true,
+    };
+  }
+  else
+  {
+    return {
+      currentPassword: !passwordRegex.test(changePasswordForm.currentPassword),
+      newPassword: !passwordRegex.test(changePasswordForm.newPassword),
+      confirmNewPassword: !passwordRegex.test(changePasswordForm.confirmNewPassword),
+    };
+  }
 };

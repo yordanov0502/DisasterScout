@@ -1,12 +1,12 @@
 import { useEffect, useState } from "react";
 import { useMutation } from "@tanstack/react-query";
+import { Alert, Snackbar } from "@mui/material";
 import { AccountComponent } from "../../../components/internal/AccountComponent";
 import { useUserContext } from "../../../hooks/useUserContext";
-import { processErrorForm, validateAccountForm } from "../../../validations/userRegexValidation";
+import { processErrorForm, processErrorFormOnSubmit, validateAccountForm } from "../../../validations/userRegexValidation";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { updateAccountRequest } from "../../../services/userService";
-import { Alert, Snackbar } from "@mui/material";
 import "./cms_account_page.scss";
 
 export const CmsAccountPage = () => {
@@ -35,6 +35,7 @@ export const CmsAccountPage = () => {
       email: authenticatedUser.email,
       username: authenticatedUser.username,
     });
+    setErrorMessage("");
   }
 
   useEffect(() => { 
@@ -100,10 +101,12 @@ export const CmsAccountPage = () => {
 
   const onPressUpdate = (event) => {
     event.preventDefault();
+    closeSnackbar();
     const validationMessage = validateAccountForm(accountForm,authenticatedUser); //If validation passes, validationMessage is ""
-
+    
     if(validationMessage)
     {
+      setErrorForm(processErrorFormOnSubmit(accountForm, validationMessage));
       setErrorMessage(validationMessage);
     }
     else if(!isRequestSent)
@@ -132,7 +135,7 @@ export const CmsAccountPage = () => {
           horizontal: position.horizontal,
         }} 
         open={open} 
-        autoHideDuration={3000} 
+        autoHideDuration={4000} 
         onClose={handleCloseSnackBar}>
         <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
           {message}

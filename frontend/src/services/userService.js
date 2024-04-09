@@ -9,7 +9,6 @@ export const logoutRequest = () => {
 };
 
 export const forgotPasswordRequest = (forgotPasswordForm) => {
-  //!SLASH ADDED BEFORE external, cuz it was absent. I should test if it works as expected
   return axiosInstanceWithCredentials.post("/external/user/forgot-password", forgotPasswordForm);
 };
 
@@ -21,7 +20,11 @@ export const isUserAuthenticated = () => {
 
 export const updateAccountRequest = (accountForm) =>{
   return axiosInstanceWithCredentials.put("/internal/dispatcher/account/update",accountForm);
-}
+};
+
+export const changePasswordRequest = (changePasswordForm) => {
+  return axiosInstanceWithCredentials.put("/internal/dispatcher/settings/change-password", changePasswordForm);
+};
 
 
 

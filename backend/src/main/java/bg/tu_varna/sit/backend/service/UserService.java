@@ -11,6 +11,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -140,7 +141,9 @@ public class UserService {
                 counter++;
                 String generatedPassword = RandomStringUtils.random(12, characters);
                 Matcher matcher = pattern.matcher(generatedPassword);
-                if(matcher.matches()) {return generatedPassword;}
+                if(matcher.matches()) {
+                    System.out.println(generatedPassword);
+                    return generatedPassword;}
             }
         }
     }
@@ -164,6 +167,17 @@ public class UserService {
             emailService.sendWarningEmail(user.getFirstName(),email);
             return ResponseEntity.badRequest().build();
         }
+    }
+
+    //? Check whether the currentPasswordField matches with the currently authenticated user's password
+    public boolean checkPasswordsMatch(String currentPasswordField){
+        User authenticatedUser = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return passwordEncoder.matches(currentPasswordField, authenticatedUser.getPassword());
+    }
+
+    public ResponseEntity<?> changePassword(User user, String newPassword){
+        userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
+        return ResponseEntity.ok().build();
     }
 
 }

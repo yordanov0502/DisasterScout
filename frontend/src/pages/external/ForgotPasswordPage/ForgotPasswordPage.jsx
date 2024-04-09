@@ -61,6 +61,7 @@ export const ForgotPasswordPage = () => {
 
   const onPressForgotPassword = (event) => {
     event.preventDefault();
+    closeSnackbar();
     const validationMessage = validateForgotPasswordForm(forgotPasswordForm.email); //* If validation passes, validationMessage is ""
     setErrorMessage(validationMessage);
 
@@ -105,7 +106,7 @@ export const ForgotPasswordPage = () => {
           horizontal: position.horizontal,
         }} 
         open={open} 
-        autoHideDuration={5000} 
+        autoHideDuration={4000} 
         onClose={handleCloseSnackBar}>
         <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
           {message}

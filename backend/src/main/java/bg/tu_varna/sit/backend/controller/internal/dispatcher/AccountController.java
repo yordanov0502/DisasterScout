@@ -22,11 +22,10 @@ public class AccountController {
     private final UserService userService;
     private final UserMapper userMapper;
 
-    //? What return type best suits me ?
     //! AuthenticationPrincipal User is updated with the provided fields from UserUpdateDTO
-    //* This endpoint should be called only for PERSONAL update(including: user,admin)
+    //* This endpoint should be called only for PERSONAL update(including: dispatcher,admin)
     @Operation(summary = "Update user",
-            description = "User updates HIS account information when this endpoint is called.")
+            description = "User updates his account information when this endpoint is called.")
     @PutMapping("/update")
     public UserUpdateDTO updateUser(@AuthenticationPrincipal User user, @Validated(value = UserUpdateDTO.Group.class) @RequestBody UserUpdateDTO userUpdateDTO) {
         return userMapper.mapToUserUpdateDTO(userService.updateUser(user, userUpdateDTO));

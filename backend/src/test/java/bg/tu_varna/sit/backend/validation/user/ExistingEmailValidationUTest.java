@@ -48,7 +48,6 @@ class ExistingEmailValidationUTest {
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isEmailExists("auth@example.com", "new@example.com")).thenReturn(false);
 
         assertTrue(existingEmailValidationU.isValid("new@example.com", constraintValidatorContext));
@@ -62,7 +61,6 @@ class ExistingEmailValidationUTest {
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isEmailExists("auth@example.com", "auth@example.com")).thenReturn(false);
 
         assertTrue(existingEmailValidationU.isValid("auth@example.com", constraintValidatorContext));
@@ -76,7 +74,6 @@ class ExistingEmailValidationUTest {
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isEmailExists("auth@example.com", "different@example.com")).thenReturn(true);
 
         assertFalse(existingEmailValidationU.isValid("different@example.com", constraintValidatorContext));

@@ -66,7 +66,7 @@ export const LoginPage = () => {
 
   const onPressLogin = (event) => {
     event.preventDefault();
-
+    closeSnackbar();
     const validationMessage = validateLoginForm(loginForm.username,loginForm.password); //If validation passes, validationMessage is ""
 
     if(validationMessage) 

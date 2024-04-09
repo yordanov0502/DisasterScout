@@ -16,7 +16,8 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
   }
   
   return (
-    <form className="account_component" onSubmit={onPressUpdate}>
+    //! noValidate removes default HTML5 validation for empty fields
+    <form noValidate className="account_component" onSubmit={onPressUpdate}>
 
       <div className="account_component__title">Информация за акаунта</div>
 

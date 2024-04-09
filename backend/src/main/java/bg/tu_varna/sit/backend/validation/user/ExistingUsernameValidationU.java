@@ -24,7 +24,7 @@ public class ExistingUsernameValidationU implements ConstraintValidator<Existing
     @Override
     public boolean isValid(String username, ConstraintValidatorContext context) {
         //* Gets username of authenticated user
-        String usernameOfAuthenticatedUser = userService.getUserById(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getId()).getUsername();
+        String usernameOfAuthenticatedUser = ((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername();
         return !userService.isUsernameExists(usernameOfAuthenticatedUser,username);
     }
 }

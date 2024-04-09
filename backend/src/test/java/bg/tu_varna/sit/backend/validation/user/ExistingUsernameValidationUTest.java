@@ -50,7 +50,6 @@ class ExistingUsernameValidationUTest {
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isUsernameExists("currentUsername", "newUsername")).thenReturn(false);
 
         assertTrue(existingUsernameValidationU.isValid("newUsername", constraintValidatorContext));
@@ -64,7 +63,6 @@ class ExistingUsernameValidationUTest {
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isUsernameExists("currentUsername", "currentUsername")).thenReturn(false);
 
         assertTrue(existingUsernameValidationU.isValid("currentUsername", constraintValidatorContext));
@@ -78,7 +76,6 @@ class ExistingUsernameValidationUTest {
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
 
-        when(userService.getUserById("0242071340")).thenReturn(authenticatedUser);
         when(userService.isUsernameExists("currentUsername", "differentUsername")).thenReturn(true);
 
         assertFalse(existingUsernameValidationU.isValid("differentUsername", constraintValidatorContext));
