@@ -1,7 +1,22 @@
 import EmailIcon from "@mui/icons-material/Email";
+import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import "./forgot_password_component.scss";
 
-export const ForgotPasswordComponent = ({ forgotPasswordForm, errorMessage, handleInput, onPressForgotPassword }) => {
+export const ForgotPasswordComponent = ({ isLoading, forgotPasswordForm, errorMessage, handleInput, onPressForgotPassword }) => {
+
+
+  if(isLoading)
+  {
+  return (
+    <div className="forgot_password">
+      <div className="forgot_password__component">
+      <div className="forgot_password__component__loader-box">
+        <ComponentLoader />
+      </div>
+      </div>
+    </div>
+  );
+  }
 
   return (
     <div className="forgot_password">

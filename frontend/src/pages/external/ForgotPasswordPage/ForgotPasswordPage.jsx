@@ -10,6 +10,7 @@ import { useSnackbar } from "../../../hooks/useSnackbar";
 import "./forgot_password_page.scss";
 
 export const ForgotPasswordPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [forgotPasswordForm, setForgotPasswordForm ] = useState({
     email: ""
   });
@@ -22,6 +23,7 @@ export const ForgotPasswordPage = () => {
     mutationFn: forgotPasswordRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setIsLoading(true);
     },
     onSuccess: () => {
       showSnackbar("Изпратена е нова парола на посочения имейл адрес.", "success");
@@ -44,6 +46,7 @@ export const ForgotPasswordPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setIsLoading(false);
     }
   });
 
@@ -94,6 +97,7 @@ export const ForgotPasswordPage = () => {
   return (
     <div className="forgot_password_page">
         <ForgotPasswordComponent
+          isLoading={isLoading}
           forgotPasswordForm={forgotPasswordForm}
           errorMessage={errorMessage}
           handleInput={handleInput}
