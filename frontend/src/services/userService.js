@@ -9,7 +9,7 @@ export const logoutRequest = () => {
 };
 
 export const forgotPasswordRequest = (forgotPasswordForm) => {
-  return axiosInstanceWithCredentials.post("/external/user/forgot-password", forgotPasswordForm);
+  return axiosInstanceWithCredentials.put("/external/user/forgot-password", forgotPasswordForm);
 };
 
 
