@@ -1,4 +1,4 @@
-const usernameRegex = /^(?!\\.)(?!.*[._]{2})[a-zA-Z0-9_.]{2,19}[a-zA-Z0-9_]$/;
+const usernameRegex = /^(?![_.])[a-zA-Z0-9_.]{3,20}(?<![_.])$/;
 const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;?{}|`',-])[0-9a-zA-Z@#$%^&+=_*~!)(./:;?{}|`',-]{8,30}$/;
 const asciiPrintableRegex = /^[\x20-\x7E]*$/; //? Used to check whether password contains only ASCII characters
 const emailRegex = /^[a-z][a-z0-9_.-]{2,29}@[a-z]{3,20}\.[a-z0-9.-]{2,20}$/;

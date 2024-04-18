@@ -40,15 +40,17 @@ class UsernameRegexValidationTest {
         assertTrue(usernameRegexValidation.isValid("TTT0921Ssdad", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("000000000000000", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("yordanov500000000000", constraintValidatorContext));
-        assertTrue(usernameRegexValidation.isValid("_9_", constraintValidatorContext));
-        assertTrue(usernameRegexValidation.isValid("777_777", constraintValidatorContext));
+        assertTrue(usernameRegexValidation.isValid("a_a", constraintValidatorContext));
+        assertTrue(usernameRegexValidation.isValid("777.777", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("0_developer_0", constraintValidatorContext));
         assertTrue(usernameRegexValidation.isValid("Mustang5.0GT", constraintValidatorContext));
-        assertTrue(usernameRegexValidation.isValid("_YordanoV5.00000000_", constraintValidatorContext));
-        assertTrue(usernameRegexValidation.isValid("_YordanoV5.0.0.0.0_", constraintValidatorContext));
+        assertTrue(usernameRegexValidation.isValid("Yordano_V5.00000000", constraintValidatorContext));
+        assertTrue(usernameRegexValidation.isValid("YordanoV5.0.0.0.0", constraintValidatorContext));
+        assertTrue(usernameRegexValidation.isValid("BBB", constraintValidatorContext));
 
-        assertFalse(usernameRegexValidation.isValid("_Yorda_._.o0_", constraintValidatorContext));
+        assertFalse(usernameRegexValidation.isValid("_Yorda_.__.o0_", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("_.proba._", constraintValidatorContext));
+        assertFalse(usernameRegexValidation.isValid("aa", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("_YordanoV5..000_", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("__YordanoV5_", constraintValidatorContext));
         assertFalse(usernameRegexValidation.isValid("_YordanoV__", constraintValidatorContext));
