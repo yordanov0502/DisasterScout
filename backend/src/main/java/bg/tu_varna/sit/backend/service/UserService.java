@@ -128,8 +128,8 @@ public class UserService {
     public User updateUser(User user, UserUpdateDTO userUpdateDTO){return userCacheService.updateUser(user, userUpdateDTO);}
 
     public String generateRandomPassword(){
-        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&+=_*~!)(./:;<>?{}|`',-";
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;<>?{}|`',-])(?=\\S+$).{8,30}$";
+        String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&+=_*~!)(./:;?{}|`',-";
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;?{}|`',-])[0-9a-zA-Z@#$%^&+=_*~!)(./:;?{}|`',-]{8,30}$";
         Pattern pattern = Pattern.compile(regex);
         int counter=0;
 
@@ -142,7 +142,6 @@ public class UserService {
                 String generatedPassword = RandomStringUtils.random(12, characters);
                 Matcher matcher = pattern.matcher(generatedPassword);
                 if(matcher.matches()) {
-                    System.out.println(generatedPassword);
                     return generatedPassword;}
             }
         }

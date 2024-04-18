@@ -43,7 +43,7 @@ public class CustomLoginRegexValidation {
         //* No whitespace characters.
         //* The overall length of the password must be between 8 and 30 characters.
         //! The password should contain only ASCII printable characters
-        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;<>?{}|`',-])(?=\\S+$).{8,30}$";
+        String regex = "^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:;?{}|`',-])[0-9a-zA-Z@#$%^&+=_*~!)(./:;?{}|`',-]{8,30}$";
 
         Pattern p = Pattern.compile(regex);
         if(password == null) {return false;}
