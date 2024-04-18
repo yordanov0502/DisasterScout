@@ -58,6 +58,7 @@ export const CmsAccountPage = () => {
     mutationFn: updateAccountRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setIsLoading(true);
     },
     onSuccess: (response) => {
       updateUserContext(response.data);
@@ -84,6 +85,7 @@ export const CmsAccountPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setIsLoading(false);
     }
   });
   

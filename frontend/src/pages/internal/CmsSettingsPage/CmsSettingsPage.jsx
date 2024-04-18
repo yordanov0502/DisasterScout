@@ -48,6 +48,7 @@ export const CmsSettingsPage = () => {
     mutationFn: changePasswordRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setIsLoading(true);
     },
     onSuccess: (response) => {
       resetChangePasswordForm();
@@ -78,6 +79,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setIsLoading(false);
     }
   });
   
