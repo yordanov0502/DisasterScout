@@ -1,9 +1,23 @@
 import { Link } from "react-router-dom";
 import PersonIcon from "@mui/icons-material/Person";
 import LockIcon from "@mui/icons-material/Lock";
+import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import "./login_component.scss";
 
-export const LoginComponent = ({loginForm, errorMessage, handleInput, onPressLogin, isRequestSent}) => {
+export const LoginComponent = ({isLoading,loginForm, errorMessage, handleInput, onPressLogin, isRequestSent}) => {
+
+  if(isLoading)
+  {
+  return (
+    <div className="login">
+      <div className="login__component">
+      <div className="login__component__loader-box">
+        <ComponentLoader />
+      </div>
+      </div>
+    </div>
+  );
+  }
 
   return (
     <div className="login">

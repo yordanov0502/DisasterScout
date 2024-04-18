@@ -15,6 +15,7 @@ const LOCAL_STORAGE_KEY1 = `${import.meta.env.VITE_LOCAL_STORAGE_KEY1}`;
 const LOCAL_STORAGE_VALUE1 = `${import.meta.env.VITE_LOCAL_STORAGE_VALUE1}`; 
 
 export const LoginPage = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const [loginForm, setLoginForm] = useState({
     username: "",
     password: "",
@@ -40,6 +41,7 @@ export const LoginPage = () => {
     mutationFn: loginRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setIsLoading(true);
     },
     onSuccess: (response) => {
       resetSuspension();
@@ -56,6 +58,7 @@ export const LoginPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setIsLoading(false);
     }
   });
 
@@ -105,6 +108,7 @@ export const LoginPage = () => {
   return (
     <div className="login_page">
       <LoginComponent
+        isLoading={isLoading}
         loginForm={loginForm}
         errorMessage={errorMessage}
         handleInput={handleInput}
