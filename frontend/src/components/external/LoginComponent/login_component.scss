@@ -170,7 +170,7 @@
     text-decoration: none;
     background-color: #009F58;
     border: none;
-    border-bottom: 5px solid #00693a;
+    border-bottom: 6px solid #00693a;
     text-shadow: 0px -2px #266540;
     -webkit-transition: all 0.1s;
     transition: all 0.1s;
@@ -181,10 +181,10 @@
     }
 
     &__submit:active {
-    -webkit-transform: translate(0px,5px);
-    -ms-transform: translate(0px,5px);
-    transform: translate(0px,5px);
-    border-bottom: 1px solid #00693a;
+    -webkit-transform: translate(0px,1px);
+    -ms-transform: translate(0px,1px);
+    transform: translate(0px,1px);
+    border-bottom: 2px solid #00693a;
     }
 
     //! This media query overrides all previous configurations for the specified button. So if I use it after the :active clause down below or any other configurations it will disable it on touchscreen devices.
