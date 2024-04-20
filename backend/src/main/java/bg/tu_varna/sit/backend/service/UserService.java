@@ -122,7 +122,16 @@ public class UserService {
 
     //? password from registrationRequestDTO is encoded here in the method and sent to the userCacheService,
     //? because PasswordEncoder cannot be injected into userCacheService, due to circular dependency issue
-    public User registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO){return userCacheService.registerNewDispatcher(registrationRequestDTO,passwordEncoder.encode(registrationRequestDTO.password()));}
+    public ResponseEntity<?> registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO){
+        try{
+            userCacheService.registerNewDispatcher(registrationRequestDTO,passwordEncoder.encode(registrationRequestDTO.password()));
+        }
+        catch (Exception e)
+        {
+           return new ResponseEntity<>("Please try again. Error occurred while registering a new dispatcher.", HttpStatus.BAD_REQUEST);
+        }
+        return ResponseEntity.ok().build();
+    }
 
     //! This method should be called ONLY by a user, who intends to update HIS data
     public User updateUser(User user, UserUpdateDTO userUpdateDTO){return userCacheService.updateUser(user, userUpdateDTO);}

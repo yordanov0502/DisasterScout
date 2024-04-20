@@ -137,6 +137,14 @@ export const processChangePasswordErrorFormOnSubmit = (changePasswordForm, valid
       confirmNewPassword: true,
     };
   }
+  else if(validationMessage === "Текущата парола, която сте въвели е грешна.")
+  {
+    return {
+      currentPassword: true,
+      newPassword: false,
+      confirmNewPassword: false,
+    };
+  }
   else
   {
     return {

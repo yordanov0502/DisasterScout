@@ -57,7 +57,9 @@ export const CmsSettingsPage = () => {
     onError: (error) => {
        if(error?.response?.data === "Current password doesn't match the authenticated user's current password.")
        {
-         setErrorMessage("Текущата парола, която сте въвели е грешна.");
+         const validationMessage = "Текущата парола, която сте въвели е грешна.";
+         setErrorMessage(validationMessage);
+         setErrorForm(processChangePasswordErrorFormOnSubmit(changePasswordForm, validationMessage));
        }
        else if(error?.response?.data === "Invalid type of currentPassword.")
        {
