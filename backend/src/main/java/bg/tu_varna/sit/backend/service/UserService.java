@@ -188,4 +188,13 @@ public class UserService {
         return ResponseEntity.ok().build();
     }
 
+    //? Called by both ADMIN and DISPATCHER to clear their own cached data
+    public void clearMyCache(User user){userCacheService.evictUserFromCache(user);}
+
+    //? Called by DISPATCHER to clear cached data of ADMIN
+    public void clearAdminCache(){
+        User admin = userCacheService.getUserByRole(ADMIN);
+        userCacheService.evictUserFromCache(admin);
+    }
+
 }

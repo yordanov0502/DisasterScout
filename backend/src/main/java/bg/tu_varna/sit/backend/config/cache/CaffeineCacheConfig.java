@@ -16,7 +16,6 @@ public class CaffeineCacheConfig {
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.registerCustomCache("user", userCache());
-        cacheManager.registerCustomCache("users", userCache()); //? Do I need it
         cacheManager.registerCustomCache("zone", zoneCache());
         cacheManager.registerCustomCache("zones", zoneCache()); //? Do I need it
 

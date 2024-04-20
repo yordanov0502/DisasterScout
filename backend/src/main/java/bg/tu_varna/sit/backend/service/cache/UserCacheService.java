@@ -3,11 +3,15 @@ package bg.tu_varna.sit.backend.service.cache;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
+import com.github.benmanes.caffeine.cache.Cache;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -41,7 +45,6 @@ public class UserCacheService {
     //! This method should be invoked only once(when we want to create a new user) and never again for the same user.
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User registerNewDispatcher(RegistrationRequestDTO registrationRequestDTO, String encodedPassword) {
         User newUser = User.builder()
@@ -67,7 +70,6 @@ public class UserCacheService {
    @Caching(
     put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User updateUser(User user, UserUpdateDTO userUpdateDTO){
         User updatedUser = user.toBuilder()
@@ -82,7 +84,6 @@ public class UserCacheService {
     @Caching(
             put = {
                     @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-                    @CachePut(value = "users", key = "#result.id", unless = "#result == null")
             })
     public User updatePassword(User user,String newEncodedPassword){
         User updatedUser = user.toBuilder()
@@ -94,7 +95,6 @@ public class UserCacheService {
     //? Updates DB and caches when a user logs in
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User updateUserActivityAndLastLogin(User user) {
         User updatedUser = user.toBuilder()
@@ -108,7 +108,6 @@ public class UserCacheService {
     //? Updates DB and caches when a user logs out
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User updateUserActivityOnLogout(User user) {
         User updatedUser = user.toBuilder()
@@ -120,7 +119,6 @@ public class UserCacheService {
     //? Updates DB and caches when unsuccessful login attempts of a user are incremented
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User incrementUnsuccessfulLoginAttemptsOfUser(User user){
         User updatedUser = user.toBuilder()
@@ -132,7 +130,6 @@ public class UserCacheService {
     //? Updates DB and caches when a user is LOCKED
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
    public User lockUser(User user){
         User updatedUser = user.toBuilder()
@@ -145,7 +142,6 @@ public class UserCacheService {
     //? Updates DB and caches when a user is UNLOCKED
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
-            @CachePut(value = "users", key = "#result.id", unless = "#result == null")
     })
     public User unlockUser(User user){
         User updatedUser = user.toBuilder()
@@ -155,22 +151,15 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
     }
 
-    //* Evicts a user from all related caches
-    //? This will be useful when admin decides to modify the production database directly(due to different reasons)
-    //? and data inconsistency(between the cache and DB) occur in the real web application
-    //!!!!! So this should be accessed by endpoint given specific user for which the cache to be invalidated and moreover every dispatcher and admin must have a button for cache invalidation on the front end which should be available only to the admin/s of the whole system
-    //!!!!!!!!!!!!!!!!!What will happen if we try to erase a user from cache which is currently not cached???????????????????
-    @Caching(evict = {
+    //? No exception thrown on cache miss
+   @Caching(evict = {
             @CacheEvict(value = "user", key = "#user.id", beforeInvocation = true),
-            @CacheEvict(value = "users", key = "#user.id", beforeInvocation = true)
     })
     public void evictUserFromCache(User user){}
-    //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-    //* Evicts all entries from user-related caches.
+    //* Evicts all cached entries from the user cache.
     @Caching(evict = {
             @CacheEvict(value = "user", allEntries = true, beforeInvocation = true),
-            @CacheEvict(value = "users", allEntries = true, beforeInvocation = true)
     })
     public void evictAllUserCaches(){}
 
@@ -181,13 +170,13 @@ public class UserCacheService {
 
     public User getUserByEmail(String email){return userRepository.findUserByEmail(email);}
 
+    public User getUserByRole(Role role){return userRepository.findUserByRole(role);}
+
     public boolean isIdExists(String id){return userRepository.existsUserById(id);}
 
     public boolean isUsernameExists(String username){return userRepository.existsUserByUsername(username);}
 
     public boolean isEmailExists(String email){return userRepository.existsUserByEmail(email);}
-
-   //! Why do I need "users" cache ? Is "user" cache not enough for retrieval of all users ?
 
 //    @PostConstruct
 //    public void printCacheContentUSER_ID() {
@@ -199,12 +188,12 @@ public class UserCacheService {
 //            System.out.println("Key: " + key + ", Value: " + value);
 //        });System.out.println("*****************");
 //
-//        Cache<Object, Object> caffeineCache1 = (Cache<Object, Object>) cacheManager.getCache("zone").getNativeCache();
-//        System.out.println("********zone-ID*********");
-//        // Print cache contents
-//        caffeineCache1.asMap().forEach((key, value) -> {
-//            System.out.println("Key: " + key + ", Value: " + value);
-//        });System.out.println("*****************");
+////        Cache<Object, Object> caffeineCache1 = (Cache<Object, Object>) cacheManager.getCache("zone").getNativeCache();
+////        System.out.println("********zone-ID*********");
+////        // Print cache contents
+////        caffeineCache1.asMap().forEach((key, value) -> {
+////            System.out.println("Key: " + key + ", Value: " + value);
+////        });System.out.println("*****************");
 //    }
 
 }
