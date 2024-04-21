@@ -6,6 +6,8 @@ import bg.tu_varna.sit.backend.service.cache.ZoneCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
 public class ZoneService {
@@ -17,4 +19,6 @@ public class ZoneService {
     public Zone updateAlertOfZone(ZoneDTO zoneDTO) {return zoneCacheService.updateAlertOfZone(zoneDTO);}
 
     public Zone deleteAlertOfZone(String zoneId) {return zoneCacheService.deleteAlertOfZone(zoneId);}
+
+    public List<Zone> getAllZones(){return zoneCacheService.getAllZones();}
 }

@@ -6,11 +6,15 @@ import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.repository.ZoneRepository;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+//TODO: TEST HOW CACHE BEHAVES WHEN DEALING WITH ZONES
 @Service
 @AllArgsConstructor
 @Slf4j
@@ -24,10 +28,9 @@ public class ZoneCacheService {
     //? This is because when the new alert is saved in place of the old one. The reference of the old alert becomes
     //? unused, because it gets replaced by the reference of the new alert, thus triggering orphanRemoval.
     @Caching(
-            put = {
-                    @CachePut(value = "zone", key = "#result.id", unless = "#result == null"),
-                    @CachePut(value = "zones", key = "#result.id", unless = "#result == null")
-            })
+            evict = {@CacheEvict(value = "zones", allEntries = true, beforeInvocation = true)},
+            put = {@CachePut(value = "zone", key = "#result.id", unless = "#result == null")}
+    )
     public Zone updateAlertOfZone(ZoneDTO zoneDTO){
         Zone zone = getZoneById(zoneDTO.zoneId());
 
@@ -42,10 +45,9 @@ public class ZoneCacheService {
     }
 
     @Caching(
-            put = {
-                    @CachePut(value = "zone", key = "#result.id", unless = "#result == null"),
-                    @CachePut(value = "zones", key = "#result.id", unless = "#result == null")
-            })
+            evict = {@CacheEvict(value = "zones", allEntries = true, beforeInvocation = true)},
+            put = {@CachePut(value = "zone", key = "#result.id", unless = "#result == null")}
+    )
     public Zone deleteAlertOfZone(String id){
         Zone zone = getZoneById(id);
 
@@ -59,4 +61,7 @@ public class ZoneCacheService {
     @Cacheable(value = "zone", key = "#id", unless = "#result == null")
     public Zone getZoneById(String id) {return zoneRepository.findZoneById(id);}
 
+    //? Can it throw exception if zone's alert is null ????????????????????????????????????
+    @Cacheable(value = "zones", key = "'allZones'", unless = "#result == null or #result.isEmpty()")
+    public List<Zone> getAllZones(){return zoneRepository.findAll();}
 }

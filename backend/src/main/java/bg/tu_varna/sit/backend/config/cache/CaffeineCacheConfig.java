@@ -17,7 +17,7 @@ public class CaffeineCacheConfig {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.registerCustomCache("user", userCache());
         cacheManager.registerCustomCache("zone", zoneCache());
-        cacheManager.registerCustomCache("zones", zoneCache()); //? Do I need it
+        cacheManager.registerCustomCache("zones", zoneCache());
 
         //! To avoid dynamic caches and be sure each name is assigned to a specific config (dynamic = false)
         //! throws error when tries to use a new cache
