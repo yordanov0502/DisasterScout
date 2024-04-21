@@ -38,16 +38,12 @@ public class UserService {
     //public User getUserByEmail(String email) {return userCacheService.getUserByEmail(email);}
     public boolean isIdExists(String id){return userCacheService.isIdExists(id);}
 
-    //* Used for validation when creating a new user.
     public boolean isUsernameExists(String username) {return userCacheService.isUsernameExists(username);}
 
-    //* Used for validation when creating a new user.
     public boolean isEmailExists(String email) {return userCacheService.isEmailExists(email);}
 
-    //* Used for validation when updating already existing user.
     public boolean isUsernameExists(String usernameOfAuthenticatedUser,String username) {return !usernameOfAuthenticatedUser.equals(username) && isUsernameExists(username);}
 
-    //* Used for validation when updating already existing user.
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
     //! This method should only be called by the successHandler of LoginAuthenticationFilter
@@ -195,6 +191,11 @@ public class UserService {
     public void clearAdminCache(){
         User admin = userCacheService.getUserByRole(ADMIN);
         userCacheService.evictUserFromCache(admin);
+    }
+
+    public void clearDispatcherCache(String username){
+        User dispatcher = userCacheService.getUserByUsername(username);
+        userCacheService.evictUserFromCache(dispatcher);
     }
 
 }

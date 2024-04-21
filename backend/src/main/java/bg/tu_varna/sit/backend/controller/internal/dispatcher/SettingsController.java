@@ -3,7 +3,6 @@ package bg.tu_varna.sit.backend.controller.internal.dispatcher;
 import bg.tu_varna.sit.backend.models.dto.user.ChangePasswordDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.service.UserService;
-import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,7 +10,7 @@ import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
-@RestController
+@RestController("dispatcherSettingsController")
 @RequiredArgsConstructor
 @RequestMapping("/api/internal/dispatcher/settings")
 public class SettingsController {

@@ -35,7 +35,7 @@ import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
 public class UserCacheService {
 
     private final UserRepository userRepository;
-    //private final CacheManager cacheManager;
+    private final CacheManager cacheManager;
     private final TimeService timeService;
     private final ZoneService zoneService;
 
@@ -178,22 +178,22 @@ public class UserCacheService {
 
     public boolean isEmailExists(String email){return userRepository.existsUserByEmail(email);}
 
-//    @PostConstruct
-//    public void printCacheContentUSER_ID() {
-//        // Replace "myCache" with the name of your cache
-//        Cache<Object, Object> caffeineCache = (Cache<Object, Object>) cacheManager.getCache("user").getNativeCache();
-//        System.out.println("********user-ID*********");
+    @PostConstruct
+    public void printCacheContentUSER_ID() {
+        // Replace "myCache" with the name of your cache
+        Cache<Object, Object> caffeineCache = (Cache<Object, Object>) cacheManager.getCache("user").getNativeCache();
+        System.out.println("********user-ID*********");
+        // Print cache contents
+        caffeineCache.asMap().forEach((key, value) -> {
+            System.out.println("Key: " + key + ", Value: " + value);
+        });System.out.println("*****************");
+
+//        Cache<Object, Object> caffeineCache1 = (Cache<Object, Object>) cacheManager.getCache("zone").getNativeCache();
+//        System.out.println("********zone-ID*********");
 //        // Print cache contents
-//        caffeineCache.asMap().forEach((key, value) -> {
+//        caffeineCache1.asMap().forEach((key, value) -> {
 //            System.out.println("Key: " + key + ", Value: " + value);
 //        });System.out.println("*****************");
-//
-////        Cache<Object, Object> caffeineCache1 = (Cache<Object, Object>) cacheManager.getCache("zone").getNativeCache();
-////        System.out.println("********zone-ID*********");
-////        // Print cache contents
-////        caffeineCache1.asMap().forEach((key, value) -> {
-////            System.out.println("Key: " + key + ", Value: " + value);
-////        });System.out.println("*****************");
-//    }
+    }
 
 }
