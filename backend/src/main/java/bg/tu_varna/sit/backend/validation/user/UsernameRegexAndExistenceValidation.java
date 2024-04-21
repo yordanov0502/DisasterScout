@@ -37,7 +37,7 @@ public class UsernameRegexAndExistenceValidation implements ConstraintValidator<
             {
                 if(!userService.isUsernameExists(username))
                 {
-                    context.buildConstraintViolationWithTemplate("Username doesn't exist")
+                    context.buildConstraintViolationWithTemplate("Username doesn't exist.")
                             .addConstraintViolation()
                             .disableDefaultConstraintViolation();
                     return false;

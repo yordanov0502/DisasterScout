@@ -1,6 +1,7 @@
 package bg.tu_varna.sit.backend.controller.internal.admin;
 
 import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import bg.tu_varna.sit.backend.validation.user.annotation.UsernameRegexAndExistence;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +24,13 @@ public class SettingsController {
     @DeleteMapping("/clear-dispatcher-cache/{username}")
     public void clearDispatcherCache(@PathVariable (value = "username") @UsernameRegexAndExistence String username){
         userService.clearDispatcherCache(username);
+    }
+
+    @Operation(summary = "Clear cached data of all users",
+            description = "User(admin) clears the cached data of all users when this endpoint is called.")
+    @DeleteMapping("/clear-all-user-cache")
+    public void clearCacheOfAllUsers(){
+        userService.clearCacheOfAllUsers();
     }
 
 }

@@ -157,11 +157,10 @@ public class UserCacheService {
     })
     public void evictUserFromCache(User user){}
 
-    //* Evicts all cached entries from the user cache.
     @Caching(evict = {
             @CacheEvict(value = "user", allEntries = true, beforeInvocation = true),
     })
-    public void evictAllUserCaches(){}
+    public void evictCacheOfAllUsers(){}
 
     @Cacheable(value = "user", key = "#id", unless = "#result == null")
     public User getUserById(String id) {return userRepository.findUserById(id);}

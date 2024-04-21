@@ -193,9 +193,13 @@ public class UserService {
         userCacheService.evictUserFromCache(admin);
     }
 
+    //? Called by ADMIN to clear cached data of DISPATCHER
     public void clearDispatcherCache(String username){
         User dispatcher = userCacheService.getUserByUsername(username);
         userCacheService.evictUserFromCache(dispatcher);
     }
+
+    //? Called by ADMIN to clear cached data of all users
+    public void clearCacheOfAllUsers(){userCacheService.evictCacheOfAllUsers();}
 
 }
