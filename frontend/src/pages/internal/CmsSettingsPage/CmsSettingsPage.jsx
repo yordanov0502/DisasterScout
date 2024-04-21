@@ -5,7 +5,8 @@ import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { processChangePasswordErrorForm, processChangePasswordErrorFormOnSubmit, validateChangePasswordForm } from "../../../validations/userRegexValidation";
 import { changePasswordRequest } from "../../../services/userService";
-import { SettingsComponent } from "../../../components/internal/SettingsComponent";
+import { SettingsComponent1 } from "../../../components/internal/SettingsComponent1";
+import { SettingsComponent2 } from "../../../components/internal/SettingsComponent2";
 import { useUserContext } from "../../../hooks/useUserContext";
 import "./cms_settings_page.scss";
 
@@ -112,12 +113,30 @@ export const CmsSettingsPage = () => {
       changePasswordMutation.mutate(changePasswordForm);
     }
   };
+  
+
+
+
+
+
         
 
       
   return (
     <div className="cms_settings_page">
-     <SettingsComponent
+     <SettingsComponent1
+      isLoading={isLoading}
+      changePasswordForm={changePasswordForm}
+      errorForm={errorForm}
+      errorMessage={errorMessage}
+      handleInput={handleInput}
+      role={ !isUserContextEmpty() ? authenticatedUser.role : ""}
+      onPressChangePassword={onPressChangePassword}
+      isRequestSent={isRequestSent}
+      resetChangePasswordForm={resetChangePasswordForm}
+      />
+
+     <SettingsComponent2
       isLoading={isLoading}
       changePasswordForm={changePasswordForm}
       errorForm={errorForm}

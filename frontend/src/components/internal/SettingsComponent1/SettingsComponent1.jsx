@@ -7,9 +7,9 @@ import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ComponentLoader } from "../../Loaders/ComponentLoader";
-import "./settings_component.scss";
+import "./settings_component1.scss";
 
-export const SettingsComponent = ({ isLoading, changePasswordForm, errorForm, errorMessage, handleInput, role, onPressChangePassword, isRequestSent, resetChangePasswordForm }) => {
+export const SettingsComponent1 = ({ isLoading, changePasswordForm, errorForm, errorMessage, handleInput, role, onPressChangePassword, isRequestSent, resetChangePasswordForm }) => {
  
     const [showField1, setShowField1] = useState(false); //? currentPassword
     const [showField2, setShowField2] = useState(false); //? newPassword
@@ -42,8 +42,8 @@ export const SettingsComponent = ({ isLoading, changePasswordForm, errorForm, er
     if(isLoading)
     {
     return (
-      <div className="settings_component">
-        <div className="settings_component__loader-box">
+      <div className="settings_component1">
+        <div className="settings_component1__loader-box">
           <ComponentLoader />
         </div>
       </div>
@@ -52,11 +52,11 @@ export const SettingsComponent = ({ isLoading, changePasswordForm, errorForm, er
 
   return (
     //! noValidate removes default HTML5 validation for empty fields
-    <form noValidate className="settings_component" onSubmit={onPressChangePassword}>
+    <form noValidate className="settings_component1" onSubmit={onPressChangePassword}>
 
-      <div className="settings_component__title">Задаване на нова парола</div>
+      <div className="settings_component1__title">Задаване на нова парола</div>
 
-      <div className="settings_component__box">
+      <div className="settings_component1__box">
 
       <FormControl 
       required
@@ -165,11 +165,11 @@ export const SettingsComponent = ({ isLoading, changePasswordForm, errorForm, er
 
       </div>
 
-      <div className="settings_component__error-message">{errorMessage}</div>
+      <div className="settings_component1__error-message">{errorMessage}</div>
 
-      <div className="settings_component__buttons-container">
-      <button type="submit" className="settings_component__buttons-container__submit" disabled={isRequestSent}>Актуализирай</button>
-      <button type="button" className="settings_component__buttons-container__clear" onClick={resetChangePasswordForm}>Изчисти</button>
+      <div className="settings_component1__buttons-container">
+      <button type="submit" className="settings_component1__buttons-container__submit" disabled={isRequestSent}>Актуализирай</button>
+      <button type="button" className="settings_component1__buttons-container__clear" onClick={resetChangePasswordForm}>Изчисти</button>
       </div>
 
     </form>

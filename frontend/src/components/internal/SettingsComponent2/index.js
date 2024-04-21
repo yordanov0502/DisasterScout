@@ -1,0 +1,1 @@
+export * from "./SettingsComponent2.jsx";
