@@ -49,11 +49,4 @@ public class SettingsController {
         zoneService.clearAllCachesOfAllZones();
     }
 
-    @Operation(summary = "Clear all caches",
-            description = "User(admin) clears all caches when this endpoint is called.")
-    @DeleteMapping("/clear-all-caches")
-    public void clearAllCaches(){
-        userService.clearCacheOfAllUsers();
-        zoneService.clearAllCachesOfAllZones();
-    }
 }
