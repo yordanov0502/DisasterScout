@@ -1,8 +1,9 @@
 package bg.tu_varna.sit.backend.controller.internal.admin;
 
 import bg.tu_varna.sit.backend.service.UserService;
-import bg.tu_varna.sit.backend.service.cache.UserCacheService;
+import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.validation.user.annotation.UsernameRegexAndExistence;
+import bg.tu_varna.sit.backend.validation.zone.annotation.ZoneIdRegex;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.validation.annotation.Validated;
@@ -18,11 +19,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class SettingsController {
 
     private final UserService userService;
+    private final ZoneService zoneService;
 
     @Operation(summary = "Clear cached data of dispatcher",
             description = "User(admin) clears the cached data of a dispatcher by username when this endpoint is called.")
     @DeleteMapping("/clear-dispatcher-cache/{username}")
-    public void clearDispatcherCache(@PathVariable (value = "username") @UsernameRegexAndExistence String username){
+    public void clearDispatcherCache(@PathVariable(value = "username") @UsernameRegexAndExistence String username){
         userService.clearDispatcherCache(username);
     }
 
@@ -33,4 +35,25 @@ public class SettingsController {
         userService.clearCacheOfAllUsers();
     }
 
+    @Operation(summary = "Clear cached data of a zone",
+            description = "User(admin) clears the cached data of a zone when this endpoint is called.")
+    @DeleteMapping("/clear-zone-cache/{zoneId}")
+    public void clearZoneCache(@PathVariable(value = "zoneId") @ZoneIdRegex String zoneId){
+        zoneService.clearCacheOfZone(zoneId);
+    }
+
+    @Operation(summary = "Clear all caches of all zones",
+            description = "User(admin) clears all caches of all zones when this endpoint is called.")
+    @DeleteMapping("/clear-all-zones-caches")
+    public void clearCachesOfAllZones(){
+        zoneService.clearAllCachesOfAllZones();
+    }
+
+    @Operation(summary = "Clear all caches",
+            description = "User(admin) clears all caches when this endpoint is called.")
+    @DeleteMapping("/clear-all-caches")
+    public void clearAllCaches(){
+        userService.clearCacheOfAllUsers();
+        zoneService.clearAllCachesOfAllZones();
+    }
 }

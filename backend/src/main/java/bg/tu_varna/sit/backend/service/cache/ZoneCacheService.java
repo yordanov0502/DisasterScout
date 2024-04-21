@@ -2,10 +2,14 @@ package bg.tu_varna.sit.backend.service.cache;
 
 import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.Alert;
+import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.repository.ZoneRepository;
+import com.github.benmanes.caffeine.cache.Cache;
+import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -21,6 +25,7 @@ import java.util.List;
 public class ZoneCacheService {
 
     private final ZoneRepository zoneRepository;
+    //private final CacheManager cacheManager;
 
     //? This method is used for both - adding new / updating existing alert of zone.
     //? When used for updating existing alert, actually a new alert is created and saved replacing the old one.
@@ -64,4 +69,40 @@ public class ZoneCacheService {
     //? Can it throw exception if zone's alert is null ????????????????????????????????????
     @Cacheable(value = "zones", key = "'allZones'", unless = "#result == null or #result.isEmpty()")
     public List<Zone> getAllZones(){return zoneRepository.findAll();}
+
+    @Caching(evict = {
+            @CacheEvict(value = "zone", key = "#id", beforeInvocation = true)
+    })
+    public void evictZoneFromCache(String id){}
+
+    @Caching(evict = {
+            @CacheEvict(value = "zones", allEntries = true, beforeInvocation = true)
+    })
+    public void evictCacheOfAllZones(){}
+
+    @Caching(evict = {
+            @CacheEvict(value = "zones", allEntries = true, beforeInvocation = true),
+            @CacheEvict(value = "zone", allEntries = true, beforeInvocation = true)
+    })
+    public void evictAllCachesOfAllZones(){}
+
+//    @PostConstruct
+//    public void printCacheContentZONE_ID() {
+//
+//        Cache<Object, Object> caffeineCache1 = (Cache<Object, Object>) cacheManager.getCache("zone").getNativeCache();
+//
+//        System.out.println("********zone-ID*********");
+//        caffeineCache1.asMap().forEach((key, value) -> {
+//            System.out.println("Key: " + key + ", Value: " + value);
+//        });
+//        System.out.println("*****************");
+//
+//        Cache<Object, Object> caffeineCache2 = (Cache<Object, Object>) cacheManager.getCache("zones").getNativeCache();
+//
+//        System.out.println("********zones*********");
+//        caffeineCache2.asMap().forEach((key, value) -> {
+//            System.out.println("Key: " + key + ", Value: " + value);
+//        });
+//        System.out.println("*****************");
+//    }
 }

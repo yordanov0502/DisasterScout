@@ -21,4 +21,13 @@ public class ZoneService {
     public Zone deleteAlertOfZone(String zoneId) {return zoneCacheService.deleteAlertOfZone(zoneId);}
 
     public List<Zone> getAllZones(){return zoneCacheService.getAllZones();}
+
+    public void clearCacheOfZone(String zoneId){
+        zoneCacheService.evictCacheOfAllZones();
+        zoneCacheService.evictZoneFromCache(zoneId);
+    }
+
+    public void clearAllCachesOfAllZones(){
+        zoneCacheService.evictAllCachesOfAllZones();
+    }
 }
