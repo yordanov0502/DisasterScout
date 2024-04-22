@@ -154,3 +154,20 @@ export const processChangePasswordErrorFormOnSubmit = (changePasswordForm, valid
     };
   }
 };
+
+export const validateChangeUsername = (username, authenticatedUserUsername) => { //? function returns error message
+
+  if (!username) { return "Моля въведете потребителско име на диспечер.";} //! error
+
+  const isUsernameValid = usernameRegex.test(username);
+  if (!isUsernameValid) {return "Невалидно потребителско име.";} //! error
+  
+  //? when admin tries to clear cache of dispatcher,but instead gives his own username
+  if(username === authenticatedUserUsername) {return "Диспечер с потребителско име \""+username+"\" не съществува.";} //! error
+
+    return ""; //* OK
+}
+
+export const processChangeUsernameError = (username) => { 
+  return username !== "" && !usernameRegex.test(username)
+};

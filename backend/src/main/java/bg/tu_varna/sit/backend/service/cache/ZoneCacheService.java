@@ -99,10 +99,10 @@ public class ZoneCacheService {
 //
 //        Cache<Object, Object> caffeineCache2 = (Cache<Object, Object>) cacheManager.getCache("zones").getNativeCache();
 //
-//        System.out.println("********zones*********");
+//        System.out.println("-------------zones----------------");
 //        caffeineCache2.asMap().forEach((key, value) -> {
 //            System.out.println("Key: " + key + ", Value: " + value);
 //        });
-//        System.out.println("*****************");
+//        System.out.println("------------------------------------");
 //    }
 }

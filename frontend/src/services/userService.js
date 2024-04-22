@@ -26,6 +26,30 @@ export const changePasswordRequest = (changePasswordForm) => {
   return axiosInstanceWithCredentials.put("/internal/dispatcher/settings/change-password", changePasswordForm);
 };
 
+export const clearMyCacheRequest = () => {
+  return axiosInstanceWithCredentials.delete("/internal/dispatcher/settings/clear-my-cache");
+};
+
+export const clearAdminCacheRequest = () => {
+  return axiosInstanceWithCredentials.delete("/internal/dispatcher/settings/clear-admin-cache");
+};
+
+export const clearDispatcherCacheRequest = (username) => {
+  return axiosInstanceWithCredentials.delete(`/internal/admin/settings/clear-dispatcher-cache/${username}`);
+};
+
+export const clearAllUsersCacheRequest = () => {
+  return axiosInstanceWithCredentials.delete("/internal/admin/settings/clear-all-user-cache");
+};
+
+export const clearZoneCacheRequest = (zoneId) => {
+  return axiosInstanceWithCredentials.delete(`/internal/admin/settings/clear-zone-cache/${zoneId}`);
+};
+
+export const clearAllZonesCachesRequest = () => {
+  return axiosInstanceWithCredentials.delete("/internal/admin/settings/clear-all-zones-caches");
+};
+
 
 
 //TODO: DELETE unnecessary request and refactor cms home page accordingly

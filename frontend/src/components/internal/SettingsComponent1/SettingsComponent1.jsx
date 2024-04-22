@@ -9,7 +9,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff';
 import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import "./settings_component1.scss";
 
-export const SettingsComponent1 = ({ isLoading, changePasswordForm, errorForm, errorMessage, handleInput, role, onPressChangePassword, isRequestSent, resetChangePasswordForm }) => {
+export const SettingsComponent1 = ({ isLoading1, changePasswordForm, errorForm, errorMessage, handleInput, onPressChangePassword, isRequestSent, resetChangePasswordForm }) => {
  
     const [showField1, setShowField1] = useState(false); //? currentPassword
     const [showField2, setShowField2] = useState(false); //? newPassword
@@ -39,7 +39,7 @@ export const SettingsComponent1 = ({ isLoading, changePasswordForm, errorForm, e
       else if (field === 'field3') {setIsField3Focused(false);}
     };
 
-    if(isLoading)
+    if(isLoading1)
     {
     return (
       <div className="settings_component1">
