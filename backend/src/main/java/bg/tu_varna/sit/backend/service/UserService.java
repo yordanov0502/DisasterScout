@@ -4,10 +4,13 @@ import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.enums.log.Action;
+import bg.tu_varna.sit.backend.models.event.EntityEvent;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import bg.tu_varna.sit.backend.service.util.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.apache.commons.lang3.RandomStringUtils;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -32,6 +35,7 @@ public class UserService {
     private final UserCacheService userCacheService;
     private final PasswordEncoder passwordEncoder;
     private final EmailService emailService;
+    private final ApplicationEventPublisher eventPublisher;
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
@@ -47,13 +51,23 @@ public class UserService {
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
 
     //! This method should only be called by the successHandler of LoginAuthenticationFilter
-    public User login(User user) {return userCacheService.updateUserActivityAndLastLogin(user);}
+    public User login(User user) {
+        User loggedInUser = userCacheService.updateUserActivityAndLastLogin(user);
+        eventPublisher.publishEvent(new EntityEvent<>(loggedInUser, Action.LOGIN));
+        return loggedInUser;
+    }
 
     //! This method should only be called when a user sent a request to logout
-    public User logout(User user) {return userCacheService.updateUserActivityOnLogout(user);}
+    public void logout(User user) {
+        User loggedOutUser = userCacheService.updateUserActivityOnLogout(user);
+        eventPublisher.publishEvent(new EntityEvent<>(loggedOutUser,Action.LOGOUT));
+    }
 
     //? Should be called when a dispatcher or "someone" tries to log in several times but fails (unsuccessful login attempts rate limit is exceeded)
-    public User lockUser(User user) {return userCacheService.lockUser(user);}
+    public void lockUserAutomatically(User user) {
+        User lockedUser = userCacheService.lockUser(user);
+        eventPublisher.publishEvent(new EntityEvent<>(lockedUser,Action.ACCOUNT_LOCKED_AUTOMATICALLY));
+    }
 
     //? Should be called only by admin (to unlock a certain dispatcher)
     public User unlockUser(User user) {return userCacheService.unlockUser(user);}
@@ -84,12 +98,14 @@ public class UserService {
                     User updatedUser = userCacheService.incrementUnsuccessfulLoginAttemptsOfUser(user);
 
                     if(updatedUser.getRole().equals(ADMIN) && updatedUser.getUnsuccessfulLoginAttempts()>=3)
-                    {   lockUser(updatedUser);
+                    {
+                        lockUserAutomatically(updatedUser);
                         throw new BadCredentialsException("Admin has been locked.");
                     }
 
                     if(updatedUser.getRole().equals(DISPATCHER) && updatedUser.getUnsuccessfulLoginAttempts()>=5)
-                    {   lockUser(updatedUser);
+                    {
+                        lockUserAutomatically(updatedUser);
                         throw new BadCredentialsException("Dispatcher has been locked.");
                     }
                 }
