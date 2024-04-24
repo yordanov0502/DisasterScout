@@ -53,9 +53,7 @@ public class ZoneCacheService {
             evict = {@CacheEvict(value = "zones", allEntries = true, beforeInvocation = true)},
             put = {@CachePut(value = "zone", key = "#result.id", unless = "#result == null")}
     )
-    public Zone deleteAlertOfZone(String id){
-        Zone zone = getZoneById(id);
-
+    public Zone deleteAlertOfZone(Zone zone){
         Zone updatedZone = zone.toBuilder()
                 .alert(null)
                 .build();

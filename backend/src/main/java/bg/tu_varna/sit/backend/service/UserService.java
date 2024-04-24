@@ -5,7 +5,7 @@ import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.enums.log.Action;
-import bg.tu_varna.sit.backend.models.event.EntityEvent;
+import bg.tu_varna.sit.backend.models.event.UserEvent;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import bg.tu_varna.sit.backend.service.util.EmailService;
 import lombok.RequiredArgsConstructor;
@@ -53,24 +53,33 @@ public class UserService {
     //! This method should only be called by the successHandler of LoginAuthenticationFilter
     public User login(User user) {
         User loggedInUser = userCacheService.updateUserActivityAndLastLogin(user);
-        eventPublisher.publishEvent(new EntityEvent<>(loggedInUser, Action.LOGIN));
+        eventPublisher.publishEvent(new UserEvent(this,loggedInUser,Action.LOGIN));
         return loggedInUser;
     }
 
     //! This method should only be called when a user sent a request to logout
     public void logout(User user) {
         User loggedOutUser = userCacheService.updateUserActivityOnLogout(user);
-        eventPublisher.publishEvent(new EntityEvent<>(loggedOutUser,Action.LOGOUT));
+        eventPublisher.publishEvent(new UserEvent(this,loggedOutUser,Action.LOGOUT));
     }
 
     //? Should be called when a dispatcher or "someone" tries to log in several times but fails (unsuccessful login attempts rate limit is exceeded)
     public void lockUserAutomatically(User user) {
         User lockedUser = userCacheService.lockUser(user);
-        eventPublisher.publishEvent(new EntityEvent<>(lockedUser,Action.ACCOUNT_LOCKED_AUTOMATICALLY));
+        eventPublisher.publishEvent(new UserEvent(this,lockedUser,Action.ACCOUNT_LOCKED_AUTOMATICALLY));
+    }
+
+    //? Should be called by an admin when he wants to lock account of dispatcher for whatever reason
+    public void lockUserManually(String userId) { //! userId will be passed(DTO) from frontend list/table with dispatcher
+        User lockedUser = userCacheService.lockUser(getUserById(userId));
+        eventPublisher.publishEvent(new UserEvent(this,lockedUser,Action.ACCOUNT_LOCKED_MANUALLY));
     }
 
     //? Should be called only by admin (to unlock a certain dispatcher)
-    public User unlockUser(User user) {return userCacheService.unlockUser(user);}
+    public void unlockUser(String userId) { //! userId will be passed(DTO) from frontend list/table with dispatcher
+        User unlockedUser = userCacheService.unlockUser(getUserById(userId));
+        eventPublisher.publishEvent(new UserEvent(this,unlockedUser,Action.ACCOUNT_UNLOCKED));
+    }
 
     //! Should be called only by LoginAuthenticationFilter
     //? Unsuccessful login attempts(valid username, BUT invalid password) are incremented only if user is OFFLINE AND ACTIVE
@@ -146,7 +155,10 @@ public class UserService {
     }
 
     //! This method should be called ONLY by a user, who intends to update HIS data
-    public User updateUser(User user, UserUpdateDTO userUpdateDTO){return userCacheService.updateUser(user, userUpdateDTO);}
+    public User updateUser(User user, UserUpdateDTO userUpdateDTO){
+        User updatedUser = userCacheService.updateUser(user, userUpdateDTO);
+        eventPublisher.publishEvent(new UserEvent(this,updatedUser,Action.ACCOUNT_UPDATE));
+        return updatedUser;}
 
     public String generateRandomPassword(){
         String characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789@#$%^&+=_*~!)(./:;?{}|`',-";
@@ -176,7 +188,8 @@ public class UserService {
             if(newPassword==null) {return new ResponseEntity<>("Please try again. Error occurred while generating the new password.", HttpStatus.BAD_REQUEST);} //? In case of infinite loop(after 50 unsuccessful tries) in generateRandomPassword() method
             else
             {
-                userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
+                User userWithPasswordReset = userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
+                eventPublisher.publishEvent(new UserEvent(this,userWithPasswordReset,Action.PASSWORD_RESET));
                 boolean isEmailSentSuccessfully = emailService.sendEmail(user.getFirstName(),email,newPassword);
                 if(isEmailSentSuccessfully) return ResponseEntity.ok().build();
                 else return new ResponseEntity<>("Please try again. Error occurred while sending email with the new password.", HttpStatus.BAD_REQUEST);
@@ -184,6 +197,7 @@ public class UserService {
         }
         else
         {
+            eventPublisher.publishEvent(new UserEvent(this,user,Action.PASSWORD_RESET_FAILURE));
             emailService.sendWarningEmail(user.getFirstName(),email);
             return ResponseEntity.badRequest().build();
         }
@@ -196,7 +210,8 @@ public class UserService {
     }
 
     public ResponseEntity<?> changePassword(User user, String newPassword){
-        userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
+        User userWithUpdatedPassword = userCacheService.updatePassword(user,passwordEncoder.encode(newPassword));
+        eventPublisher.publishEvent(new UserEvent(this,userWithUpdatedPassword,Action.PASSWORD_UPDATE));
         return ResponseEntity.ok().build();
     }
 

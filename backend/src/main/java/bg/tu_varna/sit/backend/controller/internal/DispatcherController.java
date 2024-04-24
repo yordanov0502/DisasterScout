@@ -35,17 +35,18 @@ public class DispatcherController {
         return new ResponseEntity<>("User "+ user.getFirstName() + "/"+user.getLastLogin()+" has been authenticated successfully", HttpStatus.OK);
     }
 
-//    @PostMapping ("/update/{zoneId}")
-//    public ResponseEntity<?> updateAlertOfZone(@PathVariable @ZoneIdRegex String zoneId){
-//        zoneService.updateAlertOfZone(new ZoneDTO(zoneId,new AlertDTO(Severity.HIGH,"Гръмотевични бури")));
-//        return ResponseEntity.ok().build();
-//    }
-//
-//    @PutMapping("/delete/{zoneId}") //?SHOULD IT BE "@DeleteMapping" or not as we delete the alert, but actually apply update to the Zone, or should it be "@PutMapping" ?
-//    public ResponseEntity<String> deleteAlertByZoneId(@PathVariable @ZoneIdRegex String zoneId){
-//        zoneService.deleteAlertOfZone(zoneId);
-//        return new ResponseEntity<>("Alert of zone was successfully deleted.",HttpStatus.OK);
-//    }
+    //TODO: when time reached, move ZoneDTO  to method argument
+    @PostMapping ("/update/{zoneId}")
+    public ResponseEntity<?> updateAlertOfZone(@AuthenticationPrincipal User user ,@PathVariable @ZoneIdRegex String zoneId){
+        zoneService.updateAlertOfZone(user, new ZoneDTO(zoneId,new AlertDTO(Severity.CRITICAL,"Гръмотевични бури")));
+        return ResponseEntity.ok().build();
+    }
+
+    @PutMapping("/delete/{zoneId}") //?SHOULD IT BE "@DeleteMapping" or not as we delete the alert, but actually apply update to the Zone, or should it be "@PutMapping" ?
+    public ResponseEntity<String> deleteAlertByZoneId(@AuthenticationPrincipal User user, @PathVariable @ZoneIdRegex String zoneId){
+        zoneService.deleteAlertOfZone(user, zoneId);
+        return new ResponseEntity<>("Alert of zone was successfully deleted.",HttpStatus.OK);
+    }
 
 
 

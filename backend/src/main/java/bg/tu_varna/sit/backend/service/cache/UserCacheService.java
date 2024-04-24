@@ -40,7 +40,7 @@ public class UserCacheService {
     private final ZoneService zoneService;
 
 
-    //* Saves a new user to DB and all related caches.
+    //* Saves a new user to DB and related cache.
     //? CachePut is used instead of Cacheable, because I want the result(new user data) to be cached after it has been added to the DB.
     //! This method should be invoked only once(when we want to create a new user) and never again for the same user.
     @Caching(put = {
@@ -66,7 +66,7 @@ public class UserCacheService {
     }
 
 
-    //* Updates existing user and all related caches.
+    //* Updates existing user and related cache.
    @Caching(
     put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
@@ -92,7 +92,7 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
     }
 
-    //? Updates DB and caches when a user logs in
+    //? Updates DB and related cache when a user logs in
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
     })
@@ -105,7 +105,7 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
     }
 
-    //? Updates DB and caches when a user logs out
+    //? Updates DB and related cache when a user logs out
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
     })
@@ -116,7 +116,7 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
         }
 
-    //? Updates DB and caches when unsuccessful login attempts of a user are incremented
+    //? Updates DB and related cache when unsuccessful login attempts of a user are incremented
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
     })
@@ -127,7 +127,7 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
     }
 
-    //? Updates DB and caches when a user is LOCKED
+    //? Updates DB and related cache when a user is LOCKED
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
     })
@@ -139,7 +139,7 @@ public class UserCacheService {
         return userRepository.save(updatedUser);
    }
 
-    //? Updates DB and caches when a user is UNLOCKED
+    //? Updates DB and related cache when a user is UNLOCKED
     @Caching(put = {
             @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
     })
