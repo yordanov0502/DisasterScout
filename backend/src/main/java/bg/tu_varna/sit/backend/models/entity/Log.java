@@ -42,8 +42,7 @@ public class Log {
     private Date createdAt;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    //TODO: remove the on delete cascade to test if log can be persisted even if user is deleted.
-    @OnDelete(action = OnDeleteAction.CASCADE)//allows "foreign key on cascade delete"(deletes all logs when the user they were associated with is deleted)
+    @OnDelete(action = OnDeleteAction.SET_NULL) // When user is deleted, every log referencing the particular user is updated(log's FK user_id is set to null)
     @JoinColumn(name = "user_id")
     private User user;
 }
