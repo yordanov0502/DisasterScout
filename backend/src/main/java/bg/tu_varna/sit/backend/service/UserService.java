@@ -5,6 +5,7 @@ import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.enums.log.Action;
+import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.models.event.UserEvent;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import bg.tu_varna.sit.backend.service.util.EmailService;
@@ -39,8 +40,10 @@ public class UserService {
 
     public User getUserById(String id) {return userCacheService.getUserById(id);}
 
+    public User getUserByRole(Role role) {return userCacheService.getUserByRole(role);}
+
     //public User getUserByEmail(String email) {return userCacheService.getUserByEmail(email);}
-    public boolean isIdExists(String id){return userCacheService.isIdExists(id);}
+    public boolean isIdExists(String id){return getUserById(id)!=null;}
 
     public boolean isUsernameExists(String username) {return userCacheService.isUsernameExists(username);}
 
@@ -220,7 +223,7 @@ public class UserService {
 
     //? Called by DISPATCHER to clear cached data of ADMIN
     public void clearAdminCache(){
-        User admin = userCacheService.getUserByRole(ADMIN);
+        User admin = getUserByRole(ADMIN);
         userCacheService.evictUserFromCache(admin);
     }
 
@@ -232,5 +235,10 @@ public class UserService {
 
     //? Called by ADMIN to clear cached data of all users
     public void clearCacheOfAllUsers(){userCacheService.evictCacheOfAllUsers();}
+
+    //? Used in UsernameRegexAndExistenceValidation and ExistingAdminInCacheValidation to clear user from cache, which doesn't exist in DB, but DO exist in cache
+    public void clearUserFromCacheWhenAbsentFromDB(User user){
+        userCacheService.evictUserFromCache(user);
+    }
 
 }

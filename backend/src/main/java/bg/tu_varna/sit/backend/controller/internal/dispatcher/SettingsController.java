@@ -2,7 +2,9 @@ package bg.tu_varna.sit.backend.controller.internal.dispatcher;
 
 import bg.tu_varna.sit.backend.models.dto.user.ChangePasswordDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.validation.user.annotation.ExistingAdminInCache;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController("dispatcherSettingsController")
 @RequiredArgsConstructor
+@Validated
 @RequestMapping("/api/internal/dispatcher/settings")
 public class SettingsController {
 
@@ -33,8 +36,8 @@ public class SettingsController {
 
     @Operation(summary = "Clear cached data of admin",
             description = "User(dispatcher) clears the cached data of the admin when this endpoint is called.")
-    @DeleteMapping("/clear-admin-cache")
-    public void clearAdminCache(){
+    @DeleteMapping("/clear-admin-cache/{role}")
+    public void clearAdminCache(@PathVariable(value = "role") @ExistingAdminInCache Role role){ //? Role is used as path variable ONLY in order to trigger needed validation, but in reality the path variable is not used.
         userService.clearAdminCache();
     }
 

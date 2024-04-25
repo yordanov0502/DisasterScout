@@ -31,7 +31,7 @@ export const clearMyCacheRequest = () => {
 };
 
 export const clearAdminCacheRequest = () => {
-  return axiosInstanceWithCredentials.delete("/internal/dispatcher/settings/clear-admin-cache");
+  return axiosInstanceWithCredentials.delete(`/internal/dispatcher/settings/clear-admin-cache/${"ADMIN"}`);
 };
 
 export const clearDispatcherCacheRequest = (username) => {
