@@ -1,6 +1,8 @@
 package bg.tu_varna.sit.backend.repository;
 
 import bg.tu_varna.sit.backend.models.entity.Log;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
@@ -15,4 +17,5 @@ public interface LoggerRepository extends JpaRepository<Log, Integer> {
     @Modifying
     @Query("DELETE FROM Log l WHERE l.createdAt < ?1")
     void deleteLogsOlderThan(Date date);
+    Page<Log> findAll(Pageable pageable);
 }
