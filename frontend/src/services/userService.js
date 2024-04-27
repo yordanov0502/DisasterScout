@@ -50,6 +50,9 @@ export const clearAllZonesCachesRequest = () => {
   return axiosInstanceWithCredentials.delete("/internal/admin/settings/clear-all-zones-caches");
 };
 
+export const getLogsFromPage = (pageNumber) => {
+  return axiosInstanceWithCredentials.get(`/internal/admin/logger?page=${pageNumber}`);
+};
 
 
 //TODO: DELETE unnecessary request and refactor cms home page accordingly

@@ -53,7 +53,7 @@ public class EntityListener {
             }
             case ACCOUNT_LOCKED_AUTOMATICALLY -> {
                 String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
-                loggerService.log(new Log(null, Level.WARN, Action.ACCOUNT_LOCKED_AUTOMATICALLY, Action.ACCOUNT_LOCKED_AUTOMATICALLY.format(role,firstName,lastName),null,user));
+                loggerService.log(new Log(null, Level.ERROR, Action.ACCOUNT_LOCKED_AUTOMATICALLY, Action.ACCOUNT_LOCKED_AUTOMATICALLY.format(role,firstName,lastName),null,user));
             }
             case ACCOUNT_LOCKED_MANUALLY -> {
                 String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";

@@ -7,7 +7,7 @@ public enum Action {
     PASSWORD_UPDATE("%s %s %s актуализира своята парола."),
     PASSWORD_RESET("Заявена бе нова парола по имейл адрес на %s %s %s."), //! WARN
     PASSWORD_RESET_FAILURE("Бил е извършен неуспешен опит за заявяване на нова парола по имейл адрес на %s %s %s."), //! ERROR
-    ACCOUNT_LOCKED_AUTOMATICALLY("Акаунтът на %s %s %s беше автоматично заключен."), //! WARN
+    ACCOUNT_LOCKED_AUTOMATICALLY("Акаунтът на %s %s %s беше автоматично заключен."), //! ERROR
     ACCOUNT_LOCKED_MANUALLY("Акаунтът на %s %s %s беше ръчно заключен."), //! WARN
     ACCOUNT_UNLOCKED("Акаунтът на %s %s %s беше отключен."),
     ZONE_ALERT_SET("%s %s %s добави сигнал с%s ниво на опасност за област %s."), //! WARN

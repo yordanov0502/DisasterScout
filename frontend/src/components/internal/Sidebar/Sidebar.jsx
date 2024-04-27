@@ -34,6 +34,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
     else if (path.includes("/cms-account")) setActiveButton('cms-account');
     else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
+    else if (path.includes("/cms-logger")) setActiveButton('cms-logger');
     // ...
   }, [location]);
   
@@ -134,11 +135,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
           </a>
         </li>
         <li className={activeButton === 'cms-logger' ? 'active' : ''} onClick={() => handleButtonClick('cms-logger')}>
-          <a>
+        <Link to={"/cms-logger"}>
             <i className="loggerr"><AutoStoriesIcon/></i>
             <span className="links_name" id="loggerr-link_name">Логър</span>
             <span className="tooltip" id="loggerr-tooltip">Логър</span>
-          </a>
+        </Link>
         </li>
   </>
 )

@@ -8,6 +8,7 @@ import { CmsAccountPage } from "../pages/internal/CmsAccountPage";
 import { CmsSettingsPage } from "../pages/internal/CmsSettingsPage";
 import { HomePage } from "../pages/external/HomePage";
 import { NotFoundPage } from "../pages/external/NotFoundPage"; 
+import { CmsLoggerPage } from "../pages/internal/CmsLoggerPage/CmsLoggerPage.jsx";
 
 
 export const Router = () => {
@@ -37,6 +38,11 @@ export const Router = () => {
       <Route path="/cms-settings" element={
       <ProtectedRoute>
       <CmsSettingsPage />
+      </ProtectedRoute>
+      }/>
+      <Route path="/cms-logger" element={
+      <ProtectedRoute>
+      <CmsLoggerPage />
       </ProtectedRoute>
       }/>
 

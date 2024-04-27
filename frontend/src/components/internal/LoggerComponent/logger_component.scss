@@ -1,0 +1,49 @@
+.logger_component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 80%;
+    height: 650px;
+    background-color: white;
+    box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.8);
+    background-color: #ffffff;
+
+    &__loader-box {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    &__info{
+        color: #0036aa;
+        background-color: #b3d7ff;
+        width:fit-content;
+        padding:0 5px;
+        border: 2px solid #0036aa;
+        border-radius: 10px;
+      }
+    
+    &__warning{
+        color: #724e00;
+        background-color: #ffdbb2;
+        width:fit-content;
+        padding:0 5px;
+        border: 2px solid #9c6b00;
+        border-radius: 10px;
+      }
+
+      &__error{
+        color: #8d0404;
+        background-color: #ffb2b2;
+        width:fit-content;
+        padding:0 5px;
+        border: 2px solid #c40000;
+        border-radius: 10px;
+      }
+
+      
+}
+  
