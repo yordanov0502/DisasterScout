@@ -7,9 +7,16 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import { TextField } from "@mui/material";
+import SearchIcon from '@mui/icons-material/Search';
+import ClearIcon from '@mui/icons-material/Clear';
 import "./logger_component.scss";
 
-export const LoggerComponent = ({rows}) => {
+export const LoggerComponent = ({isLoading,rows}) => {
  
     const getLevelDivName = (level) => {
         switch(level) {
@@ -58,7 +65,7 @@ export const LoggerComponent = ({rows}) => {
       }));
       
 
-    if(false)
+    if(isLoading)
     {
     return (
       <div className="logger_component">
@@ -71,6 +78,53 @@ export const LoggerComponent = ({rows}) => {
   
   return (
     <div className="logger_component">
+
+    <div className="logger_component__heading">
+     
+    <div className="logger_component__heading__level-filter">
+    <FormControl sx={{mb: 6, top: 23}}>
+      <RadioGroup
+        row
+        aria-labelledby="logger-row-radio-buttons-group-label"
+        name="logger-row-radio-buttons-group"
+        defaultValue="ALL"
+      >
+        <FormControlLabel value="ALL" control={<Radio color="success" />} label="Всички" />
+        <FormControlLabel value="INFO" control={<Radio color="primary" />} label="Информация" />
+        <FormControlLabel value="WARN" control={<Radio color="warning"/>} label="Предупреждение" />
+        <FormControlLabel value="ERROR" control={<Radio color="error"/>} label="Внимание" />
+      </RadioGroup>
+    </FormControl>
+    </div>
+
+    <div className="logger_component__heading__user-filter">
+      <div className="logger_component__heading__user-filter__username-container">
+        <TextField sx={{top: 9}}
+           name="username" //! MUST MATCH WITH THE RELATED useState username from CmsLoggerPage
+           required
+           fullWidth
+           label="Потребителско име"
+           variant="outlined"
+           color="success"
+           margin="dense"
+           // error={usernameError}
+           // value={username}
+           // onChange={handleUsernameInput}
+           />
+      </div>
+    </div>
+
+    <div className="logger_component__heading__button1">
+    <button className="logger_component__heading__button1__search" /*disabled={isRequestSent} onClick={onPressClearMyCache}*/><SearchIcon/></button>
+    </div>
+    
+    
+    <div className="logger_component__heading__button2">
+    <button className="logger_component__heading__button2__clear" /*disabled={isRequestSent} onClick={onPressClearMyCache}*/><ClearIcon/></button>
+    </div>
+    
+
+    </div>
 
 
     <TableContainer component={Paper}>

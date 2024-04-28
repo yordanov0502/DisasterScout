@@ -1,49 +1,168 @@
 .logger_component {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    width: 80%;
-    height: 650px;
-    background-color: white;
-    box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.8);
-    background-color: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 80%;
+  height: 100%;
+  background-color: white;
 
-    &__loader-box {
-        display: flex;
-        position: relative;
-        width: 100%;
-        height: 100%;
-        align-items: center;
-        justify-content: center;
+  &__loader-box {
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+  }
+
+  &__heading{
+    display: flex;
+    flex-direction: row;
+    width: 100%; // take full width to allow children to align properly
+    justify-content: flex-start; // align children to the start of the flex container
+    background-color: rgb(235, 255, 241);
+
+  &__level-filter{
+    padding: 0 0px;
+  }
+
+    &__user-filter{
+    //padding: 0 10px;
+    // display: flex; // Use flexbox to lay out children
+    // flex-direction: column; // Stack children vertically
+    // padding-right: 15px;
+
+    &__username-container{
+        //width: 100%;
+      
+        // display: flex; // Use flex to position label and input
+        // flex-direction: column; // Stack them vertically
+        
+    }
+  }
+
+  &__button1{
+    // white-space: normal;  // Allow the text to wrap to the next line
+    // overflow-wrap: break-word;
+    width: 55px;
+    //left: 15px;
+
+    &__search {
+      //align-self: flex-start;
+      display: flex;
+      align-items: center; 
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      top: 17px;
+      left: 15%;
+      width: 50px;
+      height: 56px;
+      border-radius: 3px;
+      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+      background-color: #009f58;
+      border: none;
+      border-bottom: 6px solid #00693a;
+      text-shadow: 0px -2px #266540;
+      -webkit-transition: all 0.1s;
+      transition: all 0.1s;
+    }
+  
+    &__search:hover {
+      background-color: #00b463;
+    }
+  
+    &__search:active {
+      -webkit-transform: translate(0px, 1px);
+      -ms-transform: translate(0px, 1px);
+      transform: translate(0px, 1px);
+      border-bottom: 2px solid #00693a;
+    }
+  }
+
+  &__button2{
+
+    width: 55px;
+
+    &__clear {
+      //align-self: flex-start;
+      display: flex;
+      align-items: center; 
+      justify-content: center;
+      cursor: pointer;
+      position: relative;
+      top: 17px;
+      left: 20%;
+      width: 50px;
+      height: 56px;
+      border-radius: 3px;
+      font-size: 18px;
+      color: #fff;
+      text-decoration: none;
+      background-color: #e50000;
+      border: none;
+      border-bottom: 6px solid #690000;
+      text-shadow: 0px -2px #652626;
+      -webkit-transition: all 0.1s;
+      transition: all 0.1s;
+    }
+  
+    &__clear:hover {
+      background-color: #ff3e3e;
+    }
+  
+    &__clear:active {
+      -webkit-transform: translate(0px, 1px);
+      -ms-transform: translate(0px, 1px);
+      transform: translate(0px, 1px);
+      border-bottom: 2px solid #690000;
+    }
+  }
+
+  
+
+  
+
+  
+
+  // @media (max-width: 1350px) {
+  //   &__search-button {
+  //     //align-self: flex-start;
+  //     top: 54px;
+  //   }
+  // }
+}
+
+  
+
+  &__info{
+      color: #0036aa;
+      background-color: #b3d7ff;
+      width:fit-content;
+      padding:0 5px;
+      border: 2px solid #0036aa;
+      border-radius: 10px;
+    }
+  
+  &__warning{
+      color: #724e00;
+      background-color: #ffdbb2;
+      width:fit-content;
+      padding:0 5px;
+      border: 2px solid #9c6b00;
+      border-radius: 10px;
     }
 
-    &__info{
-        color: #0036aa;
-        background-color: #b3d7ff;
-        width:fit-content;
-        padding:0 5px;
-        border: 2px solid #0036aa;
-        border-radius: 10px;
-      }
+    &__error{
+      color: #8d0404;
+      background-color: #ffb2b2;
+      width:fit-content;
+      padding:0 5px;
+      border: 2px solid #c40000;
+      border-radius: 10px;
+    }
+
     
-    &__warning{
-        color: #724e00;
-        background-color: #ffdbb2;
-        width:fit-content;
-        padding:0 5px;
-        border: 2px solid #9c6b00;
-        border-radius: 10px;
-      }
-
-      &__error{
-        color: #8d0404;
-        background-color: #ffb2b2;
-        width:fit-content;
-        padding:0 5px;
-        border: 2px solid #c40000;
-        border-radius: 10px;
-      }
-
-      
 }
-  

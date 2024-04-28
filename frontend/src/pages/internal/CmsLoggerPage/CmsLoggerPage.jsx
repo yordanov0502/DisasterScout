@@ -6,7 +6,7 @@ import { getLogsFromPage } from "../../../services/userService";
 import "./cms_logger_page.scss";
 
 export const CmsLoggerPage = () => {
-
+  const [isLoading, setIsLoading] = useState(true);
   const [rows, setRows] = useState([]);
   
   const getLogsFromPage1 = useQuery({
@@ -35,6 +35,7 @@ export const CmsLoggerPage = () => {
         dateTime: new Date(item.createdAt).toLocaleString()
       }));
       setRows(newRows);
+      setIsLoading(false);
     }
   }, [getLogsFromPage1.isSuccess]);
   
@@ -51,6 +52,7 @@ export const CmsLoggerPage = () => {
   return (
     <div className="cms_logger_page">
      <LoggerComponent
+     isLoading={isLoading}
      rows={rows}
      />
     </div>
