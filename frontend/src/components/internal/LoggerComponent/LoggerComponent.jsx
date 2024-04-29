@@ -11,13 +11,25 @@ import Radio from '@mui/material/Radio';
 import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
-import { TextField } from "@mui/material";
+import { Pagination, TextField } from "@mui/material";
 import SearchIcon from '@mui/icons-material/Search';
 import ClearIcon from '@mui/icons-material/Clear';
 import "./logger_component.scss";
 
-export const LoggerComponent = ({isLoading,rows}) => {
- 
+export const LoggerComponent = ({status,
+                                 isLoadingComponent,
+                                 handlePageChange,
+                                 pageNumber,
+                                 handleLevelChange,
+                                 level,
+                                 pages,
+                                 rows,
+                                 username,
+                                 usernameError,
+                                 handleUsernameInput,
+                                 onPressSearchByUsername,
+                                 onPressClearSearchByUsername}) => {
+
     const getLevelDivName = (level) => {
         switch(level) {
           case 'INFO':
@@ -58,14 +70,13 @@ export const LoggerComponent = ({isLoading,rows}) => {
         '&:nth-of-type(odd)': {
           backgroundColor: theme.palette.action.hover,
         },
-        // hide last border
         '&:last-child td, &:last-child th': {
           border: 0,
         },
       }));
       
 
-    if(isLoading)
+    if(isLoadingComponent)
     {
     return (
       <div className="logger_component">
@@ -79,15 +90,18 @@ export const LoggerComponent = ({isLoading,rows}) => {
   return (
     <div className="logger_component">
 
-    <div className="logger_component__heading">
+    <div className="logger_component__header">
      
-    <div className="logger_component__heading__level-filter">
+
+    <div className="logger_component__header__level-filter">
     <FormControl sx={{mb: 6, top: 23}}>
       <RadioGroup
+        id="logger-buttons-radio-group"
         row
         aria-labelledby="logger-row-radio-buttons-group-label"
         name="logger-row-radio-buttons-group"
-        defaultValue="ALL"
+        value={level}
+        onChange={(event) => handleLevelChange(event.target.value)}
       >
         <FormControlLabel value="ALL" control={<Radio color="success" />} label="Всички" />
         <FormControlLabel value="INFO" control={<Radio color="primary" />} label="Информация" />
@@ -97,30 +111,28 @@ export const LoggerComponent = ({isLoading,rows}) => {
     </FormControl>
     </div>
 
-    <div className="logger_component__heading__user-filter">
-      <div className="logger_component__heading__user-filter__username-container">
-        <TextField sx={{top: 9}}
-           name="username" //! MUST MATCH WITH THE RELATED useState username from CmsLoggerPage
-           required
-           fullWidth
-           label="Потребителско име"
-           variant="outlined"
-           color="success"
-           margin="dense"
-           // error={usernameError}
-           // value={username}
-           // onChange={handleUsernameInput}
-           />
-      </div>
+    <div className="logger_component__header__user-filter">
+      <TextField sx={{top: 9}}
+          autoComplete="on"
+          name="username" //! MUST MATCH WITH THE RELATED useState username from CmsLoggerPage
+          required
+          fullWidth
+          label="Потребителско име"
+          variant="outlined"
+          color="success"
+          margin="dense"
+          error={usernameError}
+          value={username}
+          onChange={handleUsernameInput}
+      />
     </div>
 
-    <div className="logger_component__heading__button1">
-    <button className="logger_component__heading__button1__search" /*disabled={isRequestSent} onClick={onPressClearMyCache}*/><SearchIcon/></button>
+    <div className="logger_component__header__button1">
+    <button className="logger_component__header__button1__search" disabled={isLoadingComponent} onClick={onPressSearchByUsername}><SearchIcon/></button>
     </div>
     
-    
-    <div className="logger_component__heading__button2">
-    <button className="logger_component__heading__button2__clear" /*disabled={isRequestSent} onClick={onPressClearMyCache}*/><ClearIcon/></button>
+    <div className="logger_component__header__button2">
+    <button className="logger_component__header__button2__clear" disabled={isLoadingComponent} onClick={onPressClearSearchByUsername}><ClearIcon/></button>
     </div>
     
 
@@ -138,17 +150,36 @@ export const LoggerComponent = ({isLoading,rows}) => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {rows.map((row) => (
-            <StyledTableRow key={row.number}>
-              <StyledTableCell align="center" component="th" scope="row">{row.number}</StyledTableCell>
-              <StyledTableCell align="left">{row.action}</StyledTableCell>
-              <StyledTableCell align="center"><label className={getLevelDivName(row.level)}>{getLevelValue(row.level)}</label></StyledTableCell>
-              <StyledTableCell align="center">{row.dateTime}</StyledTableCell>
+          {
+            status !== 'error' && rows.length > 0 ?
+            (
+              rows.map((row) => (
+                <StyledTableRow key={row.number}>
+                  <StyledTableCell align="center" component="th" scope="row">{row.number}</StyledTableCell>
+                  <StyledTableCell align="left">{row.action}</StyledTableCell>
+                  <StyledTableCell align="center"><span className={getLevelDivName(row.level)}>{getLevelValue(row.level)}</span></StyledTableCell>
+                  <StyledTableCell align="center">{row.dateTime}</StyledTableCell>
+                </StyledTableRow>
+              ))
+            ) :
+            ( 
+              <StyledTableRow>
+              <StyledTableCell align="center" colSpan={4}>
+                Няма информация
+              </StyledTableCell>
             </StyledTableRow>
-          ))}
+            ) 
+          }
         </TableBody>
       </Table>
     </TableContainer>
+
+
+    <div className="logger_component__footer">
+    <Pagination page={pageNumber} count={pages} onChange={handlePageChange} size="large" color="success" shape="rounded"  />
+    </div>
+
+    
 
     </div>
   );

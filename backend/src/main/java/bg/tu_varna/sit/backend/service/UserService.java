@@ -42,6 +42,8 @@ public class UserService {
 
     public User getUserByRole(Role role) {return userCacheService.getUserByRole(role);}
 
+    public User getUserByUsername(String username) {return userCacheService.getUserByUsername(username);}
+
     //public User getUserByEmail(String email) {return userCacheService.getUserByEmail(email);}
     public boolean isIdExists(String id){return getUserById(id)!=null;}
 
@@ -87,7 +89,7 @@ public class UserService {
     //! Should be called only by LoginAuthenticationFilter
     //? Unsuccessful login attempts(valid username, BUT invalid password) are incremented only if user is OFFLINE AND ACTIVE
     public User checkUserCredentials(LoginRequestDTO loginRequestDTO){
-        User user = userCacheService.getUserByUsername(loginRequestDTO.getUsername());
+        User user = getUserByUsername(loginRequestDTO.getUsername());
 
         //* if user does NOT exist or password from loginRequestDTO does NOT match the password of the existing user
         if (user == null || !passwordEncoder.matches(loginRequestDTO.getPassword(), user.getPassword())) {
@@ -229,7 +231,7 @@ public class UserService {
 
     //? Called by ADMIN to clear cached data of DISPATCHER
     public void clearDispatcherCache(String username){
-        User dispatcher = userCacheService.getUserByUsername(username);
+        User dispatcher = getUserByUsername(username);
         userCacheService.evictUserFromCache(dispatcher);
     }
 

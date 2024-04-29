@@ -171,3 +171,13 @@ export const validateChangeUsername = (username, authenticatedUserUsername) => {
 export const processChangeUsernameError = (username) => { 
   return username !== "" && !usernameRegex.test(username)
 };
+
+export const validateUsernameInLoggerOnSearch = (username) => { //? function returns error message
+
+  if (!username) { return "Моля въведете потребителско име.";} //! error
+
+  const isUsernameValid = usernameRegex.test(username);
+  if (!isUsernameValid) {return "Невалидно потребителско име.";} //! error
+  
+  return ""; //* OK
+}

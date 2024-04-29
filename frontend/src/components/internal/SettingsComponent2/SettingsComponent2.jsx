@@ -50,6 +50,7 @@ export const SettingsComponent2 = ({ isLoading2,
 
          <div className="settings_component2__box2__username-container">
          <TextField
+          autoComplete="on"
           name="username" //! MUST MATCH WITH THE RELATED useState username from CmsSettingsPage
           required
           fullWidth

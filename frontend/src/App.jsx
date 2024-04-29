@@ -38,12 +38,15 @@ function App() {
           refetchOnReconnect:false,
           retry:false,
     
+          //!!! This global staleTime value MUST ALWAYS be 0 (if other value is needed, apply it locally to the desired useQuery)
           //? https://dev.to/delisrey/react-query-staletime-vs-cachetime-hml
           staleTime:0, //5*60*1000,
+          //!!!
     
+          //!!! This global gcTime value MUST ALWAYS be 0 (if other value is needed, apply it locally to the desired useQuery)
           //!By default, data will be retained in the cache for 5 minutes (cacheTime of 300,000 milliseconds). After that time elapses, the data will be automatically removed from the cache.
-          //gcTime:0 //! is actually cacheTime in v5
-          //!
+          gcTime:0 //! is actually cacheTime in v5
+          //!!!
         }
       },
       queryCache: new QueryCache({

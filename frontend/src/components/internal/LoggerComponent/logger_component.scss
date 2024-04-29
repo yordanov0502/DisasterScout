@@ -4,7 +4,7 @@
   align-items: center;
   width: 80%;
   height: 100%;
-  background-color: white;
+  background-color: rgb(235, 255, 241);
 
   &__loader-box {
       display: flex;
@@ -15,11 +15,10 @@
       justify-content: center;
   }
 
-  &__heading{
+  &__header{
     display: flex;
     flex-direction: row;
-    width: 100%; // take full width to allow children to align properly
-    justify-content: flex-start; // align children to the start of the flex container
+    width: 100%;  
     background-color: rgb(235, 255, 241);
 
   &__level-filter{
@@ -27,28 +26,13 @@
   }
 
     &__user-filter{
-    //padding: 0 10px;
-    // display: flex; // Use flexbox to lay out children
-    // flex-direction: column; // Stack children vertically
-    // padding-right: 15px;
-
-    &__username-container{
-        //width: 100%;
-      
-        // display: flex; // Use flex to position label and input
-        // flex-direction: column; // Stack them vertically
-        
-    }
+      padding: 0 0px;
   }
 
   &__button1{
-    // white-space: normal;  // Allow the text to wrap to the next line
-    // overflow-wrap: break-word;
     width: 55px;
-    //left: 15px;
 
     &__search {
-      //align-self: flex-start;
       display: flex;
       align-items: center; 
       justify-content: center;
@@ -87,7 +71,6 @@
     width: 55px;
 
     &__clear {
-      //align-self: flex-start;
       display: flex;
       align-items: center; 
       justify-content: center;
@@ -121,19 +104,17 @@
     }
   }
 
-  
-
-  
-
-  
-
-  // @media (max-width: 1350px) {
-  //   &__search-button {
-  //     //align-self: flex-start;
-  //     top: 54px;
-  //   }
-  // }
 }
+
+  &__footer{
+    background-color: rgb(235, 255, 241);
+    width: 100%;
+    height: 70px;
+    top: 5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
 
   
 

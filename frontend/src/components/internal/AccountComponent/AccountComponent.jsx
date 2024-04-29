@@ -24,6 +24,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       <div className="account_component__box">
 
       <TextField
+      autoComplete="on"
       name="firstName" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
       fullWidth
@@ -37,6 +38,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      autoComplete="on"
       name="lastName" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
       fullWidth
@@ -50,6 +52,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      autoComplete="on"
       name="email" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
       fullWidth
@@ -63,6 +66,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      autoComplete="on"
       name="username" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
       fullWidth

@@ -50,8 +50,8 @@ export const clearAllZonesCachesRequest = () => {
   return axiosInstanceWithCredentials.delete("/internal/admin/settings/clear-all-zones-caches");
 };
 
-export const getLogsFromPage = (pageNumber) => {
-  return axiosInstanceWithCredentials.get(`/internal/admin/logger?page=${pageNumber}`);
+export const getLogsFromPage = (pageNumber,level,username) => {
+  return axiosInstanceWithCredentials.get(`/internal/admin/logger?page=${pageNumber}&level=${level}&username=${username}`);
 };
 
 
