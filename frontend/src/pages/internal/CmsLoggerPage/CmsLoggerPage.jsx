@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
+import { useUserContext } from "../../../hooks/useUserContext";
 import { LoggerComponent } from "../../../components/internal/LoggerComponent/LoggerComponent";
 import { getLogsFromPage } from "../../../services/userService";
 import { useSnackbar } from "../../../hooks/useSnackbar";
@@ -8,6 +10,8 @@ import { processChangeUsernameError, validateUsernameInLoggerOnSearch } from "..
 import "./cms_logger_page.scss";
 
 export const CmsLoggerPage = () => {
+  const { authenticatedUser, isUserContextEmpty } = useUserContext();
+  const navigate = useNavigate();
   const [searchCount, setSearchCount] = useState(0);
   const [isLoadingComponent, setIsLoadingComponent] = useState(true);
   const [level, setLevel] = useState(sessionStorage.getItem("logger-level") || 'ALL');
@@ -27,7 +31,7 @@ export const CmsLoggerPage = () => {
   } = useQuery({
     queryKey: ["getLogsFromPage", pageNumber, level, validUsername, searchCount], //? When any value in the queryKey array changes, react-query will re-run the query.
     queryFn: () => getLogsFromPage(pageNumber, level, validUsername),
-    enabled: true
+    enabled: authenticatedUser.role === "ADMIN"
   });
 
   useEffect(() => {
@@ -49,6 +53,15 @@ export const CmsLoggerPage = () => {
          sessionStorage.removeItem("logger-pages");
     };
   }, []);
+
+  //? Used in order to preven dispatchers from accessing the CmsLoggerPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
+  useEffect(() => { 
+    const isUContextEmpty = isUserContextEmpty(); //? return true/false
+    if(!isUContextEmpty && authenticatedUser.role !== "ADMIN") //? if user context is NOT empty and user role is NOT ADMIN
+    { 
+      navigate("/cms-dashboard", {replace: true});
+    }
+  }, [authenticatedUser]);
 
   useEffect(() => {
 

@@ -15,6 +15,6 @@ public class JwtAuthenticationEntryPoint implements AuthenticationEntryPoint {
         //*This method will be called when a user tries to access a protected resource without a valid JWT
         //*or with an expired/invalid JWT or even without a JWT.
         System.out.println("JwtAuthenticationEntryPoint executed");
-        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorizedddd"/*HttpStatus.UNAUTHORIZED.getReasonPhrase()*/);
+        response.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Unauthorized"/*HttpStatus.UNAUTHORIZED.getReasonPhrase()*/);
     }
 }
