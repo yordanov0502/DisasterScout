@@ -50,8 +50,24 @@ export const clearAllZonesCachesRequest = () => {
   return axiosInstanceWithCredentials.delete("/internal/admin/settings/clear-all-zones-caches");
 };
 
-export const getLogsFromPage = (pageNumber,level,username) => {
+export const getLogsFromPageRequest = (pageNumber,level,username) => {
   return axiosInstanceWithCredentials.get(`/internal/admin/logger?page=${pageNumber}&level=${level}&username=${username}`);
+};
+
+export const getDispatchersFromPageRequest = (pageNumber) => {
+  return axiosInstanceWithCredentials.get(`/internal/admin/dispatchers?page=${pageNumber}`);
+};
+
+export const deleteDispatcherRequest = (dispatcherId) => { //? Axios doesn't automatically assume the second parameter as the request body for DELETE requests like it does for POST requests.
+  return axiosInstanceWithCredentials.delete("/internal/admin/dispatchers",{data: { id: dispatcherId }});
+};
+
+export const lockDispatcherRequest = (dispatcherId) => { //? When passing single value as request body, I must make sure it is in a format expexted by the backend API
+  return axiosInstanceWithCredentials.put("/internal/admin/dispatchers/lock",{id: dispatcherId});
+};
+
+export const unlockDispatcherRequest = (dispatcherId) => { //? When passing single value as request body, I must make sure it is in a format expexted by the backend API
+  return axiosInstanceWithCredentials.put("/internal/admin/dispatchers/unlock",{ id: dispatcherId });
 };
 
 
@@ -64,7 +80,7 @@ export const testRequest = () => {
 export const addNewDispatcherRequest = () => {
    return axiosInstanceWithCredentials.post("/internal/admin/register-new-dispatcher",
     {
-      id: "0246301025",
+      id: "0346301025",
       firstName:"Емил",
       lastName:"Ефтимов",
       email:"eftimovemil20@gmail.com",

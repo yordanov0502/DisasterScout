@@ -1,6 +1,7 @@
 package bg.tu_varna.sit.backend.service;
 
 import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
+import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
@@ -44,6 +45,8 @@ public class UserService {
 
     public User getUserByUsername(String username) {return userCacheService.getUserByUsername(username);}
 
+    public PageDispatcherDTO getDispatchersFromPage(Integer page){return userCacheService.getDispatchersFromPage(page);}
+
     //public User getUserByEmail(String email) {return userCacheService.getUserByEmail(email);}
     public boolean isIdExists(String id){return getUserById(id)!=null;}
 
@@ -54,6 +57,11 @@ public class UserService {
     public boolean isUsernameExists(String usernameOfAuthenticatedUser,String username) {return !usernameOfAuthenticatedUser.equals(username) && isUsernameExists(username);}
 
     public boolean isEmailExists(String emailOfAuthenticatedUser,String email) {return !emailOfAuthenticatedUser.equals(email) && isEmailExists(email);}
+
+    public ResponseEntity<?> deleteDispatcher(String dispatcherId){
+        userCacheService.deleteDispatcher(dispatcherId);
+        return new ResponseEntity<>("Dispatcher has been deleted.", HttpStatus.OK);
+    }
 
     //! This method should only be called by the successHandler of LoginAuthenticationFilter
     public User login(User user) {
@@ -75,15 +83,17 @@ public class UserService {
     }
 
     //? Should be called by an admin when he wants to lock account of dispatcher for whatever reason
-    public void lockUserManually(String userId) { //! userId will be passed(DTO) from frontend list/table with dispatcher
-        User lockedUser = userCacheService.lockUser(getUserById(userId));
-        eventPublisher.publishEvent(new UserEvent(this,lockedUser,Action.ACCOUNT_LOCKED_MANUALLY));
+    public ResponseEntity<?> lockDispatcherManually(String dispatcherId) { //! dispatcherId is passed as DTO from frontend list/table(of dispatchers)
+        User lockedDispatcher = userCacheService.lockUser(getUserById(dispatcherId));
+        eventPublisher.publishEvent(new UserEvent(this,lockedDispatcher,Action.ACCOUNT_LOCKED_MANUALLY));
+        return new ResponseEntity<>("Dispatcher has been manually locked.", HttpStatus.OK);
     }
 
     //? Should be called only by admin (to unlock a certain dispatcher)
-    public void unlockUser(String userId) { //! userId will be passed(DTO) from frontend list/table with dispatcher
-        User unlockedUser = userCacheService.unlockUser(getUserById(userId));
-        eventPublisher.publishEvent(new UserEvent(this,unlockedUser,Action.ACCOUNT_UNLOCKED));
+    public ResponseEntity<?> unlockDispatcherManually(String dispatcherId) { //! dispatcherId is passed as DTO from frontend list/table(of dispatchers)
+        User unlockedDispatcher = userCacheService.unlockUser(getUserById(dispatcherId));
+        eventPublisher.publishEvent(new UserEvent(this,unlockedDispatcher,Action.ACCOUNT_UNLOCKED));
+        return new ResponseEntity<>("Dispatcher has been manually unlocked.", HttpStatus.OK);
     }
 
     //! Should be called only by LoginAuthenticationFilter

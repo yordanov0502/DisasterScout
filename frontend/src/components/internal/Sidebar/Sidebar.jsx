@@ -34,6 +34,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
     else if (path.includes("/cms-account")) setActiveButton('cms-account');
     else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
+    else if (path.includes("/cms-dispatchers")) setActiveButton('cms-dispatchers');
     else if (path.includes("/cms-logger")) setActiveButton('cms-logger');
     // ...
   }, [location]);
@@ -128,11 +129,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
 { authenticatedUser && authenticatedUser.role === "ADMIN" && (
   <>
         <li className={activeButton === 'cms-dispatchers' ? 'active' : ''} onClick={() => handleButtonClick('cms-dispatchers')}>
-          <a>
+          <Link to={"/cms-dispatchers"}>
             <i className="dispatcherss"><GroupsIcon/></i>
             <span className="links_name" id="dispatcherss-link_name">Диспечери</span>
             <span className="tooltip" id="dispatcherss-tooltip">Диспечери</span>
-          </a>
+          </Link>
         </li>
         <li className={activeButton === 'cms-logger' ? 'active' : ''} onClick={() => handleButtonClick('cms-logger')}>
         <Link to={"/cms-logger"}>

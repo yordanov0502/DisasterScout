@@ -8,7 +8,7 @@ import jakarta.validation.GroupSequence;
 
 public record RegistrationRequestDTO(
         @IdRegex(groups = {IdRegexValidation.class})
-        @ExistingId(groups ={ExistingIdValidation.class} )
+        @ExistingId(groups ={ExistingIdValidation.class})
         String id,
         @NameRegex(groups = {NameRegexValidation.class})
         String firstName,

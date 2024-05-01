@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
 import { useUserContext } from "../../../hooks/useUserContext";
-import { LoggerComponent } from "../../../components/internal/LoggerComponent/LoggerComponent";
-import { getLogsFromPage } from "../../../services/userService";
+import { LoggerComponent } from "../../../components/internal/LoggerComponent";
+import { getLogsFromPageRequest } from "../../../services/userService";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { processChangeUsernameError, validateUsernameInLoggerOnSearch } from "../../../validations/userRegexValidation";
 import "./cms_logger_page.scss";
@@ -30,7 +30,7 @@ export const CmsLoggerPage = () => {
     error,
   } = useQuery({
     queryKey: ["getLogsFromPage", pageNumber, level, validUsername, searchCount], //? When any value in the queryKey array changes, react-query will re-run the query.
-    queryFn: () => getLogsFromPage(pageNumber, level, validUsername),
+    queryFn: () => getLogsFromPageRequest(pageNumber, level, validUsername),
     enabled: authenticatedUser.role === "ADMIN"
   });
 

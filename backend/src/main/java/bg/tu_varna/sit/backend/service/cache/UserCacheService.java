@@ -1,21 +1,23 @@
 package bg.tu_varna.sit.backend.service.cache;
 
+import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.enums.user.Role;
+import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
-import com.github.benmanes.caffeine.cache.Cache;
-import jakarta.annotation.PostConstruct;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -38,6 +40,7 @@ public class UserCacheService {
     //private final CacheManager cacheManager;
     private final TimeService timeService;
     private final ZoneService zoneService;
+    private final UserMapper userMapper;
 
 
     //* Saves a new user to DB and related cache.
@@ -65,6 +68,13 @@ public class UserCacheService {
         return userRepository.save(newUser);
     }
 
+    @Caching(evict = {
+            @CacheEvict(value = "user", key = "#dispatcherId")
+    })
+    public void deleteDispatcher(String dispatcherId){
+        User dispatcher = getUserById(dispatcherId);
+        userRepository.delete(dispatcher);
+    }
 
     //* Updates existing user and related cache.
    @Caching(
@@ -170,6 +180,11 @@ public class UserCacheService {
     public User getUserByEmail(String email){return userRepository.findUserByEmail(email);}
 
     public User getUserByRole(Role role){return userRepository.findUserByRole(role);}
+
+    public PageDispatcherDTO getDispatchersFromPage(Integer page){
+        Pageable pageable = PageRequest.of(page,15,Sort.by("firstName","lastName").ascending());
+        return userMapper.mapToPageDispatcherDTO(userRepository.findAllByRole(pageable,DISPATCHER));
+    }
 
     public boolean isIdExists(String id){return userRepository.existsUserById(id);}
 
