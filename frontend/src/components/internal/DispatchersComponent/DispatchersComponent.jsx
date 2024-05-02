@@ -22,9 +22,10 @@ export const DispatchersComponent = ({status,
                                       pageNumber,
                                       pages,
                                       rows,        
-                                      handleOpenDeleteDialog,
                                       handleOpenLockDialog,
-                                      handleOpenUnlockDialog}) => {
+                                      handleOpenUnlockDialog,
+                                      handleOpenUpdateZonesDialog,
+                                      handleOpenDeleteDialog,}) => {
 
     const getStatusDivName = (status) => {
         switch(status) {
@@ -162,7 +163,6 @@ export const DispatchersComponent = ({status,
             <StyledTableCell align="center">Статус</StyledTableCell>
             <StyledTableCell align="center">Активност</StyledTableCell>
             <StyledTableCell align="center">Действия</StyledTableCell>
-            {/* available zoneIds are hidden*/}
           </TableRow>
         </TableHead>
         <TableBody>
@@ -181,10 +181,9 @@ export const DispatchersComponent = ({status,
                     {row.status === 'ACTIVE' ? 
                     <RedTooltip title="Заключи акаунт" arrow ><IconButton aria-label="lock" onClick={() => handleOpenLockDialog(row.id)}><LockOpenIcon color="success" /></IconButton></RedTooltip> : 
                     <GreenTooltip title="Отключи акаунт" arrow><IconButton aria-label="unlock" onClick={() => handleOpenUnlockDialog(row.id)}><LockIcon sx={{color: '#e50000'}} /></IconButton></GreenTooltip>}
-                    <BlueTooltip title="Актуализирай области" arrow><IconButton aria-label="edit-zones"><EditLocationAltIcon sx={{color: '#101cc0'}} /></IconButton></BlueTooltip>
+                    <BlueTooltip title="Актуализирай области" arrow><IconButton aria-label="edit-zones" onClick={() => handleOpenUpdateZonesDialog(row.id, row.availableZoneIds)}><EditLocationAltIcon sx={{color: '#101cc0'}} /></IconButton></BlueTooltip>
                     <RedTooltip title="Изтрий акаунт" arrow><IconButton aria-label="delete" onClick={() => handleOpenDeleteDialog(row.id)}><DeleteIcon sx={{color: '#e50000'}} /></IconButton></RedTooltip>
                     </StyledTableCell>
-                  {/* available zoneIds are hidden*/}
                 </StyledTableRow>
               ))
             ) :

@@ -11,6 +11,7 @@ import { DeleteDispatcherDialog } from "../../../components/dialogs/internal/dis
 import { DeleteDispatcherBackdrop } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherBackdrop";
 import { LockDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/LockDispatcherDialog";
 import { UnlockDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/UnlockDispatcherDialog";
+import { UpdateDispatcherZonesDialog } from "../../../components/dialogs/internal/dispatchers/UpdateDispatcherZonesDialog";
 import "./cms_dispatchers_page.scss";
 
 export const CmsDispatchersPage = () => {
@@ -25,9 +26,10 @@ export const CmsDispatchersPage = () => {
   const [deleteDialogOpen, setDeleteDialogOpen] = useState(false);
   const [lockDialogOpen, setLockDialogOpen] = useState(false);
   const [unlockDialogOpen, setUnlockDialogOpen] = useState(false);
+  const [updateZonesDialogOpen, setUpdateZonesDialogOpen] = useState(false);
+  const [selectedZones, setSelectedZones] = useState([]);
   const [selectedDispatcherId, setSelectedDispatcherId] = useState(null);
   const [backdropOpen, setBackdropOpen] = useState(false);
-
 
   const {
     data,
@@ -118,46 +120,6 @@ export const CmsDispatchersPage = () => {
 
 
 
-  const deleteDispatcherMutation = useMutation({
-    mutationFn: deleteDispatcherRequest,
-    onMutate: () => {
-      setIsRequestSent(true);
-    },
-    onSuccess: () => {
-      showSnackbar("Диспечерът беше успешно премахнат от системата.", "success","bottom","right");
-    },
-    onError: (error) => {
-       if(error?.response?.data === "Id doesn't exist.")
-       {
-         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
-       }
-       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
-    },
-    onSettled: () => {
-      setIsRequestSent(false);
-      setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
-      refetch();
-    }
-  });
-
-  const handleOpenDeleteDialog = (dispatcherId) => {
-    closeSnackbar();
-    setSelectedDispatcherId(dispatcherId);
-    setDeleteDialogOpen(true);
-  };
-  
-  const handleDeleteAgree = () => {
-    if (selectedDispatcherId && !isRequestSent) {deleteDispatcherMutation.mutate(selectedDispatcherId); setBackdropOpen(true);}
-    setDeleteDialogOpen(false);
-  };
-
-  const handleDeleteDisagree = () => {
-    setDeleteDialogOpen(false);
-    setSelectedDispatcherId(null);
-  };
-
- 
-
   const lockDispatcherMutation = useMutation({
     mutationFn: lockDispatcherRequest,
     onMutate: () => {
@@ -238,6 +200,69 @@ export const CmsDispatchersPage = () => {
 
 
 
+  const deleteDispatcherMutation = useMutation({
+    mutationFn: deleteDispatcherRequest,
+    onMutate: () => {
+      setIsRequestSent(true);
+    },
+    onSuccess: () => {
+      showSnackbar("Диспечерът беше успешно премахнат от системата.", "success","bottom","right");
+    },
+    onError: (error) => {
+       if(error?.response?.data === "Id doesn't exist.")
+       {
+         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
+       }
+       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
+    },
+    onSettled: () => {
+      setIsRequestSent(false);
+      setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
+      refetch();
+    }
+  });
+
+  const handleOpenDeleteDialog = (dispatcherId) => {
+    closeSnackbar();
+    setSelectedDispatcherId(dispatcherId);
+    setDeleteDialogOpen(true);
+  };
+  
+  const handleDeleteAgree = () => {
+    if (selectedDispatcherId && !isRequestSent) {deleteDispatcherMutation.mutate(selectedDispatcherId); setBackdropOpen(true);}
+    setDeleteDialogOpen(false);
+  };
+
+  const handleDeleteDisagree = () => {
+    setDeleteDialogOpen(false);
+    setSelectedDispatcherId(null);
+  };
+
+
+
+  const handleOpenUpdateZonesDialog = (dispatcherId, availableZoneIds) => {
+    closeSnackbar();
+    setSelectedDispatcherId(dispatcherId);
+    setSelectedZones(availableZoneIds);
+    setUpdateZonesDialogOpen(true);
+  };
+
+  const handleUpdateZonesConfirm = (updatedZones) => {
+    if (selectedDispatcherId && !isRequestSent) 
+    {
+      updateZonesOfDispatcherMutation.mutate({ dispatcherId: selectedDispatcherId, zones: updatedZones }); 
+      setBackdropOpen(true);
+    }
+    setUpdateZonesDialogOpen(false);
+  };
+
+  const handleUpdateZonesDeny = () => {
+    setUpdateZonesDialogOpen(false);
+    setSelectedDispatcherId(null);
+  };
+
+
+
   const handlePageChange = (event, newPageNumber) => { //! event here is used only as argument to avoid "Converting circular structure to JSON" error
     if(newPageNumber !== pageNumber)
     { 
@@ -265,9 +290,10 @@ export const CmsDispatchersPage = () => {
         pageNumber={pageNumber}
         pages={pages}
         rows={rows}
-        handleOpenDeleteDialog={handleOpenDeleteDialog}
         handleOpenLockDialog={handleOpenLockDialog}
         handleOpenUnlockDialog={handleOpenUnlockDialog}
+        handleOpenUpdateZonesDialog={handleOpenUpdateZonesDialog}
+        handleOpenDeleteDialog={handleOpenDeleteDialog}
       />
 
       <DeleteDispatcherBackdrop open={backdropOpen} />
@@ -282,6 +308,13 @@ export const CmsDispatchersPage = () => {
         open={unlockDialogOpen}
         onAgree={handleUnlockAgree}
         onDisagree={handleUnlockDisagree}
+      />
+
+      <UpdateDispatcherZonesDialog
+      open={updateZonesDialogOpen}
+      onAgree={handleUpdateZonesConfirm}
+      onDisagree={handleUpdateZonesDeny}
+      initialZones={selectedZones}
       />
 
       <DeleteDispatcherDialog
