@@ -2,6 +2,7 @@ package bg.tu_varna.sit.backend.controller.internal.admin;
 
 import bg.tu_varna.sit.backend.models.dto.user.IdDTO;
 import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
+import bg.tu_varna.sit.backend.models.dto.user.UpdateZonesOfDispatcherDTO;
 import bg.tu_varna.sit.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
@@ -39,7 +40,12 @@ public class DispatchersController {
         return userService.unlockDispatcherManually(idDTO.id());
     }
 
-
+    @Operation(summary = "Update available zones of dispatcher",
+            description = "Admin updates available zones of dispatcher when this endpoint is called.")
+    @PutMapping("/available-zones")
+    public ResponseEntity<?> updateAvailableZonesOfDispatcher(@Validated(value = UpdateZonesOfDispatcherDTO.Group.class) @RequestBody UpdateZonesOfDispatcherDTO updateZonesOfDispatcherDTO){
+        return userService.updateAvailableZonesOfDispatcher(updateZonesOfDispatcherDTO);
+    }
 
     @Operation(summary = "Delete dispatcher",
             description = "Admin deletes dispatcher when this endpoint is called.")

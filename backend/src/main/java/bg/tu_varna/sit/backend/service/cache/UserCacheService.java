@@ -6,6 +6,7 @@ import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
+import bg.tu_varna.sit.backend.models.mapper.zone.ZoneMapper;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
@@ -21,6 +22,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
@@ -41,6 +43,7 @@ public class UserCacheService {
     private final TimeService timeService;
     private final ZoneService zoneService;
     private final UserMapper userMapper;
+    private final ZoneMapper zoneMapper;
 
 
     //* Saves a new user to DB and related cache.
@@ -74,6 +77,28 @@ public class UserCacheService {
     public void deleteDispatcher(String dispatcherId){
         User dispatcher = getUserById(dispatcherId);
         userRepository.delete(dispatcher);
+    }
+
+    @Caching(
+            put = {
+                    @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            })
+    public User removeAllAvailableZonesOfDispatcher(User dispatcher){
+        User dispatcherWithoutZones = dispatcher.toBuilder()
+                .availableZones(Collections.emptyList())
+                .build();
+        return userRepository.save(dispatcherWithoutZones);
+    }
+
+    @Caching(
+            put = {
+                    @CachePut(value = "user", key = "#result.id", unless = "#result == null"),
+            })
+    public User updateAvailableZonesOfDispatcher(User dispatcher, List<String> zoneIds){
+        User dispatcherWithUpdatedAvailableZones = dispatcher.toBuilder()
+                .availableZones(zoneMapper.mapToListOfZones(zoneIds))
+                .build();
+        return userRepository.save(dispatcherWithUpdatedAvailableZones);
     }
 
     //* Updates existing user and related cache.

@@ -5,7 +5,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { useUserContext } from "../../../hooks/useUserContext";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { DispatchersComponent } from "../../../components/internal/DispatchersComponent";
-import { deleteDispatcherRequest, getDispatchersFromPageRequest, lockDispatcherRequest, unlockDispatcherRequest } from "../../../services/userService";
+import { deleteDispatcherRequest, getDispatchersFromPageRequest, lockDispatcherRequest, unlockDispatcherRequest, updateZonesOfDispatcherRequest } from "../../../services/userService";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { DeleteDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherDialog";
 import { DeleteDispatcherBackdrop } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherBackdrop";
@@ -38,7 +38,7 @@ export const CmsDispatchersPage = () => {
     error,
     refetch
   } = useQuery({
-    queryKey: ["getDispatchersFromPage", pageNumber], //? When pageNumber, react-query will re-run the query.
+    queryKey: ["getDispatchersFromPage", pageNumber], //? When pageNumber changes, react-query will re-run the query.
     queryFn: () => getDispatchersFromPageRequest(pageNumber),
     enabled: authenticatedUser.role === "ADMIN"
   });
@@ -77,7 +77,7 @@ export const CmsDispatchersPage = () => {
     {
       const newPages = data.data.totalPages;
       const newRows = data.data.content.map((item, index) => {
-      const rowNumber = (pageNumber - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(20 - set in the backend)
+      const rowNumber = (pageNumber - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(15 - set in the backend)
        return {
         number: rowNumber,
         id: item.id,
@@ -200,13 +200,65 @@ export const CmsDispatchersPage = () => {
 
 
 
+  const updateZonesOfDispatcherMutation = useMutation({
+    mutationFn: updateZonesOfDispatcherRequest,
+    onMutate: () => {
+      setIsRequestSent(true);
+    },
+    onSuccess: () => {
+      showSnackbar("Списъкът с области, до които диспечера има достъп, беше успешно актуализиран.", "success","bottom","right");
+    },
+    onError: (error) => {
+       if(error?.response?.data === "Id doesn't exist.")
+       {
+         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
+       }
+       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
+    },
+    onSettled: () => {
+      setIsRequestSent(false);
+      setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
+      setSelectedZones([]);
+      refetch();
+    }
+  });
+
+  const handleOpenUpdateZonesDialog = (dispatcherId, availableZoneIds) => {
+    closeSnackbar();
+    setSelectedDispatcherId(dispatcherId);
+    setSelectedZones(availableZoneIds);
+    setUpdateZonesDialogOpen(true);
+  };
+
+  const handleUpdateZonesConfirm = (updatedZones) => {
+    if (selectedDispatcherId && !isRequestSent) 
+    {
+      updateZonesOfDispatcherMutation.mutate(
+        {
+         id: selectedDispatcherId, 
+         zoneIds: updatedZones
+        }
+      ); 
+      setBackdropOpen(true);
+    }
+    setUpdateZonesDialogOpen(false);
+  };
+
+  const handleUpdateZonesDeny = () => {
+    setUpdateZonesDialogOpen(false);
+    setSelectedDispatcherId(null);
+    setSelectedZones([]);
+  };
+
+
+
   const deleteDispatcherMutation = useMutation({
     mutationFn: deleteDispatcherRequest,
     onMutate: () => {
       setIsRequestSent(true);
     },
     onSuccess: () => {
-      showSnackbar("Диспечерът беше успешно премахнат от системата.", "success","bottom","right");
+      showSnackbar("Акаунтът на диспечера беше успешно премахнат.", "success","bottom","right");
     },
     onError: (error) => {
        if(error?.response?.data === "Id doesn't exist.")
@@ -235,29 +287,6 @@ export const CmsDispatchersPage = () => {
 
   const handleDeleteDisagree = () => {
     setDeleteDialogOpen(false);
-    setSelectedDispatcherId(null);
-  };
-
-
-
-  const handleOpenUpdateZonesDialog = (dispatcherId, availableZoneIds) => {
-    closeSnackbar();
-    setSelectedDispatcherId(dispatcherId);
-    setSelectedZones(availableZoneIds);
-    setUpdateZonesDialogOpen(true);
-  };
-
-  const handleUpdateZonesConfirm = (updatedZones) => {
-    if (selectedDispatcherId && !isRequestSent) 
-    {
-      updateZonesOfDispatcherMutation.mutate({ dispatcherId: selectedDispatcherId, zones: updatedZones }); 
-      setBackdropOpen(true);
-    }
-    setUpdateZonesDialogOpen(false);
-  };
-
-  const handleUpdateZonesDeny = () => {
-    setUpdateZonesDialogOpen(false);
     setSelectedDispatcherId(null);
   };
 

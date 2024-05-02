@@ -70,6 +70,10 @@ export const unlockDispatcherRequest = (dispatcherId) => { //? When passing sing
   return axiosInstanceWithCredentials.put("/internal/admin/dispatchers/unlock",{ id: dispatcherId });
 };
 
+export const updateZonesOfDispatcherRequest = (requestBody) => {
+  return axiosInstanceWithCredentials.put("/internal/admin/dispatchers/available-zones",requestBody);
+};
+
 
 //TODO: DELETE unnecessary request and refactor cms home page accordingly
 export const testRequest = () => {

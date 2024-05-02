@@ -16,7 +16,6 @@ import Divider from '@mui/material/Divider';
 import { getNonMatchingZones, getZoneById } from "../../../../services/zoneService";
 
 export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initialZones }) => {
-    const [selectedZones, setSelectedZones] = useState([]);
     const [checked, setChecked] = useState([]);
     const [left, setLeft] = useState([]);
     const [right, setRight] = useState([]);
@@ -24,7 +23,6 @@ export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initial
     useEffect(() => {
         setLeft(getNonMatchingZones(initialZones));
         setRight(initialZones);
-        setSelectedZones(initialZones);
     }, [initialZones]);
 
     const handleToggle = (value) => () => {
@@ -39,23 +37,26 @@ export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initial
     };
 
     const handleCheckedRight = () => {
-        setRight(right.concat(checked.filter(value => left.includes(value))));
+        const newRight = right.concat(checked.filter(value => left.includes(value)));
+        setRight(newRight); 
         setLeft(left.filter(value => !checked.includes(value)));
-        setChecked(checked.filter(value => !left.includes(value)));
+        setChecked([]); 
     };
-
+    
     const handleCheckedLeft = () => {
-        setLeft(left.concat(checked.filter(value => right.includes(value))));
-        setRight(right.filter(value => !checked.includes(value)));
-        setChecked(checked.filter(value => !right.includes(value)));
+        const newLeft = left.concat(checked.filter(value => right.includes(value)));
+        setLeft(newLeft); 
+        setRight(right.filter(value => !checked.includes(value))); 
+        setChecked([]); 
     };
+    
 
     const customList = (title, items, listType) => (
         <Card sx={{ boxShadow: '2px 4px 10px 3px rgba(0, 0, 0, 0.2)', border: '1px solid #d0d6d1' }}>
             <CardHeader
                 sx={{ px: 2, py: 1 }}
                 avatar={
-                    <Checkbox
+                    <Checkbox name={`select-all-zones-on-${listType}`}
                         onClick={() => {
                             const allChecked = items.length === items.filter(item => checked.includes(item)).length;
                             setChecked(allChecked ? checked.filter(x => !items.includes(x)) : [...checked, ...items.filter(x => !checked.includes(x))]);
@@ -97,7 +98,8 @@ export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initial
                         }
                     }}>
                         <ListItemIcon>
-                            <Checkbox
+                            <Checkbox 
+                                id={value}
                                 checked={checked.indexOf(value) !== -1}
                                 tabIndex={-1}
                                 disableRipple
@@ -110,8 +112,15 @@ export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initial
         </Card>
     );
 
-    const handleAgree = () => { onAgree(selectedZones); };
-    const handleClose = () => { onDisagree(); };
+    const handleAgree = () => { 
+        onAgree(right);
+        handleClose(); }; //? resets state(selected checkboxes)
+
+    const handleClose = () => { 
+        setLeft(getNonMatchingZones(initialZones)); 
+        setRight(initialZones);
+        setChecked([]);
+        onDisagree(); };
 
     return (
       <Dialog

@@ -1,9 +1,6 @@
 package bg.tu_varna.sit.backend.service;
 
-import bg.tu_varna.sit.backend.models.dto.user.LoginRequestDTO;
-import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
-import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
-import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
+import bg.tu_varna.sit.backend.models.dto.user.*;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.enums.log.Action;
 import bg.tu_varna.sit.backend.models.enums.user.Role;
@@ -19,7 +16,7 @@ import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.transaction.annotation.Transactional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -61,6 +58,21 @@ public class UserService {
     public ResponseEntity<?> deleteDispatcher(String dispatcherId){
         userCacheService.deleteDispatcher(dispatcherId);
         return new ResponseEntity<>("Dispatcher has been deleted.", HttpStatus.OK);
+    }
+
+    @Transactional
+    public ResponseEntity<?> updateAvailableZonesOfDispatcher(UpdateZonesOfDispatcherDTO updateZonesOfDispatcherDTO){
+        User dispatcher = getUserById(updateZonesOfDispatcherDTO.id());
+        if(updateZonesOfDispatcherDTO.zoneIds().isEmpty())
+        {
+            userCacheService.removeAllAvailableZonesOfDispatcher(dispatcher);
+            return new ResponseEntity<>("All available zones have been removed from dispatcher successfully.", HttpStatus.OK);
+        }
+        else
+        {
+            userCacheService.updateAvailableZonesOfDispatcher(dispatcher,updateZonesOfDispatcherDTO.zoneIds());
+            return new ResponseEntity<>("Available zones of dispatcher updated successfully.", HttpStatus.OK);
+        }
     }
 
     //! This method should only be called by the successHandler of LoginAuthenticationFilter
