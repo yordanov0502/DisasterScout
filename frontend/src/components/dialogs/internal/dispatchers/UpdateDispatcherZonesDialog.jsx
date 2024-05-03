@@ -21,9 +21,15 @@ export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initial
     const [right, setRight] = useState([]);
 
     useEffect(() => {
-        setLeft(getNonMatchingZones(initialZones));
-        setRight(initialZones);
-    }, [initialZones]);
+
+        if (open)
+        {    
+          setLeft(getNonMatchingZones(initialZones));
+          setRight(initialZones);  
+        } 
+        const timeoutId = setTimeout(() => {}, 150);  //? simulates a slight delay, in order to escape flashing zones when opening/closing the dialog
+        return () => clearTimeout(timeoutId);
+     }, [open,initialZones]);
 
     const handleToggle = (value) => () => {
         const currentIndex = checked.indexOf(value);
