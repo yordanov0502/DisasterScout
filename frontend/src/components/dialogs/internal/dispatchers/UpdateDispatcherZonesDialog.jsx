@@ -117,8 +117,6 @@ export const UpdateDispatcherZonesDialog = ({ open, onAgree, onDisagree, initial
         handleClose(); }; //? resets state(selected checkboxes)
 
     const handleClose = () => { 
-        setLeft(getNonMatchingZones(initialZones)); 
-        setRight(initialZones);
         setChecked([]);
         onDisagree(); };
 

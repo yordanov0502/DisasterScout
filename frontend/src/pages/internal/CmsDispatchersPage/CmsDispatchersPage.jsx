@@ -206,7 +206,7 @@ export const CmsDispatchersPage = () => {
       setIsRequestSent(true);
     },
     onSuccess: () => {
-      showSnackbar("Списъкът с области, до които диспечера има достъп, беше успешно актуализиран.", "success","bottom","right");
+      showSnackbar("Списъкът с области на диспечера, беше успешно актуализиран.", "success","bottom","right");
     },
     onError: (error) => {
        if(error?.response?.data === "Id doesn't exist.")
