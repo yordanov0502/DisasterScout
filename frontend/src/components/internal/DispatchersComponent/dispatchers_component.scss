@@ -31,54 +31,6 @@
         padding: 0 0px;
     }
   
-    
-  
-      &__button {
-        display: flex;
-        align-items: center; 
-        justify-content: center;
-        cursor: pointer;
-        position: relative;
-        margin-top: 10px;
-        margin-bottom: 10px;
-        width: 185px;
-        height: 56px;
-        border-radius: 3px;
-        font-size: 18px;
-        color: #fff;
-        text-decoration: none;
-        background-color: #009f58;
-        border: none;
-        border-bottom: 6px solid #00693a;
-        text-shadow: 0px -2px #266540;
-        -webkit-transition: all 0.1s;
-        transition: all 0.1s;
-
-        &__icon{
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          margin-left: -0px;
-          margin-right: 11px;
-          transform: translateY(-1.6px);
-        }
-
-      }
-    
-      &__button:hover {
-        background-color: #00b463;
-      }
-    
-      &__button:active {
-        -webkit-transform: translate(0px, 1px);
-        -ms-transform: translate(0px, 1px);
-        transform: translate(0px, 1px);
-        border-bottom: 2px solid #00693a;
-      }
-    
-  
-   
-  
   }
   
     &__footer{

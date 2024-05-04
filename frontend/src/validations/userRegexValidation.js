@@ -4,7 +4,7 @@ const asciiPrintableRegex = /^[\x20-\x7E]*$/; //? Used to check whether password
 const emailRegex = /^[a-z][a-z0-9_.-]{2,29}@[a-z]{3,20}\.[a-z0-9.-]{2,20}$/;
 const nameRegex = /^[А-ЯA-Z][а-яa-z]{2,19}$/;
 const idRegex = /\b[0-9]{2}(?:0[1-9]|1[0-2]|2[1-9]|3[0-2]|4[1-9]|5[0-2])(?:0[1-9]|[1-2][0-9]|3[0-1])[0-9]{4}\b/;
-                   
+//* Using asciiPrintableRegex might be useless as there is specified set of printable characters defined in the passwordRegex                   
 
 export const validateLoginForm = (username, password) => { //? function returns error message
     const isUsernameValid = usernameRegex.test(username);
