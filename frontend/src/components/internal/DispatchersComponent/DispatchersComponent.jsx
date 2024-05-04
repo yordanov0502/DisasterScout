@@ -21,7 +21,8 @@ export const DispatchersComponent = ({status,
                                       handlePageChange,
                                       pageNumber,
                                       pages,
-                                      rows,        
+                                      rows,
+                                      handleOpenAddDispatcherDialog,        
                                       handleOpenLockDialog,
                                       handleOpenUnlockDialog,
                                       handleOpenUpdateZonesDialog,
@@ -146,7 +147,7 @@ export const DispatchersComponent = ({status,
 
     <div className="dispatchers_component__header">
      
-    <button className="dispatchers_component__header__button" disabled={isLoadingComponent} /*onClick={onPressSearchByUsername}*/>
+    <button className="dispatchers_component__header__button" disabled={isLoadingComponent} onClick={handleOpenAddDispatcherDialog}>
       <div className="dispatchers_component__header__button__icon"><PersonAddIcon/></div>
       Нов диспечер
     </button>

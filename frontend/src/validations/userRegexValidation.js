@@ -3,6 +3,7 @@ const passwordRegex = /^(?=.*[0-9])(?=.*[a-z])(?=.*[A-Z])(?=.*[@#$%^&+=_*~!)(./:
 const asciiPrintableRegex = /^[\x20-\x7E]*$/; //? Used to check whether password contains only ASCII characters
 const emailRegex = /^[a-z][a-z0-9_.-]{2,29}@[a-z]{3,20}\.[a-z0-9.-]{2,20}$/;
 const nameRegex = /^[А-ЯA-Z][а-яa-z]{2,19}$/;
+const idRegex = /\b[0-9]{2}(?:0[1-9]|1[0-2]|2[1-9]|3[0-2]|4[1-9]|5[0-2])(?:0[1-9]|[1-2][0-9]|3[0-1])[0-9]{4}\b/;
                    
 
 export const validateLoginForm = (username, password) => { //? function returns error message
@@ -181,3 +182,102 @@ export const validateUsernameInLoggerOnSearch = (username) => { //? function ret
   
   return ""; //* OK
 }
+
+export const processDispatcherForm = (dispatcherForm) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  return {
+    id: dispatcherForm.id !== "" && !idRegex.test(dispatcherForm.id),
+    firstName: dispatcherForm.firstName !== "" && !nameRegex.test(dispatcherForm.firstName),
+    lastName: dispatcherForm.lastName !== "" && !nameRegex.test(dispatcherForm.lastName),
+    email: dispatcherForm.email !== "" && !emailRegex.test(dispatcherForm.email),
+    username: dispatcherForm.username !== "" && !usernameRegex.test(dispatcherForm.username),
+    password: dispatcherForm.password !== "" && !passwordRegex.test(dispatcherForm.password)
+  };
+};
+
+export const validateDispatcherFormOnSubmit = (dispatcherForm) => { //? function returns error message
+
+  if (!dispatcherForm.id || !dispatcherForm.firstName || !dispatcherForm.lastName || !dispatcherForm.email || !dispatcherForm.username || !dispatcherForm.password) 
+  {
+    return "Моля въведете данни във всички полета."; //! error
+  }
+
+  const isIdValid = idRegex.test(dispatcherForm.id);
+  const isFirstNameValid = nameRegex.test(dispatcherForm.firstName);
+  const isLastNameValid = nameRegex.test(dispatcherForm.lastName);
+  const isEmailValid = emailRegex.test(dispatcherForm.email);
+  const isUsernameValid = usernameRegex.test(dispatcherForm.username);
+  const isPasswordValid = passwordRegex.test(dispatcherForm.password) && asciiPrintableRegex.test(dispatcherForm.password);
+  
+  if (!isIdValid) {return "Невалидно ЕГН.";} //! error
+  if (!isFirstNameValid) {return "Невалидно име.";} //! error
+  if (!isLastNameValid) {return "Невалидна фамилия.";} //! error
+  if (!isEmailValid) {return "Невалиден имейл адрес.";} //! error
+  if (!isUsernameValid) {return "Невалидно потребителско име.";} //! error
+  if (!isPasswordValid) {return "Невалидна парола.";} //! error
+  
+    return ""; //* OK
+};
+
+export const processErrorDispatcherFormOnSubmit = (dispatcherForm, validationMessage) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+  if(validationMessage === "Моля въведете данни във всички полета.")
+  {
+    return {
+      id: true,
+      firstName: true,
+      lastName: true,
+      email: true,
+      username: true,
+      password: true,
+    };
+  }
+  else
+  {
+    return {
+      id: !idRegex.test(dispatcherForm.id),
+      firstName: !nameRegex.test(dispatcherForm.firstName),
+      lastName: !nameRegex.test(dispatcherForm.lastName),
+      email: !emailRegex.test(dispatcherForm.email),
+      username: !usernameRegex.test(dispatcherForm.username),
+      password: !passwordRegex.test(dispatcherForm.password)
+    };
+  }
+};
+
+export const processErrorDispatcherFormOnServerResponse = (field) => { //?  returns an object with the same structure as errorForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+  if(field === "id")
+  {
+    return {
+      id: true,
+      firstName: false,
+      lastName: false,
+      email: false,
+      username: false,
+      password: false,
+    };
+  }
+  if(field === "email")
+  {
+    return {
+      id: false,
+      firstName: false,
+      lastName: false,
+      email: true,
+      username: false,
+      password: false,
+    };
+  }
+  if(field === "username")
+  {
+    return {
+      id: false,
+      firstName: false,
+      lastName: false,
+      email: false,
+      username: true,
+      password: false,
+    };
+  }
+  
+};

@@ -5,13 +5,22 @@ import { Alert, Snackbar } from "@mui/material";
 import { useUserContext } from "../../../hooks/useUserContext";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { DispatchersComponent } from "../../../components/internal/DispatchersComponent";
-import { deleteDispatcherRequest, getDispatchersFromPageRequest, lockDispatcherRequest, unlockDispatcherRequest, updateZonesOfDispatcherRequest } from "../../../services/userService";
+import {
+  addNewDispatcherRequest,
+  deleteDispatcherRequest,
+  getDispatchersFromPageRequest,
+  lockDispatcherRequest,
+  unlockDispatcherRequest,
+  updateZonesOfDispatcherRequest,
+} from "../../../services/userService";
 import { useSnackbar } from "../../../hooks/useSnackbar";
-import { DeleteDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherDialog";
-import { DeleteDispatcherBackdrop } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherBackdrop";
+import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
+import { AddDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/AddDispatcherDialog";
 import { LockDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/LockDispatcherDialog";
 import { UnlockDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/UnlockDispatcherDialog";
 import { UpdateDispatcherZonesDialog } from "../../../components/dialogs/internal/dispatchers/UpdateDispatcherZonesDialog";
+import { DeleteDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherDialog";
+import { processDispatcherForm, processErrorDispatcherFormOnServerResponse, processErrorDispatcherFormOnSubmit, validateDispatcherFormOnSubmit } from "../../../validations/userRegexValidation";
 import "./cms_dispatchers_page.scss";
 
 export const CmsDispatchersPage = () => {
@@ -27,98 +36,236 @@ export const CmsDispatchersPage = () => {
   const [lockDialogOpen, setLockDialogOpen] = useState(false);
   const [unlockDialogOpen, setUnlockDialogOpen] = useState(false);
   const [updateZonesDialogOpen, setUpdateZonesDialogOpen] = useState(false);
+  const [addDispatcherDialogOpen, setAddDispatcherDialogOpen] = useState(false);
   const [selectedZones, setSelectedZones] = useState([]);
   const [selectedDispatcherId, setSelectedDispatcherId] = useState(null);
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const [comboBoxError, setComboBoxError] = useState(false);
+  const [comboBoxKey, setComboBoxKey] = useState(false); //? Used to just change the key of the comboBox from SettingsComponent2 on successfull submit. Doesn't matter whether it is true/false, it just has to change on successfull submit in order the comboBox to be cleared.   
+  const [selectedZoneId, setSelectedZoneId] = useState(null);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [dispatcherForm, setDispatcherForm] = useState({
+    id: "",
+    firstName: "",
+    lastName: "",
+    email: "",
+    username: "",
+    password: "",
+  });
+  const [errorForm, setErrorForm] = useState({
+    id: false,
+    firstName: false,
+    lastName: false,
+    email: false,
+    username: false,
+    password: false,
+  });
 
-  const {
-    data,
-    status,
-    isLoading,
-    error,
-    refetch
-  } = useQuery({
+  const { data, status, isLoading, error, refetch } = useQuery({
     queryKey: ["getDispatchersFromPage", pageNumber], //? When pageNumber changes, react-query will re-run the query.
     queryFn: () => getDispatchersFromPageRequest(pageNumber),
-    enabled: authenticatedUser.role === "ADMIN"
+    enabled: authenticatedUser.role === "ADMIN",
   });
 
   useEffect(() => {
-     //? Initialize(eventually depending on the if statements) session storage items(key,value) 
-     //? and state(eventually depending on the if statements) once on mount.
-    if(sessionStorage.getItem("dispatchers-page-number") === null) {sessionStorage.setItem("dispatchers-page-number", pageNumber);}
+    setErrorForm(processDispatcherForm(dispatcherForm));
+  }, [dispatcherForm]);
 
-    if(sessionStorage.getItem("dispatchers-pages") === null) {sessionStorage.setItem("dispatchers-pages", pages);}
+  useEffect(() => {
+    //? Initialize(eventually depending on the if statements) session storage items(key,value)
+    //? and state(eventually depending on the if statements) once on mount.
+    if (sessionStorage.getItem("dispatchers-page-number") === null) {
+      sessionStorage.setItem("dispatchers-page-number", pageNumber);
+    }
+
+    if (sessionStorage.getItem("dispatchers-pages") === null) {
+      sessionStorage.setItem("dispatchers-pages", pages);
+    }
 
     //? Cleanup function - on page unmount(when navigating to different page/route, NOT ON PAGE RELOAD) it deletes all session storage items related to CmsDispatchersPage.
     return () => {
-         sessionStorage.removeItem("dispatchers-page-number");
-         sessionStorage.removeItem("dispatchers-pages");
+      sessionStorage.removeItem("dispatchers-page-number");
+      sessionStorage.removeItem("dispatchers-pages");
     };
   }, []);
 
   //? Used in order to preven dispatchers from accessing the CmsDispatchersPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
-  useEffect(() => { 
+  useEffect(() => {
     const isUContextEmpty = isUserContextEmpty(); //? return true/false
-    if(!isUContextEmpty && authenticatedUser.role !== "ADMIN") //? if user context is NOT empty and user role is NOT ADMIN
-    { 
-      navigate("/cms-dashboard", {replace: true});
+    if (!isUContextEmpty && authenticatedUser.role !== "ADMIN") {
+      //? if user context is NOT empty and user role is NOT ADMIN
+      navigate("/cms-dashboard", { replace: true });
     }
   }, [authenticatedUser]);
 
   useEffect(() => {
-
-    if(isLoading)
-    {
+    if (isLoading) {
       setIsLoadingComponent(true);
     }
 
-    if (status === 'success') 
-    {
+    if (status === "success") {
       const newPages = data.data.totalPages;
       const newRows = data.data.content.map((item, index) => {
-      const rowNumber = (pageNumber - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(15 - set in the backend)
-       return {
-        number: rowNumber,
-        id: item.id,
-        name: item.name,
-        email: item.email,
-        username: item.username,
-        status: item.status,
-        activity: item.activity,
-        availableZoneIds: item.availableZoneIds
-      }});
-      
+        const rowNumber = (pageNumber - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(15 - set in the backend)
+        return {
+          number: rowNumber,
+          id: item.id,
+          name: item.name,
+          email: item.email,
+          username: item.username,
+          status: item.status,
+          activity: item.activity,
+          availableZoneIds: item.availableZoneIds,
+        };
+      });
+
       setPages(newPages);
-      sessionStorage.setItem("dispatchers-pages",newPages);
+      sessionStorage.setItem("dispatchers-pages", newPages);
       setRows(newRows);
       setIsLoadingComponent(false);
       setBackdropOpen(false);
     }
 
-    if(status === 'error') 
+    if (status === "error") 
     {
-     if(error?.response?.data === "Invalid type of id.")
-     {
-      showSnackbar("Невалидно ЕГН.", "error","bottom","right");
-     }
-     else if(error?.response?.data === "Id doesn't exist.")
-     {
-      showSnackbar("Диспечерът, когото сте избрали не съществува.", "error","bottom","right");
-     }
-     else
-     {
-      showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");
-     }
-    setRows([]);
-    setPages(0); 
-    setIsLoadingComponent(false);
-    setBackdropOpen(false);
+      if (error?.response?.data === "Invalid type of id.") 
+      {
+        showSnackbar("Невалидно ЕГН.", "error", "bottom", "right");
+      } 
+      else if (error?.response?.data === "Id doesn't exist.") 
+      {
+        showSnackbar("Диспечерът, когото сте избрали не съществува.","error","bottom","right");
+      } 
+      else 
+      {
+        showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      }
+      setRows([]);
+      setPages(0);
+      setIsLoadingComponent(false);
+      setBackdropOpen(false);
     }
-
   }, [status, data, error]);
 
+  
 
+  const handleInput = (e) => {
+    setDispatcherForm((prevState) => ({...prevState,[e.target.name]: e.target.value.trim(),}));
+    setErrorMessage("");
+    setComboBoxError(false);
+  };
+
+  const addDispatcherMutation = useMutation({
+    mutationFn: addNewDispatcherRequest,
+    onMutate: () => {
+      setIsRequestSent(true);
+    },
+    onSuccess: () => {
+      setAddDispatcherDialogOpen(false);
+      setDispatcherForm({
+        id: "",
+        firstName: "",
+        lastName: "",
+        email: "",
+        username: "",
+        password: "",
+      });
+      setComboBoxKey(comboBoxKey ? false : true);
+      showSnackbar("Успешно добавихте нов диспечер в системата.","success","bottom","right");
+    },
+    onError: (error) => {
+      if(error?.response?.data === "Id already exists.")
+      {
+        setErrorForm(processErrorDispatcherFormOnServerResponse("id"));
+        setErrorMessage("ЕГН-то, което сте въвели, вече съществува в системата.");
+      }
+      else if(error?.response?.data === "Email already exists.")
+      {
+        setErrorForm(processErrorDispatcherFormOnServerResponse("email"));
+        setErrorMessage("Имейл адресът, който сте въвели, вече съществува в системата.");
+      }
+      else if(error?.response?.data === "Username already exists.")
+      {
+        setErrorForm(processErrorDispatcherFormOnServerResponse("username"));
+        setErrorMessage("Потребителското име, което сте въвели, вече съществува в системата.");
+      }
+      else
+      {
+        setErrorMessage("Възникна грешка. Моля опитайте отново.");
+      }
+    },
+    onSettled: () => {
+      setIsRequestSent(false);
+      refetch();
+    },
+  });
+
+  const handleOpenAddDispatcherDialog = () => {
+    closeSnackbar();
+    setAddDispatcherDialogOpen(true);
+  };
+
+  const handleAddDispatcherConfirm = () => {
+
+    const validationMessage = validateDispatcherFormOnSubmit(dispatcherForm); //If validation passes, validationMessage is ""
+    
+    if(validationMessage && !selectedZoneId)
+    {
+      setErrorForm(processErrorDispatcherFormOnSubmit(dispatcherForm, validationMessage));
+      setErrorMessage("Моля въведете данни във всички полета.");
+      setComboBoxError(true);
+    }
+    else if(validationMessage)
+    {
+      setErrorForm(processErrorDispatcherFormOnSubmit(dispatcherForm, validationMessage));
+      setErrorMessage(validationMessage);
+    }
+    else if(!selectedZoneId)
+    {
+      setComboBoxError(true);
+      setErrorMessage("Моля изберете област.");
+    }
+    else if (!isRequestSent) 
+    {
+      addDispatcherMutation.mutate(
+     {
+      id: dispatcherForm.id,
+      firstName: dispatcherForm.firstName,
+      lastName:dispatcherForm.lastName,
+      email:dispatcherForm.email,
+      username:dispatcherForm.username,
+      password:dispatcherForm.password,
+      initialZoneId: selectedZoneId
+     }
+    );
+      setBackdropOpen(true);
+    }    
+  };
+
+  const handleAddDispatcherDeny = () => {
+    setAddDispatcherDialogOpen(false);
+    setDispatcherForm({
+      id: "",
+      firstName: "",
+      lastName: "",
+      email: "",
+      username: "",
+      password: "",
+    });
+    setErrorForm({
+      id: false,
+      firstName: false,
+      lastName: false,
+      email: false,
+      username: false,
+      password: false,
+    });
+    setSelectedZoneId(null);
+    setErrorMessage("");
+    setComboBoxError(false);
+  };
+
+  
 
   const lockDispatcherMutation = useMutation({
     mutationFn: lockDispatcherRequest,
@@ -126,20 +273,23 @@ export const CmsDispatchersPage = () => {
       setIsRequestSent(true);
     },
     onSuccess: () => {
-      showSnackbar("Акаунтът на диспечера беше успешно заключен.", "success","bottom","right");
+      showSnackbar("Акаунтът на диспечера беше успешно заключен.","success","bottom","right");
     },
     onError: (error) => {
-       if(error?.response?.data === "Id doesn't exist.")
-       {
-         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
-       }
-       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
+      if (error?.response?.data === "Id doesn't exist.") 
+      {
+        showSnackbar("Диспечерът вече не съществува в системата.","error","bottom","right");
+      } 
+      else 
+      {
+        showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      }
     },
     onSettled: () => {
       setIsRequestSent(false);
       setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
       refetch();
-    }
+    },
   });
 
   const handleOpenLockDialog = (dispatcherId) => {
@@ -147,9 +297,12 @@ export const CmsDispatchersPage = () => {
     setSelectedDispatcherId(dispatcherId);
     setLockDialogOpen(true);
   };
-  
+
   const handleLockAgree = () => {
-    if (selectedDispatcherId && !isRequestSent) {lockDispatcherMutation.mutate(selectedDispatcherId); setBackdropOpen(true);}
+    if (selectedDispatcherId && !isRequestSent) {
+      lockDispatcherMutation.mutate(selectedDispatcherId);
+      setBackdropOpen(true);
+    }
     setLockDialogOpen(false);
   };
 
@@ -158,28 +311,29 @@ export const CmsDispatchersPage = () => {
     setSelectedDispatcherId(null);
   };
 
- 
-
   const unlockDispatcherMutation = useMutation({
     mutationFn: unlockDispatcherRequest,
     onMutate: () => {
       setIsRequestSent(true);
     },
     onSuccess: () => {
-      showSnackbar("Акаунтът на диспечера беше успешно отключен.", "success","bottom","right");
+      showSnackbar("Акаунтът на диспечера беше успешно отключен.","success","bottom","right");
     },
     onError: (error) => {
-       if(error?.response?.data === "Id doesn't exist.")
-       {
-         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
-       }
-       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
+      if (error?.response?.data === "Id doesn't exist.") 
+      {
+        showSnackbar("Диспечерът вече не съществува в системата.","error","bottom","right");
+      } 
+      else 
+      {
+        showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      }
     },
     onSettled: () => {
       setIsRequestSent(false);
       setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
       refetch();
-    }
+    },
   });
 
   const handleOpenUnlockDialog = (dispatcherId) => {
@@ -187,9 +341,12 @@ export const CmsDispatchersPage = () => {
     setSelectedDispatcherId(dispatcherId);
     setUnlockDialogOpen(true);
   };
-  
+
   const handleUnlockAgree = () => {
-    if (selectedDispatcherId && !isRequestSent) {unlockDispatcherMutation.mutate(selectedDispatcherId); setBackdropOpen(true);}
+    if (selectedDispatcherId && !isRequestSent) {
+      unlockDispatcherMutation.mutate(selectedDispatcherId);
+      setBackdropOpen(true);
+    }
     setUnlockDialogOpen(false);
   };
 
@@ -198,29 +355,30 @@ export const CmsDispatchersPage = () => {
     setSelectedDispatcherId(null);
   };
 
-
-
   const updateZonesOfDispatcherMutation = useMutation({
     mutationFn: updateZonesOfDispatcherRequest,
     onMutate: () => {
       setIsRequestSent(true);
     },
     onSuccess: () => {
-      showSnackbar("Списъкът с области на диспечера, беше успешно актуализиран.", "success","bottom","right");
+      showSnackbar("Списъкът с области на диспечера, беше успешно актуализиран.","success","bottom","right");
     },
     onError: (error) => {
-       if(error?.response?.data === "Id doesn't exist.")
-       {
-         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
-       }
-       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
+      if (error?.response?.data === "Id doesn't exist.") 
+      {
+        showSnackbar("Диспечерът вече не съществува в системата.","error","bottom","right");
+      } 
+      else 
+      {
+        showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      }
     },
     onSettled: () => {
       setIsRequestSent(false);
       setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
       setSelectedZones([]);
       refetch();
-    }
+    },
   });
 
   const handleOpenUpdateZonesDialog = (dispatcherId, availableZoneIds) => {
@@ -231,14 +389,11 @@ export const CmsDispatchersPage = () => {
   };
 
   const handleUpdateZonesConfirm = (updatedZones) => {
-    if (selectedDispatcherId && !isRequestSent) 
-    {
-      updateZonesOfDispatcherMutation.mutate(
-        {
-         id: selectedDispatcherId, 
-         zoneIds: updatedZones
-        }
-      ); 
+    if (selectedDispatcherId && !isRequestSent) {
+      updateZonesOfDispatcherMutation.mutate({
+        id: selectedDispatcherId,
+        zoneIds: updatedZones,
+      });
       setBackdropOpen(true);
     }
     setUpdateZonesDialogOpen(false);
@@ -250,28 +405,29 @@ export const CmsDispatchersPage = () => {
     setSelectedZones([]);
   };
 
-
-
   const deleteDispatcherMutation = useMutation({
     mutationFn: deleteDispatcherRequest,
     onMutate: () => {
       setIsRequestSent(true);
     },
     onSuccess: () => {
-      showSnackbar("Акаунтът на диспечера беше успешно премахнат.", "success","bottom","right");
+      showSnackbar("Акаунтът на диспечера беше успешно премахнат.","success","bottom","right");
     },
     onError: (error) => {
-       if(error?.response?.data === "Id doesn't exist.")
-       {
-         showSnackbar("Диспечерът вече не съществува в системата.", "error","bottom","right");
-       }
-       else{showSnackbar("Възникна грешка. Моля опитайте отново.", "error","bottom","right");}
+      if (error?.response?.data === "Id doesn't exist.") 
+      {
+        showSnackbar("Диспечерът вече не съществува в системата.","error","bottom","right");
+      } 
+      else 
+      {
+        showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      }
     },
     onSettled: () => {
       setIsRequestSent(false);
       setSelectedDispatcherId(null); //? Clear selected dispatcher(row) id
       refetch();
-    }
+    },
   });
 
   const handleOpenDeleteDialog = (dispatcherId) => {
@@ -279,9 +435,12 @@ export const CmsDispatchersPage = () => {
     setSelectedDispatcherId(dispatcherId);
     setDeleteDialogOpen(true);
   };
-  
+
   const handleDeleteAgree = () => {
-    if (selectedDispatcherId && !isRequestSent) {deleteDispatcherMutation.mutate(selectedDispatcherId); setBackdropOpen(true);}
+    if (selectedDispatcherId && !isRequestSent) {
+      deleteDispatcherMutation.mutate(selectedDispatcherId);
+      setBackdropOpen(true);
+    }
     setDeleteDialogOpen(false);
   };
 
@@ -290,25 +449,21 @@ export const CmsDispatchersPage = () => {
     setSelectedDispatcherId(null);
   };
 
-
-
-  const handlePageChange = (event, newPageNumber) => { //! event here is used only as argument to avoid "Converting circular structure to JSON" error
-    if(newPageNumber !== pageNumber)
-    { 
-      setPageNumber(newPageNumber);  //? This will trigger the useQuery fetch because of the queryKey dependency
+  const handlePageChange = (event, newPageNumber) => {
+    //! event here is used only as argument to avoid "Converting circular structure to JSON" error
+    if (newPageNumber !== pageNumber) {
+      setPageNumber(newPageNumber); //? This will trigger the useQuery fetch because of the queryKey dependency
       sessionStorage.setItem("dispatchers-page-number", newPageNumber);
       closeSnackbar();
     }
   };
 
   const handleCloseSnackBar = (event, reason) => {
-    if (reason === 'clickaway') {
+    if (reason === "clickaway") {
       return;
     }
     closeSnackbar();
   };
-
-
 
   return (
     <div className="cms_dispatchers_page">
@@ -319,13 +474,28 @@ export const CmsDispatchersPage = () => {
         pageNumber={pageNumber}
         pages={pages}
         rows={rows}
+        handleOpenAddDispatcherDialog={handleOpenAddDispatcherDialog}
         handleOpenLockDialog={handleOpenLockDialog}
         handleOpenUnlockDialog={handleOpenUnlockDialog}
         handleOpenUpdateZonesDialog={handleOpenUpdateZonesDialog}
         handleOpenDeleteDialog={handleOpenDeleteDialog}
       />
 
-      <DeleteDispatcherBackdrop open={backdropOpen} />
+      <BackdropLoader open={backdropOpen} />
+
+      <AddDispatcherDialog
+        open={addDispatcherDialogOpen}
+        onAgree={handleAddDispatcherConfirm}
+        onDisagree={handleAddDispatcherDeny}
+        dispatcherForm={dispatcherForm}
+        handleInput={handleInput}
+        errorMessage={errorMessage}
+        errorForm={errorForm}
+        comboBoxKey={comboBoxKey}
+        comboBoxError={comboBoxError}
+        setComboBoxError={setComboBoxError}
+        setSelectedZoneId={setSelectedZoneId}
+      />
 
       <LockDispatcherDialog
         open={lockDialogOpen}
@@ -340,10 +510,10 @@ export const CmsDispatchersPage = () => {
       />
 
       <UpdateDispatcherZonesDialog
-      open={updateZonesDialogOpen}
-      onAgree={handleUpdateZonesConfirm}
-      onDisagree={handleUpdateZonesDeny}
-      initialZones={selectedZones}
+        open={updateZonesDialogOpen}
+        onAgree={handleUpdateZonesConfirm}
+        onDisagree={handleUpdateZonesDeny}
+        initialZones={selectedZones}
       />
 
       <DeleteDispatcherDialog
@@ -351,17 +521,22 @@ export const CmsDispatchersPage = () => {
         onAgree={handleDeleteAgree}
         onDisagree={handleDeleteDisagree}
       />
-      
 
-      <Snackbar 
+      <Snackbar
         anchorOrigin={{
           vertical: position.vertical,
           horizontal: position.horizontal,
-        }} 
-        open={open} 
-        autoHideDuration={4000} 
-        onClose={handleCloseSnackBar}>
-        <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
+        }}
+        open={open}
+        autoHideDuration={4000}
+        onClose={handleCloseSnackBar}
+      >
+        <Alert
+          onClose={handleCloseSnackBar}
+          severity={severity}
+          variant="filled"
+          sx={{ width: "100%" }}
+        >
           {message}
         </Alert>
       </Snackbar>

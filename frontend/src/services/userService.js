@@ -74,23 +74,11 @@ export const updateZonesOfDispatcherRequest = (requestBody) => {
   return axiosInstanceWithCredentials.put("/internal/admin/dispatchers/available-zones",requestBody);
 };
 
+export const addNewDispatcherRequest = (requestBody) => {
+  return axiosInstanceWithCredentials.post("/internal/admin/dispatchers/registration",requestBody);
+};
 
 //TODO: DELETE unnecessary request and refactor cms home page accordingly
 export const testRequest = () => {
   return axiosInstanceWithCredentials.get("/internal/dispatcher");
-};
-
-//TODO: DELETE unnecessary request and refactor cms home page accordingly
-export const addNewDispatcherRequest = () => {
-   return axiosInstanceWithCredentials.post("/internal/admin/register-new-dispatcher",
-    {
-      id: "0346301025",
-      firstName:"Емил",
-      lastName:"Ефтимов",
-      email:"eftimovemil20@gmail.com",
-      username:"emil20",
-      password:"B0502HTto$hko",
-      initialZoneId: "st4"
-    }
-   );
 };

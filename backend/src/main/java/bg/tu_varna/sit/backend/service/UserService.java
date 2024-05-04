@@ -178,7 +178,7 @@ public class UserService {
         {
            return new ResponseEntity<>("Please try again. Error occurred while registering a new dispatcher.", HttpStatus.BAD_REQUEST);
         }
-        return ResponseEntity.ok().build();
+        return new ResponseEntity<>("A new dispatcher has been added, after successful registration.", HttpStatus.OK);
     }
 
     //! This method should be called ONLY by a user, who intends to update HIS data

@@ -2,6 +2,7 @@ package bg.tu_varna.sit.backend.controller.internal.admin;
 
 import bg.tu_varna.sit.backend.models.dto.user.IdDTO;
 import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
+import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UpdateZonesOfDispatcherDTO;
 import bg.tu_varna.sit.backend.service.UserService;
 import io.swagger.v3.oas.annotations.Operation;
@@ -24,7 +25,12 @@ public class DispatchersController {
         return userService.getDispatchersFromPage(page-1); //? Number of pages starts from 0 in the PageRequest(default configuration), but on the frontend normally page numbers start from 1.
     }
 
-    //TODO: add register dispatcher endpoint
+    @Operation(summary = "Register a new dispatcher",
+            description = "Admin does a registration of a new dispatcher when this endpoint is called.")
+    @PostMapping("/registration")
+    public ResponseEntity<?> registerNewDispatcher(@Validated(value = RegistrationRequestDTO.Group.class) @RequestBody RegistrationRequestDTO registrationRequestDTO){
+        return userService.registerNewDispatcher(registrationRequestDTO);
+    }
 
     @Operation(summary = "Lock account of dispatcher",
             description = "Admin locks account of dispatcher when this endpoint is called.")
@@ -53,7 +59,5 @@ public class DispatchersController {
     public ResponseEntity<?> deleteDispatcher(@Validated(value = IdDTO.Group.class) @RequestBody IdDTO idDTO){
         return userService.deleteDispatcher(idDTO.id());
     }
-
-    //TODO: Create endpoints for different actions with selected user
 
 }

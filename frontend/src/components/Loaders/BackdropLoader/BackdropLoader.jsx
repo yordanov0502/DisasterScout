@@ -1,7 +1,7 @@
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
-export const DeleteDispatcherBackdrop = ({ open, handleClose }) => {
+export const BackdropLoader = ({ open, handleClose }) => {
     return (
       <div>
         <Backdrop
@@ -9,7 +9,7 @@ export const DeleteDispatcherBackdrop = ({ open, handleClose }) => {
           open={open}
           onClick={handleClose}
         >
-          <CircularProgress color="inherit" />
+          <CircularProgress color="success" />
         </Backdrop>
       </div>
     );

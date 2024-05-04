@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-//* ADMIN has access to this controller.
 @RestController
 @RequiredArgsConstructor
 @RequestMapping("/api/internal/dispatcher")
