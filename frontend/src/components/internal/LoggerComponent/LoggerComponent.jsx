@@ -68,11 +68,22 @@ export const LoggerComponent = ({status,
       
       const StyledTableRow = styled(TableRow)(({ theme }) => ({
         '&:nth-of-type(odd)': {
-          backgroundColor: theme.palette.action.hover,
+          backgroundColor: '#f2f2f2',
         },
         '&:last-child td, &:last-child th': {
           border: 0,
         },
+        '&:hover': {
+          backgroundColor: '#b5ffcc',  // Adjust the color based on your theme or choose a custom color
+        },
+        '@media (pointer: coarse)': {
+          '&:hover': {
+              backgroundColor: 'inherit', //? Disables hover color on even rows on mobile devices 
+          },
+          '&:nth-of-type(odd)': {
+              backgroundColor: '#f2f2f2', //? Disables hover color on odd rows on mobile devices
+          }
+      }
       }));
       
 

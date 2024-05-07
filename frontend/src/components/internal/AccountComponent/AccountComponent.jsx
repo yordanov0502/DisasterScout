@@ -24,6 +24,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       <div className="account_component__box">
 
       <TextField
+      sx={{backgroundColor: 'white'}}
       autoComplete="on"
       name="firstName" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
@@ -38,6 +39,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      sx={{backgroundColor: 'white'}}
       autoComplete="on"
       name="lastName" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
@@ -52,6 +54,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      sx={{backgroundColor: 'white'}}
       autoComplete="on"
       name="email" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
@@ -66,6 +69,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      sx={{backgroundColor: 'white'}}
       autoComplete="on"
       name="username" //! MUST MATCH WITH THE RELATED KEY FROM AccountForm
       required
@@ -80,6 +84,7 @@ export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessa
       />
 
       <TextField
+      sx={{backgroundColor: 'white'}}
       fullWidth
       label="Роля"
       variant="outlined"

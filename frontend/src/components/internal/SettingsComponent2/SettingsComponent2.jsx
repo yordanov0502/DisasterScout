@@ -50,6 +50,7 @@ export const SettingsComponent2 = ({ isLoading2,
 
          <div className="settings_component2__box2__username-container">
          <TextField
+         sx={{backgroundColor: 'white'}}
           autoComplete="on"
           name="username" //! MUST MATCH WITH THE RELATED useState username from CmsSettingsPage
           required
@@ -84,6 +85,7 @@ export const SettingsComponent2 = ({ isLoading2,
           renderInput={
             (params) => 
             <TextField
+            sx={{backgroundColor: 'white'}}
             required
             color="success"
             error={comboBoxError}

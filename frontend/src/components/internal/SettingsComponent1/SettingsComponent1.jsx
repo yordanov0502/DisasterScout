@@ -68,6 +68,7 @@ export const SettingsComponent1 = ({ isLoading1, changePasswordForm, errorForm, 
       >
           <InputLabel htmlFor="current-password">Текуща парола</InputLabel>
           <OutlinedInput
+            sx={{backgroundColor: 'white'}}
             name="currentPassword" //! MUST MATCH WITH THE RELATED KEY FROM ChangePasswordForm
             value={changePasswordForm.currentPassword}
             onChange={handleInput}
@@ -103,6 +104,7 @@ export const SettingsComponent1 = ({ isLoading1, changePasswordForm, errorForm, 
       >
           <InputLabel htmlFor="new-password">Нова парола</InputLabel>
           <OutlinedInput
+            sx={{backgroundColor: 'white'}}
             name="newPassword" //! MUST MATCH WITH THE RELATED KEY FROM ChangePasswordForm
             value={changePasswordForm.newPassword}
             onChange={handleInput}
@@ -138,6 +140,7 @@ export const SettingsComponent1 = ({ isLoading1, changePasswordForm, errorForm, 
       >
           <InputLabel htmlFor="confirm-new-password">Потвърди</InputLabel>
           <OutlinedInput
+            sx={{backgroundColor: 'white'}}
             name="confirmNewPassword" //! MUST MATCH WITH THE RELATED KEY FROM ChangePasswordForm
             value={changePasswordForm.confirmNewPassword}
             onChange={handleInput}
