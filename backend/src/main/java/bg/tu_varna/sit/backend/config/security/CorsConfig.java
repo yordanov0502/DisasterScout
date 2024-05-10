@@ -28,7 +28,7 @@ public class CorsConfig {
         CorsConfiguration corsConfiguration = new CorsConfiguration();
         //TODO: "https://localhost" should be replaced with original domain name when webapp is deployed
         //corsConfiguration.setAllowedOrigins(List.of("https://localhost")); //this also works, but the line below is preferred, because it written in the docs when you click over "setAllowedOriginPatterns" that it can work along with setAllowCredentials set to true
-        corsConfiguration.setAllowedOriginPatterns(List.of(/*"https://localhost",*/"https://192.168.53.95")); //? allowedOriginPatterns can be used in combination with setAllowCredentials set to true.
+        corsConfiguration.setAllowedOriginPatterns(List.of("https://localhost"/*,"https://192.168.53.95"*/)); //? allowedOriginPatterns can be used in combination with setAllowCredentials set to true.
         corsConfiguration.setAllowCredentials(true); //? allows cookies
         corsConfiguration.setAllowedHeaders(List.of("*")); //! The wildcard DOES NOT work! I must add all allowed headers(only those I need of course) here explicitly(manually) . By default  CORS-safelisted request headers are always allowed
         corsConfiguration.setAllowedMethods(List.of(
