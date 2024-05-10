@@ -5,6 +5,11 @@
     width: 80%;
     height: 100%;
     background-color: white;
+
+    @media (pointer: coarse) {
+      width: 100%;
+      margin-top: 72px
+    }
   
     &__loader-box {
         display: flex;

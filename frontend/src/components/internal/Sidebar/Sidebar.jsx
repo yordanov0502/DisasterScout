@@ -126,7 +126,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
         </Link>
         </li>
 
-{ authenticatedUser && authenticatedUser.role === "ADMIN" && (
+{ authenticatedUser.role === "ADMIN" && (
   <>
         <li className={activeButton === 'cms-dispatchers' ? 'active' : ''} onClick={() => handleButtonClick('cms-dispatchers')}>
           <Link to={"/cms-dispatchers"}>

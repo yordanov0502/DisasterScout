@@ -74,7 +74,7 @@ export const LoggerComponent = ({status,
           border: 0,
         },
         '&:hover': {
-          backgroundColor: '#b5ffcc',  // Adjust the color based on your theme or choose a custom color
+          backgroundColor: '#b5ffcc',
         },
         '@media (pointer: coarse)': {
           '&:hover': {
@@ -97,13 +97,12 @@ export const LoggerComponent = ({status,
       </div>
     );
     }
-  
+
   return (
     <div className="logger_component">
 
     <div className="logger_component__header">
      
-
     <div className="logger_component__header__level-filter">
     <FormControl sx={{mb: 6, top: 23}}>
       <RadioGroup

@@ -4,4 +4,9 @@
     display: flex;
     justify-content: center; 
     align-items: center;
-  }
+
+    @media (min-width: 700px) and (pointer: coarse) { 
+      margin-top: 60px;
+    }
+}
+
