@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.validation.user;
 
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.enums.user.Role;
+import bg.tu_varna.sit.backend.models.enums.userrole.Role;
 import bg.tu_varna.sit.backend.service.UserService;
 import bg.tu_varna.sit.backend.validation.user.annotation.ExistingAdminInCache;
 import com.github.benmanes.caffeine.cache.Cache;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
 
 @Component
 @RequiredArgsConstructor
@@ -50,7 +50,7 @@ public class ExistingAdminInCacheValidation implements ConstraintValidator<Exist
 
         caffeineCache.asMap().values().stream()
                 .map(value -> (User) value)
-                .filter(user -> ADMIN.equals(user.getRole()))
+                .filter(user -> ADMIN.equals(user.getUserRole().getRole()))
                 .findFirst()
                 .ifPresent(userService::clearUserFromCacheWhenAbsentFromDB);
     }

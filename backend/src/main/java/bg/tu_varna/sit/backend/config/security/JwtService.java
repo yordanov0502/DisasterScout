@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
 
 @Service
 @RequiredArgsConstructor
@@ -77,7 +77,7 @@ public class JwtService {
     // 12H for DISPATCHER
     // 24H for ADMIN
     public int getHoursOfJwtValidity(User user){
-        if(user.getRole().equals(DISPATCHER)) return 12;
+        if(user.getUserRole().getRole().equals(DISPATCHER)) return 12;
         else return 24;
     }
 

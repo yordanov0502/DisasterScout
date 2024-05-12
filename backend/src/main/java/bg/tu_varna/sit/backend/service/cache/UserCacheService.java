@@ -4,10 +4,11 @@ import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
 import bg.tu_varna.sit.backend.models.dto.user.RegistrationRequestDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.enums.user.Role;
+import bg.tu_varna.sit.backend.models.enums.userrole.Role;
 import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import bg.tu_varna.sit.backend.models.mapper.zone.ZoneMapper;
 import bg.tu_varna.sit.backend.repository.UserRepository;
+import bg.tu_varna.sit.backend.service.UserRoleService;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
 import lombok.RequiredArgsConstructor;
@@ -26,7 +27,7 @@ import java.util.List;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
 import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
 
@@ -42,6 +43,7 @@ public class UserCacheService {
     private final ZoneService zoneService;
     private final UserMapper userMapper;
     private final ZoneMapper zoneMapper;
+    private final UserRoleService userRoleService;
 
 
     //* Saves a new user to DB and related cache.
@@ -58,7 +60,7 @@ public class UserCacheService {
                 .email(registrationRequestDTO.email())
                 .username(registrationRequestDTO.username())
                 .password(encodedPassword)
-                .role(DISPATCHER)
+                .userRole(userRoleService.getUserRoleByRole(DISPATCHER))
                 .status(ACTIVE)
                 .activity(OFFLINE)
                 .lastLogin(timeService.getUnixEpochDateAndTime())
@@ -202,11 +204,11 @@ public class UserCacheService {
 
     public User getUserByEmail(String email){return userRepository.findUserByEmail(email);}
 
-    public User getUserByRole(Role role){return userRepository.findUserByRole(role);}
+    public User getUserByRole(Role role){return userRepository.findUserByUserRole(userRoleService.getUserRoleByRole(role));}
 
     public PageDispatcherDTO getDispatchersFromPage(Integer page){
         Pageable pageable = PageRequest.of(page,15,Sort.by("firstName","lastName").ascending());
-        return userMapper.mapToPageDispatcherDTO(userRepository.findAllByRole(pageable,DISPATCHER));
+        return userMapper.mapToPageDispatcherDTO(userRepository.findAllByUserRole(pageable,userRoleService.getUserRoleByRole(DISPATCHER)));
     }
 
     public boolean isIdExists(String id){return userRepository.existsUserById(id);}

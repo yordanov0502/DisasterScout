@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.models.dto.user;
 
-import bg.tu_varna.sit.backend.models.enums.user.Role;
+import bg.tu_varna.sit.backend.models.enums.userrole.Role;
 import lombok.Builder;
 
 import java.util.List;

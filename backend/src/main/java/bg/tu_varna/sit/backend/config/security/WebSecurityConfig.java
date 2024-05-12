@@ -14,7 +14,7 @@ import org.springframework.security.web.authentication.AuthenticationFilter;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.web.authentication.logout.HttpStatusReturningLogoutSuccessHandler;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Role.*;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.*;
 
 
 @Configuration

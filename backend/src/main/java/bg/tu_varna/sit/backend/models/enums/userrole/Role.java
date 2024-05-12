@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.backend.models.enums.user;
+package bg.tu_varna.sit.backend.models.enums.userrole;
 
 public enum Role {
     ADMIN, //? 1 - for the entire system

@@ -20,7 +20,7 @@ public class UserMapper {
                 .lastName(user.getLastName())
                 .email(user.getEmail())
                 .username(user.getUsername())
-                .role(user.getRole())
+                .role(user.getUserRole().getRole())
                 .availableZoneIds(user.getAvailableZoneIds())
                 .build();
     }

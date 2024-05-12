@@ -14,7 +14,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
 
 @Component
 @RequiredArgsConstructor
@@ -32,39 +32,39 @@ public class EntityListener {
 
         switch (userEvent.getAction()){
             case LOGIN -> {
-                String role = user.getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.INFO), logActionService.getLogActionByAction(Action.LOGIN), Action.LOGIN.format(role,firstName,lastName),null,user));
             }
             case LOGOUT -> {
-                String role = user.getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.INFO), logActionService.getLogActionByAction(Action.LOGOUT), Action.LOGOUT.format(role,firstName,lastName),null,user));
             }
             case ACCOUNT_UPDATE -> {
-                String role = user.getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.INFO), logActionService.getLogActionByAction(Action.ACCOUNT_UPDATE), Action.ACCOUNT_UPDATE.format(role,firstName,lastName),null,user));
             }
             case PASSWORD_UPDATE -> {
-                String role = user.getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.INFO), logActionService.getLogActionByAction(Action.PASSWORD_UPDATE), Action.PASSWORD_UPDATE.format(role,firstName,lastName),null,user));
             }
             case PASSWORD_RESET -> {
-                String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.WARN), logActionService.getLogActionByAction(Action.PASSWORD_RESET), Action.PASSWORD_RESET.format(role,firstName,lastName),null,user));
             }
             case PASSWORD_RESET_FAILURE -> {
-                String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.ERROR), logActionService.getLogActionByAction(Action.PASSWORD_RESET_FAILURE), Action.PASSWORD_RESET_FAILURE.format(role,firstName,lastName),null,user));
             }
             case ACCOUNT_LOCKED_AUTOMATICALLY -> {
-                String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.ERROR), logActionService.getLogActionByAction(Action.ACCOUNT_LOCKED_AUTOMATICALLY), Action.ACCOUNT_LOCKED_AUTOMATICALLY.format(role,firstName,lastName),null,user));
             }
             case ACCOUNT_LOCKED_MANUALLY -> {
-                String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.WARN), logActionService.getLogActionByAction(Action.ACCOUNT_LOCKED_MANUALLY), Action.ACCOUNT_LOCKED_MANUALLY.format(role,firstName,lastName),null,user));
             }
             case ACCOUNT_UNLOCKED -> {
-                String role = user.getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "диспечер" : "администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.INFO), logActionService.getLogActionByAction(Action.ACCOUNT_UNLOCKED), Action.ACCOUNT_UNLOCKED.format(role,firstName,lastName),null,user));
             }
         }
@@ -87,11 +87,11 @@ public class EntityListener {
 
         switch (zoneEvent.getAction()){
             case ZONE_ALERT_SET -> {
-                String role = user.getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.WARN), logActionService.getLogActionByAction(Action.ZONE_ALERT_SET), Action.ZONE_ALERT_SET.format(role,firstName,lastName,severityOfAlert,zone.getName()),null,user));
             }
             case ZONE_ALERT_REMOVED -> {
-                String role = user.getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
+                String role = user.getUserRole().getRole().equals(DISPATCHER) ? "Диспечер" : "Администратор";
                 logService.addLog(new Log(null, logLevelService.getLogLevelByLevel(Level.WARN), logActionService.getLogActionByAction(Action.ZONE_ALERT_REMOVED), Action.ZONE_ALERT_REMOVED.format(role,firstName,lastName,severityOfAlert,zone.getName()),null,user));
             }
         }

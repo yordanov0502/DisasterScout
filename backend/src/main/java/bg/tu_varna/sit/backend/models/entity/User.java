@@ -1,7 +1,6 @@
 package bg.tu_varna.sit.backend.models.entity;
 
 import bg.tu_varna.sit.backend.models.enums.user.Activity;
-import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.models.enums.user.Status;
 import jakarta.persistence.*;
 import lombok.*;
@@ -42,9 +41,10 @@ public class User implements UserDetails {
     @Column(name = "password", nullable = false)
     private final String password;
 
-    @Column(name = "role" , nullable = false)
-    @Enumerated(EnumType.STRING)
-    private final Role role; //? ADMIN / DISPATCHER
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL)  // When userRole is deleted, every user referencing the particular userRole is updated(user's FK user_role_id is set to null) THIS WILL NEVER EVER HAPPEN
+    @JoinColumn(name = "user_role_id")
+    private UserRole userRole;
 
     @Column(name = "status" , nullable = false)
     @Enumerated(EnumType.STRING)
@@ -71,7 +71,7 @@ public class User implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of(new SimpleGrantedAuthority("ROLE_"+role));
+        return List.of(new SimpleGrantedAuthority("ROLE_"+userRole.getRole()));
     }
 
     @Override

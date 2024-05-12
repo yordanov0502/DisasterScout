@@ -3,7 +3,7 @@ package bg.tu_varna.sit.backend.service;
 import bg.tu_varna.sit.backend.models.dto.user.*;
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.enums.logaction.Action;
-import bg.tu_varna.sit.backend.models.enums.user.Role;
+import bg.tu_varna.sit.backend.models.enums.userrole.Role;
 import bg.tu_varna.sit.backend.models.event.UserEvent;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;
 import bg.tu_varna.sit.backend.service.util.EmailService;
@@ -22,8 +22,8 @@ import java.util.regex.Pattern;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.user.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.user.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
 import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
 
@@ -133,13 +133,13 @@ public class UserService {
                 {
                     User updatedUser = userCacheService.incrementUnsuccessfulLoginAttemptsOfUser(user);
 
-                    if(updatedUser.getRole().equals(ADMIN) && updatedUser.getUnsuccessfulLoginAttempts()>=3)
+                    if(updatedUser.getUserRole().getRole().equals(ADMIN) && updatedUser.getUnsuccessfulLoginAttempts()>=3)
                     {
                         lockUserAutomatically(updatedUser);
                         throw new BadCredentialsException("Admin has been locked.");
                     }
 
-                    if(updatedUser.getRole().equals(DISPATCHER) && updatedUser.getUnsuccessfulLoginAttempts()>=5)
+                    if(updatedUser.getUserRole().getRole().equals(DISPATCHER) && updatedUser.getUnsuccessfulLoginAttempts()>=5)
                     {
                         lockUserAutomatically(updatedUser);
                         throw new BadCredentialsException("Dispatcher has been locked.");

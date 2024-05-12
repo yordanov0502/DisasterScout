@@ -16,6 +16,7 @@ public class CaffeineCacheConfig {
     public CacheManager cacheManager() {
         CaffeineCacheManager cacheManager = new CaffeineCacheManager();
         cacheManager.registerCustomCache("user", userCache());
+        cacheManager.registerCustomCache("role",roleCache());
         cacheManager.registerCustomCache("zone", zoneCache());
         cacheManager.registerCustomCache("zones", zonesCache());
         cacheManager.registerCustomCache("level", levelCache());
@@ -33,6 +34,12 @@ public class CaffeineCacheConfig {
     private static Cache<Object,Object> userCache() {
         return Caffeine.newBuilder()
                 .maximumSize(29) //? 1 admin and 28 dispatchers
+                .build();
+    }
+
+    private static Cache<Object,Object> roleCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(2) //? DISPATCHER/ADMIN
                 .build();
     }
 
@@ -63,7 +70,7 @@ public class CaffeineCacheConfig {
 
     private static Cache<Object,Object> severityCache() {
         return Caffeine.newBuilder()
-                .maximumSize(4) //? 4 severities ()
+                .maximumSize(4) //? 4 severities (LOW,MEDIUM,HIGH,CRITICAL)
                 .build();
     }
 }
