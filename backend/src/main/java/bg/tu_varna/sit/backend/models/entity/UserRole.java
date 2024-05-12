@@ -20,5 +20,5 @@ public class UserRole {
 
     @Column(name = "role" , nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Role role; //? ADMIN / DISPATCHER
+    private final Role role;
 }

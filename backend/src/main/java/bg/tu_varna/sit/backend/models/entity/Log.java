@@ -24,12 +24,10 @@ public class Log {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.SET_NULL)  // When logLevel is deleted, every log referencing the particular logLevel is updated(log's FK log_level_id is set to null) THIS WILL NEVER EVER HAPPEN
     @JoinColumn(name = "log_level_id")
     private LogLevel logLevel;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.SET_NULL)  // When logAction is deleted, every log referencing the particular logAction is updated(log's FK log_action_id is set to null) THIS WILL NEVER EVER HAPPEN
     @JoinColumn(name = "log_action_id")
     private LogAction logAction;
 

@@ -20,5 +20,5 @@ public class UserStatus {
 
     @Column(name = "status" , nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Status status; //? ACTIVE / LOCKED
+    private final Status status;
 }

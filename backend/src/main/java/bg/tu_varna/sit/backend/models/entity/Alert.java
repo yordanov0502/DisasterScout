@@ -2,8 +2,6 @@ package bg.tu_varna.sit.backend.models.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
 
 @Builder(toBuilder = true)
 @Getter
@@ -20,7 +18,6 @@ public class Alert {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.SET_NULL)  // When alertSeverity is deleted, every alert referencing the particular alertSeverity is updated(alert's FK alert_severity_id is set to null) THIS WILL NEVER EVER HAPPEN
     @JoinColumn(name = "alert_severity_id")
     private AlertSeverity alertSeverity;
 

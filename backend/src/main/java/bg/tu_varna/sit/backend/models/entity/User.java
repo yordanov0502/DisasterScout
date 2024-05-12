@@ -41,12 +41,10 @@ public class User implements UserDetails {
     private final String password;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.SET_NULL)  // When userRole is deleted, every user referencing the particular userRole is updated(user's FK user_role_id is set to null) THIS WILL NEVER EVER HAPPEN
     @JoinColumn(name = "user_role_id")
     private final UserRole userRole;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @OnDelete(action = OnDeleteAction.SET_NULL)  // When userStatus is deleted, every user referencing the particular userStatus is updated(user's FK user_status_id is set to null) THIS WILL NEVER EVER HAPPEN
     @JoinColumn(name = "user_status_id")
     private final UserStatus userStatus;
 
