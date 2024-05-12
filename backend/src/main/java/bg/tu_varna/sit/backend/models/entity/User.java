@@ -1,6 +1,5 @@
 package bg.tu_varna.sit.backend.models.entity;
 
-import bg.tu_varna.sit.backend.models.enums.user.Activity;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.OnDelete;
@@ -48,9 +47,9 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_status_id")
     private final UserStatus userStatus;
 
-    @Column(name = "activity" , nullable = false)
-    @Enumerated(EnumType.STRING)
-    private final Activity activity; //? ONLINE / OFFLINE
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "user_activity_id")
+    private final UserActivity userActivity;
 
     @Column(name = "last_login", nullable = false)
     private final Date lastLogin;

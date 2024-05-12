@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.models.dto.user;
 
-import bg.tu_varna.sit.backend.models.enums.user.Activity;
+import bg.tu_varna.sit.backend.models.enums.useractivity.Activity;
 import bg.tu_varna.sit.backend.models.enums.userstatus.Status;
 
 import java.util.List;

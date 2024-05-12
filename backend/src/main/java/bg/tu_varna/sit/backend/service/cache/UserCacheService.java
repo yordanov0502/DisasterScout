@@ -8,6 +8,7 @@ import bg.tu_varna.sit.backend.models.enums.userrole.Role;
 import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import bg.tu_varna.sit.backend.models.mapper.zone.ZoneMapper;
 import bg.tu_varna.sit.backend.repository.UserRepository;
+import bg.tu_varna.sit.backend.service.UserActivityService;
 import bg.tu_varna.sit.backend.service.UserRoleService;
 import bg.tu_varna.sit.backend.service.UserStatusService;
 import bg.tu_varna.sit.backend.service.ZoneService;
@@ -26,8 +27,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.OFFLINE;
+import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
 import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.LOCKED;
@@ -46,6 +47,7 @@ public class UserCacheService {
     private final ZoneMapper zoneMapper;
     private final UserRoleService userRoleService;
     private final UserStatusService userStatusService;
+    private final UserActivityService userActivityService;
 
 
     //* Saves a new user to DB and related cache.
@@ -64,7 +66,7 @@ public class UserCacheService {
                 .password(encodedPassword)
                 .userRole(userRoleService.getUserRoleByRole(DISPATCHER))
                 .userStatus(userStatusService.getUserStatusByStatus(ACTIVE))
-                .activity(OFFLINE)
+                .userActivity(userActivityService.getUserActivityByActivity(OFFLINE))
                 .lastLogin(timeService.getUnixEpochDateAndTime())
                 .unsuccessfulLoginAttempts(0)
                 //! If circular dependency issue occur due to the injection of the ZoneService, ZoneCacheService can be used instead
@@ -135,7 +137,7 @@ public class UserCacheService {
     })
     public User updateUserActivityAndLastLogin(User user) {
         User updatedUser = user.toBuilder()
-                .activity(ONLINE)
+                .userActivity(userActivityService.getUserActivityByActivity(ONLINE))
                 .lastLogin(timeService.getCurrentDateAndTimeInBulgaria())
                 .unsuccessfulLoginAttempts(0)
                 .build();
@@ -148,7 +150,7 @@ public class UserCacheService {
     })
     public User updateUserActivityOnLogout(User user) {
         User updatedUser = user.toBuilder()
-                .activity(OFFLINE)
+                .userActivity(userActivityService.getUserActivityByActivity(OFFLINE))
                 .build();
         return userRepository.save(updatedUser);
         }
@@ -171,7 +173,7 @@ public class UserCacheService {
    public User lockUser(User user){
         User updatedUser = user.toBuilder()
                 .userStatus(userStatusService.getUserStatusByStatus(LOCKED))
-                .activity(OFFLINE)
+                .userActivity(userActivityService.getUserActivityByActivity(OFFLINE))
                 .build();
         return userRepository.save(updatedUser);
    }

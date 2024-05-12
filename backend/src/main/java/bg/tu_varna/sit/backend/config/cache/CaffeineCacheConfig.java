@@ -18,6 +18,7 @@ public class CaffeineCacheConfig {
         cacheManager.registerCustomCache("user", userCache());
         cacheManager.registerCustomCache("role",roleCache());
         cacheManager.registerCustomCache("status",statusCache());
+        cacheManager.registerCustomCache("activity",activityCache());
         cacheManager.registerCustomCache("zone", zoneCache());
         cacheManager.registerCustomCache("zones", zonesCache());
         cacheManager.registerCustomCache("level", levelCache());
@@ -47,6 +48,12 @@ public class CaffeineCacheConfig {
     private static Cache<Object,Object> statusCache() {
         return Caffeine.newBuilder()
                 .maximumSize(2) //? ACTIVE/LOCKED
+                .build();
+    }
+
+    private static Cache<Object,Object> activityCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(2) //? ONLINE/OFFLINE
                 .build();
     }
 

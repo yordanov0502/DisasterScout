@@ -20,8 +20,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.OFFLINE;
+import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
 import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
@@ -121,7 +121,7 @@ public class UserService {
             {
                 //? Checks if a user is already logged in, in order to prevent incrementing unsuccessful login attempts
                 //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
-                if(user.getActivity().equals(ONLINE))
+                if(user.getUserActivity().getActivity().equals(ONLINE))
                 {throw new BadCredentialsException("User is already logged in.");}
 
                 //? Checks if a user's account is locked, in order to prevent incrementing unsuccessful login attempts
@@ -156,7 +156,7 @@ public class UserService {
             //? Checks if a user is already logged in, in order to prevent logging in
             //? 2nd time from another device, if a user is already logged in.(This is done for security reasons)
             //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
-            if(user.getActivity().equals(ONLINE))
+            if(user.getUserActivity().getActivity().equals(ONLINE))
             {throw new BadCredentialsException("User is already logged in.");}
 
             //? Checks if a user's account is locked, in order to prevent logging in, if a user's account is indeed locked
@@ -209,7 +209,7 @@ public class UserService {
 
     public ResponseEntity<?> setNewRandomPassword(String email){
         User user = userCacheService.getUserByEmail(email);
-        if(user.getUserStatus().getStatus().equals(ACTIVE) && user.getActivity().equals(OFFLINE))
+        if(user.getUserStatus().getStatus().equals(ACTIVE) && user.getUserActivity().getActivity().equals(OFFLINE))
         {
             String newPassword = generateRandomPassword();
             if(newPassword==null) {return new ResponseEntity<>("Please try again. Error occurred while generating the new password.", HttpStatus.BAD_REQUEST);} //? In case of infinite loop(after 50 unsuccessful tries) in generateRandomPassword() method

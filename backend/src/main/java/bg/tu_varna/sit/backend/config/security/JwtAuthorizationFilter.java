@@ -22,7 +22,7 @@ import org.springframework.web.util.WebUtils;
 import java.io.IOException;
 import java.util.Date;
 
-import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
 
 //? This filter is applied every time when someone tries to access a protected endpoint
@@ -116,7 +116,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                if(user.getUserStatus().getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) && !extractedIssuedAt.before(user.getLastLogin()))
+                if(user.getUserStatus().getStatus().equals(ACTIVE) && user.getUserActivity().getActivity().equals(ONLINE) && !extractedIssuedAt.before(user.getLastLogin()))
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
