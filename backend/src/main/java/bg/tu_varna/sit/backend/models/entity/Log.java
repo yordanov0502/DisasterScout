@@ -1,7 +1,6 @@
 package bg.tu_varna.sit.backend.models.entity;
 
 import bg.tu_varna.sit.backend.models.enums.log.Action;
-import bg.tu_varna.sit.backend.models.enums.log.Level;
 import jakarta.persistence.*;
 import lombok.*;
 import org.hibernate.annotations.CreationTimestamp;
@@ -26,9 +25,10 @@ public class Log {
     @Column(name = "id_log", nullable = false)
     private Integer id;
 
-    @Column(name = "level" , nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Level level;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL)  // When loglevel is deleted, every log referencing the particular loglevel is updated(log's FK log_level_id is set to null) THIS WILL NEVER EVER HAPPEN
+    @JoinColumn(name = "log_level_id")
+    private LogLevel logLevel;
 
     @Column(name = "action" , nullable = false)
     @Enumerated(EnumType.STRING)

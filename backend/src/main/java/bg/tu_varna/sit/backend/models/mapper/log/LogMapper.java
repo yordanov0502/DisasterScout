@@ -14,7 +14,7 @@ public class LogMapper {
     {
         List<LogDTO> logDTOList = pageLog.getContent()
                 .stream()
-                .map(log -> new LogDTO(log.getLevel(),log.getMessage(),log.getCreatedAt()))
+                .map(log -> new LogDTO(log.getLogLevel().getLevel(), log.getMessage(),log.getCreatedAt()))
                 .toList();
 
         return PageLogDTO.builder()
