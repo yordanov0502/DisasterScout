@@ -150,7 +150,7 @@ export const CmsDispatchersPage = () => {
   
 
   const handleInput = (e) => {
-    setDispatcherForm((prevState) => ({...prevState,[e.target.name]: e.target.value.trim(),}));
+    setDispatcherForm(prevState => ({...prevState,[e.target.name]: e.target.value.trim()}));
     setErrorMessage("");
     setComboBoxError(false);
   };
@@ -171,6 +171,7 @@ export const CmsDispatchersPage = () => {
         password: "",
       });
       setComboBoxKey(comboBoxKey ? false : true);
+      setSelectedZoneId(null);
       showSnackbar("Успешно добавихте нов диспечер в системата.","success","bottom","right");
     },
     onError: (error) => {
@@ -495,6 +496,7 @@ export const CmsDispatchersPage = () => {
         comboBoxError={comboBoxError}
         setComboBoxError={setComboBoxError}
         setSelectedZoneId={setSelectedZoneId}
+        setErrorMessage={setErrorMessage}
       />
 
       <LockDispatcherDialog

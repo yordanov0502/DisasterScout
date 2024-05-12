@@ -27,7 +27,8 @@ export const AddDispatcherDialog = ({ open,
                                       comboBoxKey, 
                                       comboBoxError, 
                                       setComboBoxError,
-                                      setSelectedZoneId }) => {
+                                      setSelectedZoneId,
+                                      setErrorMessage }) => {
   
   const [showPassword, setShowPassword] = useState(false); //? password field
   const [isPasswordFocused, setIsPasswordFocused] = useState(false);
@@ -187,6 +188,7 @@ export const AddDispatcherDialog = ({ open,
             }
             onChange={(event, selectedOption) => {
               setSelectedZoneId(selectedOption ? selectedOption.zoneId : null);
+              setErrorMessage("");
               setComboBoxError(false);
             }}
             PopperComponent={({ popperRef, style, ...props }) => (
