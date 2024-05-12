@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.models.entity;
 
-import bg.tu_varna.sit.backend.models.enums.loglevel.Level;
+import bg.tu_varna.sit.backend.models.enums.logaction.Action;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,13 +12,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
-@Table(name = "log_levels")
-public class LogLevel {
+@Table(name = "log_actions")
+public class LogAction {
     @Id
-    @Column(name = "id_log_level", nullable = false)
+    @Column(name = "id_log_action", nullable = false)
     private final Integer id;
 
-    @Column(name = "level" , nullable = false)
+    @Column(name = "action" , nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Level level;
+    private final Action action;
 }

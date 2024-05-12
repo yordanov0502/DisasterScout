@@ -2,7 +2,7 @@ package bg.tu_varna.sit.backend.service;
 
 import bg.tu_varna.sit.backend.models.dto.user.*;
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.enums.log.Action;
+import bg.tu_varna.sit.backend.models.enums.logaction.Action;
 import bg.tu_varna.sit.backend.models.enums.user.Role;
 import bg.tu_varna.sit.backend.models.event.UserEvent;
 import bg.tu_varna.sit.backend.service.cache.UserCacheService;

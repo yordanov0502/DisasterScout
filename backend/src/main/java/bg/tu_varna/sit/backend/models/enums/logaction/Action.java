@@ -1,4 +1,4 @@
-package bg.tu_varna.sit.backend.models.enums.log;
+package bg.tu_varna.sit.backend.models.enums.logaction;
 
 public enum Action {
     LOGIN("%s %s %s влезе в системата."),
