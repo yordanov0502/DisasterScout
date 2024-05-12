@@ -77,7 +77,7 @@ public class EntityListener {
         String lastName = user.getLastName();
         Zone zone = zoneEvent.getZone();
         String severityOfAlert = null;
-        switch (zone.getAlert().getSeverity())
+        switch (zone.getAlert().getAlertSeverity().getSeverity())
         {
             case LOW -> severityOfAlert = " НИСКО";
             case MEDIUM -> severityOfAlert = "ъс СРЕДНО";

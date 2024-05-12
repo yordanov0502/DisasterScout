@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class ExistingEmailValidation implements ConstraintValidator<ExistingEmail,String> {
+
     private final UserService userService;
 
     @Override

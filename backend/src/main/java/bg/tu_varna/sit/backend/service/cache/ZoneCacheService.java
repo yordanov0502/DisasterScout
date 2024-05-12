@@ -2,13 +2,12 @@ package bg.tu_varna.sit.backend.service.cache;
 
 import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.Alert;
-import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.repository.ZoneRepository;
+import bg.tu_varna.sit.backend.service.AlertSeverityService;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.annotation.PostConstruct;
-import lombok.AllArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
+import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
@@ -20,11 +19,11 @@ import java.util.List;
 
 //TODO: TEST HOW CACHE BEHAVES WHEN DEALING WITH ZONES
 @Service
-@AllArgsConstructor
-@Slf4j
+@RequiredArgsConstructor
 public class ZoneCacheService {
 
     private final ZoneRepository zoneRepository;
+    private final AlertSeverityService alertSeverityService;
     //private final CacheManager cacheManager;
 
     //? This method is used for both - adding new / updating existing alert of zone.
@@ -41,7 +40,7 @@ public class ZoneCacheService {
 
         Zone updatedZone = zone.toBuilder()
                 .alert(Alert.builder()
-                        .severity(zoneDTO.alertDTO().severity())
+                        .alertSeverity(alertSeverityService.getAlertSeverityBySeverity(zoneDTO.alertDTO().severity()))
                         .message(zoneDTO.alertDTO().message())
                         .build())
                 .build();
@@ -64,7 +63,6 @@ public class ZoneCacheService {
     @Cacheable(value = "zone", key = "#id", unless = "#result == null")
     public Zone getZoneById(String id) {return zoneRepository.findZoneById(id);}
 
-    //? Can it throw exception if zone's alert is null ????????????????????????????????????
     @Cacheable(value = "zones", key = "'allZones'", unless = "#result == null or #result.isEmpty()")
     public List<Zone> getAllZones(){return zoneRepository.findAll();}
 

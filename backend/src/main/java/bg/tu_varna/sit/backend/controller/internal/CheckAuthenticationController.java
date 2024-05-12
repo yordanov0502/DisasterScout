@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class CheckAuthenticationController {
 
     private final UserMapper userMapper;
+
     @Operation(summary = "Check user's authentication",
             description = "This endpoint checks if a user is ALREADY authenticated and if so - returns AuthenticationResponseDTO, which is used to set the userContext on the frontend.")
     @GetMapping("/check-authentication")

@@ -20,6 +20,7 @@ public class CaffeineCacheConfig {
         cacheManager.registerCustomCache("zones", zonesCache());
         cacheManager.registerCustomCache("level", levelCache());
         cacheManager.registerCustomCache("action", actionCache());
+        cacheManager.registerCustomCache("severity", severityCache());
 
         //! To avoid dynamic caches and be sure each name is assigned to a specific config (dynamic = false)
         //! throws error when tries to use a new cache
@@ -57,6 +58,12 @@ public class CaffeineCacheConfig {
     private static Cache<Object,Object> actionCache() {
         return Caffeine.newBuilder()
                 .maximumSize(11) //? 11 actions
+                .build();
+    }
+
+    private static Cache<Object,Object> severityCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(4) //? 4 severities ()
                 .build();
     }
 }

@@ -1,8 +1,9 @@
 package bg.tu_varna.sit.backend.models.entity;
 
-import bg.tu_varna.sit.backend.models.enums.alert.Severity;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 @Builder(toBuilder = true)
 @Getter
@@ -16,12 +17,13 @@ public class Alert {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "alert_seq")
     @SequenceGenerator(name = "alert_seq", allocationSize = 1)
     @Column(name = "id_alert", nullable = false)
-    private final Integer id;
+    private Integer id;
 
-    @Column(name = "severity", nullable = false)
-    @Enumerated(EnumType.STRING)
-    private final Severity severity;
+    @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL)  // When alertSeverity is deleted, every alert referencing the particular alertSeverity is updated(alert's FK alert_severity_id is set to null) THIS WILL NEVER EVER HAPPEN
+    @JoinColumn(name = "alert_severity_id")
+    private AlertSeverity alertSeverity;
 
     @Column(name = "message", nullable = false)
-    private final String message;
+    private String message;
 }

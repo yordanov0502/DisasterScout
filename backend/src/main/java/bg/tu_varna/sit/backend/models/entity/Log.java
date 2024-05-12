@@ -10,7 +10,6 @@ import java.util.Date;
 
 @Builder(toBuilder = true)
 @Getter
-@Setter
 @ToString
 //@EqualsAndHashCode
 @AllArgsConstructor
