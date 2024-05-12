@@ -24,8 +24,8 @@ import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
-import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
-import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
+import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.LOCKED;
 
 @Service
 @RequiredArgsConstructor
@@ -126,7 +126,7 @@ public class UserService {
 
                 //? Checks if a user's account is locked, in order to prevent incrementing unsuccessful login attempts
                 //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
-                else if(user.getStatus().equals(LOCKED))
+                else if(user.getUserStatus().getStatus().equals(LOCKED))
                 {throw new BadCredentialsException("User is currently locked.");}
 
                 else
@@ -161,7 +161,7 @@ public class UserService {
 
             //? Checks if a user's account is locked, in order to prevent logging in, if a user's account is indeed locked
             //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
-            else if(user.getStatus().equals(LOCKED))
+            else if(user.getUserStatus().getStatus().equals(LOCKED))
             {throw new BadCredentialsException("User is currently locked.");}
 
             else {return user;}
@@ -209,7 +209,7 @@ public class UserService {
 
     public ResponseEntity<?> setNewRandomPassword(String email){
         User user = userCacheService.getUserByEmail(email);
-        if(user.getStatus().equals(ACTIVE) && user.getActivity().equals(OFFLINE))
+        if(user.getUserStatus().getStatus().equals(ACTIVE) && user.getActivity().equals(OFFLINE))
         {
             String newPassword = generateRandomPassword();
             if(newPassword==null) {return new ResponseEntity<>("Please try again. Error occurred while generating the new password.", HttpStatus.BAD_REQUEST);} //? In case of infinite loop(after 50 unsuccessful tries) in generateRandomPassword() method

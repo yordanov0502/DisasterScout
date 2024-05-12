@@ -9,6 +9,7 @@ import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
 import bg.tu_varna.sit.backend.models.mapper.zone.ZoneMapper;
 import bg.tu_varna.sit.backend.repository.UserRepository;
 import bg.tu_varna.sit.backend.service.UserRoleService;
+import bg.tu_varna.sit.backend.service.UserStatusService;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +29,8 @@ import java.util.List;
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
-import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
-import static bg.tu_varna.sit.backend.models.enums.user.Status.LOCKED;
+import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.LOCKED;
 
 //? More info about unless cache clause -> https://stackoverflow.com/questions/12113725/how-do-i-tell-spring-cache-not-to-cache-null-value-in-cacheable-annotation
 
@@ -44,6 +45,7 @@ public class UserCacheService {
     private final UserMapper userMapper;
     private final ZoneMapper zoneMapper;
     private final UserRoleService userRoleService;
+    private final UserStatusService userStatusService;
 
 
     //* Saves a new user to DB and related cache.
@@ -61,7 +63,7 @@ public class UserCacheService {
                 .username(registrationRequestDTO.username())
                 .password(encodedPassword)
                 .userRole(userRoleService.getUserRoleByRole(DISPATCHER))
-                .status(ACTIVE)
+                .userStatus(userStatusService.getUserStatusByStatus(ACTIVE))
                 .activity(OFFLINE)
                 .lastLogin(timeService.getUnixEpochDateAndTime())
                 .unsuccessfulLoginAttempts(0)
@@ -168,7 +170,7 @@ public class UserCacheService {
     })
    public User lockUser(User user){
         User updatedUser = user.toBuilder()
-                .status(LOCKED)
+                .userStatus(userStatusService.getUserStatusByStatus(LOCKED))
                 .activity(OFFLINE)
                 .build();
         return userRepository.save(updatedUser);
@@ -180,7 +182,7 @@ public class UserCacheService {
     })
     public User unlockUser(User user){
         User updatedUser = user.toBuilder()
-                .status(ACTIVE)
+                .userStatus(userStatusService.getUserStatusByStatus(ACTIVE))
                 .unsuccessfulLoginAttempts(0)
                 .build();
         return userRepository.save(updatedUser);

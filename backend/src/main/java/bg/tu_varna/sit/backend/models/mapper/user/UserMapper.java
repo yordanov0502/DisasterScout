@@ -44,7 +44,7 @@ public class UserMapper {
                         dispatcher.getFirstName()+" "+dispatcher.getLastName(),
                         dispatcher.getEmail(),
                         dispatcher.getUsername(),
-                        dispatcher.getStatus(),
+                        dispatcher.getUserStatus().getStatus(),
                         dispatcher.getActivity(),
                         dispatcher.getAvailableZoneIds()))
                 .toList();

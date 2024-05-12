@@ -23,7 +23,7 @@ import java.io.IOException;
 import java.util.Date;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
 
 //? This filter is applied every time when someone tries to access a protected endpoint
 //? and if the "someone" has a valid JWT, a UsernamePasswordAuthenticationToken is created for this "someone" and then
@@ -116,7 +116,7 @@ public class JwtAuthorizationFilter extends OncePerRequestFilter {
                     return;
                 }
 
-                if(user.getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) && !extractedIssuedAt.before(user.getLastLogin()))
+                if(user.getUserStatus().getStatus().equals(ACTIVE) && user.getActivity().equals(ONLINE) && !extractedIssuedAt.before(user.getLastLogin()))
                 {
                     UsernamePasswordAuthenticationToken authToken = new UsernamePasswordAuthenticationToken(user,null,user.getAuthorities());
                     authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));

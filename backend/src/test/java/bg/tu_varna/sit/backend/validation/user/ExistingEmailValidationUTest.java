@@ -2,6 +2,7 @@ package bg.tu_varna.sit.backend.validation.user;
 
 import bg.tu_varna.sit.backend.models.entity.User;
 import bg.tu_varna.sit.backend.models.entity.UserRole;
+import bg.tu_varna.sit.backend.models.entity.UserStatus;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.service.UserService;
 import jakarta.validation.ConstraintValidatorContext;
@@ -19,7 +20,7 @@ import java.util.*;
 
 import static bg.tu_varna.sit.backend.models.enums.user.Activity.OFFLINE;
 import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.user.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -44,7 +45,7 @@ class ExistingEmailValidationUTest {
     @Test
     void isValid_withDifferentEmail_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", new UserRole(1,ADMIN), ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
+        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", new UserRole(1,ADMIN), new UserStatus(1,ACTIVE), OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
@@ -57,7 +58,7 @@ class ExistingEmailValidationUTest {
     @Test
     void isValid_withSameEmail_shouldReturnTrue() {
         // Mocking authentication
-        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", new UserRole(1,ADMIN), ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
+        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12", new UserRole(1,ADMIN), new UserStatus(1,ACTIVE), OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
@@ -70,7 +71,7 @@ class ExistingEmailValidationUTest {
     @Test
     void isValid_withExistingEmail_shouldReturnFalse() {
         // Mocking authentication
-        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12",new UserRole(1,ADMIN), ACTIVE, OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
+        User authenticatedUser = new User("0242071340","Todor","Yordanov","auth@example.com","toshko","ASas2@dsadas12",new UserRole(1,ADMIN), new UserStatus(1,ACTIVE), OFFLINE, new Date(),0,new ArrayList<>(List.of(new Zone("st3","Варна",5,null))));
         SecurityContext securityContext = mock(SecurityContext.class);
         when(securityContext.getAuthentication()).thenReturn(new UsernamePasswordAuthenticationToken(authenticatedUser, null));
         SecurityContextHolder.setContext(securityContext);
