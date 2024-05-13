@@ -102,9 +102,9 @@ export const validateChangePasswordForm = (changePasswordForm) => { //? function
   const isNewPasswordValid = passwordRegex.test(changePasswordForm.newPassword);
   const isConfirmNewPasswordValid = passwordRegex.test(changePasswordForm.confirmNewPassword);
 
-  if (!isCurrentPasswordValid) {return "Невалиден формат на текущата парола. Изисквания: [бр.символи 8-30, поне 1 малка буква, поне 1 главна буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
-  if (!isNewPasswordValid) {return "Невалиден формат на новата парола. Изисквания: [бр.символи 8-30, поне 1 малка буква, поне 1 главна буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
-  if (!isConfirmNewPasswordValid) {return "Невалиден формат на потвърждението. Изисквания: [бр.символи 8-30, поне 1 малка буква, поне 1 главна буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
+  if (!isCurrentPasswordValid) {return "Невалиден формат на текущата парола. Изисквания: [бр.символи 8-30, поне 1 малка латинска буква, поне 1 главна латинска буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
+  if (!isNewPasswordValid) {return "Невалиден формат на новата парола. Изисквания: [бр.символи 8-30, поне 1 малка латинска буква, поне 1 главна латинска буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
+  if (!isConfirmNewPasswordValid) {return "Невалиден формат на потвърждението. Изисквания: [бр.символи 8-30, поне 1 малка латинска буква, поне 1 главна латинска буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
 
 
   if(changePasswordForm.newPassword !== changePasswordForm.confirmNewPassword )
@@ -212,8 +212,8 @@ export const validateDispatcherFormOnSubmit = (dispatcherForm) => { //? function
   if (!isFirstNameValid) {return "Невалидно име.";} //! error
   if (!isLastNameValid) {return "Невалидна фамилия.";} //! error
   if (!isEmailValid) {return "Невалиден имейл адрес.";} //! error
-  if (!isUsernameValid) {return "Невалидно потребителско име.";} //! error
-  if (!isPasswordValid) {return "Невалидна парола.";} //! error
+  if (!isUsernameValid) {return "Невалидно потребителско име. Изисквания: [бр.символи 3-20, може да съдържа малки и главни латински букви както и цифри от 0 до 9. Може да съдържа спец. символи . и _ но да не са в началото или края.]";} //! error
+  if (!isPasswordValid) {return "Невалидна парола. Изисквания: [бр.символи 8-30, поне 1 малка латинска буква, поне 1 главна латинска буква, поне 1 цифра, поне 1 спец. символ, без интервали]";} //! error
   
     return ""; //* OK
 };
@@ -223,12 +223,12 @@ export const processErrorDispatcherFormOnSubmit = (dispatcherForm, validationMes
   if(validationMessage === "Моля въведете данни във всички полета.")
   {
     return {
-      id: true,
-      firstName: true,
-      lastName: true,
-      email: true,
-      username: true,
-      password: true,
+      id: dispatcherForm.id ? false : true,
+      firstName: dispatcherForm.firstName ? false : true,
+      lastName: dispatcherForm.lastName ? false : true,
+      email: dispatcherForm.email ? false : true,
+      username: dispatcherForm.username ? false : true,
+      password: dispatcherForm.password ? false : true,
     };
   }
   else
