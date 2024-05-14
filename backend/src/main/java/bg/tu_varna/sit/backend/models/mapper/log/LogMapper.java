@@ -2,7 +2,7 @@ package bg.tu_varna.sit.backend.models.mapper.log;
 
 import bg.tu_varna.sit.backend.models.dto.log.LogDTO;
 import bg.tu_varna.sit.backend.models.dto.log.PageLogDTO;
-import bg.tu_varna.sit.backend.models.entity.Log;
+import bg.tu_varna.sit.backend.models.entity.log.Log;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 

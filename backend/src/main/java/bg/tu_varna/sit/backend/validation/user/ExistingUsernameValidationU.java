@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.validation.user;
 
-import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.models.entity.user.User;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
 import bg.tu_varna.sit.backend.validation.user.annotation.ExistingUsernameU;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

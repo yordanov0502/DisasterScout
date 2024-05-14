@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.controller.external;
 
 import bg.tu_varna.sit.backend.models.dto.user.ForgotPasswordDTO;
-import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -24,6 +24,7 @@ public class CaffeineCacheConfig {
         cacheManager.registerCustomCache("level", levelCache());
         cacheManager.registerCustomCache("action", actionCache());
         cacheManager.registerCustomCache("severity", severityCache());
+        cacheManager.registerCustomCache("state", stateCache());
 
         //! To avoid dynamic caches and be sure each name is assigned to a specific config (dynamic = false)
         //! throws error when tries to use a new cache
@@ -85,6 +86,12 @@ public class CaffeineCacheConfig {
     private static Cache<Object,Object> severityCache() {
         return Caffeine.newBuilder()
                 .maximumSize(4) //? 4 severity types (LOW,MEDIUM,HIGH,CRITICAL)
+                .build();
+    }
+
+    private static Cache<Object,Object> stateCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(5) //? 5 state types (PENDING, FRESH, FOR_REVALUATION, INACTIVE, ARCHIVED)
                 .build();
     }
 }

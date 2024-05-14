@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.config.security;
 
-import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.service.cache.UserCacheService;
+import bg.tu_varna.sit.backend.models.entity.user.User;
+import bg.tu_varna.sit.backend.service.cache.user.UserCacheService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;

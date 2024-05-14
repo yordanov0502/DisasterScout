@@ -4,7 +4,7 @@ import bg.tu_varna.sit.backend.models.dto.user.AuthenticationResponseDTO;
 import bg.tu_varna.sit.backend.models.dto.user.DispatcherDTO;
 import bg.tu_varna.sit.backend.models.dto.user.PageDispatcherDTO;
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 

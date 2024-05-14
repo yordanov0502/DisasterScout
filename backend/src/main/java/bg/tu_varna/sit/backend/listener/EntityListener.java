@@ -1,20 +1,20 @@
 package bg.tu_varna.sit.backend.listener;
 
-import bg.tu_varna.sit.backend.models.entity.Log;
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.log.Log;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.models.entity.Zone;
-import bg.tu_varna.sit.backend.models.enums.logaction.Action;
-import bg.tu_varna.sit.backend.models.enums.loglevel.Level;
+import bg.tu_varna.sit.backend.models.enums.log.logaction.Action;
+import bg.tu_varna.sit.backend.models.enums.log.loglevel.Level;
 import bg.tu_varna.sit.backend.models.event.UserEvent;
 import bg.tu_varna.sit.backend.models.event.ZoneEvent;
-import bg.tu_varna.sit.backend.service.LogActionService;
-import bg.tu_varna.sit.backend.service.LogLevelService;
-import bg.tu_varna.sit.backend.service.LogService;
+import bg.tu_varna.sit.backend.service.primary.log.LogActionService;
+import bg.tu_varna.sit.backend.service.primary.log.LogLevelService;
+import bg.tu_varna.sit.backend.service.primary.log.LogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
 
-import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.user.userrole.Role.DISPATCHER;
 
 @Component
 @RequiredArgsConstructor

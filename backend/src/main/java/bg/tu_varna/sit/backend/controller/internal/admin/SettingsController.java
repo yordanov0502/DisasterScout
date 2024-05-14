@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.controller.internal.admin;
 
-import bg.tu_varna.sit.backend.service.UserService;
-import bg.tu_varna.sit.backend.service.ZoneService;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
+import bg.tu_varna.sit.backend.service.primary.ZoneService;
 import bg.tu_varna.sit.backend.validation.user.annotation.UsernameRegexAndExistence;
 import bg.tu_varna.sit.backend.validation.zone.annotation.ZoneIdRegex;
 import io.swagger.v3.oas.annotations.Operation;

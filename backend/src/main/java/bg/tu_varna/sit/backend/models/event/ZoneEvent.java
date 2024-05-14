@@ -1,8 +1,8 @@
 package bg.tu_varna.sit.backend.models.event;
 
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.models.entity.Zone;
-import bg.tu_varna.sit.backend.models.enums.logaction.Action;
+import bg.tu_varna.sit.backend.models.enums.log.logaction.Action;
 import org.springframework.context.ApplicationEvent;
 
 public class ZoneEvent extends ApplicationEvent {

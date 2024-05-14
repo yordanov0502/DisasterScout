@@ -4,7 +4,7 @@ import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.Alert;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.repository.ZoneRepository;
-import bg.tu_varna.sit.backend.service.SeverityService;
+import bg.tu_varna.sit.backend.service.primary.SeverityService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;

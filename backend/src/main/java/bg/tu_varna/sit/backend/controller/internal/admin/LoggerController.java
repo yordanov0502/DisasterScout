@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.controller.internal.admin;
 
 import bg.tu_varna.sit.backend.models.dto.log.PageLogDTO;
-import bg.tu_varna.sit.backend.service.LogService;
+import bg.tu_varna.sit.backend.service.primary.log.LogService;
 import bg.tu_varna.sit.backend.validation.user.annotation.UsernameRegexAndExistenceLogger;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;

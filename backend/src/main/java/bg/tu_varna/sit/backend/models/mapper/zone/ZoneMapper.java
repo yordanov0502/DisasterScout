@@ -1,7 +1,7 @@
 package bg.tu_varna.sit.backend.models.mapper.zone;
 
 import bg.tu_varna.sit.backend.models.entity.Zone;
-import bg.tu_varna.sit.backend.service.ZoneService;
+import bg.tu_varna.sit.backend.service.primary.ZoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

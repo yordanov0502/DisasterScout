@@ -1,8 +1,8 @@
 package bg.tu_varna.sit.backend.validation.user;
 
-import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.enums.userrole.Role;
-import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.models.entity.user.User;
+import bg.tu_varna.sit.backend.models.enums.user.userrole.Role;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
 import bg.tu_varna.sit.backend.validation.user.annotation.ExistingAdminInCache;
 import com.github.benmanes.caffeine.cache.Cache;
 import jakarta.validation.ConstraintValidator;
@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.CacheManager;
 import org.springframework.stereotype.Component;
 
-import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.user.userrole.Role.ADMIN;
 
 @Component
 @RequiredArgsConstructor

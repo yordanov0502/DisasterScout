@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.config.security;
 
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.service.util.TimeService;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.function.Function;
 
-import static bg.tu_varna.sit.backend.models.enums.userrole.Role.DISPATCHER;
+import static bg.tu_varna.sit.backend.models.enums.user.userrole.Role.DISPATCHER;
 
 @Service
 @RequiredArgsConstructor

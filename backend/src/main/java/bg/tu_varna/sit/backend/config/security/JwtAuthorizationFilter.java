@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.config.security;
 
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.service.util.CookieService;
 import io.jsonwebtoken.ExpiredJwtException;
 import jakarta.servlet.FilterChain;
@@ -22,8 +22,8 @@ import org.springframework.web.util.WebUtils;
 import java.io.IOException;
 import java.util.Date;
 
-import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.ONLINE;
-import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.user.useractivity.Activity.ONLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.userstatus.Status.ACTIVE;
 
 //? This filter is applied every time when someone tries to access a protected endpoint
 //? and if the "someone" has a valid JWT, a UsernamePasswordAuthenticationToken is created for this "someone" and then

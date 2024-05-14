@@ -2,9 +2,9 @@ package bg.tu_varna.sit.backend.controller.internal;
 
 import bg.tu_varna.sit.backend.models.dto.alert.AlertDTO;
 import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.models.enums.severity.SeverityType;
-import bg.tu_varna.sit.backend.service.ZoneService;
+import bg.tu_varna.sit.backend.service.primary.ZoneService;
 import bg.tu_varna.sit.backend.validation.zone.annotation.ZoneIdRegex;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

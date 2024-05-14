@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.validation.user;
 
-import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
 import bg.tu_varna.sit.backend.validation.user.annotation.ExistingEmailC;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;

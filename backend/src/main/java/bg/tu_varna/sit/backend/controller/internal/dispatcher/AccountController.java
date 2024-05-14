@@ -1,9 +1,9 @@
 package bg.tu_varna.sit.backend.controller.internal.dispatcher;
 
 import bg.tu_varna.sit.backend.models.dto.user.UserUpdateDTO;
-import bg.tu_varna.sit.backend.models.entity.User;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.models.mapper.user.UserMapper;
-import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
 import io.swagger.v3.oas.annotations.Operation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;

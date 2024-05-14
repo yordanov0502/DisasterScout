@@ -1,7 +1,11 @@
 package bg.tu_varna.sit.backend.validation.user;
 
 import bg.tu_varna.sit.backend.models.entity.*;
-import bg.tu_varna.sit.backend.service.UserService;
+import bg.tu_varna.sit.backend.models.entity.user.User;
+import bg.tu_varna.sit.backend.models.entity.user.UserActivity;
+import bg.tu_varna.sit.backend.models.entity.user.UserRole;
+import bg.tu_varna.sit.backend.models.entity.user.UserStatus;
+import bg.tu_varna.sit.backend.service.primary.user.UserService;
 import jakarta.validation.ConstraintValidatorContext;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -15,9 +19,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import java.util.*;
 
-import static bg.tu_varna.sit.backend.models.enums.useractivity.Activity.OFFLINE;
-import static bg.tu_varna.sit.backend.models.enums.userrole.Role.ADMIN;
-import static bg.tu_varna.sit.backend.models.enums.userstatus.Status.ACTIVE;
+import static bg.tu_varna.sit.backend.models.enums.user.useractivity.Activity.OFFLINE;
+import static bg.tu_varna.sit.backend.models.enums.user.userrole.Role.ADMIN;
+import static bg.tu_varna.sit.backend.models.enums.user.userstatus.Status.ACTIVE;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;

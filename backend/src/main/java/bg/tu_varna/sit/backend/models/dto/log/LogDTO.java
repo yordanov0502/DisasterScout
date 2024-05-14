@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.models.dto.log;
 
-import bg.tu_varna.sit.backend.models.enums.loglevel.Level;
+import bg.tu_varna.sit.backend.models.enums.log.loglevel.Level;
 
 import java.util.Date;
 
