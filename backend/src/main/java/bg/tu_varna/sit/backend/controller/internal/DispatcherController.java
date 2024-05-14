@@ -3,7 +3,7 @@ package bg.tu_varna.sit.backend.controller.internal;
 import bg.tu_varna.sit.backend.models.dto.alert.AlertDTO;
 import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.User;
-import bg.tu_varna.sit.backend.models.enums.alertseverity.Severity;
+import bg.tu_varna.sit.backend.models.enums.severity.SeverityType;
 import bg.tu_varna.sit.backend.service.ZoneService;
 import bg.tu_varna.sit.backend.validation.zone.annotation.ZoneIdRegex;
 import lombok.RequiredArgsConstructor;
@@ -38,7 +38,7 @@ public class DispatcherController {
     //TODO: when time reached, move ZoneDTO  to method argument
     @PostMapping ("/update/{zoneId}")
     public ResponseEntity<?> updateAlertOfZone(@AuthenticationPrincipal User user ,@PathVariable @ZoneIdRegex String zoneId){
-        zoneService.updateAlertOfZone(user, new ZoneDTO(zoneId,new AlertDTO(Severity.CRITICAL,"Гръмотевични бури")));
+        zoneService.updateAlertOfZone(user, new ZoneDTO(zoneId,new AlertDTO(SeverityType.CRITICAL,"Гръмотевични бури")));
         return ResponseEntity.ok().build();
     }
 

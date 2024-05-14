@@ -84,7 +84,7 @@ public class CaffeineCacheConfig {
 
     private static Cache<Object,Object> severityCache() {
         return Caffeine.newBuilder()
-                .maximumSize(4) //? 4 severities (LOW,MEDIUM,HIGH,CRITICAL)
+                .maximumSize(4) //? 4 severity types (LOW,MEDIUM,HIGH,CRITICAL)
                 .build();
     }
 }

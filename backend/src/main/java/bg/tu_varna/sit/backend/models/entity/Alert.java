@@ -18,8 +18,8 @@ public class Alert {
     private Integer id;
 
     @ManyToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "alert_severity_id")
-    private AlertSeverity alertSeverity;
+    @JoinColumn(name = "severity_id")
+    private Severity severity;
 
     @Column(name = "message", nullable = false)
     private String message;

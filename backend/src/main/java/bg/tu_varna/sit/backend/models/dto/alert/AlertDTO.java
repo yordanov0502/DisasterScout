@@ -1,9 +1,9 @@
 package bg.tu_varna.sit.backend.models.dto.alert;
 
-import bg.tu_varna.sit.backend.models.enums.alertseverity.Severity;
+import bg.tu_varna.sit.backend.models.enums.severity.SeverityType;
 
 //???????????SHOULD THE DTO BE VALIDATED
 public record AlertDTO(
-        Severity severity,
+        SeverityType severityType,
         String message) {
 }

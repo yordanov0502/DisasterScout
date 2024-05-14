@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.models.entity;
 
-import bg.tu_varna.sit.backend.models.enums.alertseverity.Severity;
+import bg.tu_varna.sit.backend.models.enums.severity.SeverityType;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -12,13 +12,13 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(force = true)
 @Entity
-@Table(name = "alert_severities")
-public class AlertSeverity {
+@Table(name = "severities")
+public class Severity {
     @Id
-    @Column(name = "id_alert_severity", nullable = false)
+    @Column(name = "id_severity", nullable = false)
     private final Integer id;
 
     @Column(name = "severity", nullable = false)
     @Enumerated(EnumType.STRING)
-    private final Severity severity;
+    private final SeverityType severityType;
 }

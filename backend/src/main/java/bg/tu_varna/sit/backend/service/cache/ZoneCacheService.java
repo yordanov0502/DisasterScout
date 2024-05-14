@@ -4,11 +4,8 @@ import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.Alert;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.repository.ZoneRepository;
-import bg.tu_varna.sit.backend.service.AlertSeverityService;
-import com.github.benmanes.caffeine.cache.Cache;
-import jakarta.annotation.PostConstruct;
+import bg.tu_varna.sit.backend.service.SeverityService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -23,7 +20,7 @@ import java.util.List;
 public class ZoneCacheService {
 
     private final ZoneRepository zoneRepository;
-    private final AlertSeverityService alertSeverityService;
+    private final SeverityService severityService;
     //private final CacheManager cacheManager;
 
     //? This method is used for both - adding new / updating existing alert of zone.
@@ -40,7 +37,7 @@ public class ZoneCacheService {
 
         Zone updatedZone = zone.toBuilder()
                 .alert(Alert.builder()
-                        .alertSeverity(alertSeverityService.getAlertSeverityBySeverity(zoneDTO.alertDTO().severity()))
+                        .severity(severityService.getSeverityBySeverityType(zoneDTO.alertDTO().severityType()))
                         .message(zoneDTO.alertDTO().message())
                         .build())
                 .build();
