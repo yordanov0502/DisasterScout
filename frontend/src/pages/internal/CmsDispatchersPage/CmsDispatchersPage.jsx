@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
 import { useUserContext } from "../../../hooks/useUserContext";
@@ -26,9 +26,10 @@ import "./cms_dispatchers_page.scss";
 export const CmsDispatchersPage = () => {
   const { authenticatedUser, isUserContextEmpty } = useUserContext();
   const navigate = useNavigate();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [isLoadingComponent, setIsLoadingComponent] = useState(true);
-  const [pageNumber, setPageNumber] = useState(Number(sessionStorage.getItem("dispatchers-page-number")) || 1);
-  const [pages, setPages] = useState(Number(sessionStorage.getItem("dispatchers-pages")) || 1);
+  const [pageNumber, setPageNumber] = useState(Number(searchParams.get("page")) || 1);
+  const [pages, setPages] = useState(1);
   const [rows, setRows] = useState([]);
   const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
   const { isRequestSent, setIsRequestSent } = useIsRequestSent();
@@ -71,23 +72,6 @@ export const CmsDispatchersPage = () => {
     setErrorForm(processDispatcherForm(dispatcherForm));
   }, [dispatcherForm]);
 
-  useEffect(() => {
-    //? Initialize(eventually depending on the if statements) session storage items(key,value)
-    //? and state(eventually depending on the if statements) once on mount.
-    if (sessionStorage.getItem("dispatchers-page-number") === null) {
-      sessionStorage.setItem("dispatchers-page-number", pageNumber);
-    }
-
-    if (sessionStorage.getItem("dispatchers-pages") === null) {
-      sessionStorage.setItem("dispatchers-pages", pages);
-    }
-
-    //? Cleanup function - on page unmount(when navigating to different page/route, NOT ON PAGE RELOAD) it deletes all session storage items related to CmsDispatchersPage.
-    return () => {
-      sessionStorage.removeItem("dispatchers-page-number");
-      sessionStorage.removeItem("dispatchers-pages");
-    };
-  }, []);
 
   //? Used in order to preven dispatchers from accessing the CmsDispatchersPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
   useEffect(() => {
@@ -120,7 +104,6 @@ export const CmsDispatchersPage = () => {
       });
 
       setPages(newPages);
-      sessionStorage.setItem("dispatchers-pages", newPages);
       setRows(newRows);
       setIsLoadingComponent(false);
       setBackdropOpen(false);
@@ -146,6 +129,29 @@ export const CmsDispatchersPage = () => {
       setBackdropOpen(false);
     }
   }, [status, data, error]);
+
+  useEffect(() => {
+
+    if(!searchParams.has("page")) 
+    {
+      setSearchParams({ page: 1 });
+    }
+    else
+    {
+      const newPageNumber = Number(searchParams.get("page"));
+  
+      //? Validate page number
+      if (!Number.isInteger(newPageNumber) || newPageNumber < 1) {
+        navigate('*');
+        return;
+      }
+  
+      if (newPageNumber !== pageNumber) {
+        setPageNumber(newPageNumber);
+      }
+    }
+
+  }, [searchParams]);
 
   
 
@@ -454,7 +460,7 @@ export const CmsDispatchersPage = () => {
     //! event here is used only as argument to avoid "Converting circular structure to JSON" error
     if (newPageNumber !== pageNumber) {
       setPageNumber(newPageNumber); //? This will trigger the useQuery fetch because of the queryKey dependency
-      sessionStorage.setItem("dispatchers-page-number", newPageNumber);
+      setSearchParams({page: newPageNumber});
       closeSnackbar();
     }
   };
