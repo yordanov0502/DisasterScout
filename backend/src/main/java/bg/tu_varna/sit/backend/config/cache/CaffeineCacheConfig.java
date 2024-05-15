@@ -25,6 +25,7 @@ public class CaffeineCacheConfig {
         cacheManager.registerCustomCache("action", actionCache());
         cacheManager.registerCustomCache("severity", severityCache());
         cacheManager.registerCustomCache("state", stateCache());
+        cacheManager.registerCustomCache("issue",issueCache());
 
         //! To avoid dynamic caches and be sure each name is assigned to a specific config (dynamic = false)
         //! throws error when tries to use a new cache
@@ -91,7 +92,13 @@ public class CaffeineCacheConfig {
 
     private static Cache<Object,Object> stateCache() {
         return Caffeine.newBuilder()
-                .maximumSize(5) //? 5 state types (PENDING, FRESH, FOR_REVALUATION, INACTIVE, ARCHIVED)
+                .maximumSize(5) //? 5 report state types (PENDING, FRESH, FOR_REVALUATION, INACTIVE, ARCHIVED)
+                .build();
+    }
+
+    private static Cache<Object,Object> issueCache() {
+        return Caffeine.newBuilder()
+                .maximumSize(45) //? 45 report issues
                 .build();
     }
 }
