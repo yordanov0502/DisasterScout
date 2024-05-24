@@ -1,6 +1,7 @@
 import { Route, Routes } from "react-router-dom";
 import { ProtectedRoute } from "./ProtectedRoute.jsx";
 import { BorderRoute } from "./BorderRoute.jsx";
+import { PublicRoute } from "./PublicRoute.jsx";
 import { LoginPage } from "../pages/external/LoginPage";
 import { ForgotPasswordPage } from "../pages/external/ForgotPasswordPage";
 import { CmsDashboardPage } from "../pages/internal/CmsDashboardPage/index.js";
@@ -10,6 +11,7 @@ import { HomePage } from "../pages/external/HomePage";
 import { NotFoundPage } from "../pages/external/NotFoundPage"; 
 import { CmsLoggerPage } from "../pages/internal/CmsLoggerPage";
 import { CmsDispatchersPage } from "../pages/internal/CmsDispatchersPage";
+import { SubmitReportPage } from "../pages/external/SubmitReportPage";
 
 
 export const Router = () => {
@@ -53,7 +55,17 @@ export const Router = () => {
       }/>
 
 
-      <Route index element={<HomePage />} />
+      <Route index element={
+      <PublicRoute>
+      <HomePage />
+      </PublicRoute>
+      }/>
+      <Route path="/submit-report" element={
+      <PublicRoute>
+      <SubmitReportPage />
+      </PublicRoute>
+      }/>
+
       <Route path="*" element={<NotFoundPage />} />
     </Routes>    
   );

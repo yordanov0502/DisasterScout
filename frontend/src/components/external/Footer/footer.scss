@@ -1,0 +1,40 @@
+.footer *{
+    padding: 0; /*The styling is applied to all elements inside the .footer class*/
+  }
+  .footer{
+    display: flex;
+    box-sizing: border-box;
+    position: relative;
+    left: 0;
+    bottom: 0;
+    height: 70px;
+    width: 100%;
+    background: #2b2d2c;
+    padding: 6px 14px;
+    transition: all 0.5s ease;
+    z-index: 3;
+    justify-content: center !important; /* Center content horizontally */
+  }
+
+  .logo-footer{
+    position: relative;
+    top: -4.2px; /*icon vertical position in the sidebar*/
+    background-image: url(/src/assets/images/sidebarLogo.svg);
+    background-size: cover;
+    background-position: center;
+    height: 67px;
+    width: 67px;
+  }
+  
+
+  /* .sidebar .logo-details-navbar .icon-navbar{
+    display: flex;
+    opacity: 1;
+    transition: all 0.4s ease;
+  
+    background-image: url(/src/assets/images/sidebarLogo.svg);
+    background-size: cover;
+    background-position: center;
+    height: 133px;
+    width: 133px;
+  } */

@@ -1,0 +1,47 @@
+.layout2 {
+    min-height: 100vh;
+  
+    display: flex;
+
+    flex-direction: column;
+  }
+  
+  .section2 {
+    min-height: 100vh; 
+    
+    position: relative;
+    transition: margin-left 0.5s ease;
+  
+    margin-top: 70px;
+    /* margin-left: 78px;  */
+    /* padding-left: 23px; */
+    
+    flex-grow: 1; 
+    z-index: 2; 
+    background-color: white;
+  }
+  
+  /*.section1.shrank{}*/
+  /* .navbar.open ~ .section1 {
+    margin-left: 250px; 
+  } */
+  
+
+  .section2-mobile{
+    min-height: 100vh; 
+  
+    /*! TODO: create a solution for equal space between navbar and section, because on nest and nest hub devices it looks broken */
+    margin-top: 17%;
+    position: relative;
+    /* transition: margin-left 0.5s ease; */
+   
+    flex-grow: 1; 
+    z-index: 2; 
+    background-color: white;
+  }
+
+  /*! No need to have it as in the scss of footer exists -> position:relative*/
+  /* Push the footer to the bottom */
+  /* .footer {
+    margin-top: auto; 
+  } */

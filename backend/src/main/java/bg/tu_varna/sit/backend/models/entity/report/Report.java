@@ -29,7 +29,7 @@ public class Report {
     private ReportIssue reportIssue;
 
     @Column(name = "description", nullable = false, columnDefinition = "TEXT")
-    private String description; //TODO: IMPLEMENT REGEX FOR LENGTH ON FRONTEND (maximum of 1000 words)
+    private String description;
 
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "severity_id", nullable = false)
@@ -52,7 +52,6 @@ public class Report {
     @JoinColumn(name = "reporter_id", nullable = false)
     private Reporter reporter;
 
-    //TODO: review whether 500 characters for image_url from FIREBASE will be sufficient
     //* Image is recommended for report integrity, but is left optional
     @Column(name = "image_url", length = 500, nullable = true)
     private String imageUrl;
@@ -63,12 +62,12 @@ public class Report {
     private String locationUrl;
 
     @Column(name = "address", nullable = false)
-    private String address; //? ZoneName,[city,village,lake,highway etc,], more...
+    private String address; //? ZoneName~[city or village or highway]~more info
 
-    @Column(name = "reported_at", nullable = false)
-    private Date reportedAt; //? Date and time when the report was reported by a reporter.
+    @Column(name = "submitted_at", nullable = false)
+    private Date submittedAt; //? Date and time when the report was submitted by a reporter.
 
-    @Column(name = "published_at", nullable = false)
+    @Column(name = "published_at", nullable = true) //? It is null initially when it is reported
     private Date publishedAt; //? Date and time when dispatcher accepted the report. (Made any modifications if necessary, set its reportState to fresh and has become publicly visible.)
 
     @Column(name = "expires_at", nullable = false)

@@ -1,7 +1,11 @@
-import { Autocomplete, TextField } from "@mui/material";
+import { useEffect } from "react";
+import { Autocomplete, Box, TextField } from "@mui/material";
 import { ComponentLoader } from "../../Loaders/ComponentLoader";
-import { getAllZones } from "../../../services/zoneService";
+import { getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import "./settings_component2.scss";
+
+//? Global variable to act as storage for already loaded local images (zone badges)
+const loadedImages = {};
 
 export const SettingsComponent2 = ({ isLoading2, 
                                      role, 
@@ -20,6 +24,17 @@ export const SettingsComponent2 = ({ isLoading2,
                                      comboBoxKey,
                                      onPressClearAllZonesCaches }) => {
  
+    //? Used for loading the images of zones from from combobox in advance, so when opened they to be already loaded
+    useEffect(() => {
+      const zones = getAllZones();
+      zones.forEach((zone) => {
+        const img = new Image();
+        const url = getBadgeOfZone(zone.zoneId);
+        img.src = url;
+        loadedImages[zone.zoneId] = img; //* stores the loaded local image(zone badge) to prevent image loading again and again
+      });
+    }, []);
+                                      
     if(isLoading2)
     {
     return (
@@ -72,16 +87,31 @@ export const SettingsComponent2 = ({ isLoading2,
          <Autocomplete
           key={comboBoxKey} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the CmsSettingsPage
           disablePortal
-          noOptionsText={"Няма такава област"}
+          noOptionsText={"Няма такава опция"}
           id="combo-box-zones-cache"
           options={getAllZones()}
-          sx={{ width: 200}}
+          sx={{
+            width: 200,
+            "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
+            {backgroundColor: "#b5ffcc !important"}
+           }}
           getOptionLabel={(option) => option.label}
           isOptionEqualToValue={(option, selectedOption) => option.zoneId === selectedOption.zoneId}
           onChange={(event, selectedOption) => 
             {setSelectedZoneId(selectedOption ? selectedOption.zoneId : null); 
              setComboBoxError(false);
             }}
+            renderOption={(props, option) => (
+              <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                <img
+                  loading="eager"
+                  width="30"
+                  src={loadedImages[option.zoneId].src} //? Use already loaded image
+                  alt=""
+                />
+                {option.label}
+              </Box>
+            )}
           renderInput={
             (params) => 
             <TextField

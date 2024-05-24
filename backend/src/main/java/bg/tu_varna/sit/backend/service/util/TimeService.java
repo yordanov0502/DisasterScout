@@ -28,7 +28,8 @@ public class TimeService {
     public Date getUnixEpochDateAndTime(){return new Date(0);}
 
     //? This method INCREMENT hours to the given date argument and returns a new Date object with the incremented hours
-    //* Used only in the JwtService to set when a certain jwt will expire.(up until when jwt it is valid)
+    //* Used in the JwtService to set when a certain jwt will expire.(up until when jwt it is valid)
+    //* Used also for reports expiry field
     public Date addHoursToDateAndTime(Date date, int hours){
         return DateUtils.addHours(date,hours);
     }

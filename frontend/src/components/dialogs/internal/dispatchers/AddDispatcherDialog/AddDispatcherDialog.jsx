@@ -1,10 +1,11 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Dialog from "@mui/material/Dialog";
 import DialogActions from "@mui/material/DialogActions";
 import DialogTitle from "@mui/material/DialogTitle";
 import Button from "@mui/material/Button";
 import {
   Autocomplete,
+  Box,
   FormControl,
   IconButton,
   InputAdornment,
@@ -14,8 +15,11 @@ import {
   TextField,
 } from "@mui/material";
 import { Visibility, VisibilityOff } from "@mui/icons-material";
-import { getAllZones } from "../../../../../services/zoneService";
+import { getAllZones, getBadgeOfZone } from "../../../../../services/zoneService";
 import "./add_dispatcher_fields.scss";
+
+//? Global variable to act as storage for already loaded local images (zone badges)
+const loadedImages = {};
 
 export const AddDispatcherDialog = ({ open, 
                                       onAgree, 
@@ -40,6 +44,17 @@ export const AddDispatcherDialog = ({ open,
 
   const handleAgree = () => {onAgree();};
   const handleClose = () => {onDisagree();};
+
+  //? Used for loading the images of zones from from combobox in advance, so when opened they to be already loaded
+  useEffect(() => {
+    const zones = getAllZones();
+    zones.forEach((zone) => {
+      const img = new Image();
+      const url = getBadgeOfZone(zone.zoneId);
+      img.src = url;
+      loadedImages[zone.zoneId] = img; //* stores the loaded local image(zone badge) to prevent image loading again and again
+    });
+  }, []);
 
   return (
     <Dialog
@@ -178,10 +193,14 @@ export const AddDispatcherDialog = ({ open,
           <Autocomplete
             key={comboBoxKey} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the CmsDispatchersPage
             disablePortal
-            noOptionsText={"Няма такава област"}
-            id="combo-box-zones-cache"
+            noOptionsText={"Няма такава опция"}
+            id="combo-box-zones-add-dispatcher"
             options={getAllZones()}
-            sx={{ width: "222px", marginTop: "8px" }}
+            sx={{
+              width: "222px", marginTop: "8px",
+              "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
+              {backgroundColor: "#b5ffcc !important"}
+             }}
             getOptionLabel={(option) => option.label}
             isOptionEqualToValue={(option, selectedOption) =>
               option.zoneId === selectedOption.zoneId
@@ -198,6 +217,17 @@ export const AddDispatcherDialog = ({ open,
                 placement="top-start"
                 {...props}
               />
+            )}
+            renderOption={(props, option) => (
+              <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                <img
+                  loading="eager"
+                  width="30"
+                  src={loadedImages[option.zoneId].src} //? Use already loaded image
+                  alt=""
+                />
+                {option.label}
+              </Box>
             )}
             renderInput={(params) => (
               <TextField
