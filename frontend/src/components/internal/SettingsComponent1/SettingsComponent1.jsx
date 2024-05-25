@@ -6,10 +6,9 @@ import InputAdornment from '@mui/material/InputAdornment';
 import IconButton from '@mui/material/IconButton';
 import Visibility from '@mui/icons-material/Visibility';
 import VisibilityOff from '@mui/icons-material/VisibilityOff';
-import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import "./settings_component1.scss";
 
-export const SettingsComponent1 = ({ isLoading1, changePasswordForm, errorForm, errorMessage, handleInput, onPressChangePassword, isRequestSent, resetChangePasswordForm }) => {
+export const SettingsComponent1 = ({ changePasswordForm, errorForm, errorMessage, handleInput, onPressChangePassword, isRequestSent, resetChangePasswordForm }) => {
  
     const [showField1, setShowField1] = useState(false); //? currentPassword
     const [showField2, setShowField2] = useState(false); //? newPassword
@@ -38,17 +37,6 @@ export const SettingsComponent1 = ({ isLoading1, changePasswordForm, errorForm, 
       else if (field === 'field2') {setIsField2Focused(false);}
       else if (field === 'field3') {setIsField3Focused(false);}
     };
-
-    if(isLoading1)
-    {
-    return (
-      <div className="settings_component1">
-        <div className="settings_component1__loader-box">
-          <ComponentLoader />
-        </div>
-      </div>
-    );
-    }
 
   return (
     //! noValidate removes default HTML5 validation for empty fields

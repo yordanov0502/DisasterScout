@@ -12,9 +12,11 @@ import LocationOnIcon from "@mui/icons-material/LocationOn";
 import RestoreIcon from "@mui/icons-material/Restore";
 import PersonIcon from "@mui/icons-material/Person";
 import SettingsIcon from "@mui/icons-material/Settings";
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GroupsIcon from "@mui/icons-material/Groups";
 import AutoStoriesIcon from "@mui/icons-material/AutoStories";
 import LogoutIcon from "@mui/icons-material/Logout";
+
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { logoutRequest } from "../../../services/userService";
 import { useUserContext } from "../../../hooks/useUserContext";
@@ -23,10 +25,10 @@ import "./main_speed_dial.css";
 const adminButtons = [
   { icon: <DashboardIcon />, name: "Табло" },
   { icon: <DescriptionIcon />, name: "Доклади" },
-  { icon: <LocationOnIcon />, name: "Области" },
   { icon: <RestoreIcon />, name: "Хронология" },
   { icon: <PersonIcon />, name: "Акаунт" },
   { icon: <SettingsIcon />, name: "Настройки" },
+  { icon: <PersonAddIcon/>, name: "Нов диспечер" },
   { icon: <GroupsIcon />, name: "Диспечери" },
   { icon: <AutoStoriesIcon />, name: "Логър" },
   { icon: <LogoutIcon />, name: "Изход" },
@@ -60,6 +62,7 @@ export const MainSpeedDial = () => {
     if (path.includes("/cms-dashboard")) setActiveButton("Табло");
     else if (path.includes("/cms-account")) setActiveButton("Акаунт");
     else if (path.includes("/cms-settings")) setActiveButton("Настройки");
+    else if (path.includes("/cms-new-dispatcher")) setActiveButton("Нов диспечер");
     else if (path.includes("/cms-dispatchers")) setActiveButton("Диспечери");
     else if (path.includes("/cms-logger")) setActiveButton("Логър");
     // ...
@@ -119,6 +122,10 @@ export const MainSpeedDial = () => {
       case "Настройки":
         navigate("/cms-settings");
         setActiveButton("Настройки");
+        break;
+      case "Нов диспечер":
+        navigate("/cms-new-dispatcher");
+        setActiveButton("Нов диспечер");
         break;
       case "Диспечери":
         navigate("/cms-dispatchers");

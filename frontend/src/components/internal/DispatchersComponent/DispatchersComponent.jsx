@@ -7,8 +7,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-import { Button, IconButton, Pagination } from "@mui/material";
-import PersonAddIcon from '@mui/icons-material/PersonAdd';
+import { IconButton, Pagination } from "@mui/material";
 import LockIcon from '@mui/icons-material/Lock';
 import LockOpenIcon from '@mui/icons-material/LockOpen';
 import EditLocationAltIcon from '@mui/icons-material/EditLocationAlt';
@@ -21,12 +20,11 @@ export const DispatchersComponent = ({status,
                                       handlePageChange,
                                       pageNumber,
                                       pages,
-                                      rows,
-                                      handleOpenAddDispatcherDialog,        
+                                      rows,   
                                       handleOpenLockDialog,
                                       handleOpenUnlockDialog,
                                       handleOpenUpdateZonesDialog,
-                                      handleOpenDeleteDialog,}) => {
+                                      handleOpenDeleteDialog}) => {
 
     const getStatusDivName = (status) => {
         switch(status) {
@@ -157,51 +155,7 @@ export const DispatchersComponent = ({status,
     <div className="dispatchers_component">
 
     <div className="dispatchers_component__header">
-     
-    <Button  
-    id="add-dispatcher-button"
-    sx={{
-    display: 'flex',
-    alignItems: 'center',
-    justifyContent: 'center',
-    cursor: 'pointer',
-    position: 'relative',
-    mt: 1,
-    mb: 1,
-    width: 185,
-    height: 56,
-    borderRadius: 1,
-    textTransform: 'none',
-    fontSize: '18px',
-    fontFamily: '"Arial", sans-serif',
-    color: 'common.white',
-    textDecoration: 'none',
-    backgroundColor: '#009f58',
-    border: 'none',
-    borderBottom: '6px solid #00693a',
-    textShadow: '0px -2px #266540',
-    transition: 'all 0.1s',
-    '&:hover': {
-      backgroundColor: '#00b463',
-    },
-    '&:active': {
-      transform: 'translateY(1px)',
-      borderBottom: '2px solid #00693a',
-    },
-    '& .MuiButton-startIcon': {
-      display: 'flex',
-      alignItems: 'center',
-      justifyContent: 'center',
-      ml: '-4px', 
-      mr: 1.375, 
-      transform: 'translateY(-1.6px)',
-    }
-    }} 
-    disabled={isLoadingComponent} 
-    onClick={handleOpenAddDispatcherDialog} 
-    startIcon={<PersonAddIcon/>}>
-    Нов диспечер
-    </Button>
+     {/*this is div is empty because it was previously used for button about addDispatcherDialog*/}
     </div>
     
     <TableContainer component={Paper}>

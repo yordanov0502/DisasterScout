@@ -7,11 +7,11 @@ import { processErrorForm, processErrorFormOnSubmit, validateAccountForm } from 
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { updateAccountRequest } from "../../../services/userService";
+import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
 import "./cms_account_page.scss";
 
 export const CmsAccountPage = () => {
   const { authenticatedUser, isUserContextEmpty, updateUserContext } = useUserContext();
-  const [isLoading, setIsLoading] = useState(true); //? isLoading is based whether UserContext is empty or not
   const [accountForm, setAccountForm] = useState({
     firstName: authenticatedUser.firstName || "",
     lastName: authenticatedUser.lastName || "",
@@ -27,6 +27,7 @@ export const CmsAccountPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { isRequestSent, setIsRequestSent } = useIsRequestSent();
   const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
+  const [backdropOpen, setBackdropOpen] = useState(false);
   
   const setInitialData = () => {
     setAccountForm({
@@ -40,7 +41,6 @@ export const CmsAccountPage = () => {
 
   useEffect(() => { 
     const isUContextEmpty = isUserContextEmpty(); //? return true/false
-    setIsLoading(isUContextEmpty);
     if(!isUContextEmpty) //? if user context is NOT empty
     { 
       setInitialData();
@@ -58,7 +58,7 @@ export const CmsAccountPage = () => {
     mutationFn: updateAccountRequest,
     onMutate: () => {
       setIsRequestSent(true);
-      setIsLoading(true);
+      setBackdropOpen(true);
     },
     onSuccess: (response) => {
       updateUserContext(response.data);
@@ -85,7 +85,7 @@ export const CmsAccountPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
-      setIsLoading(false);
+      setBackdropOpen(false);
     }
   });
   
@@ -120,7 +120,6 @@ export const CmsAccountPage = () => {
   return (
     <div className="cms_account_page">
       <AccountComponent
-      isLoading={isLoading}
       accountForm={accountForm}
       errorForm={errorForm}
       errorMessage={errorMessage}
@@ -130,6 +129,8 @@ export const CmsAccountPage = () => {
       isRequestSent={isRequestSent}
       resetAccountForm={setInitialData}
       />
+
+      <BackdropLoader open={backdropOpen} />
 
       <Snackbar 
         anchorOrigin={{

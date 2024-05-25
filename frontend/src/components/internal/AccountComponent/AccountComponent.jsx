@@ -1,20 +1,8 @@
 import { TextField } from "@mui/material";
-import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import "./account_component.scss";
 
-export const AccountComponent = ({ isLoading, accountForm, errorForm, errorMessage, handleInput, role, onPressUpdate, isRequestSent, resetAccountForm }) => {
- 
-  if(isLoading)
-  {
-  return (
-    <div className="account_component">
-      <div className="account_component__loader-box">
-        <ComponentLoader />
-      </div>
-    </div>
-  );
-  }
-  
+export const AccountComponent = ({ accountForm, errorForm, errorMessage, handleInput, role, onPressUpdate, isRequestSent, resetAccountForm }) => {
+
   return (
     //! noValidate removes default HTML5 validation for empty fields
     <form noValidate className="account_component" onSubmit={onPressUpdate}>

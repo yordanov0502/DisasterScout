@@ -8,12 +8,11 @@ import { changePasswordRequest, clearAdminCacheRequest, clearAllUsersCacheReques
 import { SettingsComponent1 } from "../../../components/internal/SettingsComponent1";
 import { SettingsComponent2 } from "../../../components/internal/SettingsComponent2";
 import { useUserContext } from "../../../hooks/useUserContext";
+import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
 import "./cms_settings_page.scss";
 
 export const CmsSettingsPage = () => {
   const { authenticatedUser, isUserContextEmpty } = useUserContext();
-  const [isLoading1, setIsLoading1] = useState(true);
-  const [isLoading2, setIsLoading2] = useState(true);
   const [changePasswordForm, setChangePasswordForm] = useState({
     currentPassword: "",
     newPassword: "",
@@ -27,6 +26,8 @@ export const CmsSettingsPage = () => {
   const [errorMessage, setErrorMessage] = useState("");
   const { isRequestSent, setIsRequestSent } = useIsRequestSent();
   const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
+
+  const [backdropOpen, setBackdropOpen] = useState(false);
 
 
   //**********************SettingsComponent2**********************
@@ -44,13 +45,7 @@ export const CmsSettingsPage = () => {
   }, [username]);
   //**********************SettingsComponent2**********************
 
-
-  useEffect(() => { 
-    const isUContextEmpty = isUserContextEmpty(); //? return true/false
-    setIsLoading1(isUContextEmpty);
-    setIsLoading2(isUContextEmpty);
-  }, [authenticatedUser]);
-
+  
   useEffect(() => {
       setErrorForm(processChangePasswordErrorForm(changePasswordForm));
   }, [changePasswordForm]);
@@ -68,7 +63,7 @@ export const CmsSettingsPage = () => {
     mutationFn: changePasswordRequest,
     onMutate: () => {
       setIsRequestSent(true);
-      setIsLoading1(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       resetChangePasswordForm();
@@ -101,7 +96,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
-      setIsLoading1(false);
+      setBackdropOpen(false);
     }
   });
   
@@ -143,6 +138,7 @@ export const CmsSettingsPage = () => {
     mutationFn: clearMyCacheRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       showSnackbar("Операцията е извършена успешно.", "success","bottom","right");
@@ -152,6 +148,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setBackdropOpen(false);
     }
   });
   const onPressClearMyCache = (event) => {
@@ -168,6 +165,7 @@ export const CmsSettingsPage = () => {
     mutationFn: clearAdminCacheRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       showSnackbar("Операцията е извършена успешно.", "success","bottom","right");
@@ -177,6 +175,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setBackdropOpen(false);
     }
   });
   const onPressClearAdminCache = (event) => {
@@ -195,6 +194,7 @@ export const CmsSettingsPage = () => {
     mutationFn: clearDispatcherCacheRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       setUsername("");
@@ -218,6 +218,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setBackdropOpen(false);
     }
   });
   const onPressClearDispatcherCache = (event) => {
@@ -240,6 +241,7 @@ export const CmsSettingsPage = () => {
     mutationFn: clearAllUsersCacheRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       showSnackbar("Операцията е извършена успешно.", "success","bottom","right");
@@ -249,6 +251,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setBackdropOpen(false);
     }
   });
   const onPressClearAllUsersCache = (event) => {
@@ -265,6 +268,7 @@ export const CmsSettingsPage = () => {
     mutationFn: clearZoneCacheRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       setSelectedZoneId(null);
@@ -276,6 +280,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setBackdropOpen(false);
     }
   });
   const onPressClearZoneCache = (event) => {
@@ -297,6 +302,7 @@ export const CmsSettingsPage = () => {
     mutationFn: clearAllZonesCachesRequest,
     onMutate: () => {
       setIsRequestSent(true);
+      setBackdropOpen(true);
     },
     onSuccess: () => {
       showSnackbar("Операцията е извършена успешно.", "success","bottom","right");
@@ -306,6 +312,7 @@ export const CmsSettingsPage = () => {
     },
     onSettled: () => {
       setIsRequestSent(false);
+      setBackdropOpen(false);
     }
   });
   const onPressClearAllZonesCaches = (event) => {
@@ -326,7 +333,6 @@ export const CmsSettingsPage = () => {
   return (
     <div className="cms_settings_page">
      <SettingsComponent1
-      isLoading1={isLoading1}
       changePasswordForm={changePasswordForm}
       errorForm={errorForm}
       errorMessage={errorMessage}
@@ -337,7 +343,6 @@ export const CmsSettingsPage = () => {
       />
 
      <SettingsComponent2
-      isLoading2={isLoading2}
       role={ !isUserContextEmpty() ? authenticatedUser.role : ""}
       isRequestSent={isRequestSent}
       onPressClearMyCache={onPressClearMyCache}
@@ -354,6 +359,8 @@ export const CmsSettingsPage = () => {
       comboBoxKey={comboBoxKey}
       onPressClearAllZonesCaches={onPressClearAllZonesCaches}
       />
+
+     <BackdropLoader open={backdropOpen} />
 
      <Snackbar 
         anchorOrigin={{

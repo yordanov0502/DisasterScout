@@ -1,13 +1,12 @@
 import { useEffect } from "react";
 import { Autocomplete, Box, TextField } from "@mui/material";
-import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import { getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import "./settings_component2.scss";
 
 //? Global variable to act as storage for already loaded local images (zone badges)
 const loadedImages = {};
 
-export const SettingsComponent2 = ({ isLoading2, 
+export const SettingsComponent2 = ({  
                                      role, 
                                      isRequestSent, 
                                      onPressClearMyCache, 
@@ -35,17 +34,6 @@ export const SettingsComponent2 = ({ isLoading2,
       });
     }, []);
                                       
-    if(isLoading2)
-    {
-    return (
-      <div className="settings_component2">
-        <div className="settings_component2__loader-box">
-          <ComponentLoader />
-        </div>
-      </div>
-    );
-    }
-
   return (
     <div className="settings_component2">
 

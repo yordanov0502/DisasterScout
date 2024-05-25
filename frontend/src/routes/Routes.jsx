@@ -12,7 +12,7 @@ import { NotFoundPage } from "../pages/external/NotFoundPage";
 import { CmsLoggerPage } from "../pages/internal/CmsLoggerPage";
 import { CmsDispatchersPage } from "../pages/internal/CmsDispatchersPage";
 import { SubmitReportPage } from "../pages/external/SubmitReportPage";
-
+import { CmsNewDispatcherPage } from "../pages/internal/CmsNewDispatcherPage";
 
 export const Router = () => {
   return (
@@ -41,6 +41,11 @@ export const Router = () => {
       <Route path="/cms-settings" element={
       <ProtectedRoute>
       <CmsSettingsPage />
+      </ProtectedRoute>
+      }/>
+      <Route path="/cms-new-dispatcher" element={
+      <ProtectedRoute>
+      <CmsNewDispatcherPage />
       </ProtectedRoute>
       }/>
       <Route path="/cms-dispatchers" element={

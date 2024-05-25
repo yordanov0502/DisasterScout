@@ -9,6 +9,7 @@ import LocationOnIcon from '@mui/icons-material/LocationOn';
 import RestoreIcon from '@mui/icons-material/Restore';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
+import PersonAddIcon from '@mui/icons-material/PersonAdd';
 import GroupsIcon from '@mui/icons-material/Groups';
 import AutoStoriesIcon from '@mui/icons-material/AutoStories';
 import LogoutIcon from '@mui/icons-material/Logout';
@@ -34,6 +35,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
     else if (path.includes("/cms-account")) setActiveButton('cms-account');
     else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
+    else if (path.includes("/cms-new-dispatcher")) setActiveButton('cms-new-dispatcher');
     else if (path.includes("/cms-dispatchers")) setActiveButton('cms-dispatchers');
     else if (path.includes("/cms-logger")) setActiveButton('cms-logger');
     // ...
@@ -97,6 +99,9 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
             <span className="tooltip">Доклади</span>
           </a>
         </li>
+       
+        { authenticatedUser.role === "DISPATCHER" && ( // TODO: Implement navigation to dashboard if admin types url for accessing the page(Just like I did for the dispatchers and logger page to prevent access from dispatchers via url)
+      <>
         <li className={activeButton === 'cms-zones' ? 'active' : ''} onClick={() => handleButtonClick('cms-zones')}>
           <a>
             <i><LocationOnIcon/></i>
@@ -104,6 +109,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
             <span className="tooltip">Области</span>
           </a>
         </li>
+      </>
+      )
+    }
+        
+       
         <li className={activeButton === 'cms-chronology' ? 'active' : ''} onClick={() => handleButtonClick('cms-chronology')}>
           <a>
             <i><RestoreIcon/></i>
@@ -128,6 +138,13 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
 
 { authenticatedUser.role === "ADMIN" && (
   <>
+        <li className={activeButton === 'cms-new-dispatcher' ? 'active' : ''} onClick={() => handleButtonClick('cms-new-dispatcher')}>
+          <Link to={"/cms-new-dispatcher"}>
+            <i className="new-dispatcher"><PersonAddIcon/></i>
+            <span className="links_name" id="new-dispatcher-link_name">Нов диспечер</span>
+            <span className="tooltip" id="new-dispatcher-tooltip">Нов диспечер</span>
+            </Link>
+        </li>
         <li className={activeButton === 'cms-dispatchers' ? 'active' : ''} onClick={() => handleButtonClick('cms-dispatchers')}>
           <Link to={"/cms-dispatchers"}>
             <i className="dispatcherss"><GroupsIcon/></i>

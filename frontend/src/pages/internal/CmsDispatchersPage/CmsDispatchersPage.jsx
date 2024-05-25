@@ -6,7 +6,6 @@ import { useUserContext } from "../../../hooks/useUserContext";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { DispatchersComponent } from "../../../components/internal/DispatchersComponent";
 import {
-  addNewDispatcherRequest,
   deleteDispatcherRequest,
   getDispatchersFromPageRequest,
   lockDispatcherRequest,
@@ -15,12 +14,10 @@ import {
 } from "../../../services/userService";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
-import { AddDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/AddDispatcherDialog";
 import { LockDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/LockDispatcherDialog";
 import { UnlockDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/UnlockDispatcherDialog";
 import { UpdateDispatcherZonesDialog } from "../../../components/dialogs/internal/dispatchers/UpdateDispatcherZonesDialog";
 import { DeleteDispatcherDialog } from "../../../components/dialogs/internal/dispatchers/DeleteDispatcherDialog";
-import { processDispatcherForm, processErrorDispatcherFormOnServerResponse, processErrorDispatcherFormOnSubmit, validateDispatcherFormOnSubmit } from "../../../validations/userRegexValidation";
 import "./cms_dispatchers_page.scss";
 
 export const CmsDispatchersPage = () => {
@@ -37,40 +34,16 @@ export const CmsDispatchersPage = () => {
   const [lockDialogOpen, setLockDialogOpen] = useState(false);
   const [unlockDialogOpen, setUnlockDialogOpen] = useState(false);
   const [updateZonesDialogOpen, setUpdateZonesDialogOpen] = useState(false);
-  const [addDispatcherDialogOpen, setAddDispatcherDialogOpen] = useState(false);
   const [selectedZones, setSelectedZones] = useState([]);
   const [selectedDispatcherId, setSelectedDispatcherId] = useState(null);
   const [backdropOpen, setBackdropOpen] = useState(false);
-  const [comboBoxError, setComboBoxError] = useState(false);
-  const [comboBoxKey, setComboBoxKey] = useState(false); //? Used to just change the key of the comboBox from SettingsComponent2 on successfull submit. Doesn't matter whether it is true/false, it just has to change on successfull submit in order the comboBox to be cleared.   
-  const [selectedZoneId, setSelectedZoneId] = useState(null);
-  const [errorMessage, setErrorMessage] = useState("");
-  const [dispatcherForm, setDispatcherForm] = useState({
-    id: "",
-    firstName: "",
-    lastName: "",
-    email: "",
-    username: "",
-    password: "",
-  });
-  const [errorForm, setErrorForm] = useState({
-    id: false,
-    firstName: false,
-    lastName: false,
-    email: false,
-    username: false,
-    password: false,
-  });
+
 
   const { data, status, isLoading, error, refetch } = useQuery({
     queryKey: ["getDispatchersFromPage", pageNumber], //? When pageNumber changes, react-query will re-run the query.
     queryFn: () => getDispatchersFromPageRequest(pageNumber),
     enabled: authenticatedUser.role === "ADMIN",
   });
-
-  useEffect(() => {
-    setErrorForm(processDispatcherForm(dispatcherForm));
-  }, [dispatcherForm]);
 
 
   //? Used in order to preven dispatchers from accessing the CmsDispatchersPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
@@ -152,127 +125,10 @@ export const CmsDispatchersPage = () => {
     }
 
   }, [searchParams]);
-
   
 
-  const handleInput = (e) => {
-    setDispatcherForm(prevState => ({...prevState,[e.target.name]: e.target.value.trim()}));
-    setErrorMessage("");
-    setComboBoxError(false);
-  };
 
-  const addDispatcherMutation = useMutation({
-    mutationFn: addNewDispatcherRequest,
-    onMutate: () => {
-      setIsRequestSent(true);
-    },
-    onSuccess: () => {
-      setAddDispatcherDialogOpen(false);
-      setDispatcherForm({
-        id: "",
-        firstName: "",
-        lastName: "",
-        email: "",
-        username: "",
-        password: "",
-      });
-      setComboBoxKey(comboBoxKey ? false : true);
-      setSelectedZoneId(null);
-      showSnackbar("Успешно добавихте нов диспечер в системата.","success","bottom","right");
-    },
-    onError: (error) => {
-      if(error?.response?.data === "Id already exists.")
-      {
-        setErrorForm(processErrorDispatcherFormOnServerResponse("id"));
-        setErrorMessage("ЕГН-то, което сте въвели, вече съществува в системата.");
-      }
-      else if(error?.response?.data === "Email already exists.")
-      {
-        setErrorForm(processErrorDispatcherFormOnServerResponse("email"));
-        setErrorMessage("Имейл адресът, който сте въвели, вече съществува в системата.");
-      }
-      else if(error?.response?.data === "Username already exists.")
-      {
-        setErrorForm(processErrorDispatcherFormOnServerResponse("username"));
-        setErrorMessage("Потребителското име, което сте въвели, вече съществува в системата.");
-      }
-      else
-      {
-        setErrorMessage("Възникна грешка. Моля опитайте отново.");
-      }
-    },
-    onSettled: () => {
-      setIsRequestSent(false);
-      refetch();
-    },
-  });
 
-  const handleOpenAddDispatcherDialog = () => {
-    closeSnackbar();
-    setAddDispatcherDialogOpen(true);
-  };
-
-  const handleAddDispatcherConfirm = () => {
-
-    const validationMessage = validateDispatcherFormOnSubmit(dispatcherForm); //If validation passes, validationMessage is ""
-    
-    if(validationMessage && !selectedZoneId)
-    {
-      setErrorForm(processErrorDispatcherFormOnSubmit(dispatcherForm, validationMessage));
-      setErrorMessage("Моля въведете данни във всички полета.");
-      setComboBoxError(true);
-    }
-    else if(validationMessage)
-    {
-      setErrorForm(processErrorDispatcherFormOnSubmit(dispatcherForm, validationMessage));
-      setErrorMessage(validationMessage);
-    }
-    else if(!selectedZoneId)
-    {
-      setComboBoxError(true);
-      setErrorMessage("Моля изберете област.");
-    }
-    else if (!isRequestSent) 
-    {
-      addDispatcherMutation.mutate(
-     {
-      id: dispatcherForm.id,
-      firstName: dispatcherForm.firstName,
-      lastName:dispatcherForm.lastName,
-      email:dispatcherForm.email,
-      username:dispatcherForm.username,
-      password:dispatcherForm.password,
-      initialZoneId: selectedZoneId
-     }
-    );
-      setBackdropOpen(true);
-    }    
-  };
-
-  const handleAddDispatcherDeny = () => {
-    setAddDispatcherDialogOpen(false);
-    setDispatcherForm({
-      id: "",
-      firstName: "",
-      lastName: "",
-      email: "",
-      username: "",
-      password: "",
-    });
-    setErrorForm({
-      id: false,
-      firstName: false,
-      lastName: false,
-      email: false,
-      username: false,
-      password: false,
-    });
-    setSelectedZoneId(null);
-    setErrorMessage("");
-    setComboBoxError(false);
-  };
-
-  
 
   const lockDispatcherMutation = useMutation({
     mutationFn: lockDispatcherRequest,
@@ -481,7 +337,6 @@ export const CmsDispatchersPage = () => {
         pageNumber={pageNumber}
         pages={pages}
         rows={rows}
-        handleOpenAddDispatcherDialog={handleOpenAddDispatcherDialog}
         handleOpenLockDialog={handleOpenLockDialog}
         handleOpenUnlockDialog={handleOpenUnlockDialog}
         handleOpenUpdateZonesDialog={handleOpenUpdateZonesDialog}
@@ -489,21 +344,6 @@ export const CmsDispatchersPage = () => {
       />
 
       <BackdropLoader open={backdropOpen} />
-
-      <AddDispatcherDialog
-        open={addDispatcherDialogOpen}
-        onAgree={handleAddDispatcherConfirm}
-        onDisagree={handleAddDispatcherDeny}
-        dispatcherForm={dispatcherForm}
-        handleInput={handleInput}
-        errorMessage={errorMessage}
-        errorForm={errorForm}
-        comboBoxKey={comboBoxKey}
-        comboBoxError={comboBoxError}
-        setComboBoxError={setComboBoxError}
-        setSelectedZoneId={setSelectedZoneId}
-        setErrorMessage={setErrorMessage}
-      />
 
       <LockDispatcherDialog
         open={lockDialogOpen}

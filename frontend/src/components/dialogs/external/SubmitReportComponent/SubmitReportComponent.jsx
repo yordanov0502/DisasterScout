@@ -296,7 +296,6 @@ export const SubmitReportComponent = ({ reportForm,
         variant="contained"
         tabIndex={-1}
         startIcon={<PlaceIcon />}
-        //! To test how this feature will behave when using mobile
         onClick={() => window.open('https://www.google.com/maps', '_blank')}
      >
         Google Maps

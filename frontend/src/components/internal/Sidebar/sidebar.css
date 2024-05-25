@@ -172,6 +172,11 @@
   color: blue;
 }
 
+.sidebar li a:hover .new-dispatcher{
+  transition: all 0.5s ease;
+  color: blue;
+}
+
 .sidebar li i{
   display: flex;
   align-items: center; 
@@ -192,7 +197,8 @@
 }
 
 
-
+li:hover #new-dispatcher-link_name,
+li:hover #new-dispatcher-tooltip,
 li:hover #dispatcherss-link_name,
 li:hover #dispatcherss-tooltip,
 li:hover #loggerr-link_name,
@@ -231,6 +237,8 @@ li:hover #logout-tooltip {
 
 .sidebar.open li.active:hover a .links_name,
 .sidebar.open li.active:hover a i,
+.sidebar.open li.active:hover a #new-dispatcher-link_name,
+.sidebar.open li.active:hover a #new-dispatcher-tooltip,
 .sidebar.open li.active:hover a #dispatcherss-link_name,
 .sidebar.open li.active:hover a #dispatcherss-tooltip,
 .sidebar.open li.active:hover a #loggerr-link_name,
@@ -418,6 +426,11 @@ li:hover #logout-tooltip {
     color: #ffffff;
   }
 
+  .sidebar li a:hover .new-dispatcher{
+    transition: all 0.5s ease;
+    color: #ffffff;
+  }
+
   .sidebar li i{
     display: flex;
     align-items: center; 
@@ -437,6 +450,8 @@ li:hover #logout-tooltip {
     flex-wrap: nowrap;
   }
   
+  li:hover #new-dispatcher-link_name,
+  li:hover #new-dispatcher-tooltip,
   li:hover #dispatcherss-link_name,
   li:hover #dispatcherss-tooltip,
   li:hover #loggerr-link_name,
@@ -465,6 +480,8 @@ li:hover #logout-tooltip {
   
   .sidebar.open li.active:hover a .links_name,
   .sidebar.open li.active:hover a i,
+  .sidebar.open li.active:hover a #new-dispatcher-link_name,
+  .sidebar.open li.active:hover a #new-dispatcher-tooltip,
   .sidebar.open li.active:hover a #dispatcherss-link_name,
   .sidebar.open li.active:hover a #dispatcherss-tooltip,
   .sidebar.open li.active:hover a #loggerr-link_name,
