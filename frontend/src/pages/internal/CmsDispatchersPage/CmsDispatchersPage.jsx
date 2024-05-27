@@ -37,12 +37,13 @@ export const CmsDispatchersPage = () => {
   const [selectedZones, setSelectedZones] = useState([]);
   const [selectedDispatcherId, setSelectedDispatcherId] = useState(null);
   const [backdropOpen, setBackdropOpen] = useState(false);
+  const [isQueryEnabled, setIsQueryEnabled] = useState(false);
 
 
   const { data, status, isLoading, error, refetch } = useQuery({
     queryKey: ["getDispatchersFromPage", pageNumber], //? When pageNumber changes, react-query will re-run the query.
     queryFn: () => getDispatchersFromPageRequest(pageNumber),
-    enabled: authenticatedUser.role === "ADMIN",
+    enabled: isQueryEnabled
   });
 
 
@@ -54,6 +55,34 @@ export const CmsDispatchersPage = () => {
       navigate("/cms-dashboard", { replace: true });
     }
   }, [authenticatedUser]);
+
+  useEffect(() => {
+    const isUContextEmpty = isUserContextEmpty();
+
+    if(!isUContextEmpty && authenticatedUser.role === "ADMIN")
+    {
+      if(!searchParams.has("page")) 
+      {
+        setSearchParams({ page: 1 });
+      }
+      else
+      {
+        const newPageNumber = Number(searchParams.get("page"));
+      
+        //? Validate page number
+        if (!Number.isInteger(newPageNumber) || newPageNumber < 1) {
+          navigate('*');
+          return;
+        }
+      
+        if (newPageNumber !== pageNumber) {setPageNumber(newPageNumber);}
+
+        setIsQueryEnabled(true);//? all validations passed and authenticatedUser is present
+      }
+    }
+
+    
+  }, [searchParams, authenticatedUser]);
 
   useEffect(() => {
     if (isLoading) {
@@ -103,32 +132,7 @@ export const CmsDispatchersPage = () => {
     }
   }, [status, data, error]);
 
-  useEffect(() => {
-
-    if(!searchParams.has("page")) 
-    {
-      setSearchParams({ page: 1 });
-    }
-    else
-    {
-      const newPageNumber = Number(searchParams.get("page"));
   
-      //? Validate page number
-      if (!Number.isInteger(newPageNumber) || newPageNumber < 1) {
-        navigate('*');
-        return;
-      }
-  
-      if (newPageNumber !== pageNumber) {
-        setPageNumber(newPageNumber);
-      }
-    }
-
-  }, [searchParams]);
-  
-
-
-
 
   const lockDispatcherMutation = useMutation({
     mutationFn: lockDispatcherRequest,
