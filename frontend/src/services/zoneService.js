@@ -5531,3 +5531,14 @@ export const getAllAreasOfZone = (zoneId) => {
   } 
   else {return [];}
 }
+
+export const getZonesByIds = (zoneIds) => {
+        return zones.filter(zone => zoneIds.includes(zone.zoneId));
+      };
+
+      
+      //? Returns whole zone (label,zoneId)
+export const getFullZoneById = (zoneId) => { 
+        const zone = zones.find(z => z.zoneId === zoneId);
+        return zone ? zone : null;
+      }

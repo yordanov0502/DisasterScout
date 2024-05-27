@@ -13,6 +13,7 @@ import { CmsLoggerPage } from "../pages/internal/CmsLoggerPage";
 import { CmsDispatchersPage } from "../pages/internal/CmsDispatchersPage";
 import { SubmitReportPage } from "../pages/external/SubmitReportPage";
 import { CmsNewDispatcherPage } from "../pages/internal/CmsNewDispatcherPage";
+import { CmsReportsPage } from "../pages/internal/CmsReportsPage";
 
 export const Router = () => {
   return (
@@ -31,6 +32,11 @@ export const Router = () => {
       <Route path="/cms-dashboard" element={
       <ProtectedRoute>
       <CmsDashboardPage />
+      </ProtectedRoute>
+      }/>
+      <Route path="/cms-reports" element={
+      <ProtectedRoute>
+      <CmsReportsPage />
       </ProtectedRoute>
       }/>
        <Route path="/cms-account" element={

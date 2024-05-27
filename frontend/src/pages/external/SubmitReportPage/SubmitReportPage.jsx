@@ -3,7 +3,7 @@ import { useMutation } from "@tanstack/react-query";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
 import { Alert, Snackbar } from "@mui/material";
-import { SubmitReportComponent } from "../../../components/dialogs/external/SubmitReportComponent";
+import { SubmitReportComponent } from "../../../components/external/SubmitReportComponent";
 import { storage } from "../../../utils/firebaseConfiguration";
 import { processReportErrorFormOnSubmit, validateReportFormOnSubmit } from "../../../validations/reportRegexValidation";
 import { validateImageOnUpload } from "../../../validations/imageUploadValidation";

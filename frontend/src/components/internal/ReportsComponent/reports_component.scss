@@ -1,0 +1,116 @@
+.reports_component {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    background-color: white;
+
+    .truncated-text {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .truncated-description {
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3; /* number of lines to show */
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  
+    @media (pointer: coarse) {
+      width: 100%;
+      margin-top: 72px
+    }
+  
+    &__loader-box {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+  
+    &__header{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;  
+      background-color: white;
+  
+      @media (pointer: coarse) {
+        width: 95%;
+      }
+  
+    &__state-filter{
+      padding: 0 0px;
+    }
+  
+    &__severity-filter{
+        padding: 0 0px;
+    }
+
+    &__comboboxes{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 30px; /* Optional: Add some space between the items */
+      
+      &__zone-filter{
+        padding: 0 0px;
+        width: 200px;
+      }
+
+      &__category-filter{
+        padding: 0 0px;
+        width: 250px;
+      }
+
+      &__issue-filter{
+        padding: 0 0px;
+        width: 250px;
+      }
+    }
+
+  
+  }
+
+  &__card-container{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    margin-bottom: 10px;
+    gap: 30px; /* Optional: Add some space between the items */
+    width: 100%;  
+    background-color: white;
+
+    @media (pointer: coarse) {
+      width: 95%;
+    }
+
+ 
+}
+  
+    &__footer{
+      background-color: white;
+      width: 100%;
+      height: 70px;
+      top: 5%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  
+  
+  
+      
+}

@@ -1,8 +1,8 @@
 import { Autocomplete, Box, Button, TextField, styled } from "@mui/material";
-import { getAllAreasOfZone, getAllZones, getBadgeOfZone } from "../../../../services/zoneService";
+import { getAllAreasOfZone, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import { useEffect } from "react";
-import { getAllSeverities } from "../../../../services/severityService";
-import { getAllIssues, getExpectedDurationHours } from "../../../../services/reportService";
+import { getAllSeverities } from "../../../services/severityService";
+import { getAllIssues, getExpectedDurationHours } from "../../../services/reportService";
 import { CloudUpload } from "@mui/icons-material";
 import PlaceIcon from '@mui/icons-material/Place';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';

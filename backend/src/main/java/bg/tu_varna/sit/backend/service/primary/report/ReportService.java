@@ -1,19 +1,31 @@
 package bg.tu_varna.sit.backend.service.primary.report;
 
+import bg.tu_varna.sit.backend.models.dto.report.PageReportCardDTO;
 import bg.tu_varna.sit.backend.models.dto.report.SubmitReportDTO;
+import bg.tu_varna.sit.backend.models.entity.Severity;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.models.entity.report.Report;
+import bg.tu_varna.sit.backend.models.entity.report.ReportIssue;
+import bg.tu_varna.sit.backend.models.entity.report.ReportState;
+import bg.tu_varna.sit.backend.models.enums.report.reportissue.Category;
+import bg.tu_varna.sit.backend.models.enums.report.reportissue.Issue;
+import bg.tu_varna.sit.backend.models.enums.report.reportstate.State;
+import bg.tu_varna.sit.backend.models.enums.severity.SeverityType;
+import bg.tu_varna.sit.backend.models.mapper.report.ReportMapper;
 import bg.tu_varna.sit.backend.repository.report.ReportRepository;
 import bg.tu_varna.sit.backend.service.primary.SeverityService;
 import bg.tu_varna.sit.backend.service.primary.ZoneService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
 
-import static bg.tu_varna.sit.backend.models.enums.report.reportstate.State.PENDING;
+import static bg.tu_varna.sit.backend.models.enums.report.reportstate.State.*;
 
 @Service
 @RequiredArgsConstructor
@@ -26,6 +38,7 @@ public class ReportService {
     private final ZoneService zoneService;
     private final ReporterService reporterService;
     private final TimeService timeService;
+    private final ReportMapper reportMapper;
 
     public ResponseEntity<?> submitReport(SubmitReportDTO submitReportDTO){
 
@@ -77,5 +90,98 @@ public class ReportService {
 
         return ResponseEntity.ok().build();
     }
+
+    public PageReportCardDTO getReportsFromPage(Integer page, State state, String severityTypeValue, String zoneId, String categoryValue, String issueValue){
+
+        Pageable pageable = PageRequest.of(page,15, Sort.by("submittedAt").ascending());
+
+        //* state will be always available
+        ReportState reportState = reportStateService.getReportStateByState(state);
+
+        //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
+        //? THUS not searching for a concrete severityType, but all of them
+        SeverityType severityType = convertStringToSeverityType(severityTypeValue);
+        Severity severity;
+
+        //* zoneId will always be available {when dispatcher has no available zones, the request will not reach the server because of proper validation on the frontend}
+        Zone zone = zoneService.getZoneById(zoneId);
+
+        //? category  will always be available, but if it is "All" the category will be null,
+        //? THUS not searching for a concrete category, but all of them
+        Category category = convertStringToCategory(categoryValue);
+
+        //? issue  will always be available, but if it is "All" the issue will be null,
+        //? THUS not searching for a concrete issue, but all of them
+        Issue issue = convertStringToIssue(issueValue);
+
+        ReportIssue reportIssue; //? initialized only when both category and issue are not null (meaning they are not "All", but have concrete values)
+
+
+        if(severityType!=null && category!=null && issue!=null)
+        {
+            severity = severityService.getSeverityBySeverityType(severityType);
+            reportIssue = reportIssueService.getReportIssueByIssue(issue);
+            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverityReportIssue(zone,reportState,severity,reportIssue,pageable));
+        }
+        else if(severityType!=null && category!=null)
+        {
+            severity = severityService.getSeverityBySeverityType(severityType);
+            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverityCategory(zone,reportState,severity,category,pageable));
+        }
+        else if(severityType!=null)
+        {
+            severity = severityService.getSeverityBySeverityType(severityType);
+            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverity(zone,reportState,severity,pageable));
+        }
+        else if(category!=null && issue!=null)
+        {
+            reportIssue = reportIssueService.getReportIssueByIssue(issue);
+            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateReportIssue(zone,reportState,reportIssue,pageable));
+        }
+        else if(category!=null)
+        {
+            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateCategory(zone,reportState,category,pageable));
+        }
+        else
+        {
+            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportState(zone,reportState,pageable));
+        }
+    }
+
+    private SeverityType convertStringToSeverityType(String severityTypeValue){
+        try
+        {
+            return SeverityType.valueOf(severityTypeValue);
+        }
+        catch (Exception ignoredException)
+        {
+            return null; //? severityTypeValue is "ALL"
+        }
+    }
+
+    private Category convertStringToCategory(String categoryValue){
+        try
+        {
+            return Category.valueOf(categoryValue);
+        }
+        catch (Exception ignoredException)
+        {
+            return null; //? categoryValue is "ALL"
+        }
+    }
+
+    private Issue convertStringToIssue(String issueValue){
+        try
+        {
+            return Issue.valueOf(issueValue);
+        }
+        catch (Exception ignoredException)
+        {
+            return null; //? issueValue is "ALL"
+        }
+    }
+
+
+
 
 }

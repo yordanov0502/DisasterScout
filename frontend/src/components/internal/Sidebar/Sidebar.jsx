@@ -33,6 +33,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     const path = location.pathname;
    
     if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
+    else if (path.includes("/cms-reports")) setActiveButton('cms-reports');
     else if (path.includes("/cms-account")) setActiveButton('cms-account');
     else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
     else if (path.includes("/cms-new-dispatcher")) setActiveButton('cms-new-dispatcher');
@@ -93,11 +94,11 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
           </Link>
         </li>
         <li className={activeButton === 'cms-reports' ? 'active' : ''} onClick={() => handleButtonClick('cms-reports')}>
-          <a>
+          <Link to={"/cms-reports"}>
             <i><DescriptionIcon/></i>
             <span className="links_name">Доклади</span>
             <span className="tooltip">Доклади</span>
-          </a>
+          </Link>
         </li>
        
         { authenticatedUser.role === "DISPATCHER" && ( // TODO: Implement navigation to dashboard if admin types url for accessing the page(Just like I did for the dispatchers and logger page to prevent access from dispatchers via url)

@@ -6,3 +6,14 @@ const severities = [
   ];
     
   export const getAllSeverities = () => {return severities;}
+
+  export const getLabelOfSeverityType = (severityType) => {
+    const severity = severities.find((item) => item.type === severityType);
+    return severity ? severity.label : "LOW";
+  };
+
+  export const getColorOfSeverityType = (severityType) => {
+    const severity = severities.find((item) => item.type === severityType);
+    return severity ? (severity.color==='yellow' ? "#dbdb02" : severity.color ) : "#dbdb02";
+  };
+
