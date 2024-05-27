@@ -49,7 +49,7 @@ export const CmsReportsPage = () => {
       return ;
     }
     
-    if(!isUContextEmpty) //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! && authenticatedUser.role === "ADMIN" {for logger and dispatchers page}
+    if(!isUContextEmpty)
     {
         const initialParams = {};
         if (!searchParams.has("page")) {initialParams.page = 1;}

@@ -23,6 +23,7 @@ export const CmsLoggerPage = () => {
   const [pages, setPages] = useState(1);
   const [rows, setRows] = useState([]);
   const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
+  const [isQueryEnabled, setIsQueryEnabled] = useState(false);
 
   const {
     data,
@@ -32,7 +33,7 @@ export const CmsLoggerPage = () => {
   } = useQuery({
     queryKey: ["getLogsFromPage", pageNumber, level, validUsername, searchCount], //? When any value in the queryKey array changes, react-query will re-run the query.
     queryFn: () => getLogsFromPageRequest(pageNumber, level, validUsername),
-    enabled: authenticatedUser.role === "ADMIN"
+    enabled: isQueryEnabled
   });
 
   //? Used in order to preven dispatchers from accessing the CmsLoggerPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
@@ -43,6 +44,51 @@ export const CmsLoggerPage = () => {
       navigate("/cms-dashboard", {replace: true});
     }
   }, [authenticatedUser]);
+
+  useEffect(() => {
+    const isUContextEmpty = isUserContextEmpty();
+
+    if(!isUContextEmpty && authenticatedUser.role === "ADMIN")
+    {
+        const initialParams = {};
+        if (!searchParams.has("page")) {initialParams.page = 1;}
+        if (!searchParams.has("level")) {initialParams.level = 'ALL';}
+
+        if (Object.keys(initialParams).length > 0) 
+        {
+          setSearchParams({ ...Object.fromEntries(searchParams.entries()), ...initialParams });
+        }
+        else
+        {
+          const newPageNumber = Number(searchParams.get("page"));
+          const newLevel = searchParams.get("level");
+          const newUsername = searchParams.get("username") || '';
+      
+          //? Validate page number
+          if (!Number.isInteger(newPageNumber) || newPageNumber < 1) 
+          {
+            navigate('*');
+            return;
+          }
+      
+          //? Validate level
+          const validLevels = ['ALL', 'INFO', 'WARN', 'ERROR'];
+          if (!validLevels.includes(newLevel)) 
+          {
+            navigate('*');
+            return;
+          }
+      
+          
+          if (newPageNumber !== pageNumber) {setPageNumber(newPageNumber);}
+          if (newLevel !== level) {setLevel(newLevel);}
+          if (newUsername !== username) {setUsername(newUsername);setValidUsername(newUsername);}
+
+          setIsQueryEnabled(true);//? all validations passed and authenticatedUser is present AND IS ADMIN
+        }
+    }
+
+  }, [searchParams, authenticatedUser]);
 
   useEffect(() => {
 
@@ -92,57 +138,8 @@ export const CmsLoggerPage = () => {
 
   }, [status, data, error]);
 
-  useEffect(() => {
+  
 
-    if(!searchParams.has("page") || !searchParams.has("level")) 
-    {
-      const initialParams = {};
-      if (!searchParams.has("page")) {
-        initialParams.page = 1;
-      }
-      if (!searchParams.has("level")) {
-        initialParams.level = 'ALL';
-      }
-      if (Object.keys(initialParams).length > 0) {
-        setSearchParams({ ...Object.fromEntries(searchParams.entries()), ...initialParams });
-      }
-    }
-    else
-    {
-      const newPageNumber = Number(searchParams.get("page"));
-      const newLevel = searchParams.get("level");
-      const newUsername = searchParams.get("username") || '';
-  
-      //? Validate page number
-      if (!Number.isInteger(newPageNumber) || newPageNumber < 1) {
-        navigate('*');
-        return;
-      }
-  
-      //? Validate level
-      const validLevels = ['ALL', 'INFO', 'WARN', 'ERROR'];
-      if (!validLevels.includes(newLevel)) {
-        navigate('*');
-        return;
-      }
-  
-      
-      if (newPageNumber !== pageNumber) {
-        setPageNumber(newPageNumber);
-      }
-  
-      if (newLevel !== level) {
-        setLevel(newLevel);
-      }
-  
-      if (newUsername !== username) {
-        setUsername(newUsername);
-        setValidUsername(newUsername);
-      }
-    }
-
-   
-  }, [searchParams]);
 
   const handlePageChange = (event, newPageNumber) => { //! event here is used only as argument to avoid "Converting circular structure to JSON" error
     if(newPageNumber !== pageNumber)

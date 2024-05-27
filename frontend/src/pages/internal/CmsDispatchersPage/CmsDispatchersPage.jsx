@@ -77,7 +77,7 @@ export const CmsDispatchersPage = () => {
       
         if (newPageNumber !== pageNumber) {setPageNumber(newPageNumber);}
 
-        setIsQueryEnabled(true);//? all validations passed and authenticatedUser is present
+        setIsQueryEnabled(true);//? all validations passed and authenticatedUser is present AND IS ADMIN
       }
     }
 
