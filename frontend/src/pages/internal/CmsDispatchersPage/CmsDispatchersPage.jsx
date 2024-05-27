@@ -61,9 +61,12 @@ export const CmsDispatchersPage = () => {
 
     if(!isUContextEmpty && authenticatedUser.role === "ADMIN")
     {
-      if(!searchParams.has("page")) 
+      const initialParams = {};
+      if(!searchParams.has("page")) {initialParams.page = 1;}
+
+      if (Object.keys(initialParams).length > 0) 
       {
-        setSearchParams({ page: 1 });
+        setSearchParams({ ...Object.fromEntries(searchParams.entries()), ...initialParams });
       }
       else
       {
