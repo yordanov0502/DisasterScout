@@ -22,7 +22,7 @@ export const SubmitReportPage = () => {
     expectedDuration: "",
     description: "", 
     zone: "",
-    area: "", //* isn't required
+    area: "",
     address: "", //* isn't required
     locationUrl: "",
 
@@ -36,7 +36,7 @@ export const SubmitReportPage = () => {
     expectedDuration: false,
     description: false, 
     zone: false,
-    area: false, //* isn't required
+    area: false,
     address: false, //* isn't required
     locationUrl: false, 
 
@@ -98,7 +98,7 @@ export const SubmitReportPage = () => {
       expectedDuration: "",
       description: "", 
       zone: "",
-      area: "", //* isn't required
+      area: "",
       address: "", //* isn't required
       locationUrl: "",
 

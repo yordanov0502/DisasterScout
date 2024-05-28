@@ -45,7 +45,7 @@ const isLocationUrlCharacterCountLess = (locationUrl) => {
   };
 
 export const validateReportFormOnSubmit = (reportForm) => { //? function returns error message
-    if (!reportForm.issue || !reportForm.severity || !reportForm.expectedDuration || !reportForm.zone || !reportForm.locationUrl || !reportForm.description || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber) 
+    if (!reportForm.issue || !reportForm.severity || !reportForm.expectedDuration || !reportForm.zone || !reportForm.area || !reportForm.locationUrl || !reportForm.description || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber) 
     {
       return allRequiredFieldsMessage; //! error
     }
@@ -83,7 +83,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
         expectedDuration: !reportForm.expectedDuration,
         description: !reportForm.description, 
         zone: !reportForm.zone,
-        area: false, //* isn't required
+        area: !reportForm.area,
         address: false, //* isn't required
         locationUrl: !reportForm.locationUrl,
     
@@ -142,7 +142,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
       expectedDuration: !reportForm.expectedDuration,
       description: !reportForm.description, 
       zone: !reportForm.zone,
-      area: false, //* isn't required
+      area: !reportForm.area,
       address: false, //* isn't required
       locationUrl: !reportForm.locationUrl,
   

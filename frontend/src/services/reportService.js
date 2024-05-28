@@ -31,8 +31,6 @@ const expectedDurationHours = [
   ];
 
   const issues = [
-    { label: "Всички", issue: "ALL" ,category: "ALL" },
-
     { label: "земетресение", issue: "EARTHQUAKE", category: "Сеизмична активност"},
     { label: "цунами", issue: "TSUNAMI", category: "Сеизмична активност"},
     { label: "свлачище", issue: "LANDSLIDE", category: "Сеизмична активност"},

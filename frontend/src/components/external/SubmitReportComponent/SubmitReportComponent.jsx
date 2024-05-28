@@ -232,8 +232,9 @@ export const SubmitReportComponent = ({ reportForm,
             (params) => 
             <TextField
             sx={{backgroundColor: 'white'}}
+            required
             color="success"
-            //! error={errorForm.area} doesnt need error as it is not required
+            error={errorForm.area}
             {...params} 
             label="Район" />}
         />
