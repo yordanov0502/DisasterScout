@@ -5,6 +5,7 @@ import { Alert, Snackbar } from "@mui/material";
 import { useUserContext } from "../../../hooks/useUserContext";
 import { ReportsComponent } from "../../../components/internal/ReportsComponent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
+import { getAllAreasOfZoneForSearch } from "../../../services/zoneService";
 import { getReportCardsFromPageRequest, validCategories, validIssues, validMeteorologicalConditionsIssues, validMilitaryConditionsIssues, validPublicConditionsIssues, validRoadConditionsIssues, validSeismicActivityIssues, validSeverityTypes, validSpacePhenomenonIssues, validStates, validZoneIds } from "../../../services/reportService";
 import "./cms_reports_page.scss";
 
@@ -20,6 +21,7 @@ export const CmsReportsPage = () => {
   const [state, setState] = useState(searchParams.get("state") || 'PENDING');
   const [severityType, setSeverityType] = useState(searchParams.get("severityType") ||"ALL");
   const [selectedZoneId, setSelectedZoneId] = useState(null);
+  const [area, setArea] = useState(searchParams.get("area") ||"Всички");
   const [category, setCategory] = useState(searchParams.get("category") ||"ALL");
   const [issue, setIssue] = useState(searchParams.get("issue") ||"ALL");
   const [isQueryEnabled, setIsQueryEnabled] = useState(false);
@@ -31,8 +33,8 @@ export const CmsReportsPage = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["getReportsFromPage", pageNumber, state, severityType, selectedZoneId, category, issue], //? When any value in the queryKey array changes, react-query will re-run the query.
-    queryFn: () => getReportCardsFromPageRequest(pageNumber, state, severityType, selectedZoneId,category, issue),
+    queryKey: ["getReportsFromPage", pageNumber, state, severityType, selectedZoneId, area, category, issue], //? When any value in the queryKey array changes, react-query will re-run the query.
+    queryFn: () => getReportCardsFromPageRequest(pageNumber, state, severityType, selectedZoneId, area, category, issue),
     enabled: isQueryEnabled
   });
   
@@ -67,6 +69,7 @@ export const CmsReportsPage = () => {
           setSelectedZoneId(firstZoneId);
           initialParams.zoneId = firstZoneId;
         }
+        if (!searchParams.has("area")) {initialParams.area = 'Всички';}
         if (!searchParams.has("category")) {initialParams.category = 'ALL';}
         if (!searchParams.has("issue")) {initialParams.issue = 'ALL';}
         
@@ -80,6 +83,7 @@ export const CmsReportsPage = () => {
           const newState = searchParams.get("state");
           const newSeverityType = searchParams.get("severityType");
           const newZoneId = searchParams.get("zoneId");
+          const newArea = searchParams.get("area");
           const newCategory = searchParams.get("category");
           const newIssue = searchParams.get("issue");
           
@@ -90,6 +94,7 @@ export const CmsReportsPage = () => {
               || !validSeverityTypes.includes(newSeverityType)
               || (authenticatedUser.role === "DISPATCHER" && !authenticatedUser.availableZoneIds.includes(newZoneId))
               || (authenticatedUser.role === "ADMIN" && !validZoneIds.includes(newZoneId))
+              || !getAllAreasOfZoneForSearch(newZoneId).includes(newArea) //! if area is not part of the zone
               || !validCategories.includes(newCategory)
               || !validIssues.includes(newIssue)
              ) 
@@ -118,6 +123,7 @@ export const CmsReportsPage = () => {
           if (newState !== state) {setState(newState);}
           if (newSeverityType !== severityType) {setSeverityType(newSeverityType);}
           if (newZoneId !== selectedZoneId) {setSelectedZoneId(newZoneId);}
+          if (newArea !== area) {setArea(newArea);}
           if (newCategory !== category) {setCategory(newCategory);}
           if (newIssue !== issue) {setIssue(newIssue);}
       
@@ -179,28 +185,37 @@ export const CmsReportsPage = () => {
     if(newPageNumber !== pageNumber)
     { 
       setPageNumber(newPageNumber);  //? This will trigger the useQuery fetch because of the queryKey dependency
-      const params = { page: newPageNumber, state, severityType, zoneId: selectedZoneId, category, issue  }; 
+      const params = { page: newPageNumber, state, severityType, zoneId: selectedZoneId, area, category, issue  }; 
       setSearchParams(params);
     }
   };
 
   const handleStateChange = (newState) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
      setState(newState); //? This will trigger the useQuery fetch because of the queryKey dependency
-     const params = { page: 1, state: newState, severityType, zoneId: selectedZoneId, category, issue }; 
+     const params = { page: 1, state: newState, severityType, zoneId: selectedZoneId, area, category, issue }; 
      setSearchParams(params);
      setPageNumber(1);
   };
 
   const handleSeverityTypeChange = (newSeverityType) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
     setSeverityType(newSeverityType); //? This will trigger the useQuery fetch because of the queryKey dependency
-    const params = { page: 1, state, severityType: newSeverityType, zoneId: selectedZoneId, category, issue };
+    const params = { page: 1, state, severityType: newSeverityType, zoneId: selectedZoneId, area, category, issue };
     setSearchParams(params);
     setPageNumber(1);
  };
 
  const handleSelectedZoneChange = (newZoneId) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
+  //!!! When zone is changed, the area is reset to 'Всички', cuz each zone relates to separate list of areas !!!
   setSelectedZoneId(newZoneId); //? This will trigger the useQuery fetch because of the queryKey dependency
-  const params = { page: 1, state, severityType, zoneId: newZoneId, category, issue };
+  setArea("Всички");
+  const params = { page: 1, state, severityType, zoneId: newZoneId, area: 'Всички', category, issue };
+  setSearchParams(params);
+  setPageNumber(1);
+ };
+
+ const handleAreaChange = (newArea) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
+  setArea(newArea); //? This will trigger the useQuery fetch because of the queryKey dependency
+  const params = { page: 1, state, severityType, zoneId: selectedZoneId, area: newArea, category, issue };
   setSearchParams(params);
   setPageNumber(1);
  };
@@ -209,14 +224,14 @@ export const CmsReportsPage = () => {
   //!!! When category is changed, the issue is reset to 'ALL', cuz each category relates to separate list of issues !!!
   setCategory(newCategory); //? This will trigger the useQuery fetch because of the queryKey dependency
   setIssue('ALL');
-  const params = { page: 1, state, severityType, zoneId: selectedZoneId, category: newCategory, issue: 'ALL' };
+  const params = { page: 1, state, severityType, zoneId: selectedZoneId, area, category: newCategory, issue: 'ALL' };
   setSearchParams(params);
   setPageNumber(1);
  };
 
 const handleIssueChange = (newIssue) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
   setIssue(newIssue); //? This will trigger the useQuery fetch because of the queryKey dependency
-  const params = { page: 1, state, severityType, zoneId: selectedZoneId, category, issue: newIssue };
+  const params = { page: 1, state, severityType, zoneId: selectedZoneId, area, category, issue: newIssue };
   setSearchParams(params);
   setPageNumber(1);
  };
@@ -249,6 +264,8 @@ const handleIssueChange = (newIssue) => { //! event here must NOT be used as arg
         category={category}
         handleIssueChange={handleIssueChange}
         issue={issue}
+        handleAreaChange={handleAreaChange}
+        area={area}
         pages={pages}
         rows={rows}
       />

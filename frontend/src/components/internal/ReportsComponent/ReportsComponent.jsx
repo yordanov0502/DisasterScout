@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { ComponentLoader } from "../../Loaders/ComponentLoader";
+import { useResponsiveContext } from "../../../hooks/useResponsiveContext";
 import { ReportCard } from "../ReportCard";
 import { styled } from '@mui/material/styles';
 import Radio from '@mui/material/Radio';
@@ -7,7 +8,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
 import FormControl from '@mui/material/FormControl';
 import { Autocomplete, Box, FormLabel, Pagination, TextField } from "@mui/material";
-import { getFullZoneById, getAllZones, getBadgeOfZone, getZonesByIds } from "../../../services/zoneService";
+import { getFullZoneById, getAllZones, getBadgeOfZone, getZonesByIds, getAllAreasOfZoneForSearch } from "../../../services/zoneService";
 import { getAllCategories, getAllIssuesByCategory, getFullCategoryObjectByCategory, getFullIssueObjectByIssue } from "../../../services/reportService";
 import "./reports_component.scss";
 
@@ -46,12 +47,16 @@ export const ReportsComponent = ({
                                  handleSelectedZoneChange,
                                  selectedZoneId,
                                  handleCategoryChange,
+                                 category,
                                  handleIssueChange,
                                  issue,
-                                 category,
+                                 handleAreaChange,
+                                 area,
                                  pages,
                                  rows,
                                 }) => {
+
+    const { isTouchScreen } = useResponsiveContext();
 
     //? Used for loading the images of zones from from combobox in advance, so when opened they to be already loaded
     useEffect(() => {
@@ -89,6 +94,7 @@ export const ReportsComponent = ({
         name="reports-row-radio-buttons-group1"
         value={state}
         onChange={(event) => handleStateChange(event.target.value)}
+        row={isTouchScreen ? false : true}
       >
         <FormControlLabel value="PENDING" control={<Radio color="warning" />} label="Изчакващи" />
         <FormControlLabel value="FOR_REVALUATION" control={<Radio color="primary" />} label="За преоценка" />
@@ -107,6 +113,7 @@ export const ReportsComponent = ({
         name="reports-row-radio-buttons-group2"
         value={severityType}
         onChange={(event) => handleSeverityTypeChange(event.target.value)}
+        row={isTouchScreen ? false : true}
       >
         <FormControlLabel value="ALL" control={<GreyRadio />} label="Всички" />
         <FormControlLabel value="CRITICAL" control={<CamouflageRadio />} label="Критично" />
@@ -162,9 +169,40 @@ export const ReportsComponent = ({
         />
     </div>
 
-    <div className="reports_component__header__comboboxes__category-filter">
+    <div className="reports_component__header__comboboxes__area-filter">
     <Autocomplete
           key={202} //? THIS KEY SHOULD NEVER EVER CHANGE AS THE COMBOBOX SHOULD ALWAYS HAVE SELECTED OPTION (When the key changes the comboBox selection is cleared. )
+          id="combo-box-areas-search-reports-cms"
+          sx={{
+            pb: 2,
+            "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
+            {backgroundColor: "#b5ffcc !important"}
+           }}
+          disableClearable={true}
+          options={getAllAreasOfZoneForSearch(selectedZoneId)}
+          disablePortal 
+          value={area}
+          noOptionsText={"Няма такава опция"}
+          getOptionLabel={(option) => option}
+          isOptionEqualToValue={(option, selectedOption) => option === selectedOption}
+          onChange={(event, selectedOption) => 
+            {
+              handleAreaChange(selectedOption);
+            }}
+          renderInput={
+            (params) => 
+            <TextField
+            sx={{backgroundColor: 'white'}}
+            required
+            color="success"
+            {...params} 
+            label="Район" />}
+        />
+    </div>
+
+    <div className="reports_component__header__comboboxes__category-filter">
+    <Autocomplete
+          key={203} //? THIS KEY SHOULD NEVER EVER CHANGE AS THE COMBOBOX SHOULD ALWAYS HAVE SELECTED OPTION (When the key changes the comboBox selection is cleared. )
           id="combo-box-categories-search-reports-cms"
           sx={{
             pb: 2,
@@ -195,7 +233,7 @@ export const ReportsComponent = ({
 
     <div className="reports_component__header__comboboxes__issue-filter">
     <Autocomplete
-          key={203} //? THIS KEY SHOULD NEVER EVER CHANGE AS THE COMBOBOX SHOULD ALWAYS HAVE SELECTED OPTION (When the key changes the comboBox selection is cleared. )
+          key={204} //? THIS KEY SHOULD NEVER EVER CHANGE AS THE COMBOBOX SHOULD ALWAYS HAVE SELECTED OPTION (When the key changes the comboBox selection is cleared. )
           id="combo-box-issues-search-reports-cms"
           sx={{
             pb: 2,

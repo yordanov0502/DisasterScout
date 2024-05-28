@@ -44,24 +44,16 @@ public class ReportService {
 
         Zone zone = zoneService.getZoneById(submitReportDTO.zoneId());
         String zoneName = String.format("обл.%s", zone.getName());
-        String area = !submitReportDTO.area().isBlank() ? submitReportDTO.area() : null;
+        String area = submitReportDTO.area();
         String address = !submitReportDTO.address().isBlank() ? submitReportDTO.address() : null;
         String fullAddress;
-        if(area != null && address != null)
+        if(address != null)
         {
             fullAddress = String.format("%s~%s~%s", zoneName,area,address);
         }
-        else if(area != null)
-        {
-            fullAddress = String.format("%s~%s", zoneName,area);
-        }
-        else if(address != null)
-        {
-            fullAddress = String.format("%s~%s", zoneName,address);
-        }
         else
         {
-            fullAddress = zoneName;
+            fullAddress = String.format("%s~%s", zoneName,area);
         }
 
         Date timeOfReportSubmission = new Date();
@@ -91,7 +83,7 @@ public class ReportService {
         return ResponseEntity.ok().build();
     }
 
-    public PageReportCardDTO getReportsFromPage(Integer page, State state, String severityTypeValue, String zoneId, String categoryValue, String issueValue){
+    public PageReportCardDTO getReportsFromPage(Integer page, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue){
 
         Pageable pageable = PageRequest.of(page,15, Sort.by("submittedAt").ascending());
 
@@ -105,6 +97,9 @@ public class ReportService {
 
         //* zoneId will always be available {when dispatcher has no available zones, the request will not reach the server because of proper validation on the frontend}
         Zone zone = zoneService.getZoneById(zoneId);
+
+        //* area will always be available ("Всички" by default)
+        String partialAddress = area.equals("Всички") ? null : String.format("обл.%s~%s", zone.getName(),area);
 
         //? category  will always be available, but if it is "All" the category will be null,
         //? THUS not searching for a concrete category, but all of them
@@ -121,30 +116,36 @@ public class ReportService {
         {
             severity = severityService.getSeverityBySeverityType(severityType);
             reportIssue = reportIssueService.getReportIssueByIssue(issue);
-            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverityReportIssue(zone,reportState,severity,reportIssue,pageable));
+            if(partialAddress != null) {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneAreaReportStateSeverityReportIssue(zone,partialAddress,reportState,severity,reportIssue,pageable));}
+            else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverityReportIssue(zone,reportState,severity,reportIssue,pageable));}
         }
         else if(severityType!=null && category!=null)
         {
             severity = severityService.getSeverityBySeverityType(severityType);
-            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverityCategory(zone,reportState,severity,category,pageable));
+            if(partialAddress != null) {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneAreaReportStateSeverityCategory(zone,partialAddress,reportState,severity,category,pageable));}
+            else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverityCategory(zone,reportState,severity,category,pageable));}
         }
         else if(severityType!=null)
         {
             severity = severityService.getSeverityBySeverityType(severityType);
-            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverity(zone,reportState,severity,pageable));
+            if(partialAddress != null) {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneAreaReportStateSeverity(zone,partialAddress,reportState,severity,pageable));}
+            else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateSeverity(zone,reportState,severity,pageable));}
         }
         else if(category!=null && issue!=null)
         {
             reportIssue = reportIssueService.getReportIssueByIssue(issue);
-            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateReportIssue(zone,reportState,reportIssue,pageable));
+            if(partialAddress != null) {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneAreaReportStateReportIssue(zone,partialAddress,reportState,reportIssue,pageable));}
+            else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateReportIssue(zone,reportState,reportIssue,pageable));}
         }
         else if(category!=null)
         {
-            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateCategory(zone,reportState,category,pageable));
+            if(partialAddress != null) {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneAreaReportStateCategory(zone,partialAddress,reportState,category,pageable));}
+            else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportStateCategory(zone,reportState,category,pageable));}
         }
         else
         {
-            return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportState(zone,reportState,pageable));
+            if(partialAddress != null) {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneAreaReportState(zone,partialAddress,reportState,pageable));}
+            else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportState(zone,reportState,pageable));}
         }
     }
 

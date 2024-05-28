@@ -20,7 +20,8 @@ public class ReportsController {
     @Operation(summary = "Get paginated reports",
             description = "Dispatcher/Admin gets paginated reports when this endpoint is called.")
     @GetMapping
-    public PageReportCardDTO getReportsFromPage(@RequestParam(value = "page") Integer page, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId,  @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue){
-        return reportService.getReportsFromPage(page-1,state,severityType,zoneId,category,issue); //? Number of pages starts from 0 in the PageRequest(default configuration), but on the frontend normally page numbers start from 1.
+    //! URL decoding is being handled automatically. ( character "+" from area is removed automatically(decoded))
+    public PageReportCardDTO getReportsFromPage(@RequestParam(value = "page") Integer page, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue){
+        return reportService.getReportsFromPage(page-1,state,severityType,zoneId,area,category,issue); //? Number of pages starts from 0 in the PageRequest(default configuration), but on the frontend normally page numbers start from 1.
     }
 }

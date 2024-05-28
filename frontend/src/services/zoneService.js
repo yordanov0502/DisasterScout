@@ -5532,6 +5532,14 @@ export const getAllAreasOfZone = (zoneId) => {
   else {return [];}
 }
 
+export const getAllAreasOfZoneForSearch = (zoneId) => {
+  if (Object.prototype.hasOwnProperty.call(zoneAreasMappings,zoneId)) 
+{
+    return ["Всички", ...zoneAreasMappings[zoneId]];
+} 
+  else {return [];}
+}
+
 export const getZonesByIds = (zoneIds) => {
         return zones.filter(zone => zoneIds.includes(zone.zoneId));
       };

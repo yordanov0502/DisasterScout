@@ -216,6 +216,6 @@ const expectedDurationHours = [
     return axiosInstanceWithCredentials.post("/external/reports/submit",requestBody);
   };
 
-  export const getReportCardsFromPageRequest = (pageNumber,state,severityType,zoneId,category,issue) => {
-    return axiosInstanceWithCredentials.get(`/internal/dispatcher/reports?page=${pageNumber}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&category=${category}&issue=${issue}`);
+  export const getReportCardsFromPageRequest = (pageNumber,state,severityType,zoneId,area,category,issue) => {
+    return axiosInstanceWithCredentials.get(`/internal/dispatcher/reports?page=${pageNumber}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
   };
