@@ -338,6 +338,8 @@ public class ReportService {
     //TODO: SO IT IS DISPLAYED WITH THE MOST RECENT INFORMATION BECAUSE THE POSSIBLE OPERATIONS(BUTTONS FOR CLICKS)
     //TODO: WILL ALSO BE DIFFERENT BASED ON THE REPORT INFORMATION.
 
+    //! TODO: SAME CHECKS FOR "Области" when user will add / remove or update alert for zone
+
     private SeverityType convertStringToSeverityType(String severityTypeValue){
         try
         {

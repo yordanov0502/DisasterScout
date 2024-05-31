@@ -25,7 +25,7 @@ import "./main_speed_dial.css";
 const adminButtons = [
   { icon: <DashboardIcon />, name: "Табло" },
   { icon: <DescriptionIcon />, name: "Доклади" },
-  { icon: <RestoreIcon />, name: "Хронология" },
+  // { icon: <RestoreIcon />, name: "Хронология" },
   { icon: <PersonIcon />, name: "Акаунт" },
   { icon: <SettingsIcon />, name: "Настройки" },
   { icon: <PersonAddIcon/>, name: "Нов диспечер" },
@@ -38,7 +38,7 @@ const dispatcherButtons = [
   { icon: <DashboardIcon />, name: "Табло" },
   { icon: <DescriptionIcon />, name: "Доклади" },
   { icon: <LocationOnIcon />, name: "Области" },
-  { icon: <RestoreIcon />, name: "Хронология" },
+  // { icon: <RestoreIcon />, name: "Хронология" },
   { icon: <PersonIcon />, name: "Акаунт" },
   { icon: <SettingsIcon />, name: "Настройки" },
   { icon: <LogoutIcon />, name: "Изход" },
@@ -112,10 +112,10 @@ export const MainSpeedDial = () => {
         // navigate("/cms-zones");
         setActiveButton("Области");
         break;
-      case "Хронология":
-        // navigate("/cms-chronology");
-        setActiveButton("Хронология");
-        break;
+      // case "Хронология":
+      //   // navigate("/cms-chronology");
+      //   setActiveButton("Хронология");
+      //   break;
       case "Акаунт":
         navigate("/cms-account");
         setActiveButton("Акаунт");
@@ -187,8 +187,8 @@ export const MainSpeedDial = () => {
                     style: {
                       backgroundColor:
                         activeButton === adminButton.name ? "red" : "#009F58",
-                      width: 55,
-                      height: 55,
+                      width: 64,
+                      height: 64,
                     },
                   }}
                 />
@@ -218,8 +218,8 @@ export const MainSpeedDial = () => {
                         activeButton === dispatcherButton.name
                           ? "red"
                           : "#009F58",
-                      width: 55,
-                      height: 55,
+                      width: 64,
+                      height: 67,
                     },
                   }}
                 />

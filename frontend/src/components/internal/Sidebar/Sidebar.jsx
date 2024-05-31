@@ -6,7 +6,7 @@ import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 import DashboardIcon from '@mui/icons-material/Dashboard';
 import DescriptionIcon from '@mui/icons-material/Description';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
-import RestoreIcon from '@mui/icons-material/Restore';
+//import RestoreIcon from '@mui/icons-material/Restore';
 import PersonIcon from '@mui/icons-material/Person';
 import SettingsIcon from '@mui/icons-material/Settings';
 import PersonAddIcon from '@mui/icons-material/PersonAdd';
@@ -115,13 +115,13 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     }
         
        
-        <li className={activeButton === 'cms-chronology' ? 'active' : ''} onClick={() => handleButtonClick('cms-chronology')}>
+        {/* <li className={activeButton === 'cms-chronology' ? 'active' : ''} onClick={() => handleButtonClick('cms-chronology')}>
           <a>
             <i><RestoreIcon/></i>
             <span className="links_name">Хронология</span>
             <span className="tooltip">Хронология</span>
           </a>
-        </li>
+        </li> */}
         <li className={activeButton === 'cms-account' ? 'active' : ''} onClick={() => handleButtonClick('cms-account')}>
         <Link to={"/cms-account"}>
             <i><PersonIcon/></i>
