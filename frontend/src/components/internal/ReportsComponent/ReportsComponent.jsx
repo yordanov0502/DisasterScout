@@ -53,7 +53,7 @@ export const ReportsComponent = ({
                                  handleAreaChange,
                                  area,
                                  pages,
-                                 rows,
+                                 rows
                                 }) => {
 
     const { isTouchScreen } = useResponsiveContext();

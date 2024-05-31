@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
 import { useUserContext } from "../../../hooks/useUserContext";
@@ -12,6 +12,7 @@ import "./cms_reports_page.scss";
 export const CmsReportsPage = () => {
   const { authenticatedUser, isUserContextEmpty } = useUserContext();
   const navigate = useNavigate();
+  const location = useLocation();
   const [isLoadingComponent, setIsLoadingComponent] = useState(true);
   const [searchParams, setSearchParams] = useSearchParams(); 
   const [pages, setPages] = useState(1);
@@ -38,7 +39,30 @@ export const CmsReportsPage = () => {
     enabled: isQueryEnabled
   });
   
-
+  //TODO: should I get the search params from location state of CmsReportPage in useState up or here in this useEffect?
+  
+  useEffect(() => {
+    
+    if (location.state?.showSuccessSnackbar) 
+    {
+      showSnackbar(location.state.message,"success","bottom","right");
+      //? Clear the state so it doesn't show again on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+    else if (location.state?.showErrorSnackbar) 
+    {
+      showSnackbar(location.state.message,"error","bottom","right");
+      //? Clear the state so it doesn't show again on refresh
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+    else if (location.state?.reloadPage === true) 
+      {
+        //? Clear the state so it doesn't show again on refresh
+        navigate(location.pathname, { replace: true, state: {} });
+        window.location.reload();
+      }
+  }, [location]);
+  
 
   useEffect(() => {
     const isUContextEmpty = isUserContextEmpty();
@@ -148,10 +172,11 @@ export const CmsReportsPage = () => {
       const rowNumber = (pageNumber - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(15 - set in the backend)
       
       const submittedAt = new Date(item.submittedAt);
-      const expiresAt = new Date(item.expiresAt);
       const formattedSubmittedAt = `${submittedAt.toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })} ч., ${submittedAt.toLocaleDateString('bg-BG')}`;
-      const formattedExpiresAt = `${expiresAt.toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })} ч., ${expiresAt.toLocaleDateString('bg-BG')}`;
       
+      const expiresAt = item.expiresAt ? new Date(item.expiresAt) : null;
+      const formattedExpiresAt = expiresAt ? `${expiresAt.toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })} ч., ${expiresAt.toLocaleDateString('bg-BG')}` : '-';
+
       return {
         number: rowNumber,
         id: item.id,

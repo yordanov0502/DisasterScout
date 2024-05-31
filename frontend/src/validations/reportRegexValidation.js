@@ -21,6 +21,11 @@ const firstNameFieldMessage = "Невалидно име.";
 const lastNameFieldMessage = "Невалидна фамилия.";
 const phoneNumberFieldMessage = "Невалиден мобилен номер.";
 
+const acceptReportFormAllRequiredFieldsMessage = "Моля попълнете всички задължителни* полета.";
+const acceptReportFormExpectedDurationMessage = "Моля задайте времетраене.";
+
+
+
 const isDescriptionWordCountLess = (description) => {
     const wordCount = description.trim().split(/\s+/).length;
     return wordCount < minDescriptionWordCount ? true : false;
@@ -146,6 +151,114 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
       address: false, //* isn't required
       locationUrl: !reportForm.locationUrl,
   
+      firstName: !reportForm.firstName,
+      lastName: !reportForm.lastName,
+      phoneNumber: !reportForm.phoneNumber
+    };
+  };
+
+
+
+  export const validateReportFormOnAccept = (reportForm) => { //? function returns error message
+    if (!reportForm.description || !reportForm.locationUrl || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber) 
+    {
+      return acceptReportFormAllRequiredFieldsMessage; //! error
+    }
+  
+    else
+    {
+        if(reportForm.expectedDuration === -1) {return acceptReportFormExpectedDurationMessage;} //! error
+
+        if (reportForm.address && isAddressCharacterCountLess(reportForm.address)) {return addressFieldMessage1;} //! error
+        if (reportForm.address && isAddressCharacterCountMore(reportForm.address)) {return addressFieldMessage2;} //! error
+
+        if (isDescriptionWordCountLess(reportForm.description)) {return descriptionFieldMessage1;} //! error
+        if (isDescriptionWordCountMore(reportForm.description)) {return descriptionFieldMessage2;} //! error
+
+        if (isLocationUrlCharacterCountLess(reportForm.locationUrl)) {return locationUrlFieldMessage1;} //! error
+        if (isLocationUrlCharacterCountMore(reportForm.locationUrl)) {return locationUrlFieldMessage2;} //! error
+
+        const isFirstNameValid = nameRegex.test(reportForm.firstName);
+        const isLastNameValid = nameRegex.test(reportForm.lastName);
+        const isPhoneNumberValid = phoneNumberRegex.test(reportForm.phoneNumber);
+        if (!isFirstNameValid) {return firstNameFieldMessage;} //! error
+        if (!isLastNameValid) {return lastNameFieldMessage;} //! error
+        if (!isPhoneNumberValid) {return phoneNumberFieldMessage;} //! error
+
+        return ""; //* OK
+    }
+  };
+
+  export const processErrorAcceptFormOnSubmit = (reportForm, errorAcceptForm, validationMessage) => { //?  returns an object with the same structure as errorAcceptForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+    if(validationMessage === acceptReportFormAllRequiredFieldsMessage)
+    {
+      return {
+        expectedDuration: false, //* always have selected value either -1 "не знам" or 1,2,3,24,48...
+        description: !reportForm.description, 
+        address: false, //* isn't required
+        locationUrl: !reportForm.locationUrl, 
+        firstName: !reportForm.firstName,
+        lastName: !reportForm.lastName,
+        phoneNumber: !reportForm.phoneNumber
+      };
+    }
+    if(validationMessage === acceptReportFormExpectedDurationMessage)
+    {
+      return {
+        ...errorAcceptForm,
+        expectedDuration: true
+      };
+    }
+    if(validationMessage === descriptionFieldMessage1 || validationMessage === descriptionFieldMessage2)
+    {
+      return {
+        ...errorAcceptForm,
+        description: true
+      };
+    }
+    if(validationMessage === addressFieldMessage1 || validationMessage === addressFieldMessage2)
+    { 
+      return {
+        ...errorAcceptForm,
+        address: true
+      };
+    }
+    if(validationMessage === locationUrlFieldMessage1 || validationMessage === locationUrlFieldMessage2)
+    {
+      return {
+        ...errorAcceptForm,
+        locationUrl: true
+      };
+    }
+    if(validationMessage === firstNameFieldMessage)
+    {
+      return {
+        ...errorAcceptForm,
+        firstName: true
+      };
+    }
+    if(validationMessage === lastNameFieldMessage)
+    {
+      return {
+        ...errorAcceptForm,
+        lastName: true
+      };
+    }
+    if(validationMessage === phoneNumberFieldMessage)
+    {
+      return {
+        ...errorAcceptForm,
+        phoneNumber: true
+      };
+    }
+
+    //? Better safe than sorry...
+    return {
+      expectedDuration: false, //* always have selected value either -1 "не знам" or 1,2,3,24,48...
+      description: !reportForm.description, 
+      address: false, //* isn't required
+      locationUrl: !reportForm.locationUrl, 
       firstName: !reportForm.firstName,
       lastName: !reportForm.lastName,
       phoneNumber: !reportForm.phoneNumber

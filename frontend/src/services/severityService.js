@@ -17,3 +17,8 @@ const severities = [
     return severity ? (severity.color==='yellow' ? "#dbdb02" : severity.color ) : "#dbdb02";
   };
 
+  //? Returns whole issue (label,type,color,colorOnHover)
+  export const getFullSeverityObjectBySeverity = (severityType) => { 
+    const severity = severities.find(s => s.type === severityType);
+    return severity ? severity : null;
+  }

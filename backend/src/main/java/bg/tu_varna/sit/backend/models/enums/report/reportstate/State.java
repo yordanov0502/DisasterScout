@@ -4,6 +4,5 @@ public enum State {
     PENDING,
     FRESH,
     FOR_REVALUATION,
-    INACTIVE,
-    ARCHIVED
+    INACTIVE
 }

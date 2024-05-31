@@ -5,6 +5,8 @@ import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.models.entity.user.User;
 import jakarta.persistence.*;
 import lombok.*;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
 import java.util.Date;
 
@@ -45,6 +47,7 @@ public class Report {
 
     //? User is null until whoever dispatcher process the report
     @ManyToOne(fetch = FetchType.EAGER)
+    @OnDelete(action = OnDeleteAction.SET_NULL) // When user is deleted, every report referencing the particular user is updated(report's FK user_id is set to null)
     @JoinColumn(name = "user_id", nullable = true)
     private User user;
 
@@ -68,8 +71,9 @@ public class Report {
     private Date submittedAt; //? Date and time when the report was submitted by a reporter.
 
     @Column(name = "published_at", nullable = true) //? It is null initially when it is reported
+    //TODO: rename to lastUpdatedAt
     private Date publishedAt; //? Date and time when dispatcher accepted the report. (Made any modifications if necessary, set its reportState to fresh and has become publicly visible.)
 
-    @Column(name = "expires_at", nullable = false)
+    @Column(name = "expires_at", nullable = true) //! It can be null if "не знам" was passed as expectedDuration
     private Date expiresAt; //? Date and time until the report is considered FRESH.
 }

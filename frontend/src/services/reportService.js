@@ -155,6 +155,13 @@ const expectedDurationHours = [
     { label: "Космическо явление",  category: "SPACE_PHENOMENON"},
   ];
 
+  const reportStates = [
+    { label: "Изчакващи", type: "PENDING" },
+    { label: "Активни", type: "FRESH" },
+    { label: "За преоценка", type: "FOR_REVALUATION" },
+    { label: "Изтекли", type: "INACTIVE" },
+  ];
+
   //////////////////////////////////////////////////////////////////////////////////////////////
   //! Used for validation of search params
   export const validStates = ['PENDING', 'FOR_REVALUATION', 'FRESH', 'INACTIVE'];
@@ -176,10 +183,20 @@ const expectedDurationHours = [
 
 
 
-
+  //? Returns state (label)
+  export const getReportStateByType = (type) => { 
+    const reportState = reportStates.find(r => r.type === type);
+    return reportState ? reportState.label : null;
+  }
 
     
   export const getExpectedDurationHours = () => {return expectedDurationHours;}
+
+    //? Returns whole expectedDurationHoursObject (label,hours)
+    export const getFullExpectedDurationObjectByExpectedDuration = (hours) => { 
+      const expectedDuration = expectedDurationHours.find(h => h.hours === hours);
+      return expectedDuration ? expectedDuration : null;
+    }
 
   export const getAllIssues = () => {return issues;}
 
@@ -218,4 +235,15 @@ const expectedDurationHours = [
 
   export const getReportCardsFromPageRequest = (pageNumber,state,severityType,zoneId,area,category,issue) => {
     return axiosInstanceWithCredentials.get(`/internal/dispatcher/reports?page=${pageNumber}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
+  };
+
+  export const getReportForCMS = (reportId,state,severityType,zoneId,area,category,issue) => {
+    return axiosInstanceWithCredentials.get(`/internal/dispatcher/reports/get?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
+  };
+
+  export const acceptReportRequest = ({urlParams, requestBody}) => {
+
+    const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;
+
+    return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/accept?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`,requestBody);
   };

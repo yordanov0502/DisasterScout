@@ -33,7 +33,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
     const path = location.pathname;
    
     if (path.includes("/cms-dashboard")) setActiveButton('cms-dashboard');
-    else if (path.includes("/cms-reports")) setActiveButton('cms-reports');
+    else if (path.includes("/cms-reports") || path.includes("/cms-report")) setActiveButton('cms-reports');
     else if (path.includes("/cms-account")) setActiveButton('cms-account');
     else if (path.includes("/cms-settings")) setActiveButton('cms-settings');
     else if (path.includes("/cms-new-dispatcher")) setActiveButton('cms-new-dispatcher');
