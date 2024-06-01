@@ -36,20 +36,10 @@ export const ReportComponent = ({   isLoadingComponent,
     const IssueGroupItems = styled('ul')({
       padding: 0,
     });
-
-    // const VisuallyHiddenInput = styled('input')({
-    //   clip: 'rect(0 0 0 0)',
-    //   clipPath: 'inset(50%)',
-    //   height: 1,
-    //   overflow: 'hidden',
-    //   position: 'absolute',
-    //   bottom: 0,
-    //   left: 0,
-    //   whiteSpace: 'nowrap',
-    //   width: 1,
-    // });
     
 
+
+    
     //? Used for loading the images of zones from from combobox in advance, so when opened they to be already loaded
     useEffect(() => {
       const zones = getAllZones();

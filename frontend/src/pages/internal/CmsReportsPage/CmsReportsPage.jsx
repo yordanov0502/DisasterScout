@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
@@ -18,13 +18,20 @@ export const CmsReportsPage = () => {
   const [pages, setPages] = useState(1);
   const [rows, setRows] = useState([]);
   const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
-  const [pageNumber, setPageNumber] = useState(Number(searchParams.get("page")) || 1);
-  const [state, setState] = useState(searchParams.get("state") || 'PENDING');
-  const [severityType, setSeverityType] = useState(searchParams.get("severityType") ||"ALL");
-  const [selectedZoneId, setSelectedZoneId] = useState(null);
-  const [area, setArea] = useState(searchParams.get("area") ||"Всички");
-  const [category, setCategory] = useState(searchParams.get("category") ||"ALL");
-  const [issue, setIssue] = useState(searchParams.get("issue") ||"ALL");
+
+  //! useRef is used instead of useState, in order to persist the filter search params between rerenders
+  //! even on full page reload the useRef.current value is preserved, because the url has search params which persist full page reload always
+  //? useRef doesn't trigger rerender when updated
+  const pageNumberRef = useRef(Number(searchParams.get("page")) || 1);
+  const stateRef = useRef(searchParams.get("state") || 'PENDING');
+  const severityTypeRef = useRef(searchParams.get("severityType") || "ALL");
+  const selectedZoneIdRef = useRef(searchParams.get("zoneId") || null); //! added searchParams.get("zoneId")
+  const areaRef = useRef(searchParams.get("area") || "Всички");
+  const categoryRef = useRef(searchParams.get("category") || "ALL");
+  const issueRef = useRef(searchParams.get("issue") || "ALL");
+
+  
+  
   const [isQueryEnabled, setIsQueryEnabled] = useState(false);
   
   
@@ -34,12 +41,11 @@ export const CmsReportsPage = () => {
     isLoading,
     error,
   } = useQuery({
-    queryKey: ["getReportsFromPage", pageNumber, state, severityType, selectedZoneId, area, category, issue], //? When any value in the queryKey array changes, react-query will re-run the query.
-    queryFn: () => getReportCardsFromPageRequest(pageNumber, state, severityType, selectedZoneId, area, category, issue),
+    queryKey: ["getReportsFromPage", pageNumberRef.current, stateRef.current, severityTypeRef.current, selectedZoneIdRef.current, areaRef.current, categoryRef.current, issueRef.current], //? When any value in the queryKey array changes, react-query will re-run the query.
+    queryFn: () => getReportCardsFromPageRequest(pageNumberRef.current, stateRef.current, severityTypeRef.current, selectedZoneIdRef.current, areaRef.current, categoryRef.current, issueRef.current),
     enabled: isQueryEnabled
   });
   
-  //TODO: should I get the search params from location state of CmsReportPage in useState up or here in this useEffect?
   
   useEffect(() => {
     
@@ -59,7 +65,7 @@ export const CmsReportsPage = () => {
       {
         //? Clear the state so it doesn't show again on refresh
         navigate(location.pathname, { replace: true, state: {} });
-        window.location.reload();
+        window.location.reload(); //! does full page reload of cmsReports page and also resets all search params to default ones along with the useRefs
       }
   }, [location]);
   
@@ -78,24 +84,38 @@ export const CmsReportsPage = () => {
     if(!isUContextEmpty)
     {
         const initialParams = {};
-        if (!searchParams.has("page")) {initialParams.page = 1;}
-        if (!searchParams.has("state")) {initialParams.state = 'PENDING';}
-        if (!searchParams.has("severityType")) {initialParams.severityType = 'ALL';}
+        if (!searchParams.has("page")) {initialParams.page = pageNumberRef.current;}
+        if (!searchParams.has("state")) {initialParams.state = stateRef.current;}
+        if (!searchParams.has("severityType")) {initialParams.severityType = severityTypeRef.current;}
         //! For dispatcher
         if (authenticatedUser.role === "DISPATCHER" && !searchParams.has("zoneId")) {
-          const firstZoneId = authenticatedUser.availableZoneIds[0];
-          setSelectedZoneId(firstZoneId);
-          initialParams.zoneId = firstZoneId;
+          if(selectedZoneIdRef.current === null)
+          {
+            const firstZoneId = authenticatedUser.availableZoneIds[0];
+            selectedZoneIdRef.current = firstZoneId;
+            initialParams.zoneId = firstZoneId;
+          }
+          else
+          {
+            initialParams.zoneId = selectedZoneIdRef.current;
+          }
         }
         //! For admin
         else if (authenticatedUser.role === "ADMIN" && !searchParams.has("zoneId")) {
-          const firstZoneId = "st1";
-          setSelectedZoneId(firstZoneId);
-          initialParams.zoneId = firstZoneId;
+          if(selectedZoneIdRef.current === null)
+          {
+            const firstZoneId = "st1";
+            selectedZoneIdRef.current = firstZoneId;
+            initialParams.zoneId = firstZoneId;
+          }
+          else
+          {
+            initialParams.zoneId = selectedZoneIdRef.current;
+          }
         }
-        if (!searchParams.has("area")) {initialParams.area = 'Всички';}
-        if (!searchParams.has("category")) {initialParams.category = 'ALL';}
-        if (!searchParams.has("issue")) {initialParams.issue = 'ALL';}
+        if (!searchParams.has("area")) {initialParams.area = areaRef.current;}
+        if (!searchParams.has("category")) {initialParams.category = categoryRef.current;}
+        if (!searchParams.has("issue")) {initialParams.issue = issueRef.current;}
         
         if (Object.keys(initialParams).length > 0) 
         {
@@ -110,7 +130,6 @@ export const CmsReportsPage = () => {
           const newArea = searchParams.get("area");
           const newCategory = searchParams.get("category");
           const newIssue = searchParams.get("issue");
-          
 
 
           if (!Number.isInteger(newPageNumber) || newPageNumber < 1 
@@ -143,13 +162,13 @@ export const CmsReportsPage = () => {
           
       
           
-          if (newPageNumber !== pageNumber) {setPageNumber(newPageNumber);}
-          if (newState !== state) {setState(newState);}
-          if (newSeverityType !== severityType) {setSeverityType(newSeverityType);}
-          if (newZoneId !== selectedZoneId) {setSelectedZoneId(newZoneId);}
-          if (newArea !== area) {setArea(newArea);}
-          if (newCategory !== category) {setCategory(newCategory);}
-          if (newIssue !== issue) {setIssue(newIssue);}
+          if (newPageNumber !== pageNumberRef.current) {pageNumberRef.current = newPageNumber;}
+          if (newState !== stateRef.current) {stateRef.current = newState;}
+          if (newSeverityType !== severityTypeRef.current) {severityTypeRef.current = newSeverityType;}
+          if (newZoneId !== selectedZoneIdRef.current) {selectedZoneIdRef.current = newZoneId;}
+          if (newArea !== areaRef.current) {areaRef.current = newArea;}
+          if (newCategory !== categoryRef.current) {categoryRef.current = newCategory;}
+          if (newIssue !== issueRef.current) {issueRef.current = newIssue;}
       
     
           setIsQueryEnabled(true);//? all validations passed and authenticatedUser is present
@@ -169,7 +188,7 @@ export const CmsReportsPage = () => {
     {
       const newPages = data.data.totalPages;
       const newRows = data.data.content.map((item, index) => {
-      const rowNumber = (pageNumber - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(15 - set in the backend)
+      const rowNumber = (pageNumberRef.current - 1) * 15 + index + 1; //? Calculate rowNumber based on the index, pageNumber and pageSize(15 - set in the backend)
       
       const submittedAt = new Date(item.submittedAt);
       const formattedSubmittedAt = `${submittedAt.toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })} ч., ${submittedAt.toLocaleDateString('bg-BG')}`;
@@ -207,58 +226,58 @@ export const CmsReportsPage = () => {
   
 
   const handlePageChange = (event, newPageNumber) => { //! event here is used only as argument to avoid "Converting circular structure to JSON" error
-    if(newPageNumber !== pageNumber)
+    if(newPageNumber !== pageNumberRef.current)
     { 
-      setPageNumber(newPageNumber);  //? This will trigger the useQuery fetch because of the queryKey dependency
-      const params = { page: newPageNumber, state, severityType, zoneId: selectedZoneId, area, category, issue  }; 
+      pageNumberRef.current = newPageNumber;  //? This will trigger the useQuery fetch because of the queryKey dependency
+      const params = { page: newPageNumber, state: stateRef.current, severityType: severityTypeRef.current, zoneId: selectedZoneIdRef.current, area: areaRef.current, category: categoryRef.current, issue: issueRef.current }; 
       setSearchParams(params);
     }
   };
 
   const handleStateChange = (newState) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
-     setState(newState); //? This will trigger the useQuery fetch because of the queryKey dependency
-     const params = { page: 1, state: newState, severityType, zoneId: selectedZoneId, area, category, issue }; 
+     stateRef.current = newState; //? This will trigger the useQuery fetch because of the queryKey dependency
+     const params = { page: 1, state: newState, severityType: severityTypeRef.current, zoneId: selectedZoneIdRef.current, area: areaRef.current, category: categoryRef.current, issue: issueRef.current }; 
      setSearchParams(params);
-     setPageNumber(1);
+     pageNumberRef.current = 1;
   };
 
   const handleSeverityTypeChange = (newSeverityType) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
-    setSeverityType(newSeverityType); //? This will trigger the useQuery fetch because of the queryKey dependency
-    const params = { page: 1, state, severityType: newSeverityType, zoneId: selectedZoneId, area, category, issue };
+    severityTypeRef.current = newSeverityType; //? This will trigger the useQuery fetch because of the queryKey dependency
+    const params = { page: 1, state: stateRef.current, severityType: newSeverityType, zoneId: selectedZoneIdRef.current, area: areaRef.current, category: categoryRef.current, issue: issueRef.current };
     setSearchParams(params);
-    setPageNumber(1);
+    pageNumberRef.current = 1;
  };
 
  const handleSelectedZoneChange = (newZoneId) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
   //!!! When zone is changed, the area is reset to 'Всички', cuz each zone relates to separate list of areas !!!
-  setSelectedZoneId(newZoneId); //? This will trigger the useQuery fetch because of the queryKey dependency
-  setArea("Всички");
-  const params = { page: 1, state, severityType, zoneId: newZoneId, area: 'Всички', category, issue };
+  selectedZoneIdRef.current = newZoneId; //? This will trigger the useQuery fetch because of the queryKey dependency
+  areaRef.current = "Всички"
+  const params = { page: 1, state: stateRef.current, severityType: severityTypeRef.current, zoneId: newZoneId, area: 'Всички', category: categoryRef.current, issue: issueRef.current };
   setSearchParams(params);
-  setPageNumber(1);
+  pageNumberRef.current = 1;
  };
 
  const handleAreaChange = (newArea) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
-  setArea(newArea); //? This will trigger the useQuery fetch because of the queryKey dependency
-  const params = { page: 1, state, severityType, zoneId: selectedZoneId, area: newArea, category, issue };
+  areaRef.current = newArea; //? This will trigger the useQuery fetch because of the queryKey dependency
+  const params = { page: 1, state: stateRef.current, severityType: severityTypeRef.current, zoneId: selectedZoneIdRef.current, area: newArea, category: categoryRef.current, issue: issueRef.current };
   setSearchParams(params);
-  setPageNumber(1);
+  pageNumberRef.current = 1;
  };
 
  const handleCategoryChange = (newCategory) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
   //!!! When category is changed, the issue is reset to 'ALL', cuz each category relates to separate list of issues !!!
-  setCategory(newCategory); //? This will trigger the useQuery fetch because of the queryKey dependency
-  setIssue('ALL');
-  const params = { page: 1, state, severityType, zoneId: selectedZoneId, area, category: newCategory, issue: 'ALL' };
+  categoryRef.current = newCategory; //? This will trigger the useQuery fetch because of the queryKey dependency
+  issueRef.current = 'ALL';
+  const params = { page: 1, state: stateRef.current, severityType: severityTypeRef.current, zoneId: selectedZoneIdRef.current, area: areaRef.current, category: newCategory, issue: 'ALL' };
   setSearchParams(params);
-  setPageNumber(1);
+  pageNumberRef.current = 1;
  };
 
 const handleIssueChange = (newIssue) => { //! event here must NOT be used as argument under any circumstances in order to avoid MUI error
-  setIssue(newIssue); //? This will trigger the useQuery fetch because of the queryKey dependency
-  const params = { page: 1, state, severityType, zoneId: selectedZoneId, area, category, issue: newIssue };
+  issueRef.current = newIssue; //? This will trigger the useQuery fetch because of the queryKey dependency
+  const params = { page: 1, state: stateRef.current, severityType: severityTypeRef.current, zoneId: selectedZoneIdRef.current, area: areaRef.current, category: categoryRef.current, issue: newIssue };
   setSearchParams(params);
-  setPageNumber(1);
+  pageNumberRef.current = 1;
  };
 
  
@@ -278,19 +297,19 @@ const handleIssueChange = (newIssue) => { //! event here must NOT be used as arg
         status={status}
         isLoadingComponent={isLoadingComponent}
         handlePageChange={handlePageChange}
-        pageNumber={pageNumber}
+        pageNumber={pageNumberRef.current}
         handleStateChange={handleStateChange} 
-        state={state}
+        state={stateRef.current}
         handleSeverityTypeChange={handleSeverityTypeChange}
-        severityType={severityType}
+        severityType={severityTypeRef.current}
         handleSelectedZoneChange={handleSelectedZoneChange}
-        selectedZoneId={selectedZoneId}
+        selectedZoneId={selectedZoneIdRef.current}
         handleCategoryChange={handleCategoryChange}
-        category={category}
+        category={categoryRef.current}
         handleIssueChange={handleIssueChange}
-        issue={issue}
+        issue={issueRef.current}
         handleAreaChange={handleAreaChange}
-        area={area}
+        area={areaRef.current}
         pages={pages}
         rows={rows}
       />

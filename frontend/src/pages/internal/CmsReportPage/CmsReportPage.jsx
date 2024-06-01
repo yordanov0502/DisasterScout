@@ -165,28 +165,19 @@ export const CmsReportPage = () => {
     {
       if(error.response?.data === "Report doesn't exist.")
       {
-
-        // navigate(`/cms-report?reportId=${row.id}`, { 
-        //   state: { 
-        //     from: location.pathname + location.search,
-        //     searchParams: { state, severityType, zoneId, area, category, issue }
-        //   }
-        // });
-
-        
-        /*!*/navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
       }
       else if(error.response?.data === "Report info mismatch.[state]" || error.response?.data === "Report info mismatch.[severityType]" || error.response?.data === "Report info mismatch.[zoneId]" || error.response?.data === "Report info mismatch.[area]" || error.response?.data === "Report info mismatch.[category]" || error.response?.data === "Report info mismatch.[issue]")
       {
-        /*!*/navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
       }
       else if(error.response?.data === "Available zones of dispatcher have been changed.")
       {
-        navigate(from, { state: { reloadPage: true } });
+        navigate(from, { state: { reloadPage: true } }); //! does full page reload of cmsReports page and also resets all search params to default ones along with the useRefs
       }
       else
       {
-        /*!*/navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
+        navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
       } 
     }
 
@@ -268,25 +259,25 @@ export const CmsReportPage = () => {
   const acceptReportMutation = useMutation({
     mutationFn: acceptReportRequest,
     onSuccess: () => {
-        /*!*/navigate(from, { state: { showSuccessSnackbar: true, message: "Операцията е успешна." } });
+        navigate(from, { state: { showSuccessSnackbar: true, message: "Операцията е успешна." } });
     },
     onError: (error) => {
           
       if(error.response?.data === "Report doesn't exist.")
       {
-        /*!*/navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
       }
       else if(error.response?.data === "Report info mismatch.[state]" || error.response?.data === "Report info mismatch.[severityType]" || error.response?.data === "Report info mismatch.[zoneId]" || error.response?.data === "Report info mismatch.[area]" || error.response?.data === "Report info mismatch.[category]" || error.response?.data === "Report info mismatch.[issue]")
       {
-        /*!*/navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
       }
       else if(error.response?.data === "Available zones of dispatcher have been changed.")
       {
-        navigate(from, { state: { reloadPage: true } });
+        navigate(from, { state: { reloadPage: true } }); //! does full page reload of cmsReports page and also resets all search params to default ones along with the useRefs
       }
       else
       {
-        /*!*/navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
+        navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
       } 
     },
     onSettled: () => {
