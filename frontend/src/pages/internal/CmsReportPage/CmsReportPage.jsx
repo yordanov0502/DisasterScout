@@ -12,6 +12,9 @@ import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
 import { processErrorAcceptFormOnSubmit, validateReportFormOnAccept } from "../../../validations/reportRegexValidation";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import { ReportComponentPending } from "../../../components/internal/ReportComponentPending";
+
+
+import { ReportComponentInactive } from "../../../components/internal/ReportComponentInactive/ReportComponentInactive";
 import "./cms_report_page.scss";
 
 export const CmsReportPage = () => {
@@ -409,17 +412,6 @@ export const CmsReportPage = () => {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
   const handleCloseSnackBar = (event, reason) => {
     if (reason === 'clickaway') {
       return;
@@ -428,6 +420,18 @@ export const CmsReportPage = () => {
   };
 
 
+
+
+
+
+
+
+
+
+
+
+
+  
   if(!reportForm.state)
   {
     return (
@@ -468,6 +472,34 @@ export const CmsReportPage = () => {
         </div>
       );
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    if(reportForm.state === 'INACTIVE')
+      {
+        return (
+          <div className="cms_report_page">
+      
+            <ReportComponentInactive
+               isLoadingComponent={isLoadingComponent}
+               reportForm={reportForm}
+            />
+      
+          </div>
+        );
+      }
   }
 
   

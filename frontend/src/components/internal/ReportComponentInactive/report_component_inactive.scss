@@ -1,0 +1,140 @@
+.report_component_inactive {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 90%;
+    height: 100%;
+    background-color: white;
+    margin-top: 10px;
+
+    @media (pointer: coarse) {
+        width: 100%;
+        margin-top: 90px
+    }
+
+    &__loader-box {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+
+    
+    &__container1{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 100%;  
+        background-color: white;
+        
+
+
+        &__image{
+            width: 40%;
+            height: 400px;  
+            background-color: white;
+            border-radius: 10px;
+            border: solid 3px red;
+        
+            @media (pointer: coarse) {
+              width: 93%;
+            }
+        }
+
+        &__wrapper1{
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 3%;
+            
+                //top: 3px;
+                width: 45%;
+
+                
+
+            &__box1{
+                position: relative;
+                top: 1px;
+                width: 45%;
+            }
+    
+            &__box2{
+                position: relative;
+                top: 0px;
+                width: 45%;
+            }
+
+            @media (pointer: coarse) {
+                width: 100%;
+
+                &__box1{
+                    top: 20px;
+                }
+        
+                &__box2{
+                    top: 19px;
+                }
+              }
+    
+        }
+
+    
+        @media (pointer: coarse) {
+          width: 95%;
+        }
+    }
+
+    &__container2{
+        position: relative;
+        top: 7px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        width: 100%;
+        height: 100%;  
+        background-color: white;
+        gap: 0%;
+
+        &__description{
+            width: 62.3%;
+            margin-left: -1.6%;
+           
+        
+            @media (pointer: coarse) {
+              width: 93%;
+              margin-left: 0%;
+            }
+        }
+
+        &__box3{
+            position: relative;
+            top: 0px;
+            width: 20.3%;
+            margin-left: 1.3%;
+
+            @media (pointer: coarse) {
+                width: 93%;
+                margin-left: 0%;
+              }
+        }
+
+
+
+        @media (pointer: coarse) {
+            width: 95%;
+            top: 30px;
+          }
+        
+        }
+
+
+}  
