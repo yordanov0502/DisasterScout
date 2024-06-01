@@ -2,18 +2,17 @@ import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
+import { ref, deleteObject } from "firebase/storage";
+import { storage } from "../../../utils/firebaseConfiguration";
 import { useUserContext } from "../../../hooks/useUserContext";
-import { ReportsComponent } from "../../../components/internal/ReportsComponent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
-import { getAllAreasOfZoneForSearch } from "../../../services/zoneService";
-import { acceptReportRequest, getReportCardsFromPageRequest, getReportForCMS, rejectReportRequest, validCategories, validIssues, validMeteorologicalConditionsIssues, validMilitaryConditionsIssues, validPublicConditionsIssues, validRoadConditionsIssues, validSeismicActivityIssues, validSeverityTypes, validSpacePhenomenonIssues, validStates, validZoneIds } from "../../../services/reportService";
-import "./cms_report_page.scss";
-import { ReportComponent } from "../../../components/internal/ReportComponent";
+import { acceptReportRequest, getReportForCMS, rejectReportRequest } from "../../../services/reportService";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
 import { processErrorAcceptFormOnSubmit, validateReportFormOnAccept } from "../../../validations/reportRegexValidation";
-import { ref, deleteObject } from "firebase/storage";
-import { storage } from "../../../utils/firebaseConfiguration";
+import { PageLoader } from "../../../components/Loaders/PageLoader";
+import { ReportComponentPending } from "../../../components/internal/ReportComponentPending";
+import "./cms_report_page.scss";
 
 export const CmsReportPage = () => {
 
@@ -429,56 +428,47 @@ export const CmsReportPage = () => {
   };
 
 
- 
+  if(!reportForm.state)
+  {
+    return (
+        <PageLoader/>
+    );
+  }
+  else
+  {
+    if(reportForm.state === 'PENDING')
+    {
+      return (
+        <div className="cms_report_page">
+    
+          <ReportComponentPending
+             isLoadingComponent={isLoadingComponent}
+             isRequestSent={isRequestSent}
+             reportForm={reportForm}
+             handleInput={handleInput}
+             onPressAccept={onPressAccept}
+             errorAcceptForm={errorAcceptForm}
+             onPressReject={onPressReject}
+          />
+    
+          <BackdropLoader open={backdropOpen} />
+    
+          <Snackbar 
+            anchorOrigin={{
+              vertical: position.vertical,
+              horizontal: position.horizontal,
+            }} 
+            open={open} 
+            autoHideDuration={4000} 
+            onClose={handleCloseSnackBar}>
+            <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
+              {message}
+            </Alert>
+          </Snackbar>
+        </div>
+      );
+    }
+  }
 
-  return (
-    <div className="cms_report_page">
-
-      <ReportComponent
-         isLoadingComponent={isLoadingComponent}
-         isRequestSent={isRequestSent}
-         reportForm={reportForm}
-         handleInput={handleInput}
-         onPressAccept={onPressAccept}
-         errorAcceptForm={errorAcceptForm}
-         onPressReject={onPressReject}
-        // authenticatedUser={authenticatedUser}
-        // status={status}
-        // isLoadingComponent={isLoadingComponent}
-        // handlePageChange={handlePageChange}
-        // pageNumber={pageNumber}
-        // handleStateChange={handleStateChange} 
-        // state={state}
-        // handleSeverityTypeChange={handleSeverityTypeChange}
-        // severityType={severityType}
-        // handleSelectedZoneChange={handleSelectedZoneChange}
-        // selectedZoneId={selectedZoneId}
-        // handleCategoryChange={handleCategoryChange}
-        // category={category}
-        // handleIssueChange={handleIssueChange}
-        // issue={issue}
-        // handleAreaChange={handleAreaChange}
-        // area={area}
-        // pages={pages}
-        // rows={rows}
-      />
-
-      <BackdropLoader open={backdropOpen} />
-
-     {/*when navigating back to reports page, location state must be set here in all mutations onSuccess onError so snack bar is displayed there accordingly*/}
-
-      <Snackbar 
-        anchorOrigin={{
-          vertical: position.vertical,
-          horizontal: position.horizontal,
-        }} 
-        open={open} 
-        autoHideDuration={4000} 
-        onClose={handleCloseSnackBar}>
-        <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
-          {message}
-        </Alert>
-      </Snackbar>
-    </div>
-  );
+  
 };

@@ -5,25 +5,20 @@ import { ComponentLoader } from "../../Loaders/ComponentLoader";
 import { getAllAreasOfZone, getAllZones, getBadgeOfZone, getFullZoneById } from "../../../services/zoneService";
 import { getAllSeverities, getFullSeverityObjectBySeverity } from "../../../services/severityService";
 import { getAllIssues, getExpectedDurationHours, getFullExpectedDurationObjectByExpectedDuration, getFullIssueObjectByIssue, getReportStateByType } from "../../../services/reportService";
-import "./report_component.scss";
+import "./report_component_pending.scss";
 
 //? Global variable to act as storage for already loaded local images (zone badges)
 const loadedImages = {};
 
 const noImageUrl = "src/assets/images/no-photo.png";
 
-export const ReportComponent = ({   isLoadingComponent,
+export const ReportComponentPending = ({   isLoadingComponent,
                                     isRequestSent,
                                     reportForm, 
                                     handleInput, 
                                     onPressAccept,
                                     errorAcceptForm,
-                                    onPressReject,
-                                    //errorForm, 
-                                    // errorMessage, 
-                                    // onPressProcess,
-                                    // isRequestSent,
-                                    // comboBoxKeys
+                                    onPressReject
                                 }) => {
 
     const IssueGroupHeader = styled('div')(() => ({
@@ -56,8 +51,8 @@ export const ReportComponent = ({   isLoadingComponent,
     if(isLoadingComponent || !reportForm.state)
     {
         return (
-          <div className="report_component">
-            <div className="report_component__loader-box">
+          <div className="report_component_pending">
+            <div className="report_component_pending__loader-box">
               <ComponentLoader />
             </div>
           </div>
@@ -68,18 +63,18 @@ export const ReportComponent = ({   isLoadingComponent,
     {
       return (
    
-        <div className="report_component">
+        <div className="report_component_pending">
     
-        <div className="report_component__container1">
+        <div className="report_component_pending__container1">
     
-         <img className="report_component__container1__image"
+         <img className="report_component_pending__container1__image"
             src={reportForm.imageUrl || noImageUrl}
             alt={""} 
          />
     
-         <div className="report_component__container1__wrapper1">
+         <div className="report_component_pending__container1__wrapper1">
     
-         <div className="report_component__container1__wrapper1__box1">
+         <div className="report_component_pending__container1__wrapper1__box1">
     
     <Autocomplete
          key={300} //? When the key changes the comboBox selection is cleared.
@@ -224,7 +219,7 @@ export const ReportComponent = ({   isLoadingComponent,
      
     </div>
     
-    <div className="report_component__container1__wrapper1__box2">
+    <div className="report_component_pending__container1__wrapper1__box2">
     
       <Autocomplete
               key={303} //? When the key changes the comboBox selection is cleared.
@@ -352,9 +347,9 @@ export const ReportComponent = ({   isLoadingComponent,
     
         </div>
     
-        <div className="report_component__container2">
+        <div className="report_component_pending__container2">
     
-        <div className="report_component__container2__description">
+        <div className="report_component_pending__container2__description">
         <TextField
               //? This text field has "A form field should have an id or name attribute" in the console
               sx={{backgroundColor: 'white'}}
@@ -374,7 +369,7 @@ export const ReportComponent = ({   isLoadingComponent,
             />
         </div>
     
-        <div className="report_component__container2__box3"> 
+        <div className="report_component_pending__container2__box3"> 
         <TextField
          sx={{backgroundColor: 'white'}}
          autoComplete="off"
@@ -436,15 +431,12 @@ export const ReportComponent = ({   isLoadingComponent,
         </div>
     
     
-            {/* here based on status, will be displayed different div containing different buttons*/}
-      
-        <div className="report_component__buttons-container">
-          <button type="button" className="report_component__buttons-container__approve" disabled={isRequestSent} onClick={onPressAccept}>{"Одобри"}</button>
-          <button type="button" className="report_component__buttons-container__deny" disabled={isRequestSent} onClick={onPressReject}>{"Отхвърли"}</button>
+        <div className="report_component_pending__buttons-container">
+          <button type="button" className="report_component_pending__buttons-container__approve" disabled={isRequestSent} onClick={onPressAccept}>{"Одобри"}</button>
+          <button type="button" className="report_component_pending__buttons-container__reject" disabled={isRequestSent} onClick={onPressReject}>{"Отхвърли"}</button>
         </div>
     
-              {/*---------------------------------------------------------------------------------*/}
-    
+        
         </div>
       );
     }
