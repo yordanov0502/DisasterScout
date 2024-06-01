@@ -40,4 +40,12 @@ public class ReportsController {
         return reportService.acceptReport(reportId,state,severityType,zoneId,area,category,issue,user,acceptReportDTO);
     }
 
+    @Operation(summary = "Reject report",
+            description = "Dispatcher/Admin rejects a report when this endpoint is called. The report is deleted.")
+    @DeleteMapping("/reject")
+    public ResponseEntity<String> rejectReport(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user){
+        return reportService.rejectReport(reportId,state,severityType,zoneId,area,category,issue,user);
+    }
+
+
 }

@@ -17,7 +17,8 @@ export const ReportComponent = ({   isLoadingComponent,
                                     reportForm, 
                                     handleInput, 
                                     onPressAccept,
-                                    errorAcceptForm
+                                    errorAcceptForm,
+                                    onPressReject,
                                     //errorForm, 
                                     // errorMessage, 
                                     // onPressProcess,
@@ -214,7 +215,7 @@ export const ReportComponent = ({   isLoadingComponent,
                 sx={{backgroundColor: 'white'}}
                 required
                 color="success"
-                error={errorAcceptForm.expectedDuration} //!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!must check whether it is still "не знам" meaning it is -1
+                error={errorAcceptForm.expectedDuration}
                 {...params} 
                 label="Времетраене" />}
             />
@@ -439,7 +440,7 @@ export const ReportComponent = ({   isLoadingComponent,
       
         <div className="report_component__buttons-container">
           <button type="button" className="report_component__buttons-container__approve" disabled={isRequestSent} onClick={onPressAccept}>{"Одобри"}</button>
-          <button type="button" className="report_component__buttons-container__deny" disabled={isRequestSent} /*onClick={onPressDeny}*/>{"Отхвърли"}</button>
+          <button type="button" className="report_component__buttons-container__deny" disabled={isRequestSent} onClick={onPressReject}>{"Отхвърли"}</button>
         </div>
     
               {/*---------------------------------------------------------------------------------*/}

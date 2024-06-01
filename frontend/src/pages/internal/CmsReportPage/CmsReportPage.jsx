@@ -6,12 +6,14 @@ import { useUserContext } from "../../../hooks/useUserContext";
 import { ReportsComponent } from "../../../components/internal/ReportsComponent";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { getAllAreasOfZoneForSearch } from "../../../services/zoneService";
-import { acceptReportRequest, getReportCardsFromPageRequest, getReportForCMS, validCategories, validIssues, validMeteorologicalConditionsIssues, validMilitaryConditionsIssues, validPublicConditionsIssues, validRoadConditionsIssues, validSeismicActivityIssues, validSeverityTypes, validSpacePhenomenonIssues, validStates, validZoneIds } from "../../../services/reportService";
+import { acceptReportRequest, getReportCardsFromPageRequest, getReportForCMS, rejectReportRequest, validCategories, validIssues, validMeteorologicalConditionsIssues, validMilitaryConditionsIssues, validPublicConditionsIssues, validRoadConditionsIssues, validSeismicActivityIssues, validSeverityTypes, validSpacePhenomenonIssues, validStates, validZoneIds } from "../../../services/reportService";
 import "./cms_report_page.scss";
 import { ReportComponent } from "../../../components/internal/ReportComponent";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
 import { processErrorAcceptFormOnSubmit, validateReportFormOnAccept } from "../../../validations/reportRegexValidation";
+import { ref, deleteObject } from "firebase/storage";
+import { storage } from "../../../utils/firebaseConfiguration";
 
 export const CmsReportPage = () => {
 
@@ -112,12 +114,7 @@ export const CmsReportPage = () => {
     
   }, [searchParams, authenticatedUser]);
 
-  //! the get request will have validation inside the backend . the request sends the reportId, THEN the report is fetched by the reportId AND 
-  //! the zoneId OF THE REPORT IS CHECKED WHETHER IT IS EQUAL TO ONE OF THE AVAILABLE ZONES OF THE DISPATCHER if so continue if not return specific error message
-  //! which I will handle here by navigating the user to the cms-reports page. THIS VALIDATION SHOULD NEVER EVER BE PERFORMED FOR ADMIN as ADMIN dont have any zones,
-  //! simply because it is redundant as HE IS ADMIN AND ALWAYS SHOULD HAVE ACCESS TO ALL ZONES REGARDLESS OF AVAILABLE ZONES IDS. 
-  //??????????????? THE VALIDATION SHOULD NOT BE CUSTOM, BECAUSE IT WILL ADD AN OVERHEAD FOR EACH REQUEST TO CHECK DATABASE BEFORE PROCESSING THE LOGIC IN THE SERVICE METHOD.
-  //??????????????? INSTEAD THE VALIDATION SHOULD BE PERFORMED INSIDE THE ACTUAL SERVICE METHOD AND FROM THERE IF NECESSARRY RETUREN THE NEEDED RESPONSE WITH SPECIFIC MESSAGE
+  
 
   useEffect(() => {
 
@@ -255,7 +252,7 @@ export const CmsReportPage = () => {
 
 
 
-
+  //-----state PENDING-----
   const acceptReportMutation = useMutation({
     mutationFn: acceptReportRequest,
     onSuccess: () => {
@@ -332,9 +329,76 @@ export const CmsReportPage = () => {
 
     }  
   };
+  
 
+  const rejectReportMutation = useMutation({
+    mutationFn: rejectReportRequest,
+    onSuccess: async (data) => {
 
+      if(data.data !== null) //? checks if after report deletion imageUrl was returned or not(meaning report had no uploaded image)
+      {
+          const imageUrl = data.data;
+          const imageRef = ref(storage, imageUrl);
+          try 
+          {
+            await deleteObject(imageRef); //? Delete the uploaded image of the already deleted report
+          } 
+          catch (deleteError) 
+          {
+            //console.error("Failed to delete image from Firebase after successful mutation[report was deleted from database]", deleteError);
+          }
+      }
+        navigate(from, { state: { showSuccessSnackbar: true, message: "Операцията е успешна." } });
+    },
+    onError: (error) => {
+          
+      if(error.response?.data === "Report doesn't exist.")
+      {
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
+      }
+      else if(error.response?.data === "Report info mismatch.[state]" || error.response?.data === "Report info mismatch.[severityType]" || error.response?.data === "Report info mismatch.[zoneId]" || error.response?.data === "Report info mismatch.[area]" || error.response?.data === "Report info mismatch.[category]" || error.response?.data === "Report info mismatch.[issue]")
+      {
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
+      }
+      else if(error.response?.data === "Available zones of dispatcher have been changed.")
+      {
+        navigate(from, { state: { reloadPage: true } }); //! does full page reload of cmsReports page and also resets all search params to default ones along with the useRefs
+      }
+      else
+      {
+        navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
+      } 
+    },
+    onSettled: () => {
+      setIsRequestSent(false);
+      setBackdropOpen(false);
+    },
+  });
 
+  const onPressReject = (event) => {
+    event.preventDefault();
+    closeSnackbar();
+
+    if(!isRequestSent)
+    {
+      setIsRequestSent(true);
+      setBackdropOpen(true);
+
+      rejectReportMutation.mutate({
+        urlParams: {
+          reportId,
+          state: previousSearchParams.state,
+          severityType: previousSearchParams.severityType,
+          zoneId: previousSearchParams.zoneId,
+          area: previousSearchParams.area,
+          category: previousSearchParams.category,
+          issue: previousSearchParams.issue,
+        }
+      });
+
+    }  
+  };
+   //-----state PENDING-----
 
 
 
@@ -377,6 +441,7 @@ export const CmsReportPage = () => {
          handleInput={handleInput}
          onPressAccept={onPressAccept}
          errorAcceptForm={errorAcceptForm}
+         onPressReject={onPressReject}
         // authenticatedUser={authenticatedUser}
         // status={status}
         // isLoadingComponent={isLoadingComponent}

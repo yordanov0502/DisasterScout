@@ -247,3 +247,10 @@ const expectedDurationHours = [
 
     return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/accept?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`,requestBody);
   };
+
+  export const rejectReportRequest = ({urlParams}) => {
+
+    const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;
+
+    return axiosInstanceWithCredentials.delete(`/internal/dispatcher/reports/reject?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
+  };
