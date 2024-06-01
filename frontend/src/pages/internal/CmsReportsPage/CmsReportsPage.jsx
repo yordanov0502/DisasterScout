@@ -61,7 +61,7 @@ export const CmsReportsPage = () => {
       //? Clear the state so it doesn't show again on refresh
       navigate(location.pathname, { replace: true, state: {} });
     }
-    else if (location.state?.reloadPage === true) 
+    else if (location.state?.reloadPage === true) //??
       {
         //? Clear the state so it doesn't show again on refresh
         navigate(location.pathname, { replace: true, state: {} });

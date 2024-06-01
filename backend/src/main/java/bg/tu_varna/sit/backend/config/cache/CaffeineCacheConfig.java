@@ -92,7 +92,7 @@ public class CaffeineCacheConfig {
 
     private static Cache<Object,Object> stateCache() {
         return Caffeine.newBuilder()
-                .maximumSize(5) //? 5 report state types (PENDING, FRESH, FOR_REVALUATION, INACTIVE, ARCHIVED)
+                .maximumSize(4) //? 4 report state types (PENDING, FRESH, FOR_REVALUATION, INACTIVE)
                 .build();
     }
 
