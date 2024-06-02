@@ -22,7 +22,7 @@ export const SubmitReportPage = () => {
     expectedDuration: "",
     description: "", 
     zone: "",
-    area: "",
+    area: "-",
     address: "", //* isn't required
     locationUrl: "",
 
@@ -75,7 +75,21 @@ export const SubmitReportPage = () => {
     if(name === 'expectedDuration' || name === 'description' || name === 'address' || name === 'locationUrl') 
     {setReportForm(prevState => ({...prevState, [name]: value}));} 
     else 
-    {setReportForm(prevState => ({...prevState, [name]:  value.trim()}));}
+    {
+      if(name === 'zone')
+      {
+        setReportForm(prevState => ({
+          ...prevState, 
+          [name]:  value.trim(),
+          area: "-"
+        }));
+      }
+      else
+      {
+        setReportForm(prevState => ({...prevState, [name]:  value.trim()}));
+      }
+    }
+
     setErrorMessage("");
     if(!isErrorFormValid()){setErrorForm(resetErrorForm());}
   };
@@ -98,7 +112,7 @@ export const SubmitReportPage = () => {
       expectedDuration: "",
       description: "", 
       zone: "",
-      area: "",
+      area: "-",
       address: "", //* isn't required
       locationUrl: "",
 

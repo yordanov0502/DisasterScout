@@ -52,7 +52,7 @@ const isLocationUrlCharacterCountLess = (locationUrl) => {
   };
 
 export const validateReportFormOnSubmit = (reportForm) => { //? function returns error message
-    if (!reportForm.issue || !reportForm.severity || !reportForm.expectedDuration || !reportForm.zone || !reportForm.area || !reportForm.locationUrl || !reportForm.description || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber) 
+    if (!reportForm.issue || !reportForm.severity || !reportForm.expectedDuration || !reportForm.zone || reportForm.area === "-" || !reportForm.locationUrl || !reportForm.description || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber) 
     {
       return allRequiredFieldsMessage; //! error
     }
@@ -90,7 +90,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
         expectedDuration: !reportForm.expectedDuration,
         description: !reportForm.description, 
         zone: !reportForm.zone,
-        area: !reportForm.area,
+        area: reportForm.area === "-" ? true : false,
         address: false, //* isn't required
         locationUrl: !reportForm.locationUrl,
     
@@ -149,7 +149,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
       expectedDuration: !reportForm.expectedDuration,
       description: !reportForm.description, 
       zone: !reportForm.zone,
-      area: !reportForm.area,
+      area: reportForm.area === "-" ? true : false,
       address: false, //* isn't required
       locationUrl: !reportForm.locationUrl,
   
@@ -269,16 +269,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
     };
   };
 
-  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-
-
-
-
-
-
-
-
+  
 
   export const validateReportFormOnRevaluate = (reportForm) => { //? function returns error message
     if (!reportForm.description || !reportForm.locationUrl || reportForm.area === "-") 

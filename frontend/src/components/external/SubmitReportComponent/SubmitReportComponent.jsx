@@ -1,5 +1,5 @@
 import { Autocomplete, Box, Button, TextField, styled } from "@mui/material";
-import { getAllAreasOfZone, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
+import { getAllAreasOfZoneForSubmitReport, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import { useEffect } from "react";
 import { getAllSeverities } from "../../../services/severityService";
 import { getAllIssues, getExpectedDurationHours } from "../../../services/reportService";
@@ -218,12 +218,14 @@ export const SubmitReportComponent = ({ reportForm,
           "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
           {backgroundColor: "#b5ffcc !important"}
          }}
-          options={getAllAreasOfZone(reportForm.zone)}
+          options={getAllAreasOfZoneForSubmitReport(reportForm.zone)}
           disablePortal
+          disableClearable={true}
         //! Uncomment when ready and test on mobile phone   fullWidth 
           noOptionsText={"Моля изберете област"}
           getOptionLabel={(option) => option}
           isOptionEqualToValue={(option, selectedOption) => option === selectedOption}
+          value={reportForm.area}
           onChange={(event, selectedOption) => 
             {
               handleInput('area', selectedOption ? selectedOption : "");

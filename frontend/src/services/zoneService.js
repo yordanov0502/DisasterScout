@@ -5540,6 +5540,14 @@ export const getAllAreasOfZoneForCMS = (zoneId) => {
 else {return [];}
 }
 
+export const getAllAreasOfZoneForSubmitReport = (zoneId) => {
+        if (Object.prototype.hasOwnProperty.call(zoneAreasMappings,zoneId)) 
+        {
+           return ["-", ...zoneAreasMappings[zoneId]];
+        } 
+       else {return [];}
+       }
+
 export const getAllAreasOfZoneForSearch = (zoneId) => {
   if (Object.prototype.hasOwnProperty.call(zoneAreasMappings,zoneId)) 
 {
