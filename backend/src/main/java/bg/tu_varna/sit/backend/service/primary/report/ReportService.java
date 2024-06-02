@@ -1,9 +1,6 @@
 package bg.tu_varna.sit.backend.service.primary.report;
 
-import bg.tu_varna.sit.backend.models.dto.report.AcceptReportDTO;
-import bg.tu_varna.sit.backend.models.dto.report.PageReportCardDTO;
-import bg.tu_varna.sit.backend.models.dto.report.ReportDTO;
-import bg.tu_varna.sit.backend.models.dto.report.SubmitReportDTO;
+import bg.tu_varna.sit.backend.models.dto.report.*;
 import bg.tu_varna.sit.backend.models.entity.Severity;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.models.entity.report.Report;
@@ -80,7 +77,6 @@ public class ReportService {
                 .locationUrl(submitReportDTO.locationUrl())
                 .address(fullAddress)
                 .submittedAt(timeOfReportSubmission)
-                .publishedAt(null)
                 .expiresAt(whenReportExpires)
                 .build();
 
@@ -391,80 +387,218 @@ public class ReportService {
 
 
 
+    public ResponseEntity<String> revaluateReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user, UpdateReportDTO updateReportDTO){
 
-//    public ResponseEntity<String> rejectReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user){
-//
-//        //? Validation whether the report exists or not.
-//        Optional<Report> report = reportRepository.findById(reportId);
-//        if(report.isEmpty()) {return new ResponseEntity<>("Report doesn't exist.", HttpStatus.NOT_FOUND);}
-//
-//
-//        //?--------Validation whether the searchParams from frontend match with their related fields from the report
-//        //* state will be always available
-//        //! better safe than sorry (even if state is equal to state of the report, check whether either of them is equal to PENDING)
-//        if(!report.get().getReportState().getState().equals(state) || !state.equals(PENDING)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
-//
-//        //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
-//        SeverityType severityType = convertStringToSeverityType(severityTypeValue);
-//        if(severityType != null)
-//        {
-//            if(!report.get().getSeverity().getSeverityType().equals(severityType)) {return new ResponseEntity<>("Report info mismatch.[severityType]", HttpStatus.BAD_REQUEST);}
-//        }
-//
-//        //* zoneId will always be available {when dispatcher has no available zones, the request will not reach the server because of proper validation on the frontend}
-//        if(!report.get().getZone().getId().equals(zoneId)) {return new ResponseEntity<>("Report info mismatch.[zoneId]", HttpStatus.BAD_REQUEST);}
-//
-//        //* area will always be available ("Всички" by default)
-//        Zone zone = zoneService.getZoneById(zoneId);
-//        String partialAddress = area.equals("Всички") ? null : String.format("обл.%s~%s", zone.getName(),area);
-//        if(partialAddress != null)
-//        {
-//            if(!report.get().getAddress().contains(partialAddress)) {return new ResponseEntity<>("Report info mismatch.[area]", HttpStatus.BAD_REQUEST);}
-//        }
-//
-//        //? category  will always be available, but if it is "All" the category will be null,
-//        Category category = convertStringToCategory(categoryValue);
-//        if(category != null)
-//        {
-//            if(!report.get().getReportIssue().getCategory().equals(category)) {return new ResponseEntity<>("Report info mismatch.[category]", HttpStatus.BAD_REQUEST);}
-//        }
-//
-//        //? issue  will always be available, but if it is "All" the issue will be null,
-//        Issue issue = convertStringToIssue(issueValue);
-//        if(issue != null)
-//        {
-//            if(!report.get().getReportIssue().getIssue().equals(issue)) {return new ResponseEntity<>("Report info mismatch.[issue]", HttpStatus.BAD_REQUEST);}
-//        }
-//        //?---------
-//
-//        //?validation for user zones and report's zone match BUT ONLY FOR DISPATCHER as ADMIN doesn't have any zones at all.
-//        if(user.getUserRole().getRole().equals(DISPATCHER))
-//        {
-//            if(!user.getAvailableZoneIds().contains(zoneId)) {return new ResponseEntity<>("Available zones of dispatcher have been changed.", HttpStatus.BAD_REQUEST);} //? DO FULL PAGE RELOAD OF CmsReportsPage.
-//        }
-//
-//
-//
-//
-//        String imageUrl = report.get().getImageUrl();
-//        reportRepository.delete(report.get());
-//
-//        //? if report had imageUrl it is returned so the image stored in Firebase can be deleted in the onSuccess mutation clause on the frontend,
-//        //? otherwise null is returned meaning the report had no uploaded image.
-//        return new ResponseEntity<>(imageUrl, HttpStatus.OK);
-//    }
+        //? Validation whether the report exists or not.
+        Optional<Report> report = reportRepository.findById(reportId);
+        if(report.isEmpty()) {return new ResponseEntity<>("Report doesn't exist.", HttpStatus.NOT_FOUND);}
 
-    //TODO: for all methods about to be written here, to be made validations inside the methods themselves
-    //TODO: whether the status or whatever is going to change is actually the one from the frontend, because
-    //TODO: FOR EXAMPLE THERE COULD BE SITUATION WHERE MORE THAN 1 PERSON HAS ACCESS TO A REPORT
-    //TODO: and while one person sees the page of report where it is pending, the other person might actually
-    //TODO: made the same report fresh already  and when the first person clicks to button to update the report
-    //TODO: normally he will update the report with the same FRESH state which is not right.
-    //TODO: INSTEAD IT IS BETTER TO SHOW SNACKBAR WITH ERROR MESSAGE AND REFETCH THE ERROR INFORMATION
-    //TODO: SO IT IS DISPLAYED WITH THE MOST RECENT INFORMATION BECAUSE THE POSSIBLE OPERATIONS(BUTTONS FOR CLICKS)
-    //TODO: WILL ALSO BE DIFFERENT BASED ON THE REPORT INFORMATION.
 
-    //! TODO: when chron job deletes inactive reports client from here must be used to delete the images stored in Firebase
+        //?--------Validation whether the searchParams from frontend match with their related fields from the report
+        //* state will be always available
+        if(!report.get().getReportState().getState().equals(state) || !state.equals(FOR_REVALUATION)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
+
+        //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
+        SeverityType severityType = convertStringToSeverityType(severityTypeValue);
+        if(severityType != null)
+        {
+            if(!report.get().getSeverity().getSeverityType().equals(severityType)) {return new ResponseEntity<>("Report info mismatch.[severityType]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //* zoneId will always be available {when dispatcher has no available zones, the request will not reach the server because of proper validation on the frontend}
+        if(!report.get().getZone().getId().equals(zoneId)) {return new ResponseEntity<>("Report info mismatch.[zoneId]", HttpStatus.BAD_REQUEST);}
+
+        //* area will always be available ("Всички" by default)
+        Zone zone = zoneService.getZoneById(zoneId);
+        String partialAddress = area.equals("Всички") ? null : String.format("обл.%s~%s", zone.getName(),area);
+        if(partialAddress != null)
+        {
+            if(!report.get().getAddress().contains(partialAddress)) {return new ResponseEntity<>("Report info mismatch.[area]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? category  will always be available, but if it is "All" the category will be null,
+        Category category = convertStringToCategory(categoryValue);
+        if(category != null)
+        {
+            if(!report.get().getReportIssue().getCategory().equals(category)) {return new ResponseEntity<>("Report info mismatch.[category]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? issue  will always be available, but if it is "All" the issue will be null,
+        Issue issue = convertStringToIssue(issueValue);
+        if(issue != null)
+        {
+            if(!report.get().getReportIssue().getIssue().equals(issue)) {return new ResponseEntity<>("Report info mismatch.[issue]", HttpStatus.BAD_REQUEST);}
+        }
+        //?---------
+
+        //?validation for user zones and report's zone match BUT ONLY FOR DISPATCHER as ADMIN doesn't have any zones at all.
+        if(user.getUserRole().getRole().equals(DISPATCHER))
+        {
+            if(!user.getAvailableZoneIds().contains(zoneId)) {return new ResponseEntity<>("Available zones of dispatcher have been changed.", HttpStatus.BAD_REQUEST);} //? DO FULL PAGE RELOAD OF CmsReportsPage.
+        }
+
+
+
+
+        //? all required for validation fields of acceptReportDTO are validated on the frontEnd
+        Date whenReportExpires = timeService.addHoursToDateAndTime(report.get().getSubmittedAt(),updateReportDTO.expectedDuration());
+
+        Zone selectedZone = zoneService.getZoneById(updateReportDTO.zoneId());
+        String zoneName = String.format("обл.%s", selectedZone.getName());
+        String selectedArea = updateReportDTO.area();
+        String address = !updateReportDTO.address().isBlank() ? updateReportDTO.address() : null;
+        String fullAddress;
+        if(address != null)
+        {
+            fullAddress = String.format("%s~%s~%s", zoneName,selectedArea,address);
+        }
+        else
+        {
+            fullAddress = String.format("%s~%s", zoneName,selectedArea);
+        }
+
+        Report revaluatedReport = report.get().toBuilder()
+                .reportState(reportStateService.getReportStateByState(FRESH)) //! report state is set to FRESH
+                .severity(severityService.getSeverityBySeverityType(updateReportDTO.severityType()))
+                .expiresAt(whenReportExpires)
+                .description(updateReportDTO.description())
+                .zone(selectedZone)
+                .address(fullAddress)
+                .locationUrl(updateReportDTO.locationUrl())
+                .user(user) //! set user who revaluated the report
+                .build();
+
+        reportRepository.save(revaluatedReport);
+
+        return new ResponseEntity<>("Report has been revaluated successfully.", HttpStatus.OK);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    public ResponseEntity<String> terminateReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user, TerminateReportDTO terminateReportDTO){
+
+        //? Validation whether the report exists or not.
+        Optional<Report> report = reportRepository.findById(reportId);
+        if(report.isEmpty()) {return new ResponseEntity<>("Report doesn't exist.", HttpStatus.NOT_FOUND);}
+
+        //! imageUrl of report is updated here, because the image copy - move - remove in firebase is done
+        //! on the frontend before sending the request which is processed here at this point.
+        //! If the new imageUrl is not persisted before the validations and if any validation of those below fail
+        //! the report on the frontend will stay with the oldUrl which has already been deleted from firebase 'images' folder
+        //! but not updated in the database and basically no image will be shown, as the imageUrl from the database will not be the same as the image in the 'inactive-images' folder from Firebase
+        String updatedImageUrl = terminateReportDTO.imageUrl() != null ? terminateReportDTO.imageUrl() : "";
+        Report reportWithUpdatedImageUrl = report.get().toBuilder()
+                .imageUrl(updatedImageUrl)
+                .build();
+        reportRepository.save(reportWithUpdatedImageUrl);
+        //!
+
+        //?--------Validation whether the searchParams from frontend match with their related fields from the report
+        //* state will be always available
+        //! better safe than sorry (even if state is equal to state of the report, check whether either of them is equal to PENDING)
+        if(!report.get().getReportState().getState().equals(state)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
+
+        //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
+        SeverityType severityType = convertStringToSeverityType(severityTypeValue);
+        if(severityType != null)
+        {
+            if(!report.get().getSeverity().getSeverityType().equals(severityType)) {return new ResponseEntity<>("Report info mismatch.[severityType]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //* zoneId will always be available {when dispatcher has no available zones, the request will not reach the server because of proper validation on the frontend}
+        if(!report.get().getZone().getId().equals(zoneId)) {return new ResponseEntity<>("Report info mismatch.[zoneId]", HttpStatus.BAD_REQUEST);}
+
+        //* area will always be available ("Всички" by default)
+        Zone zone = zoneService.getZoneById(zoneId);
+        String partialAddress = area.equals("Всички") ? null : String.format("обл.%s~%s", zone.getName(),area);
+        if(partialAddress != null)
+        {
+            if(!report.get().getAddress().contains(partialAddress)) {return new ResponseEntity<>("Report info mismatch.[area]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? category  will always be available, but if it is "All" the category will be null,
+        Category category = convertStringToCategory(categoryValue);
+        if(category != null)
+        {
+            if(!report.get().getReportIssue().getCategory().equals(category)) {return new ResponseEntity<>("Report info mismatch.[category]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? issue  will always be available, but if it is "All" the issue will be null,
+        Issue issue = convertStringToIssue(issueValue);
+        if(issue != null)
+        {
+            if(!report.get().getReportIssue().getIssue().equals(issue)) {return new ResponseEntity<>("Report info mismatch.[issue]", HttpStatus.BAD_REQUEST);}
+        }
+        //?---------
+
+        //?validation for user zones and report's zone match BUT ONLY FOR DISPATCHER as ADMIN doesn't have any zones at all.
+        if(user.getUserRole().getRole().equals(DISPATCHER))
+        {
+            if(!user.getAvailableZoneIds().contains(zoneId)) {return new ResponseEntity<>("Available zones of dispatcher have been changed.", HttpStatus.BAD_REQUEST);} //? DO FULL PAGE RELOAD OF CmsReportsPage.
+        }
+
+
+
+
+
+        String imageUrl = terminateReportDTO.imageUrl() != null ? terminateReportDTO.imageUrl() : "";
+
+        Report terminatedReport = report.get().toBuilder()
+                .reportState(reportStateService.getReportStateByState(INACTIVE)) //! report state is set to INACTIVE
+                .user(user) //! set user who terminated the report
+                .imageUrl(imageUrl)
+                .build();
+
+        reportRepository.save(terminatedReport);
+
+        return new ResponseEntity<>("Report has been terminated successfully.", HttpStatus.OK);
+    }
+
+
+
+
+
+    //! TODO: when chron job deletes inactive reports client from here must be used to delete the images stored in Firebase 'inactive-images'
 
     //! TODO: SAME CHECKS FOR "Области" when user will add / remove or update alert for zone
 

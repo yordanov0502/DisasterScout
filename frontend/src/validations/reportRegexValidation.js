@@ -24,6 +24,8 @@ const phoneNumberFieldMessage = "Невалиден мобилен номер.";
 const acceptReportFormAllRequiredFieldsMessage = "Моля попълнете всички задължителни* полета.";
 const acceptReportFormExpectedDurationMessage = "Моля задайте времетраене.";
 
+const revaluateReportFormAllRequiredFieldsMessage = "Моля попълнете всички задължителни* полета.";
+const revaluateReportFormExpectedDurationMessage = "Моля задайте времетраене.";
 
 
 const isDescriptionWordCountLess = (description) => {
@@ -262,5 +264,89 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
       firstName: !reportForm.firstName,
       lastName: !reportForm.lastName,
       phoneNumber: !reportForm.phoneNumber
+    };
+  };
+
+  //////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+
+
+
+  export const validateReportFormOnRevaluate = (reportForm) => { //? function returns error message
+    if (!reportForm.description || !reportForm.locationUrl) 
+    {
+      return revaluateReportFormAllRequiredFieldsMessage; //! error
+    }
+  
+    else
+    {
+        if(reportForm.expectedDuration === -1) {return revaluateReportFormExpectedDurationMessage;} //! error
+
+        if (reportForm.address && isAddressCharacterCountLess(reportForm.address)) {return addressFieldMessage1;} //! error
+        if (reportForm.address && isAddressCharacterCountMore(reportForm.address)) {return addressFieldMessage2;} //! error
+
+        if (isDescriptionWordCountLess(reportForm.description)) {return descriptionFieldMessage1;} //! error
+        if (isDescriptionWordCountMore(reportForm.description)) {return descriptionFieldMessage2;} //! error
+
+        if (isLocationUrlCharacterCountLess(reportForm.locationUrl)) {return locationUrlFieldMessage1;} //! error
+        if (isLocationUrlCharacterCountMore(reportForm.locationUrl)) {return locationUrlFieldMessage2;} //! error
+
+        return ""; //* OK
+    }
+  };
+
+  export const processErrorRevaluateFormOnSubmit = (reportForm, errorRevaluateForm, validationMessage) => { //?  returns an object with the same structure as errorAcceptForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+    if(validationMessage === revaluateReportFormAllRequiredFieldsMessage)
+    {
+      return {
+        expectedDuration: reportForm.expectedDuration === -1 ? true : false, //* always have selected value either -1 "-" or 1,2,3,24,48..., BUT IT SHOULD NOT BE -1 "-"
+        description: !reportForm.description, 
+        address: false, //* isn't required
+        locationUrl: !reportForm.locationUrl
+      };
+    }
+    if(validationMessage === revaluateReportFormExpectedDurationMessage)
+    {
+      return {
+        ...errorRevaluateForm,
+        expectedDuration: true
+      };
+    }
+    if(validationMessage === descriptionFieldMessage1 || validationMessage === descriptionFieldMessage2)
+    {
+      return {
+        ...errorRevaluateForm,
+        description: true
+      };
+    }
+    if(validationMessage === addressFieldMessage1 || validationMessage === addressFieldMessage2)
+    { 
+      return {
+        ...errorRevaluateForm,
+        address: true
+      };
+    }
+    if(validationMessage === locationUrlFieldMessage1 || validationMessage === locationUrlFieldMessage2)
+    {
+      return {
+        ...errorRevaluateForm,
+        locationUrl: true
+      };
+    }
+   
+
+    //? Better safe than sorry...
+    return {
+      expectedDuration: reportForm.expectedDuration === -1 ? true : false, //* always have selected value either -1 "-" or 1,2,3,24,48..., BUT IT SHOULD NOT BE -1 "-"
+      description: !reportForm.description, 
+      address: false, //* isn't required
+      locationUrl: !reportForm.locationUrl
     };
   };

@@ -70,10 +70,6 @@ public class Report {
     @Column(name = "submitted_at", nullable = false)
     private Date submittedAt; //? Date and time when the report was submitted by a reporter.
 
-    @Column(name = "published_at", nullable = true) //? It is null initially when it is reported
-    //TODO: rename to lastUpdatedAt
-    private Date publishedAt; //? Date and time when dispatcher accepted the report. (Made any modifications if necessary, set its reportState to fresh and has become publicly visible.)
-
     @Column(name = "expires_at", nullable = true) //! It can be null if "не знам" was passed as expectedDuration
     private Date expiresAt; //? Date and time until the report is considered FRESH.
 }

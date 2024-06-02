@@ -29,6 +29,36 @@ const expectedDurationHours = [
     { label: "48 часа", hours: 48},
     { label: "72 часа", hours: 72}
   ];
+  
+  const expectedDurationHoursForRevaluationAndFresh = [
+    { label: "-", hours: -1},
+    { label: "1 час", hours: 1},
+    { label: "2 часа", hours: 2},
+    { label: "3 часа", hours: 3},
+    { label: "4 часа", hours: 4},
+    { label: "5 часа", hours: 5},
+    { label: "6 часа", hours: 6},
+    { label: "7 часа", hours: 7},
+    { label: "8 часа", hours: 8},
+    { label: "9 часа", hours: 9},
+    { label: "10 часа", hours: 10},
+    { label: "11 часа", hours: 11},
+    { label: "12 часа", hours: 12},
+    { label: "13 часа", hours: 13},
+    { label: "14 часа", hours: 14},
+    { label: "15 часа", hours: 15},
+    { label: "16 часа", hours: 16},
+    { label: "17 часа", hours: 17},
+    { label: "18 часа", hours: 18},
+    { label: "19 часа", hours: 19},
+    { label: "20 часа", hours: 20},
+    { label: "21 часа", hours: 21},
+    { label: "22 часа", hours: 22},
+    { label: "23 часа", hours: 23},
+    { label: "24 часа", hours: 24},
+    { label: "48 часа", hours: 48},
+    { label: "72 часа", hours: 72}
+  ];
 
   const issues = [
     { label: "земетресение", issue: "EARTHQUAKE", category: "Сеизмична активност"},
@@ -192,6 +222,14 @@ const expectedDurationHours = [
     
   export const getExpectedDurationHours = () => {return expectedDurationHours;}
 
+  export const getExpectedDurationHoursForRevaluationAndFresh = () => {return expectedDurationHoursForRevaluationAndFresh;}
+
+  //? Returns whole expectedDurationHoursObject (label,hours)
+  export const getFullExpectedDurationObjectByExpectedDurationForRevaluationAndFresh = (hours) => { 
+    const expectedDuration = expectedDurationHoursForRevaluationAndFresh.find(h => h.hours === hours);
+    return expectedDuration ? expectedDuration : null;
+  }
+
     //? Returns whole expectedDurationHoursObject (label,hours)
     export const getFullExpectedDurationObjectByExpectedDuration = (hours) => { 
       const expectedDuration = expectedDurationHours.find(h => h.hours === hours);
@@ -253,4 +291,18 @@ const expectedDurationHours = [
     const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;
 
     return axiosInstanceWithCredentials.delete(`/internal/dispatcher/reports/reject?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
+  };
+
+  export const revaluateReportRequest = ({urlParams, requestBody}) => {
+
+    const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;
+
+    return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/revaluate?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`,requestBody);
+  };
+
+  export const terminateReportRequest = ({urlParams,requestBody}) => {
+
+    const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;
+
+    return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/terminate?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`,requestBody);
   };
