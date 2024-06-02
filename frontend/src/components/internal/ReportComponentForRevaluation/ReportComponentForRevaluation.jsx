@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Autocomplete, Box, Button, TextField, styled } from "@mui/material";
 import PlaceIcon from '@mui/icons-material/Place';
 import { ComponentLoader } from "../../Loaders/ComponentLoader";
-import { getAllAreasOfZone, getAllZones, getBadgeOfZone, getFullZoneById } from "../../../services/zoneService";
+import { getAllZones, getBadgeOfZone, getFullZoneById, getAllAreasOfZoneForCMS } from "../../../services/zoneService";
 import { getAllSeverities, getFullSeverityObjectBySeverity } from "../../../services/severityService";
 import { getAllIssues, getExpectedDurationHoursForRevaluationAndFresh, getFullExpectedDurationObjectByExpectedDurationForRevaluationAndFresh, getFullIssueObjectByIssue, getReportStateByType } from "../../../services/reportService";
 import "./report_component_for_revaluation.scss";
@@ -12,7 +12,8 @@ const loadedImages = {};
 
 const noImageUrl = "src/assets/images/no-photo.png";
 
-export const ReportComponentForRevaluation = ({ isLoadingComponent,
+export const ReportComponentForRevaluation = ({ 
+                                                isLoadingComponent,
                                                 isRequestSent,
                                                 reportForm, 
                                                 handleInput, 
@@ -271,7 +272,7 @@ export const ReportComponentForRevaluation = ({ isLoadingComponent,
               "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
               {backgroundColor: "#b5ffcc !important"}
              }}
-              options={getAllAreasOfZone(reportForm.zone)}
+              options={getAllAreasOfZoneForCMS(reportForm.zone)}
               disablePortal
               disableClearable={true}
               noOptionsText={"Моля изберете област"}
@@ -288,6 +289,7 @@ export const ReportComponentForRevaluation = ({ isLoadingComponent,
                 sx={{backgroundColor: 'white'}}
                 required
                 color="success"
+                error={errorRevaluateForm.area}
                 {...params} 
                 label="Район" />}
             />

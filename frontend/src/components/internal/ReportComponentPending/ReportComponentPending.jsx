@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { Autocomplete, Box, Button, TextField, styled } from "@mui/material";
 import PlaceIcon from '@mui/icons-material/Place';
 import { ComponentLoader } from "../../Loaders/ComponentLoader";
-import { getAllAreasOfZone, getAllZones, getBadgeOfZone, getFullZoneById } from "../../../services/zoneService";
+import { getAllZones, getBadgeOfZone, getFullZoneById, getAllAreasOfZoneForCMS } from "../../../services/zoneService";
 import { getAllSeverities, getFullSeverityObjectBySeverity } from "../../../services/severityService";
 import { getAllIssues, getExpectedDurationHours, getFullExpectedDurationObjectByExpectedDuration, getFullIssueObjectByIssue, getReportStateByType } from "../../../services/reportService";
 import "./report_component_pending.scss";
@@ -12,14 +12,15 @@ const loadedImages = {};
 
 const noImageUrl = "src/assets/images/no-photo.png";
 
-export const ReportComponentPending = ({   isLoadingComponent,
-                                    isRequestSent,
-                                    reportForm, 
-                                    handleInput, 
-                                    onPressAccept,
-                                    errorAcceptForm,
-                                    onPressReject
-                                }) => {
+export const ReportComponentPending = ({  
+                                          isLoadingComponent,
+                                          isRequestSent,
+                                          reportForm, 
+                                          handleInput, 
+                                          onPressAccept,
+                                          errorAcceptForm,
+                                          onPressReject
+                                      }) => {
 
     const IssueGroupHeader = styled('div')(() => ({
         position: 'relative',
@@ -269,7 +270,7 @@ export const ReportComponentPending = ({   isLoadingComponent,
               "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
               {backgroundColor: "#b5ffcc !important"}
              }}
-              options={getAllAreasOfZone(reportForm.zone)}
+              options={getAllAreasOfZoneForCMS(reportForm.zone)} 
               disablePortal
               disableClearable={true}
               noOptionsText={"Моля изберете област"}
@@ -286,6 +287,7 @@ export const ReportComponentPending = ({   isLoadingComponent,
                 sx={{backgroundColor: 'white'}}
                 required
                 color="success"
+                error={errorAcceptForm.area}
                 {...params} 
                 label="Район" />}
             />

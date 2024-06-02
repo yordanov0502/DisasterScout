@@ -162,7 +162,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
 
 
   export const validateReportFormOnAccept = (reportForm) => { //? function returns error message
-    if (!reportForm.description || !reportForm.locationUrl || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber) 
+    if (!reportForm.description || !reportForm.locationUrl || !reportForm.firstName || !reportForm.lastName || !reportForm.phoneNumber || reportForm.area === "-") 
     {
       return acceptReportFormAllRequiredFieldsMessage; //! error
     }
@@ -202,7 +202,8 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
         locationUrl: !reportForm.locationUrl, 
         firstName: !reportForm.firstName,
         lastName: !reportForm.lastName,
-        phoneNumber: !reportForm.phoneNumber
+        phoneNumber: !reportForm.phoneNumber,
+        area: reportForm.area === "-" ? true : false
       };
     }
     if(validationMessage === acceptReportFormExpectedDurationMessage)
@@ -263,7 +264,8 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
       locationUrl: !reportForm.locationUrl, 
       firstName: !reportForm.firstName,
       lastName: !reportForm.lastName,
-      phoneNumber: !reportForm.phoneNumber
+      phoneNumber: !reportForm.phoneNumber,
+      area: reportForm.area === "-" ? true : false
     };
   };
 
@@ -279,7 +281,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
 
 
   export const validateReportFormOnRevaluate = (reportForm) => { //? function returns error message
-    if (!reportForm.description || !reportForm.locationUrl) 
+    if (!reportForm.description || !reportForm.locationUrl || reportForm.area === "-") 
     {
       return revaluateReportFormAllRequiredFieldsMessage; //! error
     }
@@ -309,7 +311,8 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
         expectedDuration: reportForm.expectedDuration === -1 ? true : false, //* always have selected value either -1 "-" or 1,2,3,24,48..., BUT IT SHOULD NOT BE -1 "-"
         description: !reportForm.description, 
         address: false, //* isn't required
-        locationUrl: !reportForm.locationUrl
+        locationUrl: !reportForm.locationUrl,
+        area: reportForm.area === "-" ? true : false
       };
     }
     if(validationMessage === revaluateReportFormExpectedDurationMessage)
@@ -347,6 +350,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
       expectedDuration: reportForm.expectedDuration === -1 ? true : false, //* always have selected value either -1 "-" or 1,2,3,24,48..., BUT IT SHOULD NOT BE -1 "-"
       description: !reportForm.description, 
       address: false, //* isn't required
-      locationUrl: !reportForm.locationUrl
+      locationUrl: !reportForm.locationUrl,
+      area: reportForm.area === "-" ? true : false
     };
   };

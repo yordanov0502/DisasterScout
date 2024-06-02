@@ -50,7 +50,6 @@ export const CmsReportPage = () => {
     userNames: "" //? firstName and lastName of dispatcher/admin who last processed the report
   });
   const [expiresAtForRevaluationAndFresh, setExpiresAtForRevaluationAndFresh] = useState("");
-
   const [errorAcceptForm, setErrorAcceptForm] = useState({
     expectedDuration: false,
     description: false, 
@@ -58,19 +57,22 @@ export const CmsReportPage = () => {
     locationUrl: false, 
     firstName: false,
     lastName: false,
-    phoneNumber: false
+    phoneNumber: false,
+    area: false //! should not be '-'
   });
   const [errorRevaluateForm, setErrorRevaluateForm] = useState({
     expectedDuration: false, 
     description: false, 
     address: false, //* isn't required
     locationUrl: false, 
+    area: false //! should not be '-'
   });
   const [errorFreshForm, setErrorFreshForm] = useState({
     expectedDuration: false, //* isn't required
     description: false, 
     address: false, //* isn't required
     locationUrl: false, 
+    area: false //! should not be '-'
   });
   
 
@@ -297,6 +299,7 @@ export const CmsReportPage = () => {
 
 
 
+
   const isErrorAcceptFormValid = () => {
     return Object.values(errorAcceptForm).every(value => value === false);
   };
@@ -309,7 +312,20 @@ export const CmsReportPage = () => {
     if(name === 'expectedDuration' || name === 'description' || name === 'address' || name === 'locationUrl') 
     {setReportForm(prevState => ({...prevState, [name]: value}));} 
     else 
-    {setReportForm(prevState => ({...prevState, [name]:  value.trim()}));}
+    {
+      if(name === 'zone')
+      {
+        setReportForm(prevState => ({
+          ...prevState, 
+          [name]:  value.trim(),
+          area: "-"  
+        }));
+      }
+      else
+      {
+        setReportForm(prevState => ({...prevState, [name]:  value.trim()}));
+      }
+    }
 
      closeSnackbar();
 
@@ -321,7 +337,8 @@ export const CmsReportPage = () => {
         locationUrl: false,
         firstName: false,
         lastName: false,
-        phoneNumber: false
+        phoneNumber: false,
+        area: false
       });}
 
       if(!isErrorRevaluateFormValid()){
@@ -330,6 +347,7 @@ export const CmsReportPage = () => {
         description: false,
         address: false,
         locationUrl: false,
+        area: false
       });}
 
       
