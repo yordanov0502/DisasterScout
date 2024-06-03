@@ -300,6 +300,13 @@ const expectedDurationHours = [
     return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/revaluate?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`,requestBody);
   };
 
+  export const updateReportRequest = ({urlParams, requestBody}) => {
+
+    const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;
+
+    return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/update?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`,requestBody);
+  };
+
   export const terminateReportRequest = ({urlParams,requestBody}) => {
 
     const {reportId,state,severityType,zoneId,area,category,issue} = urlParams;

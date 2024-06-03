@@ -27,6 +27,7 @@ const acceptReportFormExpectedDurationMessage = "Моля задайте вре�
 const revaluateReportFormAllRequiredFieldsMessage = "Моля попълнете всички задължителни* полета.";
 const revaluateReportFormExpectedDurationMessage = "Моля задайте времетраене.";
 
+const updateReportFormAllRequiredFieldsMessage = "Моля попълнете всички задължителни* полета.";
 
 const isDescriptionWordCountLess = (description) => {
     const wordCount = description.trim().split(/\s+/).length;
@@ -294,7 +295,7 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
     }
   };
 
-  export const processErrorRevaluateFormOnSubmit = (reportForm, errorRevaluateForm, validationMessage) => { //?  returns an object with the same structure as errorAcceptForm, where each field is true if there's an error (validation fails) or false otherwise.
+  export const processErrorRevaluateFormOnSubmit = (reportForm, errorRevaluateForm, validationMessage) => { //?  returns an object with the same structure as errorRevaluateForm, where each field is true if there's an error (validation fails) or false otherwise.
   
     if(validationMessage === revaluateReportFormAllRequiredFieldsMessage)
     {
@@ -339,6 +340,74 @@ export const validateReportFormOnSubmit = (reportForm) => { //? function returns
     //? Better safe than sorry...
     return {
       expectedDuration: reportForm.expectedDuration === -1 ? true : false, //* always have selected value either -1 "-" or 1,2,3,24,48..., BUT IT SHOULD NOT BE -1 "-"
+      description: !reportForm.description, 
+      address: false, //* isn't required
+      locationUrl: !reportForm.locationUrl,
+      area: reportForm.area === "-" ? true : false
+    };
+  };
+
+
+
+
+
+  export const validateReportFormOnUpdate = (reportForm) => { //? function returns error message
+    if (!reportForm.description || !reportForm.locationUrl || reportForm.area === "-") 
+    {
+      return updateReportFormAllRequiredFieldsMessage; //! error
+    }
+  
+    else
+    {
+        if (reportForm.address && isAddressCharacterCountLess(reportForm.address)) {return addressFieldMessage1;} //! error
+        if (reportForm.address && isAddressCharacterCountMore(reportForm.address)) {return addressFieldMessage2;} //! error
+
+        if (isDescriptionWordCountLess(reportForm.description)) {return descriptionFieldMessage1;} //! error
+        if (isDescriptionWordCountMore(reportForm.description)) {return descriptionFieldMessage2;} //! error
+
+        if (isLocationUrlCharacterCountLess(reportForm.locationUrl)) {return locationUrlFieldMessage1;} //! error
+        if (isLocationUrlCharacterCountMore(reportForm.locationUrl)) {return locationUrlFieldMessage2;} //! error
+
+        return ""; //* OK
+    }
+  };
+
+  export const processErrorFreshFormOnSubmit = (reportForm, errorFreshForm, validationMessage) => { //?  returns an object with the same structure as errorFreshForm, where each field is true if there's an error (validation fails) or false otherwise.
+  
+    if(validationMessage === updateReportFormAllRequiredFieldsMessage)
+    {
+      return {
+        description: !reportForm.description, 
+        address: false, //* isn't required
+        locationUrl: !reportForm.locationUrl,
+        area: reportForm.area === "-" ? true : false
+      };
+    }
+    if(validationMessage === descriptionFieldMessage1 || validationMessage === descriptionFieldMessage2)
+    {
+      return {
+        ...errorFreshForm,
+        description: true
+      };
+    }
+    if(validationMessage === addressFieldMessage1 || validationMessage === addressFieldMessage2)
+    { 
+      return {
+        ...errorFreshForm,
+        address: true
+      };
+    }
+    if(validationMessage === locationUrlFieldMessage1 || validationMessage === locationUrlFieldMessage2)
+    {
+      return {
+        ...errorFreshForm,
+        locationUrl: true
+      };
+    }
+   
+
+    //? Better safe than sorry...
+    return {
       description: !reportForm.description, 
       address: false, //* isn't required
       locationUrl: !reportForm.locationUrl,

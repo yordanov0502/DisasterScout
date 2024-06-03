@@ -6,15 +6,15 @@ import { Alert, Snackbar } from "@mui/material";
 import { storage } from "../../../utils/firebaseConfiguration";
 import { useUserContext } from "../../../hooks/useUserContext";
 import { useSnackbar } from "../../../hooks/useSnackbar";
-import { acceptReportRequest, getReportForCMS, rejectReportRequest, revaluateReportRequest, terminateReportRequest } from "../../../services/reportService";
+import { acceptReportRequest, getReportForCMS, rejectReportRequest, revaluateReportRequest, terminateReportRequest, updateReportRequest } from "../../../services/reportService";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
 import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
-import { processErrorAcceptFormOnSubmit, processErrorRevaluateFormOnSubmit, validateReportFormOnAccept, validateReportFormOnRevaluate } from "../../../validations/reportRegexValidation";
+import { processErrorAcceptFormOnSubmit, processErrorFreshFormOnSubmit, processErrorRevaluateFormOnSubmit, validateReportFormOnAccept, validateReportFormOnRevaluate, validateReportFormOnUpdate } from "../../../validations/reportRegexValidation";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import { ReportComponentPending } from "../../../components/internal/ReportComponentPending";
-import { ReportComponentForRevaluation } from "../../../components/internal/ReportComponentForRevaluation/ReportComponentForRevaluation";
-
-import { ReportComponentInactive } from "../../../components/internal/ReportComponentInactive/ReportComponentInactive";
+import { ReportComponentForRevaluation } from "../../../components/internal/ReportComponentForRevaluation";
+import { ReportComponentFresh } from "../../../components/internal/ReportComponentFresh";
+import { ReportComponentInactive } from "../../../components/internal/ReportComponentInactive";
 import "./cms_report_page.scss";
 
 export const CmsReportPage = () => {
@@ -68,7 +68,6 @@ export const CmsReportPage = () => {
     area: false //! should not be '-'
   });
   const [errorFreshForm, setErrorFreshForm] = useState({
-    expectedDuration: false, //* isn't required
     description: false, 
     address: false, //* isn't required
     locationUrl: false, 
@@ -209,7 +208,6 @@ export const CmsReportPage = () => {
     if(reportForm.state) //? if reportForm.state is populated
     {
 
-
       //* expiresAt = submittedAt + expectedDuration
       if (reportForm.state === "PENDING") 
       { 
@@ -240,16 +238,13 @@ export const CmsReportPage = () => {
         }      
       }
 
-// OTHERWISE think and implement logic CAUTIOUSLY for FOR_EVALUEATION state and for FRESH state !!!!!!!!!!!!!!!!!!!!!!!!!!!
-
-      //!!!! this code down below maybe can also be used for FRESH state!!!!!!!!!!!!!!!!!!!!!!!!
 
       //? expiresAt = expiresAtForRevaluationAndFresh(old version of expiresAt) + expectedDuration
-      else if (reportForm.state === "FOR_REVALUATION" && reportForm.expiresAt) //! this check is done because otherwise this clause could possibly be entered while the reportForm.expiresAt is still not populated
+      else if ((reportForm.state === "FOR_REVALUATION" || reportForm.state === "FRESH") && reportForm.expiresAt) //! this check is done because otherwise this clause could possibly be entered while the reportForm.expiresAt is still not populated
       {  
         if(reportForm.expectedDuration === -1 &&  reportForm.expiresAt !== expiresAtForRevaluationAndFresh)
         {
-          const cleanedString = expiresAtForRevaluationAndFresh.replace(' ч.', '').replace(' г.', ''); //!!!!!!!!!!!!! special state USED (expiresAtForRevaluationAndFresh)
+          const cleanedString = expiresAtForRevaluationAndFresh.replace(' ч.', '').replace(' г.', ''); //!special state USED (expiresAtForRevaluationAndFresh)
           const [time, date] = cleanedString.split(', ');
           const [day, month, year] = date.split('.');
           const expiresAt = new Date(`${year}-${month}-${day}T${time}:00`);
@@ -267,7 +262,7 @@ export const CmsReportPage = () => {
         }
         else if(reportForm.expectedDuration !== -1)
         {
-          const cleanedString = expiresAtForRevaluationAndFresh.replace(' ч.', '').replace(' г.', ''); //!!!!!!!!!!!!! special state USED (expiresAtForRevaluationAndFresh)
+          const cleanedString = expiresAtForRevaluationAndFresh.replace(' ч.', '').replace(' г.', ''); //!special state USED (expiresAtForRevaluationAndFresh)
           const [time, date] = cleanedString.split(', ');
           const [day, month, year] = date.split('.');
           const expiresAt = new Date(`${year}-${month}-${day}T${time}:00`);
@@ -288,8 +283,6 @@ export const CmsReportPage = () => {
       }
 
 
-      //TODO: in fresh, if expectedDuration is -1 then expiresAt to not be changed
-    
     }
 
    
@@ -306,7 +299,11 @@ export const CmsReportPage = () => {
 
   const isErrorRevaluateFormValid = () => {
     return Object.values(errorRevaluateForm).every(value => value === false);
-  }; //TODO: PERFORM SAME CHECK FOR OTHER ERROR FORMS
+  };
+
+  const isErrorFreshFormValid = () => {
+    return Object.values(errorFreshForm).every(value => value === false);
+  };
 
   const handleInput = (name, value) => {
     if(name === 'expectedDuration' || name === 'description' || name === 'address' || name === 'locationUrl') 
@@ -350,12 +347,14 @@ export const CmsReportPage = () => {
         area: false
       });}
 
+      if(!isErrorFreshFormValid()){
+        setErrorFreshForm({
+        description: false,
+        address: false,
+        locationUrl: false,
+        area: false
+      });}
       
-    
-    
-    
-
-      //TODO: PERFORM SAME RESET FOR OTHER ERROR FORMS
   };
 
 
@@ -450,6 +449,9 @@ export const CmsReportPage = () => {
 
     }  
   };
+  
+
+
   
 
   const rejectReportMutation = useMutation({
@@ -601,7 +603,87 @@ export const CmsReportPage = () => {
    //-----state FOR_REVALUATION-----
 
 
-   
+
+
+
+   //-----state FRESH-----
+   const updateReportMutation = useMutation({
+    mutationFn: updateReportRequest,
+    onSuccess: () => {
+        navigate(from, { state: { showSuccessSnackbar: true, message: "Операцията е успешна." } });
+    },
+    onError: (error) => {
+          
+      if(error.response?.data === "Report doesn't exist.")
+      {
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
+      }
+      else if(error.response?.data === "Report info mismatch.[state]" || error.response?.data === "Report info mismatch.[severityType]" || error.response?.data === "Report info mismatch.[zoneId]" || error.response?.data === "Report info mismatch.[area]" || error.response?.data === "Report info mismatch.[category]" || error.response?.data === "Report info mismatch.[issue]")
+      {
+        navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
+      }
+      else if(error.response?.data === "Available zones of dispatcher have been changed.")
+      {
+        navigate(from, { state: { reloadPage: true } }); //! does full page reload of cmsReports page and also resets all search params to default ones along with the useRefs
+      }
+      else
+      {
+        navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
+      } 
+    },
+    onSettled: () => {
+      setIsRequestSent(false);
+      setBackdropOpen(false);
+    },
+  });
+
+  const onPressUpdate = (event) => {
+    event.preventDefault();
+    closeSnackbar();
+
+    if(!isRequestSent)
+    {
+      const validateFormOnUpdateMessage = validateReportFormOnUpdate(reportForm); 
+
+      if(validateFormOnUpdateMessage)
+      {
+        setErrorFreshForm(processErrorFreshFormOnSubmit(reportForm, errorFreshForm, validateFormOnUpdateMessage));
+        showSnackbar(validateFormOnUpdateMessage,"error","bottom","right");
+      }
+      else
+      {
+          setIsRequestSent(true);
+          setBackdropOpen(true);
+
+          updateReportMutation.mutate({
+            urlParams: {
+              reportId,
+              state: previousSearchParams.state,
+              severityType: previousSearchParams.severityType,
+              zoneId: previousSearchParams.zoneId,
+              area: previousSearchParams.area,
+              category: previousSearchParams.category,
+              issue: previousSearchParams.issue,
+            },
+            requestBody: {
+              severityType: reportForm.severity,
+              expectedDuration: reportForm.expectedDuration,
+              description: reportForm.description,
+              zoneId: reportForm.zone,
+              area: reportForm.area,
+              address: reportForm.address,
+              locationUrl: reportForm.locationUrl
+            }
+          });
+      }
+
+    }  
+  };
+   //-----state FRESH-----
+
+
+
+
 
    //-----for both states FOR_REVALUATION and FRESH the terminate report operation is the same-----
    const terminateReportMutation = useMutation({
@@ -799,64 +881,84 @@ export const CmsReportPage = () => {
     }
     
     if(reportForm.state === 'FOR_REVALUATION')
-      {
-        return (
-          <div className="cms_report_page">
-      
-            <ReportComponentForRevaluation
-              isLoadingComponent={isLoadingComponent}
-              isRequestSent={isRequestSent}
-              reportForm={reportForm}
-              handleInput={handleInput}
-              errorRevaluateForm={errorRevaluateForm}
-              onPressRevaluate={onPressRevaluate}
-              onPressTerminate={onPressTerminate}
-            />
-      
-            <BackdropLoader open={backdropOpen} />
-      
-            <Snackbar 
-              anchorOrigin={{
-                vertical: position.vertical,
-                horizontal: position.horizontal,
-              }} 
-              open={open} 
-              autoHideDuration={4000} 
-              onClose={handleCloseSnackBar}>
-              <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
-                {message}
-              </Alert>
-            </Snackbar>
-          </div>
-        );
-      }
+    {
+      return (
+        <div className="cms_report_page">
+    
+          <ReportComponentForRevaluation
+            isLoadingComponent={isLoadingComponent}
+            isRequestSent={isRequestSent}
+            reportForm={reportForm}
+            handleInput={handleInput}
+            errorRevaluateForm={errorRevaluateForm}
+            onPressRevaluate={onPressRevaluate}
+            onPressTerminate={onPressTerminate}
+          />
+    
+          <BackdropLoader open={backdropOpen} />
+    
+          <Snackbar 
+            anchorOrigin={{
+              vertical: position.vertical,
+              horizontal: position.horizontal,
+            }} 
+            open={open} 
+            autoHideDuration={4000} 
+            onClose={handleCloseSnackBar}>
+            <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
+              {message}
+            </Alert>
+          </Snackbar>
+        </div>
+      );
+    }
 
-
-
-
-
-
-
-
-
-
-
-
-
+    if(reportForm.state === 'FRESH')
+    {
+      return (
+        <div className="cms_report_page">
+    
+          <ReportComponentFresh
+            isLoadingComponent={isLoadingComponent}
+            isRequestSent={isRequestSent}
+            reportForm={reportForm}
+            handleInput={handleInput}
+            errorFreshForm={errorFreshForm}
+            onPressUpdate={onPressUpdate}
+            onPressTerminate={onPressTerminate}
+          />
+    
+          <BackdropLoader open={backdropOpen} />
+    
+          <Snackbar 
+            anchorOrigin={{
+              vertical: position.vertical,
+              horizontal: position.horizontal,
+            }} 
+            open={open} 
+            autoHideDuration={4000} 
+            onClose={handleCloseSnackBar}>
+            <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
+              {message}
+            </Alert>
+          </Snackbar>
+        </div>
+      );
+    }
 
     if(reportForm.state === 'INACTIVE')
-      {
-        return (
-          <div className="cms_report_page">
-      
-            <ReportComponentInactive
-               isLoadingComponent={isLoadingComponent}
-               reportForm={reportForm}
-            />
-      
-          </div>
-        );
-      }
+    {
+      return (
+        <div className="cms_report_page">
+    
+          <ReportComponentInactive
+              isLoadingComponent={isLoadingComponent}
+              reportForm={reportForm}
+          />
+    
+        </div>
+      );
+    }
   }
 
   

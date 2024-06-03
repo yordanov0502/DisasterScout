@@ -36,7 +36,7 @@ public class ReportsController {
     }
 
     @Operation(summary = "Accept report",
-            description = "Dispatcher/Admin accepts a report when this endpoint is called. The state of the report changes from PENDING to ACTIVE.")
+            description = "Dispatcher/Admin accepts a report when this endpoint is called. The state of the report changes from PENDING to FRESH.")
     @PutMapping("/accept")
     public ResponseEntity<String> acceptReport(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user, @RequestBody AcceptReportDTO acceptReportDTO){
         return reportService.acceptReport(reportId,state,severityType,zoneId,area,category,issue,user,acceptReportDTO);
@@ -50,15 +50,18 @@ public class ReportsController {
     }
 
     @Operation(summary = "Revaluate report",
-            description = "Dispatcher/Admin revaluates a report when this endpoint is called. The state of the report changes from FOR_REVALUATION to ACTIVE.")
+            description = "Dispatcher/Admin revaluates a report when this endpoint is called. The state of the report changes from FOR_REVALUATION to FRESH.")
     @PutMapping("/revaluate")
     public ResponseEntity<String> revaluateReport(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user, @RequestBody UpdateReportDTO updateReportDTO){
         return reportService.revaluateReport(reportId,state,severityType,zoneId,area,category,issue,user,updateReportDTO);
     }
 
-
-
-    //TODO: endpoint for update [Fresh]
+    @Operation(summary = "Update report",
+            description = "Dispatcher/Admin updates a report when this endpoint is called. The state of the report changes from FRESH to FRESH.")
+    @PutMapping("/update")
+    public ResponseEntity<String> updateReport(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user, @RequestBody UpdateReportDTO updateReportDTO){
+        return reportService.updateReport(reportId,state,severityType,zoneId,area,category,issue,user,updateReportDTO);
+    }
 
     @Operation(summary = "Terminate report",
             description = "Dispatcher/Admin terminates a report when this endpoint is called. The state of the report changes from FOR_REVALUATION or FRESH to INACTIVE.")

@@ -43,6 +43,10 @@ public class ReportService {
     private final TimeService timeService;
     private final ReportMapper reportMapper;
 
+
+
+
+
     public ResponseEntity<?> submitReport(SubmitReportDTO submitReportDTO){
 
         Zone zone = zoneService.getZoneById(submitReportDTO.zoneId());
@@ -84,6 +88,10 @@ public class ReportService {
 
         return ResponseEntity.ok().build();
     }
+
+
+
+
 
     public PageReportCardDTO getReportsFromPage(Integer page, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue){
 
@@ -150,6 +158,10 @@ public class ReportService {
             else {return reportMapper.mapToPageReportCardDTO(reportRepository.findAllByZoneReportState(zone,reportState,pageable));}
         }
     }
+
+
+
+
 
     public ResponseEntity<?> getReportInformation(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user){
 
@@ -240,7 +252,8 @@ public class ReportService {
 
         //?--------Validation whether the searchParams from frontend match with their related fields from the report
         //* state will be always available
-        if(!report.get().getReportState().getState().equals(state)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
+        //! better safe than sorry (even if state is equal to state of the report, check whether either of them is equal to PENDING)
+        if(!report.get().getReportState().getState().equals(state) || !state.equals(PENDING)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
 
         //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
         SeverityType severityType = convertStringToSeverityType(severityTypeValue);
@@ -387,6 +400,8 @@ public class ReportService {
 
 
 
+
+
     public ResponseEntity<String> revaluateReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user, UpdateReportDTO updateReportDTO){
 
         //? Validation whether the report exists or not.
@@ -396,6 +411,7 @@ public class ReportService {
 
         //?--------Validation whether the searchParams from frontend match with their related fields from the report
         //* state will be always available
+        //! better safe than sorry (even if state is equal to state of the report, check whether either of them is equal to FOR_REVALUATION)
         if(!report.get().getReportState().getState().equals(state) || !state.equals(FOR_REVALUATION)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
 
         //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
@@ -441,7 +457,7 @@ public class ReportService {
 
 
         //? all required for validation fields of acceptReportDTO are validated on the frontEnd
-        Date whenReportExpires = timeService.addHoursToDateAndTime(report.get().getSubmittedAt(),updateReportDTO.expectedDuration());
+        Date whenReportExpires = timeService.addHoursToDateAndTime(report.get().getExpiresAt(),updateReportDTO.expectedDuration());
 
         Zone selectedZone = zoneService.getZoneById(updateReportDTO.zoneId());
         String zoneName = String.format("обл.%s", selectedZone.getName());
@@ -477,39 +493,113 @@ public class ReportService {
 
 
 
+    public ResponseEntity<String> updateReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user, UpdateReportDTO updateReportDTO){
+
+        //? Validation whether the report exists or not.
+        Optional<Report> report = reportRepository.findById(reportId);
+        if(report.isEmpty()) {return new ResponseEntity<>("Report doesn't exist.", HttpStatus.NOT_FOUND);}
+
+
+        //?--------Validation whether the searchParams from frontend match with their related fields from the report
+        //* state will be always available
+        //! better safe than sorry (even if state is equal to state of the report, check whether either of them is equal to FRESH)
+        if(!report.get().getReportState().getState().equals(state) || !state.equals(FRESH)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
+
+        //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
+        SeverityType severityType = convertStringToSeverityType(severityTypeValue);
+        if(severityType != null)
+        {
+            if(!report.get().getSeverity().getSeverityType().equals(severityType)) {return new ResponseEntity<>("Report info mismatch.[severityType]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //* zoneId will always be available {when dispatcher has no available zones, the request will not reach the server because of proper validation on the frontend}
+        if(!report.get().getZone().getId().equals(zoneId)) {return new ResponseEntity<>("Report info mismatch.[zoneId]", HttpStatus.BAD_REQUEST);}
+
+        //* area will always be available ("Всички" by default)
+        Zone zone = zoneService.getZoneById(zoneId);
+        String partialAddress = area.equals("Всички") ? null : String.format("обл.%s~%s", zone.getName(),area);
+        if(partialAddress != null)
+        {
+            if(!report.get().getAddress().contains(partialAddress)) {return new ResponseEntity<>("Report info mismatch.[area]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? category  will always be available, but if it is "All" the category will be null,
+        Category category = convertStringToCategory(categoryValue);
+        if(category != null)
+        {
+            if(!report.get().getReportIssue().getCategory().equals(category)) {return new ResponseEntity<>("Report info mismatch.[category]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? issue  will always be available, but if it is "All" the issue will be null,
+        Issue issue = convertStringToIssue(issueValue);
+        if(issue != null)
+        {
+            if(!report.get().getReportIssue().getIssue().equals(issue)) {return new ResponseEntity<>("Report info mismatch.[issue]", HttpStatus.BAD_REQUEST);}
+        }
+        //?---------
+
+        //?validation for user zones and report's zone match BUT ONLY FOR DISPATCHER as ADMIN doesn't have any zones at all.
+        if(user.getUserRole().getRole().equals(DISPATCHER))
+        {
+            if(!user.getAvailableZoneIds().contains(zoneId)) {return new ResponseEntity<>("Available zones of dispatcher have been changed.", HttpStatus.BAD_REQUEST);} //? DO FULL PAGE RELOAD OF CmsReportsPage.
+        }
 
 
 
 
 
+        Zone selectedZone = zoneService.getZoneById(updateReportDTO.zoneId());
+        String zoneName = String.format("обл.%s", selectedZone.getName());
+        String selectedArea = updateReportDTO.area();
+        String address = !updateReportDTO.address().isBlank() ? updateReportDTO.address() : null;
+        String fullAddress;
+        if(address != null)
+        {
+            fullAddress = String.format("%s~%s~%s", zoneName,selectedArea,address);
+        }
+        else
+        {
+            fullAddress = String.format("%s~%s", zoneName,selectedArea);
+        }
+
+
+        //! On the frontend the expected duration is not required for this update, so it is possible to be -1
+        Date whenReportExpires = updateReportDTO.expectedDuration() == -1 ? null : timeService.addHoursToDateAndTime(report.get().getExpiresAt(),updateReportDTO.expectedDuration());
+
+        Report updatedReport;
+
+        if(whenReportExpires != null)
+        {
+            updatedReport = report.get().toBuilder()
+                    .reportState(reportStateService.getReportStateByState(FRESH)) //! report state is set to FRESH
+                    .severity(severityService.getSeverityBySeverityType(updateReportDTO.severityType()))
+                    .expiresAt(whenReportExpires)
+                    .description(updateReportDTO.description())
+                    .zone(selectedZone)
+                    .address(fullAddress)
+                    .locationUrl(updateReportDTO.locationUrl())
+                    .user(user) //! set user who revaluated the report
+                    .build();
+        }
+        else
+        {
+            updatedReport = report.get().toBuilder()
+                    .reportState(reportStateService.getReportStateByState(FRESH)) //! report state is set to FRESH
+                    .severity(severityService.getSeverityBySeverityType(updateReportDTO.severityType()))
+                    .description(updateReportDTO.description())
+                    .zone(selectedZone)
+                    .address(fullAddress)
+                    .locationUrl(updateReportDTO.locationUrl())
+                    .user(user) //! set user who revaluated the report
+                    .build();
+        }
 
 
 
+        reportRepository.save(updatedReport);
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+        return new ResponseEntity<>("Report has been updated successfully.", HttpStatus.OK);
+    }
 
 
 
@@ -535,7 +625,6 @@ public class ReportService {
 
         //?--------Validation whether the searchParams from frontend match with their related fields from the report
         //* state will be always available
-        //! better safe than sorry (even if state is equal to state of the report, check whether either of them is equal to PENDING)
         if(!report.get().getReportState().getState().equals(state)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
 
         //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
