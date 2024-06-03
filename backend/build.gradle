@@ -22,6 +22,10 @@ repositories {
 }
 
 dependencies {
+    // https://mvnrepository.com/artifact/com.google.firebase/firebase-admin
+    implementation('com.google.firebase:firebase-admin:9.2.0') {
+        exclude group: 'commons-logging', module: 'commons-logging'
+    }
     // https://mvnrepository.com/artifact/org.awaitility/awaitility
     testImplementation 'org.awaitility:awaitility:4.2.0'
     implementation 'org.springframework.boot:spring-boot-starter-mail'

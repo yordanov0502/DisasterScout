@@ -2,7 +2,6 @@ package bg.tu_varna.sit.backend.controller.internal.dispatcher;
 
 import bg.tu_varna.sit.backend.models.dto.report.AcceptReportDTO;
 import bg.tu_varna.sit.backend.models.dto.report.PageReportCardDTO;
-import bg.tu_varna.sit.backend.models.dto.report.TerminateReportDTO;
 import bg.tu_varna.sit.backend.models.dto.report.UpdateReportDTO;
 import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.models.enums.report.reportstate.State;
@@ -66,8 +65,8 @@ public class ReportsController {
     @Operation(summary = "Terminate report",
             description = "Dispatcher/Admin terminates a report when this endpoint is called. The state of the report changes from FOR_REVALUATION or FRESH to INACTIVE.")
     @PutMapping("/terminate")
-    public ResponseEntity<String> terminateReport(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user, @RequestBody TerminateReportDTO terminateReportDTO){
-        return reportService.terminateReport(reportId,state,severityType,zoneId,area,category,issue,user, terminateReportDTO);
+    public ResponseEntity<String> terminateReport(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user){
+        return reportService.terminateReport(reportId,state,severityType,zoneId,area,category,issue,user);
     }
 
 

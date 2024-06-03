@@ -27,6 +27,7 @@ out/
 !**/src/test/**/out/
 /src/main/resources/.env
 /src/main/resources/localhost.p12
+/src/main/resources/serviceAccountKey.json
 
 ### NetBeans ###
 /nbproject/private/

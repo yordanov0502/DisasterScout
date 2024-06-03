@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
-import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
+import { ref, deleteObject } from "firebase/storage";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert, Snackbar } from "@mui/material";
 import { storage } from "../../../utils/firebaseConfiguration";
@@ -717,68 +717,16 @@ export const CmsReportPage = () => {
   });
   
 
-  const onPressTerminate = async (event) => {
+  const onPressTerminate = (event) => {
     event.preventDefault();
     closeSnackbar();
 
-    if(!isRequestSent)
-    {
-      try
+      if(!isRequestSent)
       {
+          setIsRequestSent(true);
+          setBackdropOpen(true);
 
 
-        setIsRequestSent(true);
-        setBackdropOpen(true);
-
-        if(reportForm.imageUrl)
-        {
-          const oldImageRef = ref(storage, reportForm.imageUrl);
-          const newImageRef = ref(storage, `inactive-images/${oldImageRef.name}`);
-
-          if(!reportForm.imageUrl.includes("inactive-images")) //! only if the old image url doesn't contain the substring 'inactive-images', which if it is true would mean that the image has already been moved to firebase 'inactive-images' folder and updated in the database also. If this check here is not performed the image will be deleted from the 'inactive-images' folder.
-          {
-            await moveImageToOtherFolder(oldImageRef, newImageRef); //? copies the old image to folder 'inactive-images' and deletes it from the 'images' folder
-
-            const newImageUrl = await getDownloadURL(newImageRef);
-
-            terminateReportMutation.mutate({
-              urlParams: {
-                reportId,
-                state: previousSearchParams.state,
-                severityType: previousSearchParams.severityType,
-                zoneId: previousSearchParams.zoneId,
-                area: previousSearchParams.area,
-                category: previousSearchParams.category,
-                issue: previousSearchParams.issue,
-              },
-                requestBody: {
-                  imageUrl: newImageUrl
-                }
-            });
-          }
-          else
-          {
-            terminateReportMutation.mutate({
-              urlParams: {
-                reportId,
-                state: previousSearchParams.state,
-                severityType: previousSearchParams.severityType,
-                zoneId: previousSearchParams.zoneId,
-                area: previousSearchParams.area,
-                category: previousSearchParams.category,
-                issue: previousSearchParams.issue,
-              },
-                requestBody: {
-                  imageUrl: reportForm.imageUrl
-                }
-            });
-          } 
-        }
-
-
-
-        else
-        {
           terminateReportMutation.mutate({
             urlParams: {
               reportId,
@@ -788,37 +736,11 @@ export const CmsReportPage = () => {
               area: previousSearchParams.area,
               category: previousSearchParams.category,
               issue: previousSearchParams.issue,
-            },
-            requestBody: {
-              imageUrl: null
             }
           });
-        }
-
-
       }
-      catch(error) //! might be caused if a report has already been terminated by another dispatcher/admin, and we try to get image of a report by url, which has already been changed(a.k.a the image has already been moved to 'inactive-images')
-      { 
-        setIsRequestSent(false); //!! set to false if we don't reach the mutation because of image copy-move-delete error
-        setBackdropOpen(false);
-        showSnackbar("Възникна грешка. Моля опитайте отново. ⓘ", "error","bottom","right");
-        window.location.reload();
-      }
-      
-
+     
     }  
-  };
-
-  
-  const moveImageToOtherFolder = async (sourceRef, destRef) => {
-
-    const downloadURL = await getDownloadURL(sourceRef);
-    const response = await fetch(downloadURL);
-    const blob = await response.blob();
-
-    await uploadBytes(destRef, blob);
-    await deleteObject(sourceRef);
-  };
    //-----for both state FOR_REVALUATION and FRESH the terminate report operation is the same-----
 
 

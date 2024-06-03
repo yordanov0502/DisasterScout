@@ -15,8 +15,10 @@ import bg.tu_varna.sit.backend.models.mapper.report.ReportMapper;
 import bg.tu_varna.sit.backend.repository.report.ReportRepository;
 import bg.tu_varna.sit.backend.service.primary.SeverityService;
 import bg.tu_varna.sit.backend.service.primary.ZoneService;
+import bg.tu_varna.sit.backend.service.util.FirebaseStorageService;
 import bg.tu_varna.sit.backend.service.util.TimeService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -25,6 +27,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Optional;
 
 import static bg.tu_varna.sit.backend.models.enums.report.reportstate.State.*;
@@ -42,6 +45,9 @@ public class ReportService {
     private final ReporterService reporterService;
     private final TimeService timeService;
     private final ReportMapper reportMapper;
+    private final FirebaseStorageService firebaseStorageService;
+    @Value("${env.STORAGE_BUCKET_NAME}")
+    private String storageBucketName;
 
 
 
@@ -605,23 +611,12 @@ public class ReportService {
 
 
 
-    public ResponseEntity<String> terminateReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user, TerminateReportDTO terminateReportDTO){
+    public ResponseEntity<String> terminateReport(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue, User user){
 
         //? Validation whether the report exists or not.
         Optional<Report> report = reportRepository.findById(reportId);
         if(report.isEmpty()) {return new ResponseEntity<>("Report doesn't exist.", HttpStatus.NOT_FOUND);}
 
-        //! imageUrl of report is updated here, because the image copy - move - remove in firebase is done
-        //! on the frontend before sending the request which is processed here at this point.
-        //! If the new imageUrl is not persisted before the validations and if any validation of those below fail
-        //! the report on the frontend will stay with the oldUrl which has already been deleted from firebase 'images' folder
-        //! but not updated in the database and basically no image will be shown, as the imageUrl from the database will not be the same as the image in the 'inactive-images' folder from Firebase
-        String updatedImageUrl = terminateReportDTO.imageUrl() != null ? terminateReportDTO.imageUrl() : "";
-        Report reportWithUpdatedImageUrl = report.get().toBuilder()
-                .imageUrl(updatedImageUrl)
-                .build();
-        reportRepository.save(reportWithUpdatedImageUrl);
-        //!
 
         //?--------Validation whether the searchParams from frontend match with their related fields from the report
         //* state will be always available
@@ -669,13 +664,9 @@ public class ReportService {
 
 
 
-
-        String imageUrl = terminateReportDTO.imageUrl() != null ? terminateReportDTO.imageUrl() : "";
-
         Report terminatedReport = report.get().toBuilder()
                 .reportState(reportStateService.getReportStateByState(INACTIVE)) //! report state is set to INACTIVE
                 .user(user) //! set user who terminated the report
-                .imageUrl(imageUrl)
                 .build();
 
         reportRepository.save(terminatedReport);
@@ -691,6 +682,22 @@ public class ReportService {
         reportRepository.updateExpiryOfReports(fresh,forRevaluation,dateTimeNow);
     }
 
+    public void deleteInactiveReports() {
+        ReportState inactive = reportStateService.getReportStateByState(INACTIVE);
+
+        //? Get all non-null image URLs for inactive reports
+        List<String> imageUrls = reportRepository.findImageUrlsByReportState(inactive);
+
+        //? Delete INACTIVE reports
+        reportRepository.deleteInactiveReports(inactive);
+
+        //? Delete images of INACTIVE reports from Firebase Storage
+        for (String imageUrl : imageUrls)
+        {
+            String filePath = firebaseStorageService.extractFilePathFromUrl(imageUrl);
+            firebaseStorageService.deleteFile(storageBucketName, filePath);
+        }
+    }
 
 
 
@@ -706,24 +713,6 @@ public class ReportService {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-    //! TODO: when chron job deletes inactive reports client from here must be used to delete the images stored in Firebase 'inactive-images'
 
     //! TODO: SAME CHECKS FOR "Области" when user will add / remove or update alert for zone
 

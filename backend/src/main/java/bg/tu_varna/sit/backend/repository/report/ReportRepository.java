@@ -15,6 +15,7 @@ import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Date;
+import java.util.List;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report,Integer> {
@@ -59,4 +60,12 @@ public interface ReportRepository extends JpaRepository<Report,Integer> {
     @Modifying
     @Query("UPDATE Report r SET r.reportState = ?2 WHERE r.reportState = ?1 AND r.expiresAt <= ?3")
     void updateExpiryOfReports(ReportState fresh, ReportState forRevaluation, Date currentDateTime);
+
+    @Query("SELECT r.imageUrl FROM Report r WHERE r.reportState = ?1 AND r.imageUrl IS NOT NULL")
+    List<String> findImageUrlsByReportState(ReportState inactive);
+
+    @Transactional
+    @Modifying
+    @Query("DELETE FROM Report r WHERE r.reportState = ?1")
+    void deleteInactiveReports(ReportState inactive);
 }
