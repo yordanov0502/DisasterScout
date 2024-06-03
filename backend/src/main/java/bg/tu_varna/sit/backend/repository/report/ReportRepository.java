@@ -9,8 +9,12 @@ import bg.tu_varna.sit.backend.models.enums.report.reportissue.Category;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Date;
 
 @Repository
 public interface ReportRepository extends JpaRepository<Report,Integer> {
@@ -51,4 +55,8 @@ public interface ReportRepository extends JpaRepository<Report,Integer> {
     @Query("SELECT r FROM Report r WHERE r.zone = ?1 AND r.reportState = ?2")
     Page<Report> findAllByZoneReportState(Zone zone, ReportState reportState, Pageable pageable);
 
+    @Transactional
+    @Modifying
+    @Query("UPDATE Report r SET r.reportState = ?2 WHERE r.reportState = ?1 AND r.expiresAt <= ?3")
+    void updateExpiryOfReports(ReportState fresh, ReportState forRevaluation, Date currentDateTime);
 }

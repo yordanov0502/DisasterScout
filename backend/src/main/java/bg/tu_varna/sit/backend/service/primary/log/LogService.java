@@ -28,9 +28,7 @@ public class LogService {
 
     public void addLog(Log log){logRepository.save(log);}
 
-    public void deleteLogsOlderThan7Days(){
-        logRepository.deleteLogsOlderThan(DateUtils.addDays(new Date(), -7));
-    }
+    public void deleteLogsOlderThan7Days() {logRepository.deleteLogsOlderThan(DateUtils.addDays(new Date(), -7));}
 
     public PageLogDTO getLogsFromPage(Integer page,String levelName,String username){
 

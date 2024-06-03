@@ -684,6 +684,42 @@ public class ReportService {
     }
 
 
+    public void updateReportsExpiry() {
+        ReportState fresh = reportStateService.getReportStateByState(FRESH);
+        ReportState forRevaluation = reportStateService.getReportStateByState(FOR_REVALUATION);
+        Date dateTimeNow = timeService.getCurrentDateAndTimeInBulgaria();
+        reportRepository.updateExpiryOfReports(fresh,forRevaluation,dateTimeNow);
+    }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
