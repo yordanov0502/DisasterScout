@@ -1,3 +1,3 @@
 package bg.tu_varna.sit.backend.models.dto.zone;
 
-public record DeleteAlertDTO(String zoneId) {}
+public record ZoneIdDTO(String zoneId) {}

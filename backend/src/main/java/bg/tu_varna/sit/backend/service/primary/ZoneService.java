@@ -57,6 +57,20 @@ public class ZoneService {
         return ResponseEntity.ok().build();
     }
 
+    public ResponseEntity<?> getDescriptionOfAlert(User user, String zoneId) {
+
+        if(user.getUserRole().getRole().equals(DISPATCHER))
+        {
+            if(!user.getAvailableZoneIds().contains(zoneId)) {return new ResponseEntity<>("Available zones of dispatcher have been changed.", HttpStatus.BAD_REQUEST);} //? DO FULL PAGE RELOAD OF CmsZonesPage.
+        }
+
+        //! Validation for when we try to get description of alert of zone, but the zone doesn't have alert
+        Zone zone = getZoneById(zoneId);
+        if(zone.getAlert() == null) {return new ResponseEntity<>("Zone doesn't have an alert.", HttpStatus.NOT_FOUND);}
+
+        return new ResponseEntity<>(zone.getAlert().getMessage(),HttpStatus.OK);
+    }
+
     public List<Zone> getAllZones(){return zoneCacheService.getAllZones();}
 
     public void clearCacheOfZone(String zoneId){

@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert, Autocomplete, Box, Snackbar, TextField } from "@mui/material";
 import { getAllSeverities, getFullSeverityObjectBySeverity, getSeverityByColor } from "../../../services/severityService";
-import { getAllZones, getBadgeOfZone, getUnavailableZoneIds, getAlertsOfAvailableZones, getAvailableZoneIds, getFullZoneById, publishAlertRequest, deleteAlertRequest} from "../../../services/zoneService";
+import { getAllZones, getBadgeOfZone, getUnavailableZoneIds, getAlertsOfAvailableZones, getAvailableZoneIds, getFullZoneById, publishAlertRequest, deleteAlertRequest, getDescriptionOfAlert} from "../../../services/zoneService";
 import { useUserContext } from "../../../hooks/useUserContext";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
@@ -16,7 +16,6 @@ import './cms_zones_page.scss';
 //? Global variable to act as storage for already loaded local images (zone badges)
 const loadedImages = {};
 
-//! because of React.Strict mode a null message is printed for the map useRef because the strcit Mode logs 2 times, and the 1st time is too soon maybe
 export const CmsZonesPage = () => {
   const mapContainerRef = useRef(null); //!doesnt trigger re-render on state change(current)
   const mapInstance = useRef(null); //!doesnt trigger re-render on state change(current)
@@ -43,17 +42,30 @@ export const CmsZonesPage = () => {
   });
 
 
-  //!!! React query to fetch severities of alerts(if any exist) of available zones of dispatcher 
   const {
     data,
     status,
-    isLoading,
+    //isLoading,
     error,
-    refetch
+    refetch: refetchAlerts
   } = useQuery({
     queryKey: ["getAlertsOfAvailableZonesForCMS"], //? When any value in the queryKey array changes, react-query will re-run the query.
     queryFn: () => getAlertsOfAvailableZones(), 
     enabled: isQueryEnabled
+  });
+
+  const {
+    data: descriptionData,
+    status: descriptionFetchStatus,
+    //isLoading: descriptionFetchLoading,
+    error: descriptionFetchError
+  } = useQuery({
+    queryKey: ["getDescriptionOfAlertForCMS",  alertForm.zone], //? When any value in the queryKey array changes, react-query will re-run the query.
+    queryFn: ({ queryKey }) => {
+      const zoneId = queryKey[1];
+      return getDescriptionOfAlert(zoneId);
+    },
+    enabled: isQueryEnabled && alertForm.zone !== ""
   });
 
   //? Used in order to prevent dispatcher from accessing the CmsZonesPage by typing its path in the URL. (even though he doesn't have UI button for it)
@@ -191,27 +203,35 @@ export const CmsZonesPage = () => {
 
     if(status === 'error') 
     {
-      //!TODO: show proper error snackbar based on validation error from backend
-      //!!! do full page reload
-      // if(error.response?.data === "Report doesn't exist.")
-      // {
-      //   navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече не съществува." } });
-      // }
-      // else if(error.response?.data === "Report info mismatch.[state]" || error.response?.data === "Report info mismatch.[severityType]" || error.response?.data === "Report info mismatch.[zoneId]" || error.response?.data === "Report info mismatch.[area]" || error.response?.data === "Report info mismatch.[category]" || error.response?.data === "Report info mismatch.[issue]")
-      // {
-      //   navigate(from, { state: { showErrorSnackbar: true, message: "Докладът вече е бил актуализиран." } });
-      // }
-      // else if(error.response?.data === "Available zones of dispatcher have been changed.")
-      // {
-      //   navigate(from, { state: { reloadPage: true } }); //! does full page reload of cmsReports page and also resets all search params to default ones along with the useRefs
-      // }
-      // else
-      // {
-      //   navigate(from, { state: { showErrorSnackbar: true, message: "Възникна грешка. Моля опитайте отново." } });
-      // } 
+      showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
     }
 
   }, [status, data, error]);
+
+  useEffect(() => {
+
+    if (descriptionFetchStatus === 'success') 
+    {
+      handleInput('description',descriptionData.data);
+    }
+
+    if(descriptionFetchStatus === 'error') 
+    {
+      if(descriptionFetchError.response?.data === "Available zones of dispatcher have been changed.")
+      {
+        window.location.reload();
+      }
+      else if(descriptionFetchError.response?.data === "Zone doesn't have an alert.")
+      {
+        //do nothing
+      }
+      else
+      {
+        showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      } 
+    }
+
+  }, [descriptionFetchStatus, descriptionData, descriptionFetchError]);
 
 
 
@@ -257,7 +277,25 @@ export const CmsZonesPage = () => {
     closeSnackbar();
     const zoneColor = mapInstance.current.fetchStateAttr(id,'color'); //? gets the color of zone with id
     const severityType = getSeverityByColor(zoneColor);
-    setAlertForm(prevState => ({...prevState, zone:  id, severity: severityType !== null ? severityType.type : "" }));
+
+    if(zoneColor !== "#009F58")
+    {
+      setAlertForm(prevState => ({
+        ...prevState, 
+        zone: id, 
+        severity: severityType !== null ? severityType.type : ""
+      }));
+    }
+    else
+    {
+      setAlertForm(prevState => ({
+        ...prevState, 
+        zone:  id, 
+        severity: severityType !== null ? severityType.type : "",
+        description: ""
+      }));
+    } 
+    
   };
 
   const handleCloseSnackBar = (event, reason) => {
@@ -300,7 +338,7 @@ export const CmsZonesPage = () => {
     mutationFn: publishAlertRequest,
     onSuccess: () => {
         clearAlertForm();
-        refetch();
+        refetchAlerts();
         showSnackbar("Операцията е успешна.","success","bottom","right");
     },
     onError: (error) => {
@@ -363,7 +401,7 @@ export const CmsZonesPage = () => {
     mutationFn: deleteAlertRequest,
     onSuccess: () => {
         clearAlertForm();
-        refetch();
+        refetchAlerts();
         showSnackbar("Операцията е успешна.","success","bottom","right");
     },
     onError: (error) => {
@@ -400,14 +438,20 @@ export const CmsZonesPage = () => {
       }
       else
       {
-        setIsRequestSent(true);
-        setBackdropOpen(true);
-  
-        deleteAlertMutation.mutate({
-          requestBody: {
-            zoneId: alertForm.zone
-          }
-        });    
+        const zoneColor = mapInstance.current.fetchStateAttr(alertForm.zone,'color'); //? gets the color of zone with id
+
+        if(zoneColor !== "#009F58")
+        {
+          setIsRequestSent(true);
+          setBackdropOpen(true);
+    
+          deleteAlertMutation.mutate({
+            requestBody: {
+              zoneId: alertForm.zone
+            }
+          });    
+        }
+
       }
     }
   }  

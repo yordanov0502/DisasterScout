@@ -5601,3 +5601,8 @@ export const deleteAlertRequest = ({requestBody}) => {
 
         return axiosInstanceWithCredentials.put("/internal/dispatcher/zones/delete-alert", requestBody);
 };
+
+export const getDescriptionOfAlert = (zoneID) => {
+
+        return axiosInstanceWithCredentials.get(`/internal/dispatcher/zones/alert-description?zoneId=${zoneID}`);
+};

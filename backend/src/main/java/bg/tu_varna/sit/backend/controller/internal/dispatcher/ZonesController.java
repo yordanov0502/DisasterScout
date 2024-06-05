@@ -1,6 +1,6 @@
 package bg.tu_varna.sit.backend.controller.internal.dispatcher;
 
-import bg.tu_varna.sit.backend.models.dto.zone.DeleteAlertDTO;
+import bg.tu_varna.sit.backend.models.dto.zone.ZoneIdDTO;
 import bg.tu_varna.sit.backend.models.dto.zone.SeveritiesOfAvailableZones;
 import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.user.User;
@@ -34,9 +34,18 @@ public class ZonesController {
         return zoneService.updateAlertOfZone(user, zoneDTO);
     }
 
+    @Operation(summary = "Delete alert of zone",
+            description = "When this endpoint is called, the existing alert of zone is deleted.")
     @PutMapping("/delete-alert")
-    public ResponseEntity<?> deleteAlertOfZone(@AuthenticationPrincipal User user, @RequestBody DeleteAlertDTO deleteAlertDTO){
-        return zoneService.deleteAlertOfZone(user, deleteAlertDTO.zoneId());
+    public ResponseEntity<?> deleteAlertOfZone(@AuthenticationPrincipal User user, @RequestBody ZoneIdDTO zoneIdDTO){
+        return zoneService.deleteAlertOfZone(user, zoneIdDTO.zoneId());
+    }
+
+    @Operation(summary = "Get alert's description of zone",
+            description = "When this endpoint is called, the description(message) of alert related to specific zone is returned.")
+    @GetMapping("/alert-description")
+    public ResponseEntity<?> getDescriptionOfAlert(@RequestParam(value = "zoneId") String zoneId, @AuthenticationPrincipal User user){
+        return zoneService.getDescriptionOfAlert(user, zoneId);
     }
 
 }
