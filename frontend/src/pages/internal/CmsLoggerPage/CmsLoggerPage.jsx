@@ -36,7 +36,7 @@ export const CmsLoggerPage = () => {
     enabled: isQueryEnabled
   });
 
-  //? Used in order to preven dispatchers from accessing the CmsLoggerPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
+  //? Used in order to prevent dispatchers from accessing the CmsLoggerPage by typing its path in the URL. (even though they don't have UI button for it and is forbbiden for them by the backend logic)
   useEffect(() => { 
     const isUContextEmpty = isUserContextEmpty(); //? return true/false
     if(!isUContextEmpty && authenticatedUser.role !== "ADMIN") //? if user context is NOT empty and user role is NOT ADMIN

@@ -1,0 +1,224 @@
+.cms_zones_page {
+    min-height: 100vh;
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+    background-color: white;
+
+
+    &__loader-box {
+      display: flex;
+      position: relative;
+      width: 100%;
+      height: 100%;
+      align-items: center;
+      justify-content: center;
+    }
+
+
+
+  &__heading{
+      width: 100%;
+      text-align: center;
+      margin-bottom: 35px; /* Add some space between the heading and containers */
+      position: relative;
+      top: 35px;
+      font-size: 28px;
+      color: #006e3d;
+  }
+
+  &__wrapper
+  {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    height: 100%;
+
+    
+
+    &__container1{
+      width: 60%;
+      //height: 60%;
+
+      @media (pointer: coarse) {
+              width: 100%;
+             // height: 40%;
+      }
+  }
+
+
+
+  &__container2{
+    width: 30%;
+    //height: 60%;
+
+
+    &__buttons-container {
+        position: relative;
+        top: 10px;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+         width: 100%;
+        // height: 100%;  
+        background-color: white;
+        gap: 6%;
+
+    
+        &__approve {
+          display: flex;
+          align-items: center; 
+          justify-content: center;
+          cursor: pointer;
+          position: relative;
+          width: 47%;
+          height: 50px;
+          border-radius: 3px;
+          font-size: 18px;
+          margin-bottom: 10px;
+          color: #fff;
+          text-decoration: none;
+          background-color: #009f58;
+          border: none;
+          border-bottom: 6px solid #00693a;
+          text-shadow: 0px -2px #266540;
+          -webkit-transition: all 0.1s;
+          transition: all 0.1s;
+
+          @media (pointer: coarse) {
+            width: 44%;
+          }
+        }
+    
+        &__approve:hover {
+          background-color: #00b463;
+        }
+    
+        &__approve:active {
+          -webkit-transform: translate(0px, 1px);
+          -ms-transform: translate(0px, 1px);
+          transform: translate(0px, 1px);
+          border-bottom: 2px solid #00693a;
+        }
+
+        &__reject {
+            display: flex;
+            align-items: center; 
+            justify-content: center;
+            cursor: pointer;
+            position: relative;
+            width: 47%; 
+            height: 50px;
+            border-radius: 3px;
+            font-size: 18px;
+            margin-bottom: 10px;
+            color: #fff;
+            text-decoration: none;
+            background-color: #e50000;
+            border: none;
+            border-bottom: 6px solid #690000;
+            text-shadow: 0px -2px #652626;
+            -webkit-transition: all 0.1s;
+            transition: all 0.1s;
+
+            @media (pointer: coarse) {
+                width: 44%;
+              }
+
+          }
+      
+          &__reject:hover {
+            background-color: #ff3e3e;
+          }
+      
+          &__reject:active {
+            -webkit-transform: translate(0px, 1px);
+            -ms-transform: translate(0px, 1px);
+            transform: translate(0px, 1px);
+            border-bottom: 2px solid #690000;
+          }
+
+
+          @media (pointer: coarse) {
+            width: 100%;
+            //top: 38px;
+            gap:11%
+          }
+    }
+
+
+
+    @media (pointer: coarse) {
+            width: 100%;
+           // height: 40%;
+    }
+}
+
+
+
+
+
+
+
+    @media (max-width: 870px) { // adjust breakpoint as needed
+      flex-direction: column;
+
+      &__heading{
+        font-size: 14px;
+      }
+
+      &__container1, &__container2 {
+          width: 90%;
+      }
+    }
+
+}
+
+
+  @media (max-width: 870px) { // adjust breakpoint as needed
+    flex-direction: column;
+
+    &__heading{
+      top: 15px;
+      font-size: 18px;
+    }
+
+    
+  }
+
+  @media (pointer: coarse) {
+    &__heading{
+      width: 95%;
+      top: 100px;
+      font-size: 24px;
+      margin-bottom: 100px;
+    }
+  }
+
+    
+
+    
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
+    
+}

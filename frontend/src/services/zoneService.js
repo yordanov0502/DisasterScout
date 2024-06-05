@@ -1,3 +1,5 @@
+import { axiosInstanceWithCredentials } from "../utils/axiosInstances";
+
 const zones = [
   { label: "Благоевград", zoneId: "st1" },
   { label: "Бургас", zoneId: "st2" },
@@ -5502,7 +5504,16 @@ const zoneAreasMappings = {
 
 
 
+export const getUnavailableZoneIds = (excludedZoneIds) => {
+        return zones
+        .filter(zone => !excludedZoneIds.includes(zone.zoneId))
+        .map(zone => zone.zoneId);
+}
 
+
+export const getAvailableZoneIds = (availableZoneIds) => {
+        return zones.filter(zone => availableZoneIds.includes(zone.zoneId));
+}
 
 
 export const getAllZones = () => {return zones;}
@@ -5566,3 +5577,27 @@ export const getFullZoneById = (zoneId) => {
         const zone = zones.find(z => z.zoneId === zoneId);
         return zone ? zone : null;
       }
+
+
+
+
+
+
+
+
+
+
+export const getAlertsOfAvailableZones = () => {
+
+        return axiosInstanceWithCredentials.get("/internal/dispatcher/zones/alerts-severities");
+};
+
+export const publishAlertRequest = ({requestBody}) => {
+
+        return axiosInstanceWithCredentials.post("/internal/dispatcher/zones/publish-alert", requestBody);
+};
+
+export const deleteAlertRequest = ({requestBody}) => {
+
+        return axiosInstanceWithCredentials.put("/internal/dispatcher/zones/delete-alert", requestBody);
+};

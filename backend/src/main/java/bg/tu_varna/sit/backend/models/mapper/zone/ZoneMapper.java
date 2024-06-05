@@ -1,6 +1,9 @@
 package bg.tu_varna.sit.backend.models.mapper.zone;
 
+import bg.tu_varna.sit.backend.models.dto.zone.SeveritiesOfAvailableZones;
+import bg.tu_varna.sit.backend.models.dto.zone.ZoneSeverityDTO;
 import bg.tu_varna.sit.backend.models.entity.Zone;
+import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.service.primary.ZoneService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
@@ -18,5 +21,15 @@ public class ZoneMapper {
                 .stream()
                 .map(zoneService::getZoneById)
                 .toList();
+    }
+
+    public SeveritiesOfAvailableZones mapToAvailableZonesWithAlertsDTO(User dispatcher)
+    {
+        List<ZoneSeverityDTO> zoneDTOList = dispatcher.getAvailableZoneIds()
+                .stream()
+                .map(z -> new ZoneSeverityDTO(z, zoneService.getZoneById(z).getAlert() != null ? zoneService.getZoneById(z).getAlert().getSeverity().getSeverityType() : null) )
+                .toList();
+
+        return new SeveritiesOfAvailableZones(zoneDTOList);
     }
 }

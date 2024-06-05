@@ -61,6 +61,7 @@ export const MainSpeedDial = () => {
 
     if (path.includes("/cms-dashboard")) setActiveButton("Табло");
     else if (path.includes("/cms-reports") || path.includes("/cms-report")) setActiveButton("Доклади");
+    else if (path.includes("/cms-zones")) setActiveButton("Области");
     else if (path.includes("/cms-account")) setActiveButton("Акаунт");
     else if (path.includes("/cms-settings")) setActiveButton("Настройки");
     else if (path.includes("/cms-new-dispatcher")) setActiveButton("Нов диспечер");
@@ -109,7 +110,7 @@ export const MainSpeedDial = () => {
         setActiveButton("Доклади");
         break;
       case "Области":
-        // navigate("/cms-zones");
+        navigate("/cms-zones");
         setActiveButton("Области");
         break;
       // case "Хронология":
