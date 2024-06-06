@@ -699,6 +699,16 @@ public class ReportService {
         }
     }
 
+    public ColumnChartDTO getCountOfFreshReportsOfZones() {
+        ReportState reportState = reportStateService.getReportStateByState(FRESH);
+        return new ColumnChartDTO(reportRepository.countReportsByZoneIdAndState(reportState.getId()));
+    }
+
+
+    public PieChartDTO getProportionOfCategoriesOfFreshReports() {
+        ReportState reportState = reportStateService.getReportStateByState(FRESH);
+        return new PieChartDTO(reportRepository.countReportsByCategoryAndState(reportState.getId()));
+    }
 
 
 

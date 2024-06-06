@@ -313,3 +313,13 @@ const expectedDurationHours = [
 
     return axiosInstanceWithCredentials.put(`/internal/dispatcher/reports/terminate?reportId=${reportId}&state=${state}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
   };
+
+  export const getCountOfFreshReportsOfZones = () => {
+
+    return axiosInstanceWithCredentials.get("/internal/dispatcher/dashboard/get-fresh-reports");
+  };
+
+  export const getProportionOfCategoriesOfFreshReports = () => {
+
+    return axiosInstanceWithCredentials.get("/internal/dispatcher/dashboard/get-proportion-of-categories");
+  };

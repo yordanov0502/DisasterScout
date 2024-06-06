@@ -68,4 +68,55 @@ public interface ReportRepository extends JpaRepository<Report,Integer> {
     @Modifying
     @Query("DELETE FROM Report r WHERE r.reportState = ?1")
     void deleteInactiveReports(ReportState inactive);
+
+
+    //? Select number of FRESH reports of each zone (if zone doesn't have any FRESH reports, return 0 for it)
+    @Query(value = "SELECT COALESCE(COUNT(r.zone_id), 0) FROM zones z " +
+            "LEFT JOIN reports r ON z.id_zone = r.zone_id AND r.report_state_id = :reportStateId " +
+            "GROUP BY z.id_zone " +
+            "ORDER BY CASE z.id_zone " +
+            "WHEN 'st1' THEN 1 " +
+            "WHEN 'st2' THEN 2 " +
+            "WHEN 'st3' THEN 3 " +
+            "WHEN 'st4' THEN 4 " +
+            "WHEN 'st5' THEN 5 " +
+            "WHEN 'st6' THEN 6 " +
+            "WHEN 'st7' THEN 7 " +
+            "WHEN 'st8' THEN 8 " +
+            "WHEN 'st9' THEN 9 " +
+            "WHEN 'st10' THEN 10 " +
+            "WHEN 'st11' THEN 11 " +
+            "WHEN 'st12' THEN 12 " +
+            "WHEN 'st13' THEN 13 " +
+            "WHEN 'st14' THEN 14 " +
+            "WHEN 'st15' THEN 15 " +
+            "WHEN 'st16' THEN 16 " +
+            "WHEN 'st17' THEN 17 " +
+            "WHEN 'st18' THEN 18 " +
+            "WHEN 'st19' THEN 19 " +
+            "WHEN 'st20' THEN 20 " +
+            "WHEN 'st21' THEN 21 " +
+            "WHEN 'st22' THEN 22 " +
+            "WHEN 'st23' THEN 23 " +
+            "WHEN 'st24' THEN 24 " +
+            "WHEN 'st25' THEN 25 " +
+            "WHEN 'st26' THEN 26 " +
+            "WHEN 'st27' THEN 27 " +
+            "WHEN 'st28' THEN 28 " +
+            "END", nativeQuery = true)
+    List<Integer> countReportsByZoneIdAndState(Integer reportStateId);
+
+    @Query(value = "SELECT COALESCE(COUNT(r.id_report), 0) " +
+            "FROM report_issues ri " +
+            "LEFT JOIN reports r ON ri.id_report_issue = r.report_issue_id AND r.report_state_id = :reportStateId " +
+            "GROUP BY ri.category "+
+            "ORDER BY CASE ri.category " +
+            "WHEN 'SEISMIC_ACTIVITY' THEN 1 " +
+            "WHEN 'METEOROLOGICAL_CONDITIONS' THEN 2 " +
+            "WHEN 'PUBLIC_CONDITIONS' THEN 3 " +
+            "WHEN 'ROAD_CONDITIONS' THEN 4 " +
+            "WHEN 'MILITARY_CONDITIONS' THEN 5 " +
+            "WHEN 'SPACE_PHENOMENON' THEN 6 " +
+            "END", nativeQuery = true)
+    List<Integer> countReportsByCategoryAndState(Integer reportStateId);
 }

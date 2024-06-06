@@ -78,7 +78,3 @@ export const addNewDispatcherRequest = (requestBody) => {
   return axiosInstanceWithCredentials.post("/internal/admin/dispatchers/registration",requestBody);
 };
 
-//TODO: DELETE unnecessary request and refactor cms home page accordingly
-export const testRequest = () => {
-  return axiosInstanceWithCredentials.get("/internal/dispatcher");
-};
