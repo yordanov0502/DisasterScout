@@ -57,6 +57,8 @@
     width: 35%;
     height: 57%;
 
+    margin-top: 2.5%;
+
 
     &__title{
       font-size: 28px;
@@ -75,10 +77,12 @@
 
     @media (max-width: 1320px) { 
       width: 50%;
+      margin-top: -5%;
     }
 
     @media (pointer: coarse) {
       width: 100%;     
+      margin-top: -17%;
     }
 
     

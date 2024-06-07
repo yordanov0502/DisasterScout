@@ -55,14 +55,14 @@ export class PieChart extends Component {
 
     render() {
       return (
-           <div className="pie-chart" id="pie-chart" style={{ height: '100%', width: '100%' }} >
+          //  <div className="pie-chart" id="pie-chart" style={{ height: '100%', width: '100%' }} > //? commented to avoid broken layout on mobile devices
             <ReactApexChart 
             options={this.state.options} 
             series={this.state.series} 
             type="pie" 
             width="100%" 
             height="100%" />
-           </div>
+          //  </div>
       );
     }
   }
