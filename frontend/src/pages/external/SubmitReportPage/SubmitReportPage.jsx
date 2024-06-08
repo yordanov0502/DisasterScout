@@ -132,11 +132,11 @@ export const SubmitReportPage = () => {
     },
     onSuccess: () => {
       clearReportForm();
-      showSnackbar("Сигналът беше изпратен успешно.","success","bottom","right");
+      showSnackbar("Сигналът беше изпратен успешно.","success","top","center");
     },
     onError: async () => {
 
-      showSnackbar("Възникна грешка. Моля опитайте отново.","error","bottom","right");
+      showSnackbar("Възникна грешка. Моля опитайте отново.","error","top","center");
     
       if(imageUrl !== null) 
       {
@@ -211,7 +211,7 @@ export const SubmitReportPage = () => {
           catch (error) 
           {
             setIsRequestSent(false); //!! set to false if we don't reach the mutation because of image upload error
-            showSnackbar("Възникна грешка. Моля опитайте отново. ⓘ", "error","bottom","right");
+            showSnackbar("Възникна грешка. Моля опитайте отново. ⓘ", "error","top","center");
           }
         }
       }
@@ -310,6 +310,7 @@ export const SubmitReportPage = () => {
           vertical: position.vertical,
           horizontal: position.horizontal,
         }} 
+        sx={{position: 'fixed', top: '100px !important'}}
         open={open} 
         autoHideDuration={4000} 
         onClose={handleCloseSnackBar}>

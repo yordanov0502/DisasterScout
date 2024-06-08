@@ -15,7 +15,7 @@
 import './footer.scss'; 
 
 
-export const Footer = ({isOpen, toggleSidebar}) => {
+export const Footer = () => {
 
   //   const location = useLocation();
   //   const [activeButton, setActiveButton] = useState(null);

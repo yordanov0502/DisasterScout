@@ -1,115 +1,143 @@
-// import { useEffect, useState } from "react";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
-// import MenuIcon from '@mui/icons-material/Menu';
-// import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-// import DashboardIcon from '@mui/icons-material/Dashboard';
-// import DescriptionIcon from '@mui/icons-material/Description';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
-// import RestoreIcon from '@mui/icons-material/Restore';
-// import PersonIcon from '@mui/icons-material/Person';
-// import SettingsIcon from '@mui/icons-material/Settings';
-// import GroupsIcon from '@mui/icons-material/Groups';
-// import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-// import LogoutIcon from '@mui/icons-material/Logout';
-// import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
-import './navbar.scss'; 
+import { useState } from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
+import { Button } from "@mui/material";
+import MenuIcon from '@mui/icons-material/Menu';
+import CloseIcon from '@mui/icons-material/Close';
+import './navbar.css';
 
+export const Navbar = () => {
+  const location = useLocation();
+  const navigate = useNavigate();
+  const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
-export const Navbar = ({isOpen, toggleSidebar}) => {
+  const toggleSidebar = () => {
+    setIsSidebarOpen(!isSidebarOpen);
+  };
 
-  //   const location = useLocation();
-  //   const [activeButton, setActiveButton] = useState(null);
-  //   const navigate = useNavigate();
-    
-  // const handleButtonClick = (buttonId) => {
-  //   setActiveButton(buttonId);
-  // };
-
-  
-
-
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsSidebarOpen(false);
+  };
 
   return (
-      <div className="navbar">
-        <div className="logo-navbar">
-          {/* <i className="icon-navbar"/> */}
-          {/* <i id="navbar_burger" onClick={toggleSidebar}>{isOpen ? <MenuOpenIcon fontSize="large"/> : <MenuIcon fontSize="large"/>}</i> */}
-        </div>
-        <ul className="navbar-list">
-          
-          
-        {/* <li className={activeButton === 'cms-dashboard' ? 'active' : ''} onClick={() => handleButtonClick('cms-dashboard')}>
-          <Link to={"/cms-dashboard"}>
-            <i><DashboardIcon/></i>
-            <span className="links_name">Табло</span>
-            <span className="tooltip">Табло</span>
-          </Link>
-        </li>
-        <li className={activeButton === 'cms-reports' ? 'active' : ''} onClick={() => handleButtonClick('cms-reports')}>
-          <a>
-            <i><DescriptionIcon/></i>
-            <span className="links_name">Доклади</span>
-            <span className="tooltip">Доклади</span>
-          </a>
-        </li>
-        <li className={activeButton === 'cms-zones' ? 'active' : ''} onClick={() => handleButtonClick('cms-zones')}>
-          <a>
-            <i><LocationOnIcon/></i>
-            <span className="links_name">Области</span>
-            <span className="tooltip">Области</span>
-          </a>
-        </li>
-        <li className={activeButton === 'cms-chronology' ? 'active' : ''} onClick={() => handleButtonClick('cms-chronology')}>
-          <a>
-            <i><RestoreIcon/></i>
-            <span className="links_name">Хронология</span>
-            <span className="tooltip">Хронология</span>
-          </a>
-        </li>
-        <li className={activeButton === 'cms-account' ? 'active' : ''} onClick={() => handleButtonClick('cms-account')}>
-        <Link to={"/cms-account"}>
-            <i><PersonIcon/></i>
-            <span className="links_name">Акаунт</span>
-            <span className="tooltip">Акаунт</span>
-        </Link>
-        </li>
-        <li className={activeButton === 'cms-settings' ? 'active' : ''} onClick={() => handleButtonClick('cms-settings')}>
-        <Link to={"/cms-settings"}>
-            <i><SettingsIcon/></i>
-            <span className="links_name">Настройки</span>
-            <span className="tooltip">Настройки</span>
-        </Link>
-        </li>
-
-{ authenticatedUser.role === "ADMIN" && (
-  <>
-        <li className={activeButton === 'cms-dispatchers' ? 'active' : ''} onClick={() => handleButtonClick('cms-dispatchers')}>
-          <Link to={"/cms-dispatchers"}>
-            <i className="dispatcherss"><GroupsIcon/></i>
-            <span className="links_name" id="dispatcherss-link_name">Диспечери</span>
-            <span className="tooltip" id="dispatcherss-tooltip">Диспечери</span>
-          </Link>
-        </li>
-        <li className={activeButton === 'cms-logger' ? 'active' : ''} onClick={() => handleButtonClick('cms-logger')}>
-        <Link to={"/cms-logger"}>
-            <i className="loggerr"><AutoStoriesIcon/></i>
-            <span className="links_name" id="loggerr-link_name">Логър</span>
-            <span className="tooltip" id="loggerr-tooltip">Логър</span>
-        </Link>
-        </li>
-  </>
-)
-}
-        <li onClick={onPressLogout}>
-          <a>
-            <i className="logout"><LogoutIcon/></i>
-            <span className="links_name" id="logout-link_name">Изход</span>
-            <span className="tooltip" id="logout-tooltip">Изход</span>
-          </a>
-        </li> */}
-
-       
-        </ul>
+    <div className="navbar">
+      
+      <div className="navbar-burger-button" onClick={toggleSidebar}>
+        {isSidebarOpen ? <CloseIcon fontSize="large" /> : <MenuIcon fontSize="large" />}
       </div>
+
+      {isSidebarOpen && <div className="navbar-close-button" onClick={toggleSidebar}><CloseIcon fontSize="large" /></div>}
+
+      <ul className={`navbar-list ${isSidebarOpen ? 'open' : ''}`}>
+
+
+        <li>
+          <Button variant="contained" 
+            id="nav-button-submit-report"
+            sx={{
+              width: '130px',
+              top: "-14px",
+              height: "55px",
+              backgroundColor: location.pathname.includes("/submit-report") ? '#E50000' : '#009F58',
+              boxShadow: 'none',
+              fontSize: '17px',
+              '&:hover': {
+                  backgroundColor: location.pathname.includes("/submit-report") ? 'rgb(180, 0, 0)' : '#02b062',
+                  boxShadow: 'none',
+                },
+                '&:active': {
+                  boxShadow: 'none',
+                },
+              }}
+              onClick={() => handleNavigation("/submit-report")}
+            >
+              Докладвай
+          </Button>
+        </li>
+
+
+        <li>
+          <Button variant="contained" 
+            id="nav-button-search-reports"
+            sx={{
+              width: '130px',
+              top: "-14px",
+              height: "55px",
+              backgroundColor: location.pathname.includes("/search-reports") ? '#E50000' : '#009F58',
+              boxShadow: 'none',
+              fontSize: '17px',
+              '&:hover': {
+                  backgroundColor: location.pathname.includes("/search-reports") ? 'rgb(180, 0, 0)' : '#02b062',
+                  boxShadow: 'none',
+                },
+                '&:active': {
+                  boxShadow: 'none',
+                },
+              }}
+              onClick={() => handleNavigation("/search-reports")}
+            >
+              Търси
+          </Button>
+        </li>
+
+
+        <li>
+          {isSidebarOpen ? (<div className="logo-navbar2" onClick={() => handleNavigation("/")}></div>) 
+                         : (<div className="logo-navbar1" onClick={() => handleNavigation("/")}></div>)}
+        </li>
+
+
+        <li>
+          <Button variant="contained" 
+            id="nav-button-categories"
+            sx={{
+              width: '130px',
+              top: "-14px",
+              height: "55px",
+              backgroundColor: location.pathname.includes("/categories") ? '#E50000' : '#009F58',
+              boxShadow: 'none',
+              fontSize: '17px',
+              '&:hover': {
+                  backgroundColor: location.pathname.includes("/categories") ? 'rgb(180, 0, 0)' : '#02b062',
+                  boxShadow: 'none',
+                },
+                '&:active': {
+                  boxShadow: 'none',
+                },
+              }}
+              onClick={() => handleNavigation("/categories")}
+            >
+              Категории
+          </Button>
+        </li>
+
+
+        <li>
+          <Button variant="contained" 
+            id="nav-button-zones"
+            sx={{
+              width: '130px',
+              top: "-14px",
+              height: "55px",
+              backgroundColor: location.pathname.includes("/zones") ? '#E50000' : '#009F58',
+              boxShadow: 'none',
+              fontSize: '17px',
+              '&:hover': {
+                  backgroundColor: location.pathname.includes("/zones") ? 'rgb(180, 0, 0)' : '#02b062',
+                  boxShadow: 'none',
+                },
+                '&:active': {
+                  boxShadow: 'none',
+                },
+              }}
+              onClick={() => handleNavigation("/zones")}
+            >
+              Области
+          </Button>
+        </li>
+
+
+      </ul>
+    </div>
   );
 };

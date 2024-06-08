@@ -18,7 +18,7 @@ export const Layout2 = ({ children }) => {
       <div className="layout2">
         <Navbar isOpen={isOpen} toggleSidebar={toggleSidebar} />
         <div className="section2-mobile">{children}</div>
-        <Footer isOpen={isOpen} toggleSidebar={toggleSidebar} />
+        <Footer />
       </div>
     );
   }
@@ -27,7 +27,7 @@ export const Layout2 = ({ children }) => {
     <div className="layout2">
       <Navbar isOpen={isOpen} toggleSidebar={toggleSidebar} />
       <div className={"section2"}>{children}</div>
-      <Footer isOpen={isOpen} toggleSidebar={toggleSidebar} />
+      <Footer/>
     </div>
   );
 };

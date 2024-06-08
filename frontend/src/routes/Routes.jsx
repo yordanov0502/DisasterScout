@@ -12,6 +12,9 @@ import { NotFoundPage } from "../pages/external/NotFoundPage";
 import { CmsLoggerPage } from "../pages/internal/CmsLoggerPage";
 import { CmsDispatchersPage } from "../pages/internal/CmsDispatchersPage";
 import { SubmitReportPage } from "../pages/external/SubmitReportPage";
+import { SearchReportsPage } from "../pages/external/SearchReportsPage";
+import { CategoriesPage } from "../pages/external/CategoriesPage";
+import { ZonesPage } from "../pages/external/ZonesPage";
 import { CmsNewDispatcherPage } from "../pages/internal/CmsNewDispatcherPage";
 import { CmsReportsPage } from "../pages/internal/CmsReportsPage";
 import { CmsReportPage } from "../pages/internal/CmsReportPage";
@@ -86,6 +89,21 @@ export const Router = () => {
       <Route path="/submit-report" element={
       <PublicRoute>
       <SubmitReportPage />
+      </PublicRoute>
+      }/>
+      <Route path="/search-reports" element={
+      <PublicRoute>
+      <SearchReportsPage />
+      </PublicRoute>
+      }/>
+      <Route path="/categories" element={
+      <PublicRoute>
+      <CategoriesPage />
+      </PublicRoute>
+      }/>
+      <Route path="/zones" element={
+      <PublicRoute>
+      <ZonesPage />
       </PublicRoute>
       }/>
 

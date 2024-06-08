@@ -1,0 +1,96 @@
+.navbar * {
+  padding: 0; /*The styling is applied to all elements inside the .navbar class*/
+}
+
+.navbar {
+  display: flex;
+  box-sizing: border-box;
+  position: fixed;
+  left: 0;
+  top: 0;
+  height: 70px;
+  width: 100%;
+  background: #009F58;
+  padding: 6px 14px;
+  transition: all 0.5s ease;
+  z-index: 3;
+  justify-content: center;
+}
+
+
+.logo-navbar1 {
+  position: relative;
+  top: -20px; /*icon vertical position in the sidebar*/
+  background-image: url(/src/assets/images/sidebarLogo.svg);
+  background-size: cover;
+  background-position: center;
+  height: 67px;
+  width: 67px;
+  margin-left: 15px;
+  margin-right: 36px;
+  cursor: pointer;
+}
+
+.logo-navbar2 {
+  position: relative;
+  top: -20px; /*icon vertical position in the sidebar*/
+  background-image: url(/src/assets/images/sidebarLogo.svg);
+  background-size: cover;
+  background-position: center;
+  height: 67px;
+  width: 67px;
+  margin-top: 13px;
+  cursor: pointer;
+}
+
+.navbar-list {
+  list-style-type: none; /* Remove default list item marker */
+  display: flex;
+  justify-content: center;
+}
+
+.navbar-burger-button {
+  display: none;
+  cursor: pointer;
+  color: #fff;
+}
+
+.navbar-close-button {
+  position: absolute;
+  top: 20px;
+  right: 10px;
+  display: block;
+  cursor: pointer;
+  z-index: 3;
+  color: #fff;
+}
+
+.navbar-list.open {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: #009F58;
+  justify-content: center;
+}
+
+
+
+@media (max-width: 636px) {
+  .navbar-list {
+    display: none;
+  }
+  .navbar-burger-button {
+    display: block;
+    position: absolute;
+    right: 10px;
+    top: 20px;
+  }
+  .navbar-close-button {
+    display: block;
+  }
+}
