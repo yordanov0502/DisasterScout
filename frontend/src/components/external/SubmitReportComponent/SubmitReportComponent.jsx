@@ -1,13 +1,13 @@
-import { Autocomplete, Box, Button, TextField, styled } from "@mui/material";
-import { getAllAreasOfZoneForSubmitReport, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import { useEffect } from "react";
-import { getAllSeverities } from "../../../services/severityService";
-import { getAllIssues, getExpectedDurationHours } from "../../../services/reportService";
-import { CloudUpload } from "@mui/icons-material";
+import { Autocomplete, Box, Button, IconButton, InputAdornment, TextField, styled } from "@mui/material";
+import { CloudUpload, } from "@mui/icons-material";
 import PlaceIcon from '@mui/icons-material/Place';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import SendIcon from '@mui/icons-material/Send';
 import BlockIcon from '@mui/icons-material/Block';
+import { getAllAreasOfZoneForSubmitReport, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
+import { getAllSeverities } from "../../../services/severityService";
+import { getAllIssues, getExpectedDurationHours } from "../../../services/reportService";
 import "./submit_report_component.scss";
 
 //? Global variable to act as storage for already loaded local images (zone badges)
@@ -335,25 +335,51 @@ export const SubmitReportComponent = ({ reportForm,
 
                 
       <div className="submit_report_component__container2__box3"> 
-      <TextField
-          sx={{backgroundColor: 'white',
-          '& .MuiInputLabel-root': {
-            fontSize: '14.5px',
-            top: '3px'
-          },
+
+        <TextField
+          sx={{
+            backgroundColor: 'white',
+            '& .MuiInputLabel-root': {
+              fontSize: '14.5px',
+              top: '3px'
+            }
           }}
           autoComplete="off"
           id="location-submit-report"
           label="Линк локация / координати"
-          name="locationUrl" //! MUST MATCH WITH THE RELATED KEY FROM ReportForm
+          name="locationUrl" // MUST MATCH WITH THE RELATED KEY FROM ReportForm
           required
           fullWidth
           color="success"
           margin="dense"
           error={errorForm.locationUrl}
           value={reportForm.locationUrl}
-          onChange={(e) => handleInput(e.target.name, e.target.value)} 
-        />
+          onChange={(e) => handleInput(e.target.name, e.target.value)}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+            <IconButton
+              disableRipple={true}
+              type="button"
+              sx={{ 
+                p: '16px',
+                left: '14px',
+                backgroundColor: 'white !important',
+                borderRadius: '0 4px 4px 0', 
+                backgroundImage: 'url(/src/assets/images/mapButton.jpg)',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+              }}
+              aria-label="open-google-maps"
+              onClick={() => window.open('https://www.google.com/maps', '_blank')}
+            >
+              <PlaceIcon sx={{color: 'white', opacity: 0}} />
+            </IconButton>
+          </InputAdornment>
+            ),
+          }}
+            />
+
         <TextField
           sx={{backgroundColor: 'white', mb: 0.7}}
           autoComplete="off"
