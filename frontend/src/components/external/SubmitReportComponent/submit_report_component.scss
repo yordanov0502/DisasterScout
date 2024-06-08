@@ -2,30 +2,18 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-
-    //!!! HERE POSITION ABSOLUTE IS SPECIFIED FOR THE COMPONENT TO FILL THE WHOLE FREE SPACE OF THE PAGE.
-    //!!! THIS IS BECAUSE THE PARENT A.K.A PAGE DOES NOT HAVE VALUE FOR HEIGHT, BUT EVEN IT IT HAD AGAIN WOULD NOT HELP
-    //!!! BECAUSE THE HIERARCHY ABOVE IT ALSO DOES NOT SPECIFY HEIGHT AND SOMETHING IS BROKEN
-    //TODO: FIND A SOLUTION HOW TO DEAL WITH THE REST OF THE PAGES PRESENTED ON THE PUBLIC PART OF THE WEBSITE
-    //! position: absolute;
-    width: 100%;
+    width: 90%;
     height: 100%;
-
-    background-color: rgb(78, 83, 80);
-    box-shadow: 0px 3px 11px rgba(0, 0, 0, 0.2);
+    background-color: white;
 
     margin-bottom: 70px; //!!!!!!!!!!!!!!!!!!! DOESNT GO UPPER THAN THE NAVBAR BECAUSE THE position is NOT set to absolute(it is relative by default)
     
-     // flex-direction: column;
-   
     
-    // margin-top: -60px;
-  
-    @media (pointer: coarse) {
+    @media (pointer: coarse), (max-width: 1064px) {
       width: 100%;
       position: relative;
     }
-  
+
     &__loader-box {
       display: flex;
       position: relative;
@@ -41,125 +29,198 @@
       font-size: 24px;
       color: #006e3d;
       margin-bottom: 40px;
+      text-align: center;
+
+      @media (pointer: coarse) {
+        width: 90%;
+      }
     }
   
-    &__container1 {
+   
+    &__container1{
       display: flex;
       flex-direction: row;
       align-items: center;
-      width: 50%;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 100%;
+      height: 100%;  
+      background-color: white;
+      gap: 1%;
 
-      &__box1 {
-        position: relative;
-        top: 25px;
-        width: 35%;
-        // left: 0%;
+
+      &__image{
+          width: 17%;
+          height: 188px;  
+          background-color: white;
+          border-radius: 10px;
+          border: solid 3px #009F58;
+      
+          @media (pointer: coarse), (max-width: 1064px) {
+            width: 91.5%;
+          }
       }
 
-      &__box2 {
-        position: relative;
-        top: 19px;
-        width: 32%;
-        left: 3%;
-      }
-
-      &__box3 {
-        font-size: 10px !important;
-        position: relative;
-        top: 19px;  // Align with other boxes
-        width: 30.1%;
-        left: 6%;
-        height: auto; //? Do I need this ?
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        // top: 5%;
-        
-        //padding: 10px;  // Add padding to ensure child elements are inside the border
-        box-sizing: border-box;  // Include padding and border in the element's total width and height
-    
-        &__image, &__location {
-          display: flex;
-          align-items: center;
-          justify-content: flex-start;
-          flex-direction: column; 
-          height: 50%;
-          width: 100%;
-          
-        }
-      }
-    }
-
-    
-
-
-
-   
-
-    &__container2 {
-      margin-top: -0.4%;
+      &__wrapper1{
       display: flex;
       flex-direction: row;
-      align-items: flex-start;
-      width: 50%;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 2%;
+      margin-top: 22px;
+      margin-left: -1.8%;
+          
+              //top: 3px;
+              width: 45%;
 
-      &__box1 {
-        position: relative;
-        top: 25px;
-        width: 116%;
-        // left: 0%;
+              
+
+          &__box1{
+              position: relative;
+              top: 1px;
+              width: 45%;
+          }
+  
+          &__box2{
+              position: relative;
+              top: 0px;
+              width: 45%;
+          }
+
+          
+
+        @media (max-width: 1064px) {
+            width: 100%;
+              margin-left: 0%;
+              //margin-top: 0px;
+
+              &__box1{
+                  top: 20px;
+              }
+      
+              &__box2{
+                  top: 19px;
+              }
+        }
+
+        @media (pointer: coarse) {
+          width: 100%;
+          margin-left: 0%;
+          margin-top: 0px;
+
+          &__box1{
+              top: 20px;
+          }
+  
+          &__box2{
+              top: 19px;
+          }
+      }
+  
       }
 
-      &__box2 {
-        position: relative;
-        top: 24.5px;  // Align with other boxes
-        width: 50%;
-        left: 3.1%;
-        height: auto; //? Do I need this ?
-        display: flex;
-        flex-direction: column;
-        justify-content: flex-start;
-        // top: 5%;
-        
-        
-        //padding: 10px;  // Add padding to ensure child elements are inside the border
-       // box-sizing: border-box;  // Include padding and border in the element's total width and height
+  
+      @media (pointer: coarse), (max-width: 1064px) {
+        width: 95%;
+      }
+  }
+   
+  
+   
+  &__container2{
+    position: relative;
+    top: -18px;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    flex-wrap: wrap;
+    width: 100%;
+    height: 100%;  
+    background-color: white;
+    gap: 2.8%;
+    margin-bottom: -18px;
+
+    &__description{
+        width: 38.5%;
+        margin-left: 0.25%;
+       
     
-        
-      }
+        @media (pointer: coarse), (max-width: 1064px) {
+          width: 93%;
+          margin-left: 0%;
+        }
     }
 
+    &__box3{
+        position: relative;
+        top: 0px;
+        width: 20.3%;
+        left: -1.9%;
+
+        @media (pointer: coarse), (max-width: 1064px) {
+            width: 93%;
+           // margin-left: 0%;
+           left: 0%;
+          }
+    }
+
+
+      @media (max-width: 1064px) {
+        width: 95%;
+        top: -5px;
+        margin-bottom: 38px;
+      }
+
+      @media (pointer: coarse) {
+        width: 95%;
+        top: 10px;
+        margin-bottom: 38px;
+      }
+    
+    }
     
 
-   
-
-   
   
     &__error-message {
       position: relative;
       text-align: center;
       color: red;
-      top: 30px;
-      width: 50%;
-      left: 0.7%;
+      width: 100%;
       height: 43px;
       white-space: normal;
       word-wrap: break-word; /* Ensures words will break to the next line */
       overflow-wrap: break-word; /* Ensures words will break to the next line */
-      
+      margin-bottom: -25px;
+      left: -5px;
+
+      @media (pointer: coarse), (max-width: 1064px) {
+        width: 90%;
+        margin-bottom: 4px;
+        left: 0%;
+      }
     }
   
     &__buttons-container {
+      position: relative;
+      top: 7px;
       display: flex;
+      flex-direction: row;
       align-items: center;
       justify-content: center;
-      position: relative;
-      margin-top: 30px;
+      flex-wrap: wrap;
       width: 100%;
-      height: 7%;
-      background-color: rgb(245, 2, 2);
-    }
+      height: 100%;  
+      // background-color: rgb(44, 65, 102);
+      //gap: 5%;
 
+      @media (pointer: coarse), (max-width: 1064px) {
+        width: 90%;
+        //top: 30px;
+        //gap:4%
+      }
+  }
 
 
 }

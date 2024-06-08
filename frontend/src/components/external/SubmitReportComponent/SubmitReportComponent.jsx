@@ -64,18 +64,50 @@ export const SubmitReportComponent = ({ reportForm,
 
   return (
     //! noValidate removes default HTML5 validation for empty fields
-    <form noValidate className="submit_report_component" onSubmit={onPressSubmit}>
+  <form noValidate className="submit_report_component" onSubmit={onPressSubmit}>
 
-      <div className="submit_report_component__title">Докладвай природно бедствие / авария</div>
+    <div className="submit_report_component__title">Докладвай природно бедствие / авария</div>
 
-      <div className="submit_report_component__container1">
-      <div className="submit_report_component__container1__box1">
-
-      <Autocomplete
+    <div className="submit_report_component__container1">
+    
+        <div className="submit_report_component__container1__image">
+            <Button sx={{height: '188px', 
+                    //mb: 2.02,
+                    backgroundImage: imageChosenSuccessfully === false ? 'none' : 'url(/src/assets/images/imageButton.jpg)',
+                    backgroundColor: imageChosenSuccessfully === false ? 'red !important' : 'transparent',
+                    backgroundSize: 'cover',
+                    backgroundPosition: 'center'
+                  }}
+                  fullWidth
+                  component="label"
+                  //role={undefined}
+                  variant="contained"
+                  tabIndex={-1}
+                  //? when image is added successfully replace icon with this: DoneOutlineIcon
+                  //? chnage text to добавено изображение
+                  startIcon={ imageChosenSuccessfully === true ? <DoneOutlineIcon />  : 
+                            (imageChosenSuccessfully === false ? <BlockIcon /> : <CloudUpload /> ) }
+            >
+                  {imageChosenSuccessfully === true || imageChosenSuccessfully === false ? "" : "Добави изображение"}
+                  <VisuallyHiddenInput 
+                  id="vhi-submit-report" 
+                  type="file"
+                  onChange={(e) => setImageForUpload(e.target.files[0])}
+                  multiple={false} //? No multiple file selection allowed
+                  />
+            </Button>
+        </div>
+    
+      <div className="submit_report_component__container1__wrapper1">
+    
+        <div className="report_component_fresh__container1__wrapper1__box1">
+    
+    
+        <Autocomplete
           key={comboBoxKeys.key1} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
           id="combo-box-issues-submit-report"
           sx={{
-            pb: 2,
+            pb: 1.5,
             "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
             {backgroundColor: "#b5ffcc !important"}
            }}
@@ -109,7 +141,7 @@ export const SubmitReportComponent = ({ reportForm,
         <Autocomplete
           key={comboBoxKeys.key2} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
           id="combo-box-severities-submit-report"
-          sx={{pb: 2}} 
+          sx={{pb: 1.5}} 
           options={getAllSeverities()}
           disablePortal
         //! Uncomment when ready and test on mobile phone   fullWidth 
@@ -144,7 +176,7 @@ export const SubmitReportComponent = ({ reportForm,
           key={comboBoxKeys.key3} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
           id="combo-box-duration-submit-report"
           sx={{
-            pb: 2,
+            pb: 3,
             "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
             {backgroundColor: "#b5ffcc !important"}
            }}
@@ -168,141 +200,141 @@ export const SubmitReportComponent = ({ reportForm,
             {...params} 
             label="Времетраене" />}
         />
-      </div>
 
-      <div className="submit_report_component__container1__box2">
-           <Autocomplete
-          key={comboBoxKeys.key4} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
-          id="combo-box-zones-submit-report"
-          sx={{
-            pb: 2,
-            "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
-            {backgroundColor: "#b5ffcc !important"}
-           }}
-          options={getAllZones()}
-          disablePortal
+        
+       
+     
+        </div>
+    
+        <div className="report_component_fresh__container1__wrapper1__box2">
+    
+     
+          <Autocomplete
+            key={comboBoxKeys.key4} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
+            id="combo-box-zones-submit-report"
+            sx={{
+              pb: 1.5,
+              "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
+              {backgroundColor: "#b5ffcc !important"}
+            }}
+            options={getAllZones()}
+            disablePortal
+            //! Uncomment when ready and test on mobile phone   fullWidth 
+            noOptionsText={"Няма такава опция"}
+            getOptionLabel={(option) => option.label}
+            isOptionEqualToValue={(option, selectedOption) => option.zoneId === selectedOption.zoneId}
+            onChange={(event, selectedOption) => 
+              {
+                handleInput('zone', selectedOption ? selectedOption.zoneId : "");
+              }}
+          renderOption={(props, option) => (
+              <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
+                <img
+                  loading="eager"
+                  width="30"
+                  src={loadedImages[option.zoneId].src} //? Use already loaded image
+                  alt=""
+                />
+                {option.label}
+              </Box>
+            )}
+            renderInput={
+              (params) => 
+              <TextField
+              sx={{backgroundColor: 'white'}}
+              required
+              color="success"
+              error={errorForm.zone}
+              {...params} 
+              label="Област" />}
+          />
+          <Autocomplete
+            key={comboBoxKeys.key5} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
+            id="combo-box-areas-submit-report"
+            sx={{
+              pb:0.5,
+              "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
+              {backgroundColor: "#b5ffcc !important"}
+            }}
+            options={getAllAreasOfZoneForSubmitReport(reportForm.zone)}
+            disablePortal
+            disableClearable={true}
           //! Uncomment when ready and test on mobile phone   fullWidth 
-          noOptionsText={"Няма такава опция"}
-          getOptionLabel={(option) => option.label}
-          isOptionEqualToValue={(option, selectedOption) => option.zoneId === selectedOption.zoneId}
-          onChange={(event, selectedOption) => 
-            {
-              handleInput('zone', selectedOption ? selectedOption.zoneId : "");
-            }}
-        renderOption={(props, option) => (
-            <Box component="li" sx={{ '& > img': { mr: 2, flexShrink: 0 } }} {...props}>
-              <img
-                loading="eager"
-                width="30"
-                src={loadedImages[option.zoneId].src} //? Use already loaded image
-                alt=""
-              />
-              {option.label}
-            </Box>
-          )}
-          renderInput={
-            (params) => 
-            <TextField
-            sx={{backgroundColor: 'white'}}
-            required
+            noOptionsText={"Моля изберете област"}
+            getOptionLabel={(option) => option}
+            isOptionEqualToValue={(option, selectedOption) => option === selectedOption}
+            value={reportForm.area}
+            onChange={(event, selectedOption) => 
+              {
+                handleInput('area', selectedOption ? selectedOption : "");
+              }}
+            renderInput={
+              (params) => 
+              <TextField
+              sx={{backgroundColor: 'white'}}
+              required
+              color="success"
+              error={errorForm.area}
+              {...params} 
+              label="Район" />}
+          />
+          <TextField
+            sx={{backgroundColor: 'white', mb: 2.75}}
+            autoComplete="off"
+            id="address-submit-report"
+            label="Адрес"
+            name="address" //! MUST MATCH WITH THE RELATED KEY FROM ReportForm
+            fullWidth
             color="success"
-            error={errorForm.zone}
-            {...params} 
-            label="Област" />}
-        />
-        <Autocomplete
-          key={comboBoxKeys.key5} //? When the key changes the comboBox selection is cleared. It does change on successful mutation from the SubmitReportPage
-          id="combo-box-areas-submit-report"
-         sx={{
-          pb:1,
-          "& + .MuiAutocomplete-popper .MuiAutocomplete-option[aria-selected ='true']":
-          {backgroundColor: "#b5ffcc !important"}
-         }}
-          options={getAllAreasOfZoneForSubmitReport(reportForm.zone)}
-          disablePortal
-          disableClearable={true}
-        //! Uncomment when ready and test on mobile phone   fullWidth 
-          noOptionsText={"Моля изберете област"}
-          getOptionLabel={(option) => option}
-          isOptionEqualToValue={(option, selectedOption) => option === selectedOption}
-          value={reportForm.area}
-          onChange={(event, selectedOption) => 
-            {
-              handleInput('area', selectedOption ? selectedOption : "");
-            }}
-          renderInput={
-            (params) => 
-            <TextField
-            sx={{backgroundColor: 'white'}}
-            required
-            color="success"
-            error={errorForm.area}
-            {...params} 
-            label="Район" />}
-        />
-         <TextField
+            margin="dense"
+            error={errorForm.address}
+            value={reportForm.address}
+            onChange={(e) => handleInput(e.target.name, e.target.value)} 
+          />
+            
+       </div>
+    
+    
+      </div>
+        
+        
+    
+    </div>
+
+
+
+
+
+
+
+
+
+
+
+    <div className="submit_report_component__container2">
+    
+      <div className="submit_report_component__container2__description">
+      <TextField
+          //? This text field has "A form field should have an id or name attribute" in the console
           sx={{backgroundColor: 'white'}}
           autoComplete="off"
-          id="address-submit-report"
-          label="Адрес"
-          name="address" //! MUST MATCH WITH THE RELATED KEY FROM ReportForm
+          id="description-submit-report"
+          label="Описание"
+          multiline
+          rows={10}
+          name="description" //! MUST MATCH WITH THE RELATED KEY FROM ReportForm
+          required
           fullWidth
           color="success"
           margin="dense"
-          error={errorForm.address}
-          value={reportForm.address}
+          error={errorForm.description}
+          value={reportForm.description}
           onChange={(e) => handleInput(e.target.name, e.target.value)} 
         />
-       
-    
       </div>
-  
-   <div className="submit_report_component__container1__box3">
-     <div className="submit_report_component__container1__box3__image">
-     <Button sx={{height: '56px', 
-                  mb: 2.02,
-                  backgroundImage: imageChosenSuccessfully === false ? 'none' : 'url(/src/assets/images/imageButton.jpg)',
-                  backgroundColor: imageChosenSuccessfully === false ? 'red !important' : 'transparent',
-                  backgroundSize: 'cover',
-                  backgroundPosition: 'center'
-                }}
-        fullWidth
-        component="label"
-        //role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        //? when image is added successfully replace icon with this: DoneOutlineIcon
-        //? chnage text to добавено изображение
-        startIcon={ imageChosenSuccessfully === true ? <DoneOutlineIcon />  : 
-                   (imageChosenSuccessfully === false ? <BlockIcon /> : <CloudUpload /> ) }
-     >
-        {imageChosenSuccessfully === true || imageChosenSuccessfully === false ? "" : "Добави изображение"}
-        <VisuallyHiddenInput 
-         id="vhi-submit-report" 
-         type="file"
-         onChange={(e) => setImageForUpload(e.target.files[0])}
-         multiple={false} //? No multiple file selection allowed
-         />
-      </Button>
-     </div>
-     <div className="submit_report_component__container1__box3__location">
-     <Button 
-        sx={{height: '55.5px', 
-             mb: 1.02,
-             backgroundImage: 'url(/src/assets/images/mapButton.jpg)',
-             backgroundSize: 'cover',
-             backgroundPosition: 'center'
-             }}
-        fullWidth
-        //component="label"
-        //role={undefined}
-        variant="contained"
-        tabIndex={-1}
-        startIcon={<PlaceIcon />}
-        onClick={() => window.open('https://www.google.com/maps', '_blank')}
-     >
-        Google Maps
-      </Button>
+
+                
+      <div className="submit_report_component__container2__box3"> 
       <TextField
           sx={{backgroundColor: 'white',
           '& .MuiInputLabel-root': {
@@ -322,46 +354,7 @@ export const SubmitReportComponent = ({ reportForm,
           value={reportForm.locationUrl}
           onChange={(e) => handleInput(e.target.name, e.target.value)} 
         />
-     </div>
-   
-      </div>
-      
-   
-      </div>
-
-
-
-
-
-
-      <div className="submit_report_component__container2">
-
-      <div className="submit_report_component__container2__box1">
-
-      <TextField
-          //? This text field has "A form field should have an id or name attribute" in the console
-          sx={{backgroundColor: 'white'}}
-          autoComplete="off"
-          id="description-submit-report"
-          label="Описание"
-          multiline
-          rows={7}
-          name="description" //! MUST MATCH WITH THE RELATED KEY FROM ReportForm
-          required
-          fullWidth
-          color="success"
-          margin="dense"
-          error={errorForm.description}
-          value={reportForm.description}
-          onChange={(e) => handleInput(e.target.name, e.target.value)} 
-        />
-        
-      </div>
-
-      
-   <div className="submit_report_component__container2__box2">
-    
-     <TextField
+        <TextField
           sx={{backgroundColor: 'white', mb: 0.7}}
           autoComplete="off"
           id="firstname-submit-report"
@@ -405,18 +398,14 @@ export const SubmitReportComponent = ({ reportForm,
           value={reportForm.phoneNumber}
           onChange={(e) => handleInput(e.target.name, e.target.value)}
         />
-     
-    
-   
       </div>
+
+    </div>
+
+
+
+      {errorMessage && <div className="submit_report_component__error-message">{errorMessage}</div>}
       
-  
-      </div>
-
-
-
-
-      <div className="submit_report_component__error-message">{errorMessage}</div>
 
       <div className="submit_report_component__buttons-container">
       <Button 
