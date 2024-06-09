@@ -1,26 +1,124 @@
 .home_page {
-    min-height: 100vh;
-
-    margin-top: 5%;
-  
-    background-repeat: no-repeat;
-    // background-image: url(/src/assets/images/notFoundBg.jpg);
-     background-size: cover;
-     background-position: center;
-     display: flex;
-     justify-content: center;
-     align-items: center;
-     
-    &__container{
-        width: 60%;
-        //height: 60%;
-    }
-
-    @media (pointer: coarse) {
-        &__container{
-            width: 100%;
-           // height: 40%;
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
         }
     }
-  }
-  
+
+    @keyframes cursor {
+        50% { border-color: transparent; }
+    }
+
+    @keyframes typingDisaster {
+        from { width: 0; }
+        to { width: 7ch; } /* Adjust the length of the word "DISASTER" */
+    }
+
+    @keyframes typingScout {
+        from { width: 0; }
+        to { width: 5ch; } /* Adjust the length of the word "SCOUT" */
+    }
+
+    @font-face {
+        font-family: 'Bocures Regular';
+        src: url('/src/assets/fonts/Bocures.otf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    min-height: 100vh;
+    margin-top: 5%;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+
+    &__heading {
+        width: 100%;
+        text-align: center;
+        margin-bottom: 35px; /* Add some space between the heading and containers */
+        position: relative;
+        font-size: 72px;
+        font-family: 'Bocures Regular';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        &--disaster {
+            background: linear-gradient(180deg, #E50000 55%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #E50000; /* Fallback for older browsers */
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+            border-right: 5px solid;
+            white-space: nowrap;
+            overflow: hidden;
+            margin-right: 15px;
+            animation: typingDisaster 1.6s steps(7, end), cursor .5s step-end infinite alternate;
+
+            &.no-border {
+                border-right: none;
+            }
+        }
+
+        &--scout {
+            background: linear-gradient(180deg, #009F58 55%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #009F58; /* Fallback for older browsers */
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+            white-space: nowrap;
+            overflow: hidden;
+            border-right: 5px solid; /* Add right border */
+            visibility: hidden; /* Initially hidden */
+            animation: typingScout 1.6s steps(5, end) 2s forwards, cursor .5s step-end infinite alternate 4s;
+        }
+
+        @media(max-width: 784px) {
+            font-size: 56px;
+        }
+
+        @media (max-width: 616px){
+            font-size: 42px;
+        }
+
+        @media(pointer: coarse){
+            font-size: 34px;
+        }
+    }
+
+    &__sub-heading {
+        width: 80%;
+        text-align: center;
+        margin-bottom: 35px; /* Add some space between the heading and containers */
+        position: relative;
+        top: 35px;
+        font-size: 24px;
+        font-weight: bold;
+        font-style: italic;
+        color: #065531;
+        animation: fadeIn 2s ease-in-out; /* Apply fade-in animation */
+
+        @media(pointer: coarse), (max-width: 784px) {
+            font-size: 16px;
+            width: 100%;
+        }
+    }
+
+    &__container {
+        width: 65%;
+        animation: fadeIn 2s ease-in-out; /* Apply fade-in animation */
+
+        @media(pointer: coarse) {
+            width: 100%;
+        }
+    }
+}

@@ -1,193 +1,172 @@
-import { useEffect, useRef, useState} from 'react';
+import { useEffect, useRef, useState } from 'react';
+import { useQuery } from "@tanstack/react-query";
+import { useSnackbar } from "../../../hooks/useSnackbar";
+import { Alert, Snackbar } from "@mui/material";
+import { getAlertsOfAllZones } from "../../../services/zoneService";
 import './home_page.scss';
 import '/src/assets/scripts/bgMap/map.css';
-//import { useUserContext } from "../../../hooks/useUserContext";
 
-//! because of React.Strict mode a null message is printed for the map useRef because the strcit Mode logs 2 times, and the 1st time is too soon maybe
 export const HomePage = () => {
-  const mapContainerRef = useRef(null);
-  const mapInstance = useRef(null);
-  // const { authenticatedUser } = useUserContext();
-  // const [selectedZone, setSelectedZone] = useState("no-choice");
+    const mapContainerRef = useRef(null); 
+    const mapInstance = useRef(null); 
+    const [mapLoaded, setMapLoaded] = useState(false);
+    const [isQueryEnabled, setIsQueryEnabled] = useState(false);
+    const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
 
-  useEffect(() => {
+    const {
+        data,
+        status,
+        error,
+        refetch
+    } = useQuery({
+        queryKey: ["getAlertsOfAllZones"],
+        queryFn: () => getAlertsOfAllZones(), 
+        enabled: isQueryEnabled
+    });
 
-      // Capture the current value of mapContainerRef at the time of effect execution
-      const currentMapContainer = mapContainerRef.current;
+    useEffect(() => {
+        const currentMapContainer = mapContainerRef.current;
 
-    // Helper function to dynamically load scripts
-    const loadScript = (scriptPath) => {
-      return new Promise((resolve, reject) => {
-        if (document.querySelector(`script[src="${scriptPath}"]`)) {
-          resolve();
-          return;
+        const loadScript = (scriptPath) => {
+            return new Promise((resolve, reject) => {
+                if (document.querySelector(`script[src="${scriptPath}"]`)) {
+                    resolve();
+                    return;
+                }
+                const script = document.createElement('script');
+                script.src = scriptPath;
+                script.async = false;
+                script.defer = true;
+                script.onload = resolve;
+                script.onerror = reject;
+                document.head.appendChild(script);
+            });
+        };
+
+        const initMap = () => {
+            if (!mapInstance.current && window.FlaMap && mapContainerRef.current) {
+                mapInstance.current = new window.FlaMap(window.map_cfg);
+                mapInstance.current.draw(mapContainerRef.current.id);
+                setMapLoaded(true);
+
+                const event = 'click';
+                mapInstance.current.on(event, (event, elementId) => { 
+                    handleClick(event, elementId);
+                });
+            }
+        };
+
+        Promise.all([
+            loadScript('/src/assets/scripts/bgMap/raphael.min.js')
+        ]).then(() => {
+            return Promise.all([
+                loadScript('/src/assets/scripts/bgMap/settings.js'),
+                loadScript('/src/assets/scripts/bgMap/paths.js'),
+                loadScript('/src/assets/scripts/bgMap/map.js')
+            ]);
+        }).then(initMap)
+        .catch((error) => {
+            console.log('Error loading scripts:', error);
+        });
+
+        return () => {
+            if (currentMapContainer) {
+                currentMapContainer.innerHTML = '';
+            }
+            mapInstance.current = null;
+        };
+
+    }, []);
+
+    useEffect(() => {
+        if(mapLoaded) {
+            setIsQueryEnabled(true);
         }
-        const script = document.createElement('script');
-        script.src = scriptPath;
-        script.async = true;
-        script.onload = resolve;
-        script.onerror = reject;
-        document.head.appendChild(script);
-      });
-    };
+    }, [mapLoaded]);
 
-///////////////////////////////////////////////////////////////////////////////////////////////////////////
-    //  Function to initialize the map
-    // const initMap = () => {
-    //   if (window.FlaMap && mapContainerRef.current) {
-    //     mapInstance.current = new window.FlaMap(window.map_cfg);
-    //     // Use the drawOnDomReady method with a callback
-    //     mapInstance.current.drawOnDomReady(mapContainerRef.current.id, function() {
-    //       // After map is drawn, bind the hover events
-    //       // Object.keys(window.map_cfg.map_data).forEach(regionKey => {
-    //       //   const regionData = window.map_cfg.map_data[regionKey];
-    //       //   mapInstance.current.on('mouseover', regionKey, function() {
-    //       //     mapInstance.current.setFillColor(regionKey, regionData.color_map_over);
-    //       //   });
-    //       //   mapInstance.current.on('mouseout', regionKey, function() {
-    //       //     mapInstance.current.setFillColor(regionKey, regionData.color_map);
-    //       //   });
-    //       // });
+    useEffect(() => {
+        if (status === 'success') {
+            data.data.zoneSeveritiesDTOList.map((item) => {
+                const zoneColor = item.severityType !== null ? getZoneColor(item.severityType) : '#009F58';
+                mapInstance.current.setColor(item.zoneId, zoneColor);
+                const zoneColorOver = getZoneColorOver(zoneColor);
+                mapInstance.current.setColorOver(item.zoneId, zoneColorOver);
+            });
+        }
 
-          
-    //       console.log("BG map drawn");
-    //       console.log(mapInstance.current);
+        if(status === 'error') {
+            showSnackbar("Възникна грешка. Моля опитайте отново.","error","top","center");
+        }
 
-    //       // Assuming you have an ID for the element you want to change on hover
-    //       const elementId = 'st3'; // Replace with your actual element ID
+    }, [status, data, error]);
 
-    //     // Hover in function
-    //        const handleMouseOver = (e, id) => {
-    //        mapInstance.current.setFillColor(id, '#009F58'); // Replace with the color you want
-    //     };
-    
-    //     // Hover out function
-    //        const handleMouseOut = (e, id) => {
-    //        mapInstance.current.setFillColor(id, '#E50000'); // Replace with the original color
-    //     };
-    
-    //     // Bind the hover events
-    //        mapInstance.current.on('mouseover', elementId, handleMouseOver);
-    //        mapInstance.current.on('mouseout', elementId, handleMouseOut);
-
-
-    //     });
-    //   }
-    // };
-//////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////////    
-
-    
-
-  // Function to initialize the map
-  const initMap = () => {
-
-    if (!mapInstance.current && window.FlaMap && mapContainerRef.current) {
-      mapInstance.current = new window.FlaMap(window.map_cfg);
-      mapInstance.current.draw(mapContainerRef.current.id);
+    function getZoneColor(severityType) {
+        if (severityType === 'LOW') {return 'yellow';}
+        else if (severityType === 'MEDIUM') {return 'orange';}
+        else if (severityType === 'HIGH') {return '#E50000';}
+        else if (severityType === 'CRITICAL') {return '#303515';}
+        else {return '#009F58';}
     }
 
+    function getZoneColorOver(zoneColor) {
+        if (zoneColor === 'yellow') {return '#b1b100';}
+        else if (zoneColor === 'orange') {return '#c77700';}
+        else if (zoneColor === '#E50000') {return '#B40000';}
+        else if (zoneColor === '#303515') {return '#1E220E';}
+        else {return '#007742';}
+    }
 
-
-    //********************************************************************************************************************** */
-    console.log("bgMap:",mapInstance.current);
-    // mapInstance.current.setColor(authenticatedUser.availableZoneIds, 'blue');
-    // mapInstance.current.setColorOver(authenticatedUser.availableZoneIds, 'DarkBlue');
-    
-
-
-    
-    //! console.log(mapInstance.current.fetchStateAttr('st3', 'color_map')); fetch names but cannot fetch color
-
-          // Assuming you have an ID for the element you want to change on hover
-           //const elementId = 'st3'; // Replace with your actual element ID
-
-          // const event = 'mousedown';
-          // mapInstance.current.on(event, (event, elementId, map) => {
-          //   if(elementId === 'st3') {
-          //     handleClick(event, elementId);
-          //     //!setSelectedZone('st3');
-              
-          //   }
-          //   if(elementId === 'st4'){
-          //     handleClick(event, elementId);
-          //     //!setSelectedZone('st4');
-          //   }
-          // });
-
-          // const handleClick = (event, id) => {
-          //   //mapInstance.current.setColor(id, '#E50000'); // Set the color to red
-          //   mapInstance.current.setColorOver(id,'blue')
-          //   mapInstance.current.setColor(id,'blue')
-          // };
-          // ////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          // const event1 = 'mouseup';
-          // mapInstance.current.on(event1, (event1, elementId, map) => {
-          //   if(elementId === 'st3') {
-          //     handleOut(event1, elementId);
-          //   }
-          // });
-
-          // const handleOut = (e, id) => {
-          //  // mapInstance.current.setColorOver(id, '#366CA3'); // Set the color to red
-          // };
-          // /////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-          // const event2 = 'mouseout';
-          // mapInstance.current.on(event2, (event2, elementId, map) => {
-          //   if(elementId === 'st3') {
-          //     handleOutt(event2, elementId);
-          //   }
-          // });
-
-          // const handleOutt = (e, id) => {
-          //   mapInstance.current.setColorOver(id, '#366CA3'); // Set the color to red
-          // };
-         //********************************************************************************************************************** */
-
-          //???????????????????????????????????????????
-          //! Disable hover effect on mobile the color of each zone must be the same as the normal color
-          //! must be applied to all zones probably in a loop, but only for the open website, not the CMS
-          // const matchMedia = window.matchMedia('(pointer: coarse)');
-          // if(matchMedia.matches) {
-          //   mapInstance.current.setColorOver('st3','#7798bb')
-          // }
-          //????????????????????????????????????????????
-
-  };
-
-
-    // Load the necessary scripts and initialize the map
-    Promise.all([
-      loadScript('/src/assets/scripts/bgMap/raphael.min.js'),
-      loadScript('/src/assets/scripts/bgMap/settings.js'),
-      loadScript('/src/assets/scripts/bgMap/paths.js'),
-      loadScript('/src/assets/scripts/bgMap/map.js')
-    ]).then(initMap)
-      .catch(console.error) //? here in the catch I should return <PageLoader>, because if not the page will stay blank. If there is error with loading the scripts I must just reload the page where I will be using this
-      //!!!!!!!!!!!!!!!!!!!!!!this whole thing related to the map must be extracted to a separate jsx component!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-
- 
-    
-
-    // Clean up the map instance on component unmount
-    return () => {
-      if (currentMapContainer) {
-         // Remove the map container's content on cleanup
-      currentMapContainer.innerHTML = '';
-      }
-      mapInstance.current = null;
-
-      // if(mapInstance.current){
-      //   mapInstance.current.destroy();
-      // }
+    const handleClick = (event, id) => { 
+        console.log(id);
     };
 
-  }, []);
+    const handleCloseSnackBar = (event, reason) => {
+        if (reason === 'clickaway') {
+            return;
+        }
+        closeSnackbar();
+    };
 
-  return (
-    <div className="home_page">
-      <div className="home_page__container">
-      <div ref={mapContainerRef} id="map-container"></div>
-      </div>
-    </div>
-  );
+    useEffect(() => {
+        const scoutSpan = document.querySelector('.home_page__heading--scout');
+        const disasterSpan = document.querySelector('.home_page__heading--disaster');
+        
+        setTimeout(() => {
+            scoutSpan.style.visibility = 'visible';
+            disasterSpan.classList.add('no-border');
+        }, 2100); // increased by 100 to avoid flashing of word SCOUT when rendering the title everytime without the first render
+    }, []);
+
+    return (
+        <div className="home_page">
+
+            <div className="home_page__heading">
+                <span className="home_page__heading--disaster">DISASTER</span>
+                <span className="home_page__heading--scout">SCOUT</span>
+            </div>
+
+            <div className="home_page__sub-heading">
+                Първата в България общодостъпна платформа за докладване и следене на природни бедствия и аварии по всяко време във всяка една точка на страната.
+            </div>
+
+            <div className="home_page__container">
+                <div ref={mapContainerRef} id="map-container"></div>
+            </div>
+
+            <Snackbar 
+                anchorOrigin={{
+                    vertical: position.vertical,
+                    horizontal: position.horizontal,
+                }} 
+                sx={{position: 'fixed', top: '100px !important'}}
+                open={open} 
+                autoHideDuration={4000} 
+                onClose={handleCloseSnackBar}>
+                <Alert onClose={handleCloseSnackBar} severity={severity} variant="filled" sx={{ width: '100%' }}>
+                    {message}
+                </Alert>
+            </Snackbar>
+
+        </div>
+    );
 };

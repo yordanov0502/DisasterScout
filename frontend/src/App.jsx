@@ -29,7 +29,6 @@ function App() {
 
   if(!queryClientRef.current) //? QueryClient is ONLY created once, when it is null. After that no matter how many times the App component re-renders, the QueryClient will remain the same, since useRef persists its content across re-renders.
   { 
-    //console.log('queryClientInstance created');
     queryClientRef.current = new QueryClient({
       defaultOptions:{
         queries:{
@@ -57,17 +56,16 @@ function App() {
       })
     });
   }
-  //else { console.log('queryClientInstance ALREADY created');}
 
   return (
     <QueryClientProvider client={queryClientRef.current}>
      <Suspense fallback={<PageLoader />}>
        <Router />
-        <ReactQueryDevtools //!For development purposes ONLY
+        {/* <ReactQueryDevtools //!For development purposes ONLY
           initialIsOpen
           position="right"
           buttonPosition="bottom-right"
-        />
+        /> */}
      </Suspense>
     </QueryClientProvider>   
   );

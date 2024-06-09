@@ -63,11 +63,13 @@ public class ZoneCacheService {
     @Cacheable(value = "zones", key = "'allZones'", unless = "#result == null or #result.isEmpty()")
     public List<Zone> getAllZones(){return zoneRepository.findAll();}
 
+    //! This method should always be called along with 'evictCacheOfAllZones()' simultaneously
     @Caching(evict = {
             @CacheEvict(value = "zone", key = "#id", beforeInvocation = true)
     })
     public void evictZoneFromCache(String id){}
 
+    //! This method should always be called along with 'evictZoneFromCache(String id)' simultaneously
     @Caching(evict = {
             @CacheEvict(value = "zones", allEntries = true, beforeInvocation = true)
     })

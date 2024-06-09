@@ -5606,3 +5606,8 @@ export const getDescriptionOfAlert = (zoneID) => {
 
         return axiosInstanceWithCredentials.get(`/internal/dispatcher/zones/alert-description?zoneId=${zoneID}`);
 };
+
+export const getAlertsOfAllZones = () => {
+
+        return axiosInstanceWithCredentials.get("/external/reports/alerts-severities");
+};
