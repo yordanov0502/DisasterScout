@@ -55,8 +55,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: #E50000; /* Fallback for older browsers */
-            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+            color: #E50000; 
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); 
             border-right: 5px solid;
             white-space: nowrap;
             overflow: hidden;
@@ -73,8 +73,8 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
-            color: #009F58; /* Fallback for older browsers */
-            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); /* Add a shadow effect */
+            color: #009F58; 
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.2); 
             white-space: nowrap;
             overflow: hidden;
             border-right: 5px solid; /* Add right border */
@@ -173,11 +173,11 @@
 
         .MuiCard-root {
             .MuiTypography-root {
-                font-size: 12px; // Adjust this value to your preferred font size
+                font-size: 12px; 
             }
 
             .MuiTypography-h5 {
-                font-size: 16px; // Adjust this value to your preferred font size
+                font-size: 16px; 
             }
         }
     }
