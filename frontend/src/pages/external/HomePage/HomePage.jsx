@@ -177,7 +177,7 @@ export const HomePage = () => {
                             Диспечери
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary" component="div">
-                            Диспечерите на Disaster Scout обработват, следят и проверяват достоверността на всеки един подаден сигнал преди да бъде публикуван, както и след това докато е актуален.
+                            Диспечерите на Disaster Scout обработват, следят и проверяват достоверността на всеки един подаден сигнал преди да бъде публикуван, както и през цялото време докато е актуален.
                         </Typography>
                         </CardContent>
                     </Box>
@@ -235,7 +235,7 @@ export const HomePage = () => {
                     <CardMedia
                         component="img"
                         sx={{ width: 151 }}
-                        image="/src/assets/images/phone.svg"
+                        image="/src/assets/images/location.svg"
                         alt="image"
                     />
                     <Box sx={{ 
@@ -244,10 +244,10 @@ export const HomePage = () => {
                         }}>
                         <CardContent sx={{ flex: '1 0 auto', color: '#065531' }}>
                         <Typography component="div" variant="h5">
-                            Обратна връзка
+                            Точна локация
                         </Typography>
                         <Typography variant="subtitle1" color="text.secondary" component="div">
-                            При всеки един подаден сигнал от ваша страна за природно бедствие или авария, очаквайте позвъняване от диспечер за уточняване на подробностите.
+                            Освен област, район и адрес, всеки един сигнал за природно бедствие или авария съдържа и точни координати, показващи конкретното местоположение.
                         </Typography>
                         </CardContent>
                     </Box>
