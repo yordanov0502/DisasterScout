@@ -164,7 +164,7 @@ export const HomePage = () => {
                 <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
                     <CardMedia
                         component="img"
-                        sx={{ width: 151 }}
+                        sx={{ width: 151, objectFit: 'contain' }}
                         image="/src/assets/images/dispatcher.svg"
                         alt="image"
                     />
@@ -186,7 +186,7 @@ export const HomePage = () => {
                 <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58'/*, height: '157px'*/ }}>
                     <CardMedia
                         component="img"
-                        sx={{ width: 151 }}
+                        sx={{ width: 151, objectFit: 'contain' }}
                         image="/src/assets/images/phone.svg"
                         alt="image"
                     />
@@ -212,7 +212,7 @@ export const HomePage = () => {
                 <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
                     <CardMedia
                         component="img"
-                        sx={{ width: 151 }}
+                        sx={{ width: 151, objectFit: 'contain' }}
                         image="/src/assets/images/alert.svg"
                         alt="image"
                     />
@@ -234,7 +234,7 @@ export const HomePage = () => {
                 <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58'/*, height: '157px'*/ }}>
                     <CardMedia
                         component="img"
-                        sx={{ width: 151 }}
+                        sx={{ width: 151, objectFit: 'contain' }}
                         image="/src/assets/images/location.svg"
                         alt="image"
                     />

@@ -126,7 +126,7 @@
         width: 95%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: stretch;
         flex-direction: row;
         gap: 3%;
         margin-bottom: 5%;
@@ -134,14 +134,23 @@
 
         @media(pointer: coarse), (max-width: 1217px) {
             flex-direction: column;
+            align-items: center;
+            margin-bottom: 0%;
+
+            .MuiCard-root {
+                width: 100%;
+                margin-bottom: 5%;
+              }
         }
+
+        
     }
 
     &__cards2 {
         width: 95%;
         display: flex;
         justify-content: center;
-        align-items: center;
+        align-items: stretch; 
         flex-direction: row;
         gap: 3%;
         margin-bottom: 5%;
@@ -149,6 +158,28 @@
 
         @media(pointer: coarse), (max-width: 1217px) {
             flex-direction: column;
+            align-items: center;
+
+            .MuiCard-root {
+                width: 100%;
+                margin-bottom: 5%;
+            }
+        }
+
+    }
+
+    @media(pointer: coarse), (max-width: 669px) {
+        
+
+        .MuiCard-root {
+            .MuiTypography-root {
+                font-size: 12px; // Adjust this value to your preferred font size
+            }
+
+            .MuiTypography-h5 {
+                font-size: 16px; // Adjust this value to your preferred font size
+            }
         }
     }
+
 }
