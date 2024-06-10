@@ -2,6 +2,11 @@ import { useEffect, useRef, useState } from 'react';
 import { useQuery } from "@tanstack/react-query";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { Alert, Snackbar } from "@mui/material";
+import Box from '@mui/material/Box';
+import Card from '@mui/material/Card';
+import CardContent from '@mui/material/CardContent';
+import CardMedia from '@mui/material/CardMedia';
+import Typography from '@mui/material/Typography';
 import { getAlertsOfAllZones } from "../../../services/zoneService";
 import './home_page.scss';
 import '/src/assets/scripts/bgMap/map.css';
@@ -134,7 +139,7 @@ export const HomePage = () => {
         setTimeout(() => {
             scoutSpan.style.visibility = 'visible';
             disasterSpan.classList.add('no-border');
-        }, 2100); // increased by 100 to avoid flashing of word SCOUT when rendering the title everytime without the first render
+        }, 2200); // increased by 100 to avoid flashing of word SCOUT when rendering the title everytime without the first render
     }, []);
 
     return (
@@ -152,6 +157,111 @@ export const HomePage = () => {
             <div className="home_page__container">
                 <div ref={mapContainerRef} id="map-container"></div>
             </div>
+
+
+             <div className="home_page__cards1">
+
+                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
+                    <CardMedia
+                        component="img"
+                        sx={{ width: 151 }}
+                        image="/src/assets/images/dispatcher.svg"
+                        alt="image"
+                    />
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column'
+                        }}>
+                        <CardContent sx={{ flex: '1 0 auto', color: '#065531' }}>
+                        <Typography component="div" variant="h5">
+                            Диспечери
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                            Диспечерите на Disaster Scout обработват, следят и проверяват достоверността на всеки един подаден сигнал преди да бъде публикуван, както и след това докато е актуален.
+                        </Typography>
+                        </CardContent>
+                    </Box>
+                </Card>
+
+                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58'/*, height: '157px'*/ }}>
+                    <CardMedia
+                        component="img"
+                        sx={{ width: 151 }}
+                        image="/src/assets/images/phone.svg"
+                        alt="image"
+                    />
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column'
+                        }}>
+                        <CardContent sx={{ flex: '1 0 auto', color: '#065531' }}>
+                        <Typography component="div" variant="h5">
+                            Обратна връзка
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                            При всеки един подаден сигнал от ваша страна за природно бедствие или авария, очаквайте позвъняване от диспечер за уточняване на подробностите.
+                        </Typography>
+                        </CardContent>
+                    </Box>
+                </Card>
+
+             </div>
+
+             <div className="home_page__cards2">
+
+                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
+                    <CardMedia
+                        component="img"
+                        sx={{ width: 151 }}
+                        image="/src/assets/images/alert.svg"
+                        alt="image"
+                    />
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column'
+                        }}>
+                        <CardContent sx={{ flex: '1 0 auto', color: '#065531' }}>
+                        <Typography component="div" variant="h5">
+                            Областни предупреждения за опасности
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                           Disaster Scout ще добавя предупреждения и ще актуализира цветовете на конкретни области от българската карта, при наличие на потенциални опасности за живота и здравето на хората.
+                        </Typography>
+                        </CardContent>
+                    </Box>
+                </Card>
+
+                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58'/*, height: '157px'*/ }}>
+                    <CardMedia
+                        component="img"
+                        sx={{ width: 151 }}
+                        image="/src/assets/images/phone.svg"
+                        alt="image"
+                    />
+                    <Box sx={{ 
+                        display: 'flex', 
+                        flexDirection: 'column'
+                        }}>
+                        <CardContent sx={{ flex: '1 0 auto', color: '#065531' }}>
+                        <Typography component="div" variant="h5">
+                            Обратна връзка
+                        </Typography>
+                        <Typography variant="subtitle1" color="text.secondary" component="div">
+                            При всеки един подаден сигнал от ваша страна за природно бедствие или авария, очаквайте позвъняване от диспечер за уточняване на подробностите.
+                        </Typography>
+                        </CardContent>
+                    </Box>
+                </Card>
+
+             </div>
+
+
+            
+
+
+
+
+
 
             <Snackbar 
                 anchorOrigin={{
