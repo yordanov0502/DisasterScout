@@ -1,0 +1,34 @@
+.infinite-scroll {
+    width: 100%;
+    overflow: hidden;
+    white-space: nowrap;
+    display: flex;
+    align-items: center;
+    animation: scroll linear infinite;
+
+    &__content {
+        display: flex;
+        animation: scroll linear infinite;
+    }
+
+    &__image {
+        width: 90px; 
+        height: 110px;
+        margin: 10px;
+
+        @media(pointer: coarse), (max-width: 669px) {
+            width: 70px; 
+            height: 90px;
+            margin: 10px;
+        }
+    }
+
+    @keyframes scroll {
+        from {
+            transform: translateX(0);
+        }
+        to {
+            transform: translateX(-50%);
+        }
+    }
+}

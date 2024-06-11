@@ -7,9 +7,12 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { getAlertsOfAllZones } from "../../../services/zoneService";
+import { getAlertsOfAllZones, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
+import { InfiniteScroll } from "../../../components/external/InfiniteScroll";
 import './home_page.scss';
 import '/src/assets/scripts/bgMap/map.css';
+
+const loadedImages = [];
 
 export const HomePage = () => {
     const mapContainerRef = useRef(null); 
@@ -21,8 +24,7 @@ export const HomePage = () => {
     const {
         data,
         status,
-        error,
-        refetch
+        error
     } = useQuery({
         queryKey: ["getAlertsOfAllZones"],
         queryFn: () => getAlertsOfAllZones(), 
@@ -30,6 +32,17 @@ export const HomePage = () => {
     });
 
     useEffect(() => {
+        const zones = getAllZones();
+        zones.forEach((zone) => {
+            if(zone.zoneId !== "st22") //? "Софийска област" and "София-град" have duplicate badge images, so one of them should be discarded 
+            {
+                const img = new Image();
+                const url = getBadgeOfZone(zone.zoneId);
+                img.src = url;
+                loadedImages.push({ src: url, name: zone.zoneId });
+            }
+        });
+
         const currentMapContainer = mapContainerRef.current;
 
         const loadScript = (scriptPath) => {
@@ -139,7 +152,7 @@ export const HomePage = () => {
         setTimeout(() => {
             scoutSpan.style.visibility = 'visible';
             disasterSpan.classList.add('no-border');
-        }, 2200); // increased by 100 to avoid flashing of word SCOUT when rendering the title everytime without the first render
+        }, 2200);
     }, []);
 
     return (
@@ -158,9 +171,7 @@ export const HomePage = () => {
                 <div ref={mapContainerRef} id="map-container"></div>
             </div>
 
-
-             <div className="home_page__cards1">
-
+            <div className="home_page__cards1">
                 <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
                     <CardMedia
                         component="img"
@@ -183,7 +194,7 @@ export const HomePage = () => {
                     </Box>
                 </Card>
 
-                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58'/*, height: '157px'*/ }}>
+                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
                     <CardMedia
                         component="img"
                         sx={{ width: 151, objectFit: 'contain' }}
@@ -204,11 +215,9 @@ export const HomePage = () => {
                         </CardContent>
                     </Box>
                 </Card>
+            </div>
 
-             </div>
-
-             <div className="home_page__cards2">
-
+            <div className="home_page__cards2">
                 <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
                     <CardMedia
                         component="img"
@@ -231,7 +240,7 @@ export const HomePage = () => {
                     </Box>
                 </Card>
 
-                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58'/*, height: '157px'*/ }}>
+                <Card sx={{ display: 'flex',  boxShadow: 11, width: '50%', border: '2px solid #009F58' }}>
                     <CardMedia
                         component="img"
                         sx={{ width: 151, objectFit: 'contain' }}
@@ -252,16 +261,12 @@ export const HomePage = () => {
                         </CardContent>
                     </Box>
                 </Card>
+            </div>
 
-             </div>
-
-
-            
-
-
-
-
-
+            <div className="home_page__infinite-scroll">
+            <h3 className="home_page__infinite-scroll--subtitle">Областни гербове:</h3>
+                <InfiniteScroll images={loadedImages} speed={50000} />
+            </div>
 
             <Snackbar 
                 anchorOrigin={{
@@ -276,7 +281,6 @@ export const HomePage = () => {
                     {message}
                 </Alert>
             </Snackbar>
-
         </div>
     );
 };
