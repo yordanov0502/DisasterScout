@@ -12,13 +12,12 @@ import { InfiniteScroll } from "../../../components/external/InfiniteScroll";
 import './home_page.scss';
 import '/src/assets/scripts/bgMap/map.css';
 
-const loadedImages = [];
-
 export const HomePage = () => {
     const mapContainerRef = useRef(null); 
     const mapInstance = useRef(null); 
     const [mapLoaded, setMapLoaded] = useState(false);
     const [isQueryEnabled, setIsQueryEnabled] = useState(false);
+    const [loadedImages, setLoadedImages] = useState([]);
     const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
 
     const {
@@ -32,16 +31,19 @@ export const HomePage = () => {
     });
 
     useEffect(() => {
-        const zones = getAllZones();
-        zones.forEach((zone) => {
-            if(zone.zoneId !== "st22") //? "Софийска област" and "София-град" have duplicate badge images, so one of them should be discarded 
-            {
-                const img = new Image();
-                const url = getBadgeOfZone(zone.zoneId);
-                img.src = url;
-                loadedImages.push({ src: url, name: zone.zoneId });
-            }
-        });
+        if (loadedImages.length === 0) { //? Only load images if not already loaded
+            const zones = getAllZones();
+            const images = [];
+            zones.forEach((zone) => {
+                if(zone.zoneId !== "st22") { //? "Софийска област" and "София-град" have duplicate badge images, so one of them should be discarded 
+                    const img = new Image();
+                    const url = getBadgeOfZone(zone.zoneId);
+                    img.src = url;
+                    images.push({ src: url, name: zone.zoneId });
+                }
+            });
+            setLoadedImages(images);
+        }
 
         const currentMapContainer = mapContainerRef.current;
 
@@ -118,6 +120,16 @@ export const HomePage = () => {
 
     }, [status, data, error]);
 
+    useEffect(() => {
+        const scoutSpan = document.querySelector('.home_page__heading--scout');
+        const disasterSpan = document.querySelector('.home_page__heading--disaster');
+        
+        setTimeout(() => {
+            scoutSpan.style.visibility = 'visible';
+            disasterSpan.classList.add('no-border');
+        }, 2200);
+    }, []);
+
     function getZoneColor(severityType) {
         if (severityType === 'LOW') {return 'yellow';}
         else if (severityType === 'MEDIUM') {return 'orange';}
@@ -145,16 +157,10 @@ export const HomePage = () => {
         closeSnackbar();
     };
 
-    useEffect(() => {
-        const scoutSpan = document.querySelector('.home_page__heading--scout');
-        const disasterSpan = document.querySelector('.home_page__heading--disaster');
-        
-        setTimeout(() => {
-            scoutSpan.style.visibility = 'visible';
-            disasterSpan.classList.add('no-border');
-        }, 2200);
-    }, []);
+    
 
+
+    
     return (
         <div className="home_page">
 

@@ -165,6 +165,9 @@
       margin-bottom: -10px;
       @media (max-width: 669px) {font-size: 15px;}
     }
+    &__obshti-usloviq:hover {
+      color: #009F58
+    }
     &__obshti-usloviq:active {
       color: #E50000
     }
@@ -177,6 +180,9 @@
       font-size: 18px;
       margin-top: 15px;
       @media (max-width: 669px) {font-size: 15px;}
+    }
+    &__politika-za-poveritelnost:hover {
+      color: #009F58
     }
     &__politika-za-poveritelnost:active {
       color: #E50000
@@ -191,11 +197,31 @@
       margin-top: 5px;
       @media (max-width: 669px) {font-size: 15px;}
     }
+    &__czv:hover {
+      color: #009F58
+    }
     &__czv:active {
       color: #E50000
     }
 
   }
+
+    //? Disables hover state on pointer: coarse (mobile devices)
+    @media (pointer: coarse) {
+      &__container2 {
+        &__obshti-usloviq:hover,
+        &__politika-za-poveritelnost:hover,
+        &__czv:hover {
+          color: white;
+        }
+
+        &__obshti-usloviq:active,
+        &__politika-za-poveritelnost:active,
+        &__czv:active {
+          color: #E50000;
+        }
+      }
+    }
     
 
 }
