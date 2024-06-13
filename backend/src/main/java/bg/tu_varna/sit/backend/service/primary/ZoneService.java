@@ -1,5 +1,6 @@
 package bg.tu_varna.sit.backend.service.primary;
 
+import bg.tu_varna.sit.backend.models.dto.alert.AlertDTO;
 import bg.tu_varna.sit.backend.models.dto.zone.ZoneDTO;
 import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.models.entity.Zone;
@@ -57,7 +58,7 @@ public class ZoneService {
         return ResponseEntity.ok().build();
     }
 
-    public ResponseEntity<?> getDescriptionOfAlert(User user, String zoneId) {
+    public ResponseEntity<?> getAlertOfZone(User user, String zoneId) {
 
         if(user.getUserRole().getRole().equals(DISPATCHER))
         {
@@ -68,7 +69,7 @@ public class ZoneService {
         Zone zone = getZoneById(zoneId);
         if(zone.getAlert() == null) {return new ResponseEntity<>("Zone doesn't have an alert.", HttpStatus.NOT_FOUND);}
 
-        return new ResponseEntity<>(zone.getAlert().getMessage(),HttpStatus.OK);
+        return new ResponseEntity<>(new AlertDTO(zone.getAlert().getSeverity().getSeverityType(),zone.getAlert().getMessage()),HttpStatus.OK);
     }
 
     public List<Zone> getAllZones(){return zoneCacheService.getAllZones();}

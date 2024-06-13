@@ -41,11 +41,11 @@ public class ZonesController {
         return zoneService.deleteAlertOfZone(user, zoneIdDTO.zoneId());
     }
 
-    @Operation(summary = "Get alert's description of zone",
-            description = "When this endpoint is called, the description(message) of alert related to specific zone is returned.")
-    @GetMapping("/alert-description")
-    public ResponseEntity<?> getDescriptionOfAlert(@RequestParam(value = "zoneId") String zoneId, @AuthenticationPrincipal User user){
-        return zoneService.getDescriptionOfAlert(user, zoneId);
+    @Operation(summary = "Get alert of zone",
+            description = "When this endpoint is called, the information of alert related to the specific zone is returned.")
+    @GetMapping("/alert")
+    public ResponseEntity<?> getAlertOfZone(@RequestParam(value = "zoneId") String zoneId, @AuthenticationPrincipal User user){
+        return zoneService.getAlertOfZone(user, zoneId);
     }
 
 }

@@ -5591,7 +5591,7 @@ export const getLabelOfZoneById = (zoneId) => {
 
 
 
-export const getAlertsOfAvailableZones = () => {
+export const getAlertsSeveritiesOfAvailableZones = () => {
 
         return axiosInstanceWithCredentials.get("/internal/dispatcher/zones/alerts-severities");
 };
@@ -5606,9 +5606,9 @@ export const deleteAlertRequest = ({requestBody}) => {
         return axiosInstanceWithCredentials.put("/internal/dispatcher/zones/delete-alert", requestBody);
 };
 
-export const getDescriptionOfAlert = (zoneID) => {
+export const getAlertOfZone = (zoneID) => {
 
-        return axiosInstanceWithCredentials.get(`/internal/dispatcher/zones/alert-description?zoneId=${zoneID}`);
+        return axiosInstanceWithCredentials.get(`/internal/dispatcher/zones/alert?zoneId=${zoneID}`);
 };
 
 export const getAlertsOfAllZones = () => {

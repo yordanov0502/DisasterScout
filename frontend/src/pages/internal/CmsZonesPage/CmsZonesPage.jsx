@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMutation, useQuery } from "@tanstack/react-query";
 import { Alert, Autocomplete, Box, Snackbar, TextField } from "@mui/material";
 import { getAllSeverities, getFullSeverityObjectBySeverity, getSeverityByColor } from "../../../services/severityService";
-import { getAllZones, getBadgeOfZone, getUnavailableZoneIds, getAlertsOfAvailableZones, getAvailableZoneIds, getFullZoneById, publishAlertRequest, deleteAlertRequest, getDescriptionOfAlert} from "../../../services/zoneService";
+import { getAllZones, getBadgeOfZone, getUnavailableZoneIds, getAlertsSeveritiesOfAvailableZones, getAvailableZoneIds, getFullZoneById, publishAlertRequest, deleteAlertRequest, getAlertOfZone} from "../../../services/zoneService";
 import { useUserContext } from "../../../hooks/useUserContext";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
@@ -49,21 +49,21 @@ export const CmsZonesPage = () => {
     error,
     refetch: refetchAlerts
   } = useQuery({
-    queryKey: ["getAlertsOfAvailableZonesForCMS"], //? When any value in the queryKey array changes, react-query will re-run the query.
-    queryFn: () => getAlertsOfAvailableZones(), 
+    queryKey: ["getAlertsSeveritiesOfAvailableZonesForCMS"], //? When any value in the queryKey array changes, react-query will re-run the query.
+    queryFn: () => getAlertsSeveritiesOfAvailableZones(), 
     enabled: isQueryEnabled
   });
 
   const {
-    data: descriptionData,
-    status: descriptionFetchStatus,
-    //isLoading: descriptionFetchLoading,
-    error: descriptionFetchError
+    data: alertData,
+    status: alertFetchStatus,
+    //isLoading: alertFetchLoading,
+    error: alertFetchError
   } = useQuery({
-    queryKey: ["getDescriptionOfAlertForCMS",  alertForm.zone], //? When any value in the queryKey array changes, react-query will re-run the query.
+    queryKey: ["getAlertOfZoneForCMS",  alertForm.zone], //? When any value in the queryKey array changes, react-query will re-run the query.
     queryFn: ({ queryKey }) => {
       const zoneId = queryKey[1];
-      return getDescriptionOfAlert(zoneId);
+      return getAlertOfZone(zoneId);
     },
     enabled: isQueryEnabled && alertForm.zone !== ""
   });
@@ -210,20 +210,42 @@ export const CmsZonesPage = () => {
 
   useEffect(() => {
 
-    if (descriptionFetchStatus === 'success') 
+    if (alertFetchStatus === 'success') 
     {
-      handleInput('description',descriptionData.data);
+      handleInput('alert',alertData.data);
+
+      //? Just paint the selected zone with color based on the severityType from the response of the server. (Even though it might be useless in most cases, in some cases it might be useful - when a new alert has been added to zone from other dispatcher, and in our map the zone is green, when we click it, it will be painted in the color based on the severityType of the newly added alert by the other dispatcher)
+      const zoneColor = getZoneColor(alertData.data.severityType);
+      mapInstance.current.setColor(alertForm.zone, zoneColor);
+
+      const zoneColorOver = getZoneColorOver(zoneColor);
+      mapInstance.current.setColorOver(alertForm.zone, zoneColorOver);
     }
 
-    if(descriptionFetchStatus === 'error') 
+    if(alertFetchStatus === 'error') 
     {
-      if(descriptionFetchError.response?.data === "Available zones of dispatcher have been changed.")
+      if(alertFetchError.response?.data === "Available zones of dispatcher have been changed.")
       {
         window.location.reload();
       }
-      else if(descriptionFetchError.response?.data === "Zone doesn't have an alert.")
+      else if(alertFetchError.response?.data === "Zone doesn't have an alert.")
       {
-        //do nothing
+        setAlertForm(prevState => ({
+          ...prevState, 
+          severity: "",
+          description: ""    
+        }));
+
+        const currZoneColor = mapInstance.current.fetchStateAttr(alertForm.zone,'color'); //? gets the color of zone with id
+        //!if zone doesn't have an alert and its color is not green, make the color green
+        if(currZoneColor !== '#009F58')
+        {
+          const zoneColor = '#009F58';
+          mapInstance.current.setColor(alertForm.zone, zoneColor);
+  
+          const zoneColorOver = getZoneColorOver(zoneColor);
+          mapInstance.current.setColorOver(alertForm.zone, zoneColorOver);
+        }
       }
       else
       {
@@ -231,7 +253,7 @@ export const CmsZonesPage = () => {
       } 
     }
 
-  }, [descriptionFetchStatus, descriptionData, descriptionFetchError]);
+  }, [alertFetchStatus, alertData, alertFetchError]);
 
 
 
@@ -256,19 +278,28 @@ export const CmsZonesPage = () => {
   };
 
   const handleInput = (name, value) => {
-    if(name === 'description') 
+
+    if(name === 'alert') 
+    {setAlertForm(prevState => ({
+      ...prevState, 
+      severity: value.severityType.trim(),
+      description: value.message    
+    }));}
+
+    else if(name === 'description')
     {setAlertForm(prevState => ({...prevState, [name]: value}));} 
+      
     else 
     {setAlertForm(prevState => ({...prevState, [name]:  value.trim()}));}
 
     closeSnackbar();
 
-      if(!isErrorAlertFormValid()){
-        setErrorAlertForm({
-          zone: false,
-          severity:false,
-          description: false
-      });}
+    if(!isErrorAlertFormValid()){
+      setErrorAlertForm({
+        zone: false,
+        severity:false,
+        description: false
+    });}
 
   };
 
@@ -295,6 +326,12 @@ export const CmsZonesPage = () => {
         description: ""
       }));
     } 
+
+    setErrorAlertForm({
+      zone: false,
+      severity:false,
+      description: false
+    });
     
   };
 
