@@ -1,4 +1,4 @@
-.reports_component {
+.public_reports_component {
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -22,7 +22,7 @@
   
     @media (pointer: coarse) {
       width: 100%;
-      margin-top: 72px
+      //margin-top: 72px
     }
   
     &__loader-box {
@@ -40,16 +40,13 @@
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
-      width: 100%;  
+      width: 82%;  
       background-color: white;
   
       @media (pointer: coarse) {
         width: 95%;
       }
   
-    &__state-filter{
-      padding: 0 0px;
-    }
   
     &__severity-filter{
         padding: 0 0px;

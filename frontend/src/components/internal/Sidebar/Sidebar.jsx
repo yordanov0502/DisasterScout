@@ -102,7 +102,7 @@ export const Sidebar = ({isOpen, toggleSidebar}) => {
           </Link>
         </li>
        
-        { authenticatedUser.role === "DISPATCHER" && ( // TODO: Implement navigation to dashboard if admin types url for accessing the page(Just like I did for the dispatchers and logger page to prevent access from dispatchers via url)
+        { authenticatedUser.role === "DISPATCHER" && (
       <>
         <li className={activeButton === 'cms-zones' ? 'active' : ''} onClick={() => handleButtonClick('cms-zones')}>
         <Link to={"/cms-zones"}>

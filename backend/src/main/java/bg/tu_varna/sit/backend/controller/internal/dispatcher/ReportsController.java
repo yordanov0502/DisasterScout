@@ -28,7 +28,7 @@ public class ReportsController {
     }
 
     @Operation(summary = "Get report information",
-            description = "Dispatcher/Admin gets all the information about a  report when this endpoint is called.")
+            description = "Dispatcher/Admin gets all the information about a report when this endpoint is called.")
     @GetMapping("/get")
     public ResponseEntity<?> getReportInformation(@RequestParam(value = "reportId") Integer reportId, @RequestParam(value = "state") State state, @RequestParam(value = "severityType")String severityType, @RequestParam(value = "zoneId") String zoneId, @RequestParam(value = "area") String area, @RequestParam(value = "category")String category, @RequestParam(value = "issue")String issue, @AuthenticationPrincipal User user){
         return reportService.getReportInformation(reportId,state,severityType,zoneId,area,category,issue,user);

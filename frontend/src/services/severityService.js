@@ -17,6 +17,14 @@ const severities = [
     return severity ? (severity.color==='yellow' ? "#dbdb02" : severity.color ) : "#dbdb02";
   };
 
+  export const getBackgroundColorBySeverityColor = (severityColor) => {
+    if(severityColor === '#dbdb02') {return '#ffff4d';}
+    else if(severityColor === 'orange') {return '#ffc266';}
+    else if(severityColor === 'red') {return '#ff6666';}
+    else if(severityColor === '#717a40') {return '#a4b05d';}
+    else {return 'white';}
+  };
+
   //? Returns whole issue (label,type,color,colorOnHover)
   export const getFullSeverityObjectBySeverity = (severityType) => { 
     const severity = severities.find(s => s.type === severityType);

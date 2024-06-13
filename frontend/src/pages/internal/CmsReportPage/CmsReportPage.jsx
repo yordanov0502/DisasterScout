@@ -143,7 +143,7 @@ export const CmsReportPage = () => {
     if (status === 'success') 
     {
       const response = data.data;
-      console.log(response);
+      //console.log(response);
        
       const submittedAt = new Date(response.submittedAt);
       const formattedSubmittedAt = `${submittedAt.toLocaleTimeString('bg-BG', { hour: '2-digit', minute: '2-digit' })} ч., ${submittedAt.toLocaleDateString('bg-BG', { day: '2-digit', month: '2-digit', year: 'numeric' })}`;

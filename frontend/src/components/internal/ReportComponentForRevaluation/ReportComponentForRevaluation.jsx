@@ -308,7 +308,7 @@ export const ReportComponentForRevaluation = ({
          onChange={(e) => handleInput(e.target.name, e.target.value)} 
        />
              
-    <TextField //TODO: in the public website implement onClick for the buton google maps
+    <TextField
          sx={{backgroundColor: 'white', mb: 1.5}}
          autoComplete="off"
          id="locationUrl-process-report"

@@ -245,6 +245,71 @@ public class ReportService {
                 ,HttpStatus.OK);
     }
 
+    public ResponseEntity<?> getPublicReportInformation(Integer reportId, State state, String severityTypeValue, String zoneId, String area, String categoryValue, String issueValue){
+
+        //? Validation whether the report exists or not.
+        Optional<Report> report = reportRepository.findById(reportId);
+        if(report.isEmpty()) {return new ResponseEntity<>("Report doesn't exist.", HttpStatus.NOT_FOUND);}
+
+
+        //?--------Validation whether the searchParams from frontend match with their related fields from the report
+        //* state will be always available
+        if(!report.get().getReportState().getState().equals(state)) {return new ResponseEntity<>("Report info mismatch.[state]", HttpStatus.BAD_REQUEST);}
+
+        //? severityTypeValue will always be available, but if it is "All" the severityType will be null,
+        SeverityType severityType = convertStringToSeverityType(severityTypeValue);
+        if(severityType != null)
+        {
+            if(!report.get().getSeverity().getSeverityType().equals(severityType)) {return new ResponseEntity<>("Report info mismatch.[severityType]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //* zoneId will always be available
+        if(!report.get().getZone().getId().equals(zoneId)) {return new ResponseEntity<>("Report info mismatch.[zoneId]", HttpStatus.BAD_REQUEST);}
+
+        //* area will always be available ("Всички" by default)
+        Zone zone = zoneService.getZoneById(zoneId);
+        String partialAddress = area.equals("Всички") ? null : String.format("обл.%s~%s", zone.getName(),area);
+        if(partialAddress != null)
+        {
+            if(!report.get().getAddress().contains(partialAddress)) {return new ResponseEntity<>("Report info mismatch.[area]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? category  will always be available, but if it is "All" the category will be null,
+        Category category = convertStringToCategory(categoryValue);
+        if(category != null)
+        {
+            if(!report.get().getReportIssue().getCategory().equals(category)) {return new ResponseEntity<>("Report info mismatch.[category]", HttpStatus.BAD_REQUEST);}
+        }
+
+        //? issue  will always be available, but if it is "All" the issue will be null,
+        Issue issue = convertStringToIssue(issueValue);
+        if(issue != null)
+        {
+            if(!report.get().getReportIssue().getIssue().equals(issue)) {return new ResponseEntity<>("Report info mismatch.[issue]", HttpStatus.BAD_REQUEST);}
+        }
+        //?---------
+
+
+
+
+        String imageUrl = report.get().getImageUrl() == null ? "" : report.get().getImageUrl();
+
+
+        return new ResponseEntity<>(
+                new PublicReportDTO(
+                        report.get().getReportIssue().getIssue(),
+                        report.get().getSeverity().getSeverityType(),
+                        report.get().getSubmittedAt(),
+                        report.get().getExpiresAt(),
+                        report.get().getDescription(),
+                        report.get().getZone().getId(),
+                        getAreaFromAddress(report.get().getAddress()),
+                        imageUrl,
+                        report.get().getLocationUrl()
+                )
+                ,HttpStatus.OK);
+    }
+
 
 
 

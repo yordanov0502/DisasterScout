@@ -285,7 +285,7 @@ export const ReportComponentInactive = ({   isLoadingComponent,
          disabled={true}
        />
              
-    <TextField //TODO: in the public website implement onClick for the buton google maps
+    <TextField
          sx={{backgroundColor: 'white', mb: 1.5}}
          autoComplete="off"
          id="locationUrl-process-report"
@@ -310,7 +310,7 @@ export const ReportComponentInactive = ({   isLoadingComponent,
             variant="contained"
             tabIndex={-1}
             startIcon={<PlaceIcon />}
-            onClick={() => window.open('https://www.google.com/maps', '_blank')} //TODO: FOR FRESH AND ACTIVE reports direct redirect with the locationURL
+            onClick={() => window.open('https://www.google.com/maps', '_blank')}
             disabled={true}
          >
             Google Maps

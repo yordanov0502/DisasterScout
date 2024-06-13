@@ -42,8 +42,8 @@
       margin-bottom: 40px;
       text-align: center;
 
-      @media (pointer: coarse) {
-        width: 90%;
+      @media (pointer: coarse),(max-width: 1064px) {
+        font-size: 19px;
       }
     }
   
@@ -133,7 +133,7 @@
 
   
       @media (pointer: coarse), (max-width: 1064px) {
-        width: 95%;
+        width: 100%;
       }
   }
    
@@ -159,7 +159,7 @@
        
     
         @media (pointer: coarse), (max-width: 1064px) {
-          width: 93%;
+          width: 96.5%;
           margin-left: 0%;
         }
     }
@@ -171,7 +171,7 @@
         left: -1.9%;
 
         @media (pointer: coarse), (max-width: 1064px) {
-            width: 93%;
+            width: 96.5%;
            // margin-left: 0%;
            left: 0%;
           }
@@ -182,6 +182,7 @@
         width: 95%;
         top: -5px;
         margin-bottom: 38px;
+        margin-top: 1%;
       }
 
       @media (pointer: coarse) {

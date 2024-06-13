@@ -19,6 +19,7 @@ import { CmsNewDispatcherPage } from "../pages/internal/CmsNewDispatcherPage";
 import { CmsReportsPage } from "../pages/internal/CmsReportsPage";
 import { CmsReportPage } from "../pages/internal/CmsReportPage";
 import { CmsZonesPage } from "../pages/internal/CmsZonesPage";
+import { ReportPage } from "../pages/external/ReportPage";
 
 export const Router = () => {
   return (
@@ -94,6 +95,11 @@ export const Router = () => {
       <Route path="/search-reports" element={
       <PublicRoute>
       <SearchReportsPage />
+      </PublicRoute>
+      }/>
+      <Route path="/report" element={
+      <PublicRoute>
+      <ReportPage />
       </PublicRoute>
       }/>
       <Route path="/categories" element={

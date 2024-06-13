@@ -68,10 +68,10 @@ export const CmsZonesPage = () => {
     enabled: isQueryEnabled && alertForm.zone !== ""
   });
 
-  //? Used in order to prevent dispatcher from accessing the CmsZonesPage by typing its path in the URL. (even though he doesn't have UI button for it)
+  //? Used in order to prevent admin from accessing the CmsZonesPage by typing its path in the URL. (even though he doesn't have UI button for it)
   useEffect(() => { 
     const isUContextEmpty = isUserContextEmpty(); //? return true/false
-    if(!isUContextEmpty && authenticatedUser.role !== "DISPATCHER") //? if user context is NOT empty and user role is NOT ADMIN
+    if(!isUContextEmpty && authenticatedUser.role !== "DISPATCHER") //? if user context is NOT empty and user role is NOT DISPATCHER
     { 
       navigate("/cms-dashboard", {replace: true});
     }
@@ -481,7 +481,7 @@ export const CmsZonesPage = () => {
         <BackdropLoader open={backdropOpen} />
         
   
-        <div className="cms_zones_page__heading">Публикуване на предупреждение за цяла област</div>
+        <div className="cms_zones_page__heading">Публикуване на предупреждение за опасност</div>
   
    
   

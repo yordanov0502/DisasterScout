@@ -61,11 +61,11 @@ function App() {
     <QueryClientProvider client={queryClientRef.current}>
      <Suspense fallback={<PageLoader />}>
        <Router />
-        {/* <ReactQueryDevtools //!For development purposes ONLY
+        <ReactQueryDevtools //!For development purposes ONLY
           initialIsOpen
           position="right"
           buttonPosition="bottom-right"
-        /> */}
+        />
      </Suspense>
     </QueryClientProvider>   
   );

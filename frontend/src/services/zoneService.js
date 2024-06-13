@@ -5578,7 +5578,11 @@ export const getFullZoneById = (zoneId) => {
         return zone ? zone : null;
       }
 
-
+      //? Returns label of zone
+export const getLabelOfZoneById = (zoneId) => { 
+        const zone = zones.find(z => z.zoneId === zoneId);
+        return zone ? zone.label : "";
+      }
 
 
 

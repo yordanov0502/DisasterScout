@@ -88,7 +88,7 @@ const expectedDurationHours = [
     { label: "ядрена авария", issue: "NUCLEAR_ACCIDENT", category: "Обществени условия"},
     { label: "изтичане на радиация", issue: "RADIATION_LEAK", category: "Обществени условия"},
     { label: "химическо изтичане", issue: "CHEMICAL_SPILL", category: "Обществени условия"},
-    { label: "бактериологичното заразяване", issue: "BACTERIOLOGICAL_CONTAMINATION", category: "Обществени условия"},
+    { label: "бактериологично заразяване", issue: "BACTERIOLOGICAL_CONTAMINATION", category: "Обществени условия"},
     { label: "протест", issue: "PROTEST", category: "Обществени условия"},
     { label: "експлозия", issue: "EXPLOSION", category: "Обществени условия"},
 
@@ -146,7 +146,7 @@ const expectedDurationHours = [
     { label: "ядрена авария", issue: "NUCLEAR_ACCIDENT", category: "PUBLIC_CONDITIONS"},
     { label: "изтичане на радиация", issue: "RADIATION_LEAK", category: "PUBLIC_CONDITIONS"},
     { label: "химическо изтичане", issue: "CHEMICAL_SPILL", category: "PUBLIC_CONDITIONS"},
-    { label: "бактериологичното заразяване", issue: "BACTERIOLOGICAL_CONTAMINATION", category: "PUBLIC_CONDITIONS"},
+    { label: "бактериологично заразяване", issue: "BACTERIOLOGICAL_CONTAMINATION", category: "PUBLIC_CONDITIONS"},
     { label: "протест", issue: "PROTEST", category: "PUBLIC_CONDITIONS"},
     { label: "експлозия", issue: "EXPLOSION", category: "PUBLIC_CONDITIONS"},
 
@@ -322,4 +322,12 @@ const expectedDurationHours = [
   export const getProportionOfCategoriesOfFreshReports = () => {
 
     return axiosInstanceWithCredentials.get("/internal/dispatcher/dashboard/get-proportion-of-categories");
+  };
+
+  export const getPublicReportCardsFromPageRequest = (pageNumber,severityType,zoneId,area,category,issue) => {
+    return axiosInstanceWithCredentials.get(`/external/reports?page=${pageNumber}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
+  };
+
+  export const getReport = (reportId,severityType,zoneId,area,category,issue) => {
+    return axiosInstanceWithCredentials.get(`/external/reports/get?reportId=${reportId}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
   };

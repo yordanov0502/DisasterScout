@@ -19,26 +19,20 @@ const ClickableDiv = styled('div')({
 
 const noImageUrl = "src/assets/images/no-photo.png";
 
-export const ReportCard = ({ row }) => {
+export const PublicReportCard = ({ row }) => {
 
   const navigate = useNavigate();
   const location = useLocation();
 
   const handleCardClick = () => {
     const searchParams = new URLSearchParams(location.search);
-    const state = searchParams.get('state');
     const severityType = searchParams.get('severityType');
     const zoneId = searchParams.get('zoneId');
     const area = searchParams.get('area');
     const category = searchParams.get('category');
     const issue = searchParams.get('issue');
 
-    navigate(`/cms-report?reportId=${row.id}`, { 
-      state: { 
-        from: location.pathname + location.search,
-        searchParams: { state, severityType, zoneId, area, category, issue }
-      }
-    });
+    navigate(`/report?reportId=${row.id}&severityType=${severityType}&zoneId=${zoneId}&area=${area}&category=${category}&issue=${issue}`);
   };
 
  return (

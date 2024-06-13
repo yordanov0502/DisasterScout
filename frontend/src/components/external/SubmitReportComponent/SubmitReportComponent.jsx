@@ -100,7 +100,7 @@ export const SubmitReportComponent = ({ reportForm,
     
       <div className="submit_report_component__container1__wrapper1">
     
-        <div className="report_component_fresh__container1__wrapper1__box1">
+        <div className="submit_report_component__container1__wrapper1__box1">
     
     
         <Autocomplete
@@ -206,7 +206,7 @@ export const SubmitReportComponent = ({ reportForm,
      
         </div>
     
-        <div className="report_component_fresh__container1__wrapper1__box2">
+        <div className="submit_report_component__container1__wrapper1__box2">
     
      
           <Autocomplete
