@@ -1,5 +1,5 @@
 const validImageTypes = ['image/jpeg','image/jpg','image/png',];
-const maxSize = 8388608; //? Bytes = 8MB
+const maxSize = 10485760; //? Bytes = 10MB
 
 const isSameDay = (date1, date2) => {
     return (
@@ -15,7 +15,7 @@ export const validateImageOnUpload = (imageForUpload) => { //? function returns 
 
     if(!validImageTypes.includes(imageForUpload.type.toLowerCase())) {return "Форматът на изображението трябва да бъде 'jpeg', 'jpg' или 'png'."} //! error
 
-    if(imageForUpload.size > maxSize) {return "Размерът на изображението не може да е повече от 8MB.";} //! error
+    if(imageForUpload.size > maxSize) {return "Размерът на изображението не може да е повече от 10MB.";} //! error
 
  
     const today = new Date();

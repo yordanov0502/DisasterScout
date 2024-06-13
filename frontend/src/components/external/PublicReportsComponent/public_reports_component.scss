@@ -1,10 +1,21 @@
 .public_reports_component {
+
+  @keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+  }
+
     display: flex;
     flex-direction: column;
     align-items: center;
     width: 90%;
     height: 100%;
     background-color: white;
+    animation: fadeIn 0.5s ease-in-out;
 
     .truncated-text {
       white-space: nowrap;
@@ -94,6 +105,7 @@
     gap: 30px; /* Optional: Add some space between the items */
     width: 100%;  
     background-color: white;
+    animation: fadeIn 1.5s ease-in-out;
 
     @media (pointer: coarse) {
       width: 95%;
