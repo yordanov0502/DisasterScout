@@ -5,7 +5,7 @@ import PlaceIcon from '@mui/icons-material/Place';
 import DoneOutlineIcon from '@mui/icons-material/DoneOutline';
 import SendIcon from '@mui/icons-material/Send';
 import BlockIcon from '@mui/icons-material/Block';
-import { getAllAreasOfZoneForSubmitReport, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
+import { getAllAreasOfZoneForSubmitReport, getAllZones, getBadgeOfZone, getFullZoneById } from "../../../services/zoneService";
 import { getAllSeverities } from "../../../services/severityService";
 import { getAllIssues, getExpectedDurationHours } from "../../../services/reportService";
 import "./submit_report_component.scss";
@@ -223,6 +223,7 @@ export const SubmitReportComponent = ({ reportForm,
             noOptionsText={"Няма такава опция"}
             getOptionLabel={(option) => option.label}
             isOptionEqualToValue={(option, selectedOption) => option.zoneId === selectedOption.zoneId}
+            value={getFullZoneById(reportForm.zone)}
             onChange={(event, selectedOption) => 
               {
                 handleInput('zone', selectedOption ? selectedOption.zoneId : "");

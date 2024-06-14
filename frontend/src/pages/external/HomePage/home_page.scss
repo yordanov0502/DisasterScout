@@ -116,7 +116,16 @@
     &__container {
         width: 65%;
         animation: fadeIn 2s ease-in-out; 
-        @media(pointer: coarse) {
+
+        @media(max-width: 1260px){
+         width: 85%;
+        }
+
+        @media(max-width: 600px){
+            width: 100%;
+        }
+
+        @media(pointer: coarse){
             width: 100%;
         }
     }

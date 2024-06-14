@@ -1,4 +1,5 @@
 import { useEffect, useState} from 'react';
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import { ref, uploadBytes, getDownloadURL, deleteObject } from "firebase/storage";
 import { v4 } from "uuid";
@@ -15,7 +16,9 @@ import { BackdropLoader } from "../../../components/Loaders/BackdropLoader";
 import './submit_report_page.scss';
 
 export const SubmitReportPage = () => {
- 
+
+  const location = useLocation();
+  const navigate = useNavigate();
   const [reportForm, setReportForm] = useState({
     issue: "",
     severity: "",
@@ -59,6 +62,22 @@ export const SubmitReportPage = () => {
   const [reportWithoutImageDialogOpen, setReportWithoutImageDialogOpen] = useState(false);
   const [backdropOpen, setBackdropOpen] = useState(false);
   const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
+
+
+
+  useEffect(() => {
+
+    if (location.state?.selectedZone) 
+    {
+      setReportForm(prevState => ({
+        ...prevState, 
+        zone: location.state.selectedZone.trim(),
+      }));
+      navigate(location.pathname, { replace: true, state: {} });
+    }
+  }, [location]);
+
+
 
   const isErrorFormValid = () => {
     return Object.values(errorForm).every(value => value === false);

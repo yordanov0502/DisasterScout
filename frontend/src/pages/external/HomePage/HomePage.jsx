@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 import { useSnackbar } from "../../../hooks/useSnackbar";
 import { Alert, Snackbar } from "@mui/material";
@@ -9,16 +10,23 @@ import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
 import { getAlertsOfAllZones, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import { InfiniteScroll } from "../../../components/external/InfiniteScroll";
+import { OperationsDialog } from "../../../components/dialogs/external/OperationsDialog";
 import './home_page.scss';
 import '/src/assets/scripts/bgMap/map.css';
 
 export const HomePage = () => {
+    const navigate = useNavigate();
     const mapContainerRef = useRef(null); 
     const mapInstance = useRef(null); 
     const [mapLoaded, setMapLoaded] = useState(false);
     const [isQueryEnabled, setIsQueryEnabled] = useState(false);
     const [loadedImages, setLoadedImages] = useState([]);
     const { open, message, severity, position, showSnackbar, closeSnackbar } = useSnackbar();
+    const [operationsDialogOpen, setOperationsDialogOpen] = useState(false);
+    const [selectedZone, setSelectedZone] = useState({
+        zone: null,
+        color: null
+      });
 
     const {
         data,
@@ -147,7 +155,14 @@ export const HomePage = () => {
     }
 
     const handleClick = (event, id) => { 
-        console.log(id);
+
+        setSelectedZone(prevState => ({
+            ...prevState, 
+            zone:  id,
+            color: mapInstance.current.fetchStateAttr(id,'color')
+          }));
+
+        openOperationsDialog();
     };
 
     const handleCloseSnackBar = (event, reason) => {
@@ -157,12 +172,46 @@ export const HomePage = () => {
         closeSnackbar();
     };
 
+
+
+    const openOperationsDialog = () => {
+        closeSnackbar();
+        setOperationsDialogOpen(true);
+      };
+
+    const handleSubmitReport = () => {
+        setOperationsDialogOpen(false);
+        navigate("/submit-report",{ state: { selectedZone: selectedZone.zone } });
+    };
+
+    const handleSearchReports = () => {
+        setOperationsDialogOpen(false);
+        navigate(`/search-reports?page=1&severityType=ALL&zoneId=${selectedZone.zone}&area=Всички&category=ALL&issue=ALL`);
+    };
+
+    const handleSeeAlert = () => {
+        setOperationsDialogOpen(false);
+        //TODO: perform navigation to the zones page, and place the top of the page where the selected zone is
+    };
+
+    const handleOperationsDialogClose = () => {
+        setOperationsDialogOpen(false);
+    };
     
 
 
     
     return (
         <div className="home_page">
+
+        <OperationsDialog
+            selectedZone={selectedZone}
+            open={operationsDialogOpen}
+            onSubmit={handleSubmitReport}
+            onSearch={handleSearchReports}
+            onSeeAlert={handleSeeAlert}
+            onClose={handleOperationsDialogClose}
+        /> 
 
             <div className="home_page__heading">
                 <span className="home_page__heading--disaster">DISASTER</span>
