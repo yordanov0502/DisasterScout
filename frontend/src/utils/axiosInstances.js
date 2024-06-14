@@ -20,24 +20,3 @@ export const axiosInstanceWithCredentials = axios.create({
     //timeout: 5000,  WHAT IS THE PROPER AMOUNT AND HOW TO HANDLE TIMEOUT AXIOS ERROR ?
     //!EACH REQUEST HAVE A DIFFERENT MINIMAL TIMEOUT, REGARDLESS OF WHAT WE SPECIFY AS TIMEOUT
   });
-
-
-
-  // Add a response interceptor
-//   axiosInstanceWithCredentials.interceptors.response.use(
-//     response => {
-//       // Any status code that lie within the range of 2xx cause this function to trigger
-//       return response;
-//     },
-//     error => {
-//       // Any status codes that falls outside the range of 2xx cause this function to trigger
-//       if (error.response && [401, 403, 500].includes(error.response.status)) {
-//         // Handle expected errors gracefully
-//         console.log("a");
-//         return Promise.resolve(error.response);
-//       }
-//       console.log("b");
-//       // Handle unexpected errors
-//       return Promise.reject(error);
-//     }
-//   );
