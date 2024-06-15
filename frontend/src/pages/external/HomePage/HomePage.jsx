@@ -191,7 +191,7 @@ export const HomePage = () => {
 
     const handleSeeAlert = () => {
         setOperationsDialogOpen(false);
-        //TODO: perform navigation to the zones page, and place the top of the page where the selected zone is
+        navigate("/zones",{ state: { selectedZone: selectedZone.zone } });
     };
 
     const handleOperationsDialogClose = () => {
