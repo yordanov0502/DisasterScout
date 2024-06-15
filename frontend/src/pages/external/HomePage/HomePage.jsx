@@ -8,7 +8,7 @@ import Card from '@mui/material/Card';
 import CardContent from '@mui/material/CardContent';
 import CardMedia from '@mui/material/CardMedia';
 import Typography from '@mui/material/Typography';
-import { getAlertsOfAllZones, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
+import { getSeveritiesOfAllZones, getAllZones, getBadgeOfZone } from "../../../services/zoneService";
 import { InfiniteScroll } from "../../../components/external/InfiniteScroll";
 import { OperationsDialog } from "../../../components/dialogs/external/OperationsDialog";
 import './home_page.scss';
@@ -33,8 +33,8 @@ export const HomePage = () => {
         status,
         error
     } = useQuery({
-        queryKey: ["getAlertsOfAllZones"],
-        queryFn: () => getAlertsOfAllZones(), 
+        queryKey: ["getSeveritiesOfAllZones"],
+        queryFn: () => getSeveritiesOfAllZones(), 
         enabled: isQueryEnabled
     });
 

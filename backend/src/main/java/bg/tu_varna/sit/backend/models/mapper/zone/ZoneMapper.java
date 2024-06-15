@@ -1,8 +1,6 @@
 package bg.tu_varna.sit.backend.models.mapper.zone;
 
-import bg.tu_varna.sit.backend.models.dto.zone.SeveritiesOfAllZones;
-import bg.tu_varna.sit.backend.models.dto.zone.SeveritiesOfAvailableZones;
-import bg.tu_varna.sit.backend.models.dto.zone.ZoneSeverityDTO;
+import bg.tu_varna.sit.backend.models.dto.zone.*;
 import bg.tu_varna.sit.backend.models.entity.Zone;
 import bg.tu_varna.sit.backend.models.entity.user.User;
 import bg.tu_varna.sit.backend.service.primary.ZoneService;
@@ -42,5 +40,15 @@ public class ZoneMapper {
                 .toList();
 
         return new SeveritiesOfAllZones(zoneDTOList);
+    }
+
+    public AlertsOfAllZones mapToAlertsOfAllZones()
+    {
+        List<ZoneAlertDTO> zonesAlertsDTOList = zoneService.getAllZones()
+                .stream()
+                .map(z -> new ZoneAlertDTO(z.getId(), z.getAlert() != null ? z.getAlert().getSeverity().getSeverityType() : null, z.getAlert() != null ? z.getAlert().getMessage() : null) )
+                .toList();
+
+        return new AlertsOfAllZones(zonesAlertsDTOList);
     }
 }

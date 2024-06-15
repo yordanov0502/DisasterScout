@@ -38,3 +38,11 @@ const severities = [
     else if(zoneColor === '#303515') {return  { label: "Критично", type: "CRITICAL", color: '#717a40', colorOnHover: '#909c52' };}
     else return null;
   }
+
+  export const getColorBySeverityType = (severityType) => {
+    if(severityType === 'LOW') {return "#e6e600";}
+    else if(severityType === 'MEDIUM') {return "orange";}
+    else if(severityType === 'HIGH') {return "#E50000";}
+    else if(severityType === 'CRITICAL') {return "#303515";}
+    else return "#009F58";
+  }
