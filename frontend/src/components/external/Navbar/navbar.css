@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Bocures Regular';
+  src: url('/src/assets/fonts/Bocures.otf') format('truetype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .navbar * {
   padding: 0; /*The styling is applied to all elements inside the .navbar class*/
 }
@@ -16,6 +23,38 @@
   z-index: 3;
   justify-content: center;
 }
+
+.navbar-text1 {
+  margin-top: 1%;
+  font-family: 'Bocures Regular';
+  font-size: 26px;
+  position: relative;
+  text-align: center;
+  color: #E50000;
+  margin-right: 4%;
+  left: -15px;
+  text-shadow:
+  -1px -1px 0 #fff,
+  1px -1px 0 #fff,
+  -1px 1px 0 #fff,
+  1px 1px 0 #fff;
+}
+
+.navbar-text2 {
+  margin-top: 1%;
+  font-family: 'Bocures Regular';
+  font-size: 26px;
+  position: relative;
+  text-align: center;
+  color: #007641;
+  left: -15px;
+  text-shadow:
+  -1px -1px 0 #fff,
+  1px -1px 0 #fff,
+  -1px 1px 0 #fff,
+  1px 1px 0 #fff;
+}
+
 
 
 .logo-navbar1 {
@@ -80,7 +119,10 @@
 
 
 
-@media (max-width: 669px) {
+@media (max-width: 669px), (pointer: coarse) {
+  .navbar{
+    align-items: center;
+  }
   .navbar-list {
     display: none;
   }
@@ -92,5 +134,14 @@
   }
   .navbar-close-button {
     display: block;
+  }
+}
+
+@media (max-width: 669px) {
+  .navbar-text1{
+    margin-top: 2%;
+  }
+  .navbar-text2{
+    margin-top: 2%;
   }
 }

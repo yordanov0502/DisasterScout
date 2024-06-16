@@ -3,12 +3,14 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { Button } from "@mui/material";
 import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
+import { useResponsiveContext } from "../../../hooks/useResponsiveContext";
 import './navbar.css';
 
 export const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const { isTouchScreen } = useResponsiveContext();
 
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
@@ -21,6 +23,13 @@ export const Navbar = () => {
 
   return (
     <div className="navbar">
+
+      {
+        isTouchScreen && location.pathname !== "/" &&
+        <>
+        <div className="navbar-text1">Disasster</div> <div className="navbar-text2">Scout</div>
+        </>
+      }
       
       <div className="navbar-burger-button" onClick={toggleSidebar}>
         {isSidebarOpen ? <CloseIcon fontSize="large" /> : <MenuIcon fontSize="large" />}
