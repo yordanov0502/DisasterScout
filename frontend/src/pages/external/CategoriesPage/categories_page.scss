@@ -1,4 +1,13 @@
 .categories_page {
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
     min-height: 100vh;
 
     //! Parent MUST ALWAYS HAVE HEIGHT PROPERTY FOR THE CHILD COMPONENTS TO BE ABLE TO SET HEIGHT ALSO IN PERCENTAGE % !!!!!!!!!
@@ -9,6 +18,151 @@
     align-items: center;
     flex-wrap: wrap;
     background-color: rgb(255, 255, 255);
-    gap: 3%;
+    animation: fadeIn 2s ease-in-out;
+
+    
+
+    &__sector1 {
+        width: 95%;
+        display: flex;
+        justify-content: center; 
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 3%;
+        margin-top: 3%;
+        margin-bottom: 3%;
+        
+
+        @media(max-width: 1270px) {
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 30%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 1160px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 40%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 900px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 50%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 750px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 60%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 600px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 80%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(pointer: coarse) {
+            flex-direction: column;
+            margin-top: 4%;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 95%;
+                margin-bottom: 4%;
+              }
+        }
+
+    }
+
+    &__sector2 {
+        width: 95%;
+        display: flex;
+        justify-content: center; 
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 3%;
+        margin-bottom: 3%;
+
+        @media(max-width: 1270px) {
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 30%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 1160px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 40%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 900px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 50%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 750px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 60%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(max-width: 600px) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 80%;
+                margin-bottom: 3%;
+              }
+        }
+
+        @media(pointer: coarse) {
+            flex-direction: column;
+            margin-bottom: 0%;
+
+            .MuiBox-root {
+                width: 95%;
+                margin-bottom: 4%;
+            }
+        }
+
+    }
 
 }

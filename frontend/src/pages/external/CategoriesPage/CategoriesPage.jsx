@@ -5,6 +5,7 @@ import './categories_page.scss';
 const ImageButton = styled(ButtonBase)(({ theme }) => ({
   position: 'relative',
   height: 200,
+  borderRadius: '10px',
   [theme.breakpoints.down('sm')]: {
     width: '100% !important', // Overrides inline-style
     height: 100,
@@ -31,6 +32,7 @@ const ImageSrc = styled('span')({
   bottom: 0,
   backgroundSize: 'cover',
   backgroundPosition: 'center 40%',
+  borderRadius: '10px',
 });
 
 const Image = styled('span')(({ theme }) => ({
@@ -43,6 +45,7 @@ const Image = styled('span')(({ theme }) => ({
   alignItems: 'center',
   justifyContent: 'center',
   color: theme.palette.common.white,
+  borderRadius: '10px',
 }));
 
 const ImageBackdrop = styled('span')(({ theme }) => ({
@@ -54,6 +57,7 @@ const ImageBackdrop = styled('span')(({ theme }) => ({
   backgroundColor: theme.palette.common.black,
   opacity: 0.4,
   transition: theme.transitions.create('opacity'),
+  borderRadius: '10px',
 }));
 
 const ImageMarked = styled('span')(({ theme }) => ({
@@ -69,207 +73,210 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 export const CategoriesPage = () => {
  
-
- 
-
   return (
     <div className="categories_page">
-      
-       {/*Todo: breakpoints for different screen sizes in terms of width percentage*/}
 
-       <Box sx={{ display: 'flex', flexWrap: 'wrap', /*minWidth: 300,*/ width: '25%' }}>
-      {
-        <ImageButton
-          focusRipple
-          key={"image1"}
-          style={{
-            width: '100%',
-            height: 300
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/seismic_activity.jpg)` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+       <div className="categories_page__sector1">
+
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '25%' }}>
+          {
+            <ImageButton
+              focusRipple
+              key={"image1"}
+              style={{
+                width: '100%',
+                height: 300
               }}
             >
-              Сеизмична активност
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      }
-    </Box>
+              <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/seismic_activity.jpg)` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  Сеизмична активност
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          }
+        </Box>
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', /*minWidth: 300,*/ width: '25%' }}>
-      {
-        <ImageButton
-          focusRipple
-          key={"image2"}
-          style={{
-            width: '100%',
-            height: 300
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/road_conditions.jpg)` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '25%' }}>
+          {
+            <ImageButton
+              focusRipple
+              key={"image2"}
+              style={{
+                width: '100%',
+                height: 300
               }}
             >
-              Пътни условия
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      }
-    </Box>
+              <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/road_conditions.jpg)` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  Пътни условия
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          }
+        </Box>
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', /*minWidth: 300,*/ width: '25%' }}>
-      {
-        <ImageButton
-          focusRipple
-          key={"image3"}
-          style={{
-            width: '100%',
-            height: 300
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/public_conditions.jpg)` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '25%' }}>
+          {
+            <ImageButton
+              focusRipple
+              key={"image3"}
+              style={{
+                width: '100%',
+                height: 300
               }}
             >
-              Обществени условия
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      }
-    </Box>
+              <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/public_conditions.jpg)` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  Обществени условия
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          }
+        </Box>
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', /*minWidth: 300,*/ width: '25%' }}>
-      {
-        <ImageButton
-          focusRipple
-          key={"image4"}
-          style={{
-            width: '100%',
-            height: 300
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/meteorological_conditions.jpg)` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+       </div>
+
+     
+
+       <div className="categories_page__sector2">
+
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '25%' }}>
+          {
+            <ImageButton
+              focusRipple
+              key={"image4"}
+              style={{
+                width: '100%',
+                height: 300
               }}
             >
-              Метеорологични условия
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      }
-    </Box>
+              <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/meteorological_conditions.jpg)` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  Метеорологични условия
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          }
+        </Box>
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', /*minWidth: 300,*/ width: '25%' }}>
-      {
-        <ImageButton
-          focusRipple
-          key={"image5"}
-          style={{
-            width: '100%',
-            height: 300
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/space_phenomenon.jpg)` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '25%' }}>
+          {
+            <ImageButton
+              focusRipple
+              key={"image5"}
+              style={{
+                width: '100%',
+                height: 300
               }}
             >
-              Космическо явление
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      }
-    </Box>
+              <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/space_phenomenon.jpg)` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  Космическо явление
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          }
+        </Box>
 
-    <Box sx={{ display: 'flex', flexWrap: 'wrap', /*minWidth: 300,*/ width: '25%' }}>
-      {
-        <ImageButton
-          focusRipple
-          key={"image6"}
-          style={{
-            width: '100%',
-            height: 300
-          }}
-        >
-          <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/military_conditions.jpg)` }} />
-          <ImageBackdrop className="MuiImageBackdrop-root" />
-          <Image>
-            <Typography
-              component="span"
-              variant="subtitle1"
-              color="inherit"
-              sx={{
-                position: 'relative',
-                p: 4,
-                pt: 2,
-                pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+        <Box sx={{ display: 'flex', flexWrap: 'wrap', width: '25%' }}>
+          {
+            <ImageButton
+              focusRipple
+              key={"image6"}
+              style={{
+                width: '100%',
+                height: 300
               }}
             >
-              Военни условия
-              <ImageMarked className="MuiImageMarked-root" />
-            </Typography>
-          </Image>
-        </ImageButton>
-      }
-    </Box>
+              <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/military_conditions.jpg)` }} />
+              <ImageBackdrop className="MuiImageBackdrop-root" />
+              <Image>
+                <Typography
+                  component="span"
+                  variant="subtitle1"
+                  color="inherit"
+                  sx={{
+                    position: 'relative',
+                    p: 4,
+                    pt: 2,
+                    pb: (theme) => `calc(${theme.spacing(1)} + 6px)`,
+                  }}
+                >
+                  Военни условия
+                  <ImageMarked className="MuiImageMarked-root" />
+                </Typography>
+              </Image>
+            </ImageButton>
+          }
+        </Box>
 
-    
+       </div>
 
     </div>
   );
