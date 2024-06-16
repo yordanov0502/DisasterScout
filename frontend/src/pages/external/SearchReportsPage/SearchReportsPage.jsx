@@ -163,6 +163,12 @@ export const SearchReportsPage = () => {
 
   }, [status, data, error]);
 
+  //? Cleanup effect to reset scroll position when component unmounts
+  useEffect(() => {
+    return () => {
+      window.scroll({ top: 0, behavior: 'auto' });
+    };
+  }, []);
   
 
   const handlePageChange = (event, newPageNumber) => { //! event here is used only as argument to avoid "Converting circular structure to JSON" error

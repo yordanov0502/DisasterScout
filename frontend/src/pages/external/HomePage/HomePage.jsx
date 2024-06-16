@@ -138,6 +138,13 @@ export const HomePage = () => {
         }, 2200);
     }, []);
 
+    //? Cleanup effect to reset scroll position when component unmounts
+    useEffect(() => {
+        return () => {
+        window.scroll({ top: 0, behavior: 'auto' });
+        };
+    }, []);
+
     function getZoneColor(severityType) {
         if (severityType === 'LOW') {return 'yellow';}
         else if (severityType === 'MEDIUM') {return 'orange';}

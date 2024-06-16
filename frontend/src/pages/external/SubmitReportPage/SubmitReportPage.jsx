@@ -77,6 +77,12 @@ export const SubmitReportPage = () => {
     }
   }, [location]);
 
+  //? Cleanup effect to reset scroll position when component unmounts
+  useEffect(() => {
+    return () => {
+      window.scroll({ top: 0, behavior: 'auto' });
+    };
+  }, []);
 
 
   const isErrorFormValid = () => {

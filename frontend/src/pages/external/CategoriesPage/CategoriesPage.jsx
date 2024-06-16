@@ -1,4 +1,4 @@
-
+import { useEffect } from "react";
 import { Box, ButtonBase, Typography, styled } from "@mui/material";
 import './categories_page.scss';
 
@@ -72,6 +72,13 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 
 export const CategoriesPage = () => {
+
+  //? Cleanup effect to reset scroll position when component unmounts
+  useEffect(() => {
+    return () => {
+      window.scroll({ top: 0, behavior: 'auto' });
+    };
+  }, []);
  
   return (
     <div className="categories_page">
