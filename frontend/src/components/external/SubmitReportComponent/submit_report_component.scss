@@ -68,7 +68,7 @@
           border: solid 3px #009F58;
       
           @media (pointer: coarse), (max-width: 1064px) {
-            width: 91.5%;
+            width: 96.5%;
           }
       }
 
@@ -103,37 +103,43 @@
 
         @media (max-width: 1064px) {
             width: 100%;
-              margin-left: 0%;
-              //margin-top: 0px;
+            margin-left: 0%;
+            margin-top: 0px;
+            flex-direction: column;
 
-              &__box1{
-                  top: 20px;
-              }
-      
-              &__box2{
-                  top: 19px;
-              }
+            &__box1{
+                top: 20px;
+                width: 96.5%;
+            }
+    
+            &__box2{
+                top: 8px;
+                width: 96.5%;
+            }
         }
 
         @media (pointer: coarse) {
           width: 100%;
           margin-left: 0%;
           margin-top: 0px;
+          flex-direction: column;
 
           &__box1{
-              top: 20px;
+              top: 30px;
+              width: 96.5%;
           }
   
           &__box2{
-              top: 19px;
+              top: 18px;
+              width: 96.5%;
           }
-        }
+      }
   
       }
 
   
       @media (pointer: coarse), (max-width: 1064px) {
-        width: 100%;
+        width: 95%;
       }
   }
    
@@ -161,6 +167,7 @@
         @media (pointer: coarse), (max-width: 1064px) {
           width: 96.5%;
           margin-left: 0%;
+          //margin-top: -3%;
         }
     }
 
