@@ -3,7 +3,7 @@ import { PageLoader } from "./components/Loaders/PageLoader";
 //import {Progress} from "./components/Loaders/Progress" //!kept for UI debug purposes because of PageLoader overriding MUI components. This progress loader does NOT override any of the MUI components
 import { Router } from "./routes";
 import { MutationCache, QueryCache, QueryClient, QueryClientProvider } from "@tanstack/react-query";
-import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+//import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import { useNavigate } from "react-router-dom";
 import { useUserContext } from "./hooks/useUserContext.js";
 import "./App.css";
@@ -61,11 +61,11 @@ function App() {
     <QueryClientProvider client={queryClientRef.current}>
      <Suspense fallback={<PageLoader />}>
        <Router />
-        <ReactQueryDevtools //!For development purposes ONLY
+        {/* <ReactQueryDevtools //!For development purposes ONLY
           initialIsOpen
           position="right"
           buttonPosition="bottom-right"
-        />
+        /> */}
      </Suspense>
     </QueryClientProvider>   
   );
