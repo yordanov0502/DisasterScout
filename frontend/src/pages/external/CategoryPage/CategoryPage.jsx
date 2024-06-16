@@ -3,6 +3,7 @@ import { useNavigate, useSearchParams } from "react-router-dom";
 import { validCategoryTypes } from "../../../services/reportService";
 import { SeismicActivityComponent } from "../../../components/external/CategoryComponents/SeismicActivityComponent";
 import { MilitaryConditionsComponent } from "../../../components/external/CategoryComponents/MilitaryConditionsComponent";
+import { SpacePhenomenonComponent } from "../../../components/external/CategoryComponents/SpacePhenomenonComponent";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import './category_page.scss';
 
@@ -81,15 +82,14 @@ export const CategoryPage = () => {
     //   );
     // }
 
-    // else if(categoryType === 'SPACE_PHENOMENON')
-    // {
-    //   return (
-    //     <div className="category_page">
-    //       <SpacePhenomenonComponent />
-    //     </div>
-    //   );
-    // }
-
+    else if(categoryType === 'SPACE_PHENOMENON')
+    {
+      return (
+        <div className="category_page">
+          <SpacePhenomenonComponent />
+        </div>
+      );
+    }
     else (categoryType === 'MILITARY_CONDITIONS')
     {
       return (

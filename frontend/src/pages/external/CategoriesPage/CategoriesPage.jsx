@@ -232,6 +232,7 @@ export const CategoriesPage = () => {
                 width: '100%',
                 height: 300
               }}
+              onClick={() => navigate("/category?type=SPACE_PHENOMENON")}
             >
               <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/space_phenomenon.jpg)` }} />
               <ImageBackdrop className="MuiImageBackdrop-root" />
