@@ -208,6 +208,7 @@ const expectedDurationHours = [
   export const validSpacePhenomenonIssues = ['ALL', 'METEORITE_IMPACT', 'METEOR_RAIN', 'SOLAR_STORMS'];
   //////////////////////////////////////////////////////////////////////////////////////////////
 
+  export const validCategoryTypes = ['SEISMIC_ACTIVITY', 'METEOROLOGICAL_CONDITIONS', 'PUBLIC_CONDITIONS', 'ROAD_CONDITIONS', 'MILITARY_CONDITIONS', 'SPACE_PHENOMENON'];
 
 
 

@@ -1,0 +1,32 @@
+.category_page {
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    min-height: 100vh;
+
+    //! Parent MUST ALWAYS HAVE HEIGHT PROPERTY FOR THE CHILD COMPONENTS TO BE ABLE TO SET HEIGHT ALSO IN PERCENTAGE % !!!!!!!!!
+    //! otherwise position absolute must be specified
+    
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    animation: fadeIn 2s ease-in-out;
+
+
+    &__loader-box {
+        display: flex;
+        position: relative;
+        width: 100%;
+        height: 100%;
+        align-items: center;
+        justify-content: center;
+    }
+}

@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Box, ButtonBase, Typography, styled } from "@mui/material";
 import './categories_page.scss';
 
@@ -73,6 +74,8 @@ const ImageMarked = styled('span')(({ theme }) => ({
 
 export const CategoriesPage = () => {
 
+  const navigate = useNavigate();
+
   //? Cleanup effect to reset scroll position when component unmounts
   useEffect(() => {
     return () => {
@@ -94,6 +97,7 @@ export const CategoriesPage = () => {
                 width: '100%',
                 height: 300
               }}
+              onClick={() => navigate("/category?type=SEISMIC_ACTIVITY")}
             >
               <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/seismic_activity.jpg)` }} />
               <ImageBackdrop className="MuiImageBackdrop-root" />
@@ -260,6 +264,7 @@ export const CategoriesPage = () => {
                 width: '100%',
                 height: 300
               }}
+              onClick={() => navigate("/category?type=MILITARY_CONDITIONS")}
             >
               <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/military_conditions.jpg)` }} />
               <ImageBackdrop className="MuiImageBackdrop-root" />
