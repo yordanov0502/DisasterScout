@@ -201,6 +201,7 @@ export const CategoriesPage = () => {
                 width: '100%',
                 height: 300
               }}
+              onClick={() => navigate("/category?type=METEOROLOGICAL_CONDITIONS")}
             >
               <ImageSrc style={{ backgroundImage: `url(/src/assets/images/categories/meteorological_conditions.jpg)` }} />
               <ImageBackdrop className="MuiImageBackdrop-root" />

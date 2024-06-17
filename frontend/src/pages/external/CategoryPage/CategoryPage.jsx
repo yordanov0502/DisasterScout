@@ -5,6 +5,7 @@ import { SeismicActivityComponent } from "../../../components/external/CategoryC
 import { MilitaryConditionsComponent } from "../../../components/external/CategoryComponents/MilitaryConditionsComponent";
 import { SpacePhenomenonComponent } from "../../../components/external/CategoryComponents/SpacePhenomenonComponent";
 import { RoadConditionsComponent } from "../../../components/external/CategoryComponents/RoadConditionsComponent";
+import { MeteorologicalConditionsComponent } from "../../../components/external/CategoryComponents/MeteorologicalConditionsComponent";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import './category_page.scss';
 
@@ -74,15 +75,14 @@ export const CategoryPage = () => {
     //   );
     // }
 
-    // else if(categoryType === 'METEOROLOGICAL_CONDITIONS')
-    // {
-    //   return (
-    //     <div className="category_page">
-    //       <MeteorologicalConditionsComponent />
-    //     </div>
-    //   );
-    // }
-
+    else if(categoryType === 'METEOROLOGICAL_CONDITIONS')
+    {
+      return (
+        <div className="category_page">
+          <MeteorologicalConditionsComponent />
+        </div>
+      );
+    }
     else if(categoryType === 'SPACE_PHENOMENON')
     {
       return (
