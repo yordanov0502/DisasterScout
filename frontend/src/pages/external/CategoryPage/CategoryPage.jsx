@@ -4,6 +4,7 @@ import { validCategoryTypes } from "../../../services/reportService";
 import { SeismicActivityComponent } from "../../../components/external/CategoryComponents/SeismicActivityComponent";
 import { MilitaryConditionsComponent } from "../../../components/external/CategoryComponents/MilitaryConditionsComponent";
 import { SpacePhenomenonComponent } from "../../../components/external/CategoryComponents/SpacePhenomenonComponent";
+import { RoadConditionsComponent } from "../../../components/external/CategoryComponents/RoadConditionsComponent";
 import { PageLoader } from "../../../components/Loaders/PageLoader";
 import './category_page.scss';
 
@@ -55,14 +56,14 @@ export const CategoryPage = () => {
         </div>
       );
     }
-    // else if(categoryType === 'ROAD_CONDITIONS')
-    // {
-    //   return (
-    //     <div className="category_page">
-    //       <RoadConditionsComponent />
-    //     </div>
-    //   );
-    // }
+    else if(categoryType === 'ROAD_CONDITIONS')
+    {
+      return (
+        <div className="category_page">
+          <RoadConditionsComponent />
+        </div>
+      );
+    }
 
     // else if(categoryType === 'PUBLIC_CONDITIONS')
     // {

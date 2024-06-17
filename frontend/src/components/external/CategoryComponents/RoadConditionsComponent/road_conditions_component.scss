@@ -1,0 +1,11 @@
+.road_conditions_component {
+    //! Parent MUST ALWAYS HAVE HEIGHT PROPERTY FOR THE CHILD COMPONENTS TO BE ABLE TO SET HEIGHT ALSO IN PERCENTAGE % !!!!!!!!!
+    //! otherwise position absolute must be specified
+    
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+
+}
