@@ -69,7 +69,7 @@ export const SettingsComponent2 = ({
          </div>
          <button className="settings_component2__box2__button2" disabled={isRequestSent} onClick={onPressClearDispatcherCache}>Изчисти кеш паметта на диспечер</button>
          
-         <button className="settings_component2__box2__button3" disabled={isRequestSent} onClick={onPressClearAllUsersCache}>Изчисти кеш паметта на всички потребители</button>
+         <button className="settings_component2__box2__button3" disabled={isRequestSent} onClick={onPressClearAllUsersCache}>Изчисти кеш паметта на всички акаунти</button>
         
          <div className="settings_component2__box2__combobox-container">
          <Autocomplete
