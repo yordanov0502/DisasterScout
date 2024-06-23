@@ -70,8 +70,6 @@ public class ReportService {
         }
 
         Date timeOfReportSubmission = new Date();
-        //? if expectedDuration is -1, it means "не знам" option was chosen from frontend which sets +24 hours
-        //? in all other cases sets the expectedDuration
 
         Date whenReportExpires = submitReportDTO.expectedDuration() == -1 ? null : timeService.addHoursToDateAndTime(timeOfReportSubmission,submitReportDTO.expectedDuration());
 

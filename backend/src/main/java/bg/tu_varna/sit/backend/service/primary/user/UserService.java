@@ -120,12 +120,10 @@ public class UserService {
             if (user != null)
             {
                 //? Checks if a user is already logged in, in order to prevent incrementing unsuccessful login attempts
-                //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
                 if(user.getUserActivity().getActivity().equals(ONLINE))
                 {throw new BadCredentialsException("User is already logged in.");}
 
                 //? Checks if a user's account is locked, in order to prevent incrementing unsuccessful login attempts
-                //!!!!!!!!! Exception might need to be more clearly defined with a CUSTOM exception in future
                 else if(user.getUserStatus().getStatus().equals(LOCKED))
                 {throw new BadCredentialsException("User is currently locked.");}
 
