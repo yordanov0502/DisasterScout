@@ -830,7 +830,7 @@ public class ReportService {
         return (int) ((expiresAt.getTime() - submittedAt.getTime()) / MILLI_TO_HOUR);
     }
 
-    private String getAreaFromAddress(String fullAddress) {
+    String getAreaFromAddress(String fullAddress) {
         int firstIndex = fullAddress.indexOf('~');
         int secondIndex = fullAddress.indexOf('~', firstIndex + 1);
 
