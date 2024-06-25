@@ -22,6 +22,7 @@ import { CmsZonesPage } from "../pages/internal/CmsZonesPage";
 import { ReportPage } from "../pages/external/ReportPage";
 import { CategoryPage } from "../pages/external/CategoryPage";
 import { FAQPage } from "../pages/external/FAQPage";
+import { TermsOfUsePage } from "../pages/external/TermsOfUsePage";
 
 export const Router = () => {
   return (
@@ -120,6 +121,11 @@ export const Router = () => {
       </PublicRoute>
       }/>
 
+      <Route path="/terms-of-use" element={
+      <PublicRoute>
+      <TermsOfUsePage />
+      </PublicRoute>
+      }/>
       <Route path="/czv" element={
       <PublicRoute>
       <FAQPage />

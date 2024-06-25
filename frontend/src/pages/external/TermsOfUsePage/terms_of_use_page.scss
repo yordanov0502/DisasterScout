@@ -1,0 +1,103 @@
+.terms_of_use_page {
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    @font-face {
+        font-family: 'Bocures Regular';
+        src: url('/src/assets/fonts/Bocures.otf') format('truetype');
+        font-weight: normal;
+        font-style: normal;
+    }
+
+    min-height: 100vh;
+
+    //! Parent MUST ALWAYS HAVE HEIGHT PROPERTY FOR THE CHILD COMPONENTS TO BE ABLE TO SET HEIGHT ALSO IN PERCENTAGE % !!!!!!!!!
+    //! otherwise position absolute must be specified
+    
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    animation: fadeIn 2s ease-in-out;
+
+
+    &__title {
+        position: relative;
+        font-size: 28px;
+        color: #006e3d;
+        font-weight: bold;
+        margin-top: 4%;
+        margin-bottom: 5.5%;
+        text-align: center;
+
+        &--disaster {
+            font-family: 'Bocures Regular';
+            background: linear-gradient(180deg, #E50000 55%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #E50000; 
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1); 
+           
+            white-space: nowrap;
+            overflow: hidden;
+            margin-right: 15px;
+            margin-left: 15px;
+        }
+
+        &--scout {
+            font-family: 'Bocures Regular';
+            background: linear-gradient(180deg, #009F58 55%, #ffffff 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            color: #009F58; 
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.1); 
+            white-space: nowrap;
+            overflow: hidden;
+            
+        }
+    }
+
+    &__info-container {
+        width: 80%;
+        margin-bottom: 5%;
+        font-size: 20px;
+        text-align: justify;
+
+        &--p{
+            margin-bottom: 2%;
+
+            &--bold{
+                font-weight: bold;
+            }
+
+            &--bolditalic{
+                font-weight: bold;
+                font-style: italic;
+            }
+
+            @media (pointer: coarse), (max-width: 921px){
+                margin-bottom: 5%;
+            }        
+        }
+
+       
+         @media (max-width: 600px){
+             width: 90%;
+         }
+
+        @media (pointer: coarse){
+            width: 94%;
+        }
+    }
+
+
+}

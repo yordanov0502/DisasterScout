@@ -79,7 +79,7 @@ export const Footer = () => {
 
         <div className="footer__container2">
 
-        <div className="footer__container2__obshti-usloviq">
+        <div className="footer__container2__obshti-usloviq" onClick={() => navigate("/terms-of-use")}>
           Общи условия
           </div>
 
