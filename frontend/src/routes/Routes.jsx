@@ -21,6 +21,7 @@ import { CmsReportPage } from "../pages/internal/CmsReportPage";
 import { CmsZonesPage } from "../pages/internal/CmsZonesPage";
 import { ReportPage } from "../pages/external/ReportPage";
 import { CategoryPage } from "../pages/external/CategoryPage";
+import { FAQPage } from "../pages/external/FAQPage";
 
 export const Router = () => {
   return (
@@ -116,6 +117,12 @@ export const Router = () => {
       <Route path="/zones" element={
       <PublicRoute>
       <ZonesPage />
+      </PublicRoute>
+      }/>
+
+      <Route path="/czv" element={
+      <PublicRoute>
+      <FAQPage />
       </PublicRoute>
       }/>
 

@@ -1,5 +1,5 @@
 // import { useEffect, useState } from "react";
-// import { Link, useLocation, useNavigate } from "react-router-dom";
+ import { Link, useLocation, useNavigate } from "react-router-dom";
 // import MenuIcon from '@mui/icons-material/Menu';
 // import MenuOpenIcon from '@mui/icons-material/MenuOpen';
 // import DashboardIcon from '@mui/icons-material/Dashboard';
@@ -19,7 +19,7 @@ export const Footer = () => {
 
   //   const location = useLocation();
   //   const [activeButton, setActiveButton] = useState(null);
-  //   const navigate = useNavigate();
+  const navigate = useNavigate();
     
   // const handleButtonClick = (buttonId) => {
   //   setActiveButton(buttonId);
@@ -87,8 +87,8 @@ export const Footer = () => {
           Политика за поверителност
           </div>
 
-          <div className="footer__container2__czv">
-           ЧЗВ
+          <div className="footer__container2__czv" onClick={() => navigate("/czv")}>
+          ЧЗВ
           </div>
 
         </div>

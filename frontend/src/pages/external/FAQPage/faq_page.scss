@@ -1,0 +1,69 @@
+.faq_page {
+    @keyframes fadeIn {
+        from {
+            opacity: 0;
+        }
+        to {
+            opacity: 1;
+        }
+    }
+
+    min-height: 100vh;
+
+    //! Parent MUST ALWAYS HAVE HEIGHT PROPERTY FOR THE CHILD COMPONENTS TO BE ABLE TO SET HEIGHT ALSO IN PERCENTAGE % !!!!!!!!!
+    //! otherwise position absolute must be specified
+    
+    display: flex;
+    justify-content: center; 
+    flex-direction: column;
+    align-items: center;
+    background-color: rgb(255, 255, 255);
+    animation: fadeIn 2s ease-in-out;
+
+
+    &__title {
+        position: relative;
+        font-size: 28px;
+        color: #006e3d;
+        font-weight: bold;
+        margin-top: 4%;
+        margin-bottom: 5.5%;
+        text-align: center;
+    }
+
+    &__accordion-container {
+        width: 50%;
+        margin-bottom: 5%;
+
+        @media (max-width: 1350px){
+            width: 55%;
+        }
+        @media (max-width: 1250px){
+            width: 60%;
+        }
+        @media (max-width: 1110px){
+            width: 65%;
+        }
+        @media (max-width: 1021px){
+            width: 70%;
+        }
+        @media (max-width: 950px){
+            width: 75%;
+        }
+        @media (max-width: 888px){
+            width: 80%;
+        }
+        @media (max-width: 833px){
+            width: 85%;
+        }
+        @media (max-width: 787px){
+            width: 90%;
+        }
+
+        @media (pointer: coarse){
+            width: 94%;
+        }
+    }
+
+
+}
