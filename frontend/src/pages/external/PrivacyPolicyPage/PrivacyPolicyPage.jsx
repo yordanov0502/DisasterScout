@@ -378,11 +378,13 @@ export const PrivacyPolicyPage = () => {
 
 
 
+           <div className="privacy_policy_page__info-container--space"></div>
+
            <div className="privacy_policy_page__info-container--p">Варна, 26.06.2024г.</div>
 
-           <div className="privacy_policy_page__info-container--p">Тодор Йорданов</div>
+           <div className="privacy_policy_page__info-container--line">Тодор Йорданов</div>
 
-           <div className="privacy_policy_page__info-container--p">Разработчик на Disaster Scout</div>
+           <div className="privacy_policy_page__info-container--line">Разработчик на Disaster Scout</div>
 
 
         </div>
