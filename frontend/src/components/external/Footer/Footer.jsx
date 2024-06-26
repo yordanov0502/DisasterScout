@@ -1,34 +1,10 @@
-// import { useEffect, useState } from "react";
- import { Link, useLocation, useNavigate } from "react-router-dom";
-// import MenuIcon from '@mui/icons-material/Menu';
-// import MenuOpenIcon from '@mui/icons-material/MenuOpen';
-// import DashboardIcon from '@mui/icons-material/Dashboard';
-// import DescriptionIcon from '@mui/icons-material/Description';
-// import LocationOnIcon from '@mui/icons-material/LocationOn';
-// import RestoreIcon from '@mui/icons-material/Restore';
-// import PersonIcon from '@mui/icons-material/Person';
-// import SettingsIcon from '@mui/icons-material/Settings';
-// import GroupsIcon from '@mui/icons-material/Groups';
-// import AutoStoriesIcon from '@mui/icons-material/AutoStories';
-// import LogoutIcon from '@mui/icons-material/Logout';
-// import { useIsRequestSent } from "../../../hooks/useIsRequestSent";
+import { useNavigate } from "react-router-dom";
 import './footer.scss'; 
-
 
 export const Footer = () => {
 
-  //   const location = useLocation();
-  //   const [activeButton, setActiveButton] = useState(null);
   const navigate = useNavigate();
     
-  // const handleButtonClick = (buttonId) => {
-  //   setActiveButton(buttonId);
-  // };
-
-  
-
-
-
   return (
       <div className="footer">
 
@@ -83,7 +59,7 @@ export const Footer = () => {
           Общи условия
           </div>
 
-          <div className="footer__container2__politika-za-poveritelnost">
+          <div className="footer__container2__politika-za-poveritelnost" onClick={() => navigate("/privacy-policy")}>
           Политика за поверителност
           </div>
 

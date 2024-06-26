@@ -23,6 +23,7 @@ import { ReportPage } from "../pages/external/ReportPage";
 import { CategoryPage } from "../pages/external/CategoryPage";
 import { FAQPage } from "../pages/external/FAQPage";
 import { TermsOfUsePage } from "../pages/external/TermsOfUsePage";
+import { PrivacyPolicyPage } from "../pages/external/PrivacyPolicyPage";
 
 export const Router = () => {
   return (
@@ -124,6 +125,11 @@ export const Router = () => {
       <Route path="/terms-of-use" element={
       <PublicRoute>
       <TermsOfUsePage />
+      </PublicRoute>
+      }/>
+      <Route path="/privacy-policy" element={
+      <PublicRoute>
+      <PrivacyPolicyPage />
       </PublicRoute>
       }/>
       <Route path="/czv" element={
