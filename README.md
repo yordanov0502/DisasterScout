@@ -2,9 +2,9 @@
     <img src="frontend\src\assets\images\logo.svg" alt="Logo" height="250"> 
 </div>
 
-<div align="center" style="font-size: 28px; text-align: center; margin-top: 10px;">
+<h3 align="center" style="font-size: 28px; text-align: center; margin-top: 10px;">
     Web application for reporting and monitoring of natural disasters and emergencies
-</div>
+</h3>
 
 <div style="display: flex; justify-content: center; align-items: center; flex-wrap: wrap;">
     <img src="documentation/images/image1.png" alt="Image 1" style="margin: 5px;">
