@@ -2,7 +2,7 @@
     <img src="frontend\src\assets\images\logo.svg" alt="Logo" height="250"> 
 </div>
 
-<div align="center" style="font-size: 2em; text-align: center; margin-top: 10px;">
+<div align="center" style="font-size: 28px; text-align: center; margin-top: 10px;">
     Web application for reporting and monitoring of natural disasters and emergencies
 </div>
 
